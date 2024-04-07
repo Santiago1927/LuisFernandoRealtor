@@ -9,13 +9,13 @@ const links = [
 
 export default function Header() {
   return (
-    <header className="flex justify-between items-center py-5 w-full px-5 lg:px-32 xl:px-40">
+    <header className="fixed top-0 left-0 z-10 flex justify-between items-center py-5 w-full px-5 lg:px-32 xl:px-40 shadow">
       <a href="#">
         <Image
           width={40}
           height={40}
           alt="Luis Fernando Realtor - Logo"
-          src={"/logo.svg"}
+          src="/LFR-Logo.svg"
         ></Image>
       </a>
       <nav className="flex flex-row gap-x-4 text-sm sm:text-base">

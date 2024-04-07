@@ -8,7 +8,7 @@ export default function Footer() {
           <div className="mb-6 md:mb-0 flex justify-center md:justify-start">
             <a href="#" className="flex items-center">
               <Image
-                src="/logo.svg"
+                src="/LFR-Logo.svg"
                 className="mr-3 h-8"
                 alt="Logo"
                 width={40}

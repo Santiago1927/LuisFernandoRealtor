@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "./globals.css";
-import Header from "./Header";
-import { ThemeProvider } from "./ThemeContext";
-import Footer from "./Footer";
+import "./styles/globals.css";
+import Header from "./components/Header";
+import { ThemeProvider } from "./state/ThemeContext";
+import Footer from "./components/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   description:
     "Agente de Bienes Raíces de Lujo | Pasto, Medellín, Cali | Vende tu propiedad en tiempo record",
   icons: {
-    icon: "/favicon.ico",
+    icon: "/LFR-Logo.ico",
   },
 };
 
