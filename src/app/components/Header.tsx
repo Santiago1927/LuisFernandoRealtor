@@ -9,7 +9,7 @@ const links = [
 
 export default function Header() {
   return (
-    <header className="fixed top-0 left-0 z-10 flex justify-between items-center py-5 w-full px-5 lg:px-32 xl:px-40 shadow">
+    <header className="fixed top-0 left-0 z-10 flex justify-between items-center py-5 w-full px-5 lg:px-32 xl:px-40 bg-white dark:bg-black shadow">
       <a href="#">
         <Image
           width={40}

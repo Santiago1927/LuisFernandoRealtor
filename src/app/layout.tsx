@@ -29,6 +29,7 @@ export default function RootLayout({
           className={`${inter.className} bg-white dark:bg-black text-black dark:text-white`}
         >
           <Header />
+          <div className="mt-16"></div>
           {children}
           <Footer />
         </body>
