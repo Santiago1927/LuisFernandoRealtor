@@ -2,7 +2,8 @@ import Image from "next/image";
 
 export default function Footer() {
   return (
-    <footer className="p-4 sm:p-6 border-t border-black dark:border-white">
+    // Se aplica el color de fondo general para modo claro y oscuro
+    <footer className="p-4 sm:p-6 border-t border-black dark:border-white bg-dark-50 dark:bg-dark-800">
       <div className="mx-auto max-w-screen-xl">
         <div className="md:flex md:justify-between">
           <div className="mb-6 md:mb-0 flex justify-center md:justify-start">
@@ -14,36 +15,44 @@ export default function Footer() {
                 width={40}
                 height={40}
               />
-              <span className="self-center text-2xl font-semibold whitespace-nowrap ">
+              <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
                 Luis Fernando Realtor
               </span>
             </a>
           </div>
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 justify-center md:justify-between text-center md:text-left">
             <div>
-              <h2 className="mb-6 text-md font-bold  uppercase ">
+              <h2 className="mb-6 text-md font-bold uppercase text-black dark:text-white">
                 Información
               </h2>
               <ul className="">
                 <li className="mb-4">
-                  <a href="#servicios" className="hover:underline">
+                  <a
+                    href="#servicios"
+                    className="hover:underline text-black dark:text-white"
+                  >
                     Servicios
                   </a>
                 </li>
                 <li>
-                  <a href="#nosotros" className="hover:underline">
+                  <a
+                    href="#nosotros"
+                    className="hover:underline text-black dark:text-white"
+                  >
                     Nosotros
                   </a>
                 </li>
               </ul>
             </div>
             <div>
-              <h2 className="mb-6 text-md font-bold  uppercase ">Siguenos</h2>
+              <h2 className="mb-6 text-md font-bold uppercase text-black dark:text-white">
+                Siguenos
+              </h2>
               <ul className=" ">
                 <li className="mb-4">
                   <a
                     href="https://www.tiktok.com/@luisfernandorealtor"
-                    className="hover:underline"
+                    className="hover:underline text-black dark:text-white"
                     target="_blank"
                   >
                     TikTok
@@ -52,7 +61,7 @@ export default function Footer() {
                 <li>
                   <a
                     href="https://www.instagram.com/luisfernandorealtor/"
-                    className="hover:underline"
+                    className="hover:underline text-black dark:text-white"
                     target="_blank"
                   >
                     Instagram
@@ -61,17 +70,22 @@ export default function Footer() {
               </ul>
             </div>
             <div>
-              <h2 className="mb-6 text-md font-bold  uppercase ">Contacto</h2>
+              <h2 className="mb-6 text-md font-bold uppercase text-black dark:text-white">
+                Contacto
+              </h2>
               <ul className=" ">
                 <li className="mb-4">
-                  <a href="tel:+573214223931" className="hover:underline">
+                  <a
+                    href="tel:+573214223931"
+                    className="hover:underline text-black dark:text-white"
+                  >
                     +57 3251256487
                   </a>
                 </li>
                 <li>
                   <a
                     href="mailto:realtorluisfernando@gmail.com"
-                    className="hover:underline"
+                    className="hover:underline text-black dark:text-white"
                   >
                     luisfernandorealtor@gmail.com
                   </a>
@@ -85,7 +99,7 @@ export default function Footer() {
           <div className="flex mb-3 space-x-6 justify-center sm:mt-0">
             <a
               href="https://www.tiktok.com/@luisfernandorealtor"
-              className="  hover:text-gold-950 dark:hover:text-gold-400"
+              className="text-black dark:text-gold-400 hover:text-gold-950"
               target="_blank"
             >
               <svg
@@ -106,7 +120,7 @@ export default function Footer() {
             </a>
             <a
               href="https://www.instagram.com/luisfernandorealtor/"
-              className=" hover:text-gold-950 dark:hover:text-gold-400"
+              className="text-black dark:text-gold-400 hover:text-gold-950"
               target="_blank"
             >
               <svg
@@ -123,13 +137,20 @@ export default function Footer() {
               </svg>
             </a>
           </div>
-          <span className="mb-3 text-sm sm:text-center ">
-            © 2024{" "}
-            <a href="https://flowbite.com" className="hover:underline">
+          <span className="mb-3 text-sm sm:text-center text-black dark:text-white">
+            © 2024
+            <a
+              href="https://flowbite.com"
+              className="hover:underline text-black dark:text-white"
+            >
               Luis Fernando Realtor ™
-            </a>{" "}
-            | Todos los derechos reservados | Desarrollado por{" "}
-            <a href="https://santiagosalas.com" className="hover:underline font-bold" target="_blank">
+            </a>
+            | Todos los derechos reservados | Desarrollado por
+            <a
+              href="https://santiagosalas.com"
+              className="hover:underline font-bold text-black dark:text-white"
+              target="_blank"
+            >
               Santiago Salas.
             </a>
           </span>
