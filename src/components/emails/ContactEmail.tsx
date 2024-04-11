@@ -3,7 +3,6 @@ import {
   Container,
   Column,
   Head,
-  Heading,
   Html,
   Img,
   Preview,
@@ -14,12 +13,11 @@ import {
 } from "@react-email/components";
 import * as React from "react";
 
-// Determina la URL base para los recursos
-const baseUrl = process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}`
-  : `http://localhost:3000/`;
+const baseUrl =
+  process.env.NEXT_PUBLIC_BASE_URL ||
+  process.env.URL ||
+  "http://localhost:3000/";
 
-// Definición de las props utilizando una interfaz
 interface ContactEmailProps {
   fecha: string;
   nombre: string;
@@ -29,7 +27,6 @@ interface ContactEmailProps {
   telefono: string;
 }
 
-// Componente de email con props tipadas para personalización
 export const ContactEmail: React.FC<ContactEmailProps> = ({
   fecha,
   nombre,
