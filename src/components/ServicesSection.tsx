@@ -1,9 +1,9 @@
 export default function ServicesSection() {
   return (
-    <section className="text-gray-800 dark:text-gold-50">
+    <section className="text-gray-800 dark:text-primary-50">
       <div className="py-8 px-4 mx-auto max-w-screen-xl sm:py-16 lg:px-6">
         <div className="max-w-screen-md mb-8 lg:mb-16">
-          <h2 className="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-gold-400">
+          <h2 className="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-primary-400">
             Servicios de Agente Inmobiliario
           </h2>
           <p className="text-lg sm:text-xl">
@@ -14,7 +14,7 @@ export default function ServicesSection() {
         </div>
         <div className="space-y-8 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-12 md:space-y-0">
           <div className="space-y-4">
-            <div className="flex justify-center items-center mb-4 w-10 h-10 rounded-full bg-gold-400 dark:bg-gold-700">
+            <div className="flex justify-center items-center mb-4 w-10 h-10 rounded-full bg-primary-400 dark:bg-primary-700">
               <svg
                 className="w-6 h-6 dark:text-black"
                 aria-hidden="true"
@@ -33,7 +33,7 @@ export default function ServicesSection() {
                 />
               </svg>
             </div>
-            <h3 className="mb-2 text-xl font-bold text-gray-900 dark:text-gold-400">
+            <h3 className="mb-2 text-xl font-bold text-gray-900 dark:text-primary-400">
               Listados de Propiedades
             </h3>
             <p>
@@ -43,7 +43,7 @@ export default function ServicesSection() {
             </p>
           </div>
           <div className="space-y-4">
-            <div className="flex justify-center items-center mb-4 w-10 h-10 rounded-full bg-gold-400 dark:bg-gold-700">
+            <div className="flex justify-center items-center mb-4 w-10 h-10 rounded-full bg-primary-400 dark:bg-primary-700">
               <svg
                 className="w-6 h-6 dark:text-black"
                 aria-hidden="true"
@@ -62,7 +62,7 @@ export default function ServicesSection() {
                 />
               </svg>
             </div>
-            <h3 className="mb-2 text-xl font-bold text-gray-900 dark:text-gold-400">
+            <h3 className="mb-2 text-xl font-bold text-gray-900 dark:text-primary-400">
               Asistencia para Comprar una Casa
             </h3>
             <p>
@@ -72,7 +72,7 @@ export default function ServicesSection() {
             </p>
           </div>
           <div className="space-y-4">
-            <div className="flex justify-center items-center mb-4 w-10 h-10 rounded-full bg-gold-400 dark:bg-gold-700">
+            <div className="flex justify-center items-center mb-4 w-10 h-10 rounded-full bg-primary-400 dark:bg-primary-700">
               <svg
                 className="w-6 h-6 dark:text-black"
                 aria-hidden="true"
@@ -91,7 +91,7 @@ export default function ServicesSection() {
                 />
               </svg>
             </div>
-            <h3 className="mb-2 text-xl font-bold text-gray-900 dark:text-gold-400">
+            <h3 className="mb-2 text-xl font-bold text-gray-900 dark:text-primary-400">
               Análisis de Mercado
             </h3>
             <p>

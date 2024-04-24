@@ -2,14 +2,13 @@ import Image from "next/image";
 
 export default function Footer() {
   return (
-    // Se aplica el color de fondo general para modo claro y oscuro
-    <footer className="p-4 sm:p-6 border-t border-black dark:border-white bg-dark-50 dark:bg-dark-800">
+    <footer className="p-4 sm:p-6 border-t border-black dark:border-white bg-secondary-50 dark:bg-secondary-800">
       <div className="mx-auto max-w-screen-xl">
         <div className="md:flex md:justify-between">
           <div className="mb-6 md:mb-0 flex justify-center md:justify-start">
             <a href="#" className="flex items-center">
               <Image
-                src="/LFR-Logo.svg"
+                src="/logo.svg"
                 className="mr-3 h-8"
                 alt="Logo"
                 width={40}
@@ -99,7 +98,7 @@ export default function Footer() {
           <div className="flex mb-3 space-x-6 justify-center sm:mt-0">
             <a
               href="https://www.tiktok.com/@luisfernandorealtor"
-              className="text-black dark:text-gold-400 hover:text-gold-950"
+              className="text-black dark:text-primary-400 hover:text-primary-950"
               target="_blank"
             >
               <svg
@@ -120,7 +119,7 @@ export default function Footer() {
             </a>
             <a
               href="https://www.instagram.com/luisfernandorealtor/"
-              className="text-black dark:text-gold-400 hover:text-gold-950"
+              className="text-black dark:text-primary-400 hover:text-primary-950"
               target="_blank"
             >
               <svg

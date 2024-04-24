@@ -12,9 +12,6 @@ export const metadata: Metadata = {
     "Luis Fernando Realtor | Agente de Bienes Raíces de Lujo | Pasto, Medellín, Cali | Vende tu propiedad en tiempo record",
   description:
     "Agente de Bienes Raíces de Lujo | Pasto, Medellín, Cali | Vende tu propiedad en tiempo record",
-  icons: {
-    icon: "/LFR-Logo.ico",
-  },
 };
 
 export default function RootLayout({
