@@ -4,6 +4,7 @@ import "./styles/globals.css";
 import Header from "../components/Header";
 import { ThemeProvider } from "./state/ThemeContext";
 import Footer from "../components/Footer";
+import WhatsAppButton from "@/components/WhatsAppButton";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,6 +28,7 @@ export default function RootLayout({
         >
           <Header />
           <div className="mt-16"></div>
+          <WhatsAppButton phoneNumber="573214223931" />
           {children}
           <Footer />
         </body>
