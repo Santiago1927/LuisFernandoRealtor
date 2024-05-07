@@ -6,12 +6,11 @@ export default function MainSection() {
       <div className="grid px-4 py-8 mx-auto lg:gap-8 xl:gap-0 lg:py-16 lg:grid-cols-12 sm:px-6 md:px-8">
         <div className="mr-auto place-self-center lg:col-span-7">
           <h1 className="mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-5xl xl:text-6xl text-primary-700 dark:text-primary-500">
-            ¡Vende tu propiedad en tiempo récord!
+            ¡Vendemos en el menor tiempo y al mejor precio posible!
           </h1>
           <p className="mb-6 font-light text-secondary-900 dark:text-white lg:mb-8 md:text-lg lg:text-xl">
-            Somos expertos en Bienes Raíces de Lujo. Nuestro equipo te garantiza
-            encontrar compradores y cerrar las ventas rápidamente. No pierdas
-            más tiempo, ¡comienza hoy mismo!
+            Aplicamos estrategias de marketing digital para ayudarte a vender o
+            comprar una propiedad
           </p>
           <div className="flex justify-center lg:justify-start">
             <a
@@ -29,6 +28,7 @@ export default function MainSection() {
             layout="intrinsic"
             width={1000}
             height={1000}
+            className="animate-scale-up"
           ></Image>
         </div>
       </div>

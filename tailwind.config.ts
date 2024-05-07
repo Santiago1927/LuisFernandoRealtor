@@ -23,7 +23,7 @@ const config: Config = {
           900: '#FF6F00',
         },
         secondary: {
-          50: '#F5F5F5', 
+          50: '#F5F5F5',
           100: '#EEEEEE',
           200: '#E0E0E0',
           300: '#BDBDBD',
@@ -35,6 +35,15 @@ const config: Config = {
           900: '#000000',
         },
       }
+    },
+    animation: {
+      'scale-up': 'scaleUp 0.5s ease-out',
+    },
+    keyframes: {
+      scaleUp: {
+        '0%': { transform: 'scale(0.95)' },
+        '100%': { transform: 'scale(1)' },
+      },
     },
   },
   plugins: [],
