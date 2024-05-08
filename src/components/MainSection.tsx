@@ -10,7 +10,7 @@ export default function MainSection() {
           </h1>
           <p className="mb-6 font-light text-secondary-900 dark:text-white lg:mb-8 md:text-lg lg:text-xl">
             Aplicamos estrategias de marketing digital para ayudarte a vender o
-            comprar una propiedad
+            comprar una propiedad que se adecuen a tus necesidades.
           </p>
           <div className="flex justify-center lg:justify-start">
             <a

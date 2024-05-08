@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import {
   propertyTypeOptions,
   cityOptions,
-  additionalFieldsBuyer,
+  additionalFields,
   inputFields,
   personalFields,
+  questions,
 } from "./formConfig";
 
-const BuyerFormFields = () => {
+const SellerFormFields = () => {
   const [formData, setFormData] = useState<any>({ propertyType: "CASA" });
 
   const handleInputChange = (field: string, value: any) => {
@@ -27,6 +28,34 @@ const BuyerFormFields = () => {
           value={formData[fieldKey] || ""}
           onChange={(e) => handleInputChange(fieldKey, e.target.value)}
         />
+      </div>
+    );
+  };
+
+  const renderQuestions = (fieldKey: string) => {
+    const field = questions[fieldKey];
+    return (
+      <div className="mb-2">
+        <label className="block mb-1 text-sm font-medium text-secondary-900 dark:text-primary-200">
+          {field.label}
+        </label>
+        <div className="flex">
+          {field.options?.map((option) => (
+            <label key={option.label} className="inline-flex items-center mr-4">
+              <input
+                type="radio"
+                className="form-radio"
+                name={fieldKey}
+                value={option.value}
+                checked={formData[fieldKey] === option.value}
+                onChange={() => handleInputChange(fieldKey, option.value)}
+              />
+              <span className="ml-2 text-secondary-900 dark:text-primary-200">
+                {option.label}
+              </span>
+            </label>
+          ))}
+        </div>
       </div>
     );
   };
@@ -119,6 +148,7 @@ const BuyerFormFields = () => {
   return (
     <form className="space-y-4">
       <div className="grid grid-cols-1 gap-4">
+        {Object.keys(questions).map((field) => renderQuestions(field))}
         {Object.keys(personalFields).map((field) => renderPersonalInput(field))}
 
         <div>
@@ -147,32 +177,29 @@ const BuyerFormFields = () => {
             value={formData.propertyType || ""}
             onChange={(e) => handleInputChange("propertyType", e.target.value)}
           >
-            {propertyTypeOptions
-              .filter((option) => option.value !== "PROYECTO_INMOBILIARIO")
-              .map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
+            {propertyTypeOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
           </select>
         </div>
 
-        {additionalFieldsBuyer[
-          formData.propertyType as keyof typeof additionalFieldsBuyer
+        {additionalFields[
+          formData.propertyType as keyof typeof additionalFields
         ] &&
-          additionalFieldsBuyer[
-            formData.propertyType as keyof typeof additionalFieldsBuyer
+          additionalFields[
+            formData.propertyType as keyof typeof additionalFields
           ].map((field) => renderInput(field))}
-
-        <button
-          type="submit"
-          className="w-full py-3 px-5 text-sm font-medium text-secondary-900 bg-primary-500 rounded-lg hover:bg-primary-600 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-700 shadow-lg transform transition-transform duration-200 hover:scale-105"
-        >
-          Submit
-        </button>
       </div>
+      <button
+        type="submit"
+        className="w-full py-3 px-5 text-sm font-medium text-secondary-900 bg-primary-500 rounded-lg hover:bg-primary-600 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-700 shadow-lg transform transition-transform duration-200 hover:scale-105"
+      >
+        Submit
+      </button>
     </form>
   );
 };
 
-export default BuyerFormFields;
+export default SellerFormFields;
