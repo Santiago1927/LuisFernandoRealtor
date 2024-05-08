@@ -74,7 +74,7 @@ export const inputFields: Record<string, InputField> = {
     valorAdministracion: { type: 'number', label: 'Valor Administración (COP)' },
     valorAproximado: { type: 'number', label: 'Valor Aproximado Propiedad (COP)' },
     area: { type: 'number', label: 'Área (m²)' },
-    situacionJuridica: { type: 'select', options: [{ value: 'LISTA PARA ESCRITURAR', label: 'Lista para escriturar' }, { value: 'CREDITO (HIPOTECARIO, LEASING),', label: 'Credito (Hipotecario, Lesing)' }, { value: 'CREDITO PERSONA NATURAL', label: 'Credito Persona Natural' }, { value: 'PATRIMONIO DE FAMILIA', label: 'Patrimonio de Familia' }, { value: 'SUCESION,', label: 'Sucesión' }, { value: 'OTRA', label: 'Otra' }], label: 'Situación Jurídica' },
+    situacionJuridica: { type: 'select', options: [{ value: 'LISTA_PARA_ESCRITURAR', label: 'Lista para escriturar' }, { value: 'CREDITO_(HIPOTECARIO, LEASING)', label: 'Credito (Hipotecario, Lesing)' }, { value: 'CREDITO_PERSONA_NATURAL', label: 'Credito Persona Natural' }, { value: 'PATRIMONIO_DE_FAMILIA', label: 'Patrimonio de Familia' }, { value: 'SUCESION,', label: 'Sucesión' }, { value: 'OTRA', label: 'Otra' }], label: 'Situación Jurídica' },
     tipoProyecto: { type: 'select', options: [{ value: 'RURAL', label: 'Rural' }, { value: 'URBANO', label: 'Urbano' }, { value: 'RESIDENCIAL', label: 'Residencial' }, { value: 'COMERCIAL', label: 'Comercial' }, { value: 'EDIFICIO', label: 'Edificio' }, { value: 'CONJUNTO', label: 'Conjunto' }], label: 'Tipo de proyecto' },
     comentariosAdicionales: { type: 'text', label: 'Comentarios Adicionales' },
 };

@@ -3,7 +3,7 @@ import BuyerFormFields from "./forms/BuyerFormFileds";
 
 const BuyerEmail: React.FC = () => {
   const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState<any>({propertyType: 'CASA'});
+  const [formData, setFormData] = useState<any>({propertyType: 'CASA', userType: 'buyer', ciudad: 'Medellín'});
 
   const handleSubmit = async (event: React.SyntheticEvent) => {
     event.preventDefault();

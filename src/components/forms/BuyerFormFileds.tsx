@@ -132,8 +132,8 @@ const BuyerFormFields = ({
           </label>
           <select
             className="block w-full px-4 py-3 text-secondary-900 placeholder-secondary-700 bg-gray-50 border border-secondary-700 rounded-lg shadow-sm dark:bg-secondary-800 dark:border-primary-600 dark:text-primary-50 dark:placeholder-primary-200"
-            value={formData.city || ""}
-            onChange={(e) => handleInputChange("city", e.target.value)}
+            value={formData.ciudad || ""}
+            onChange={(e) => handleInputChange("ciudad", e.target.value)}
           >
             {cityOptions.map((option) => (
               <option key={option.value} value={option.value}>

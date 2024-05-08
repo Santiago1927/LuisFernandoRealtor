@@ -4,7 +4,7 @@ import SellerFormFields from "./forms/SellerFormFileds";
 
 const SellerEmail: React.FC = () => {
   const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState<any>({ propertyType: "CASA" });
+  const [formData, setFormData] = useState<any>({ propertyType: "CASA", userType: "seller", ciudad: "Medellín"});
 
   const handleSubmit = async (event: React.SyntheticEvent) => {
     event.preventDefault();
