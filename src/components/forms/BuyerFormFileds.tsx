@@ -1,15 +1,20 @@
-import React, { useState } from "react";
 import {
   propertyTypeOptions,
   cityOptions,
   additionalFieldsBuyer,
   inputFields,
   personalFields,
-} from "./formConfig";
+} from "@/types/forms";
 
-const BuyerFormFields = () => {
-  const [formData, setFormData] = useState<any>({ propertyType: "CASA" });
-
+const BuyerFormFields = ({
+  formData,
+  setFormData,
+  handleSubmit,
+}: {
+  formData: any;
+  setFormData: any;
+  handleSubmit: any;
+}) => {
   const handleInputChange = (field: string, value: any) => {
     setFormData({ ...formData, [field]: value });
   };
@@ -117,7 +122,7 @@ const BuyerFormFields = () => {
   };
 
   return (
-    <form className="space-y-4">
+    <form className="space-y-4" onSubmit={handleSubmit}>
       <div className="grid grid-cols-1 gap-4">
         {Object.keys(personalFields).map((field) => renderPersonalInput(field))}
 
