@@ -1,9 +1,10 @@
+"use client";
 import { useState } from "react";
-import BuyerFormFields from "./BuyerFormFileds";
+import SellerFormFields from "./forms/SellerFormFileds";
 
-const BuyerForm: React.FC = () => {
+const SellerEmail: React.FC = () => {
   const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState<any>({propertyType: 'CASA'});
+  const [formData, setFormData] = useState<any>({ propertyType: "CASA" });
 
   const handleSubmit = async (event: React.SyntheticEvent) => {
     event.preventDefault();
@@ -16,7 +17,7 @@ const BuyerForm: React.FC = () => {
   };
 
   return (
-    <BuyerFormFields
+    <SellerFormFields
       formData={formData}
       setFormData={setFormData}
       handleSubmit={handleSubmit}
@@ -24,4 +25,4 @@ const BuyerForm: React.FC = () => {
   );
 };
 
-export default BuyerForm;
+export default SellerEmail;

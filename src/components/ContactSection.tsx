@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
-import BuyerForm from "./forms/BuyerForm";
-import SellerForm from "./forms/SellerForm";
+import BuyerEmail from "./BuyerEmail";
+import SellerEmail from "./SellerEmail";
 
 const USER_ROLES = {
   BUYER: "buyer",
@@ -44,7 +44,7 @@ export default function ContactSection() {
             Soy Comprador
           </button>
         </div>
-        {roleUser === USER_ROLES.SELLER ? <SellerForm /> : <BuyerForm />}
+        {roleUser === USER_ROLES.SELLER ? <SellerEmail /> : <BuyerEmail />}
       </div>
     </section>
   );
