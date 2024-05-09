@@ -43,3 +43,20 @@ export interface Field {
     label: string;
     options?: Array<{ value: any; label: string }>;
 }
+
+export interface FormData {
+    propertyType?: PropertyType;
+    [key: string]: any;
+}
+
+export interface BuyerFormProps {
+    formData: FormData;
+    setFormData: (data: FormData) => void;
+    handleSubmit: (event: React.FormEvent) => void;
+}
+
+export interface OwnerFormProps {
+    formData: FormData;
+    setFormData: (data: FormData) => void;
+    handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
+}

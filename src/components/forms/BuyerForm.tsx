@@ -1,3 +1,4 @@
+import React from "react";
 import {
   PROPERTY_TYPE_OPTIONS,
   CITY_OPTIONS,
@@ -5,167 +6,65 @@ import {
   INPUT_INFO,
   PERSONAL_DATA,
 } from "@/constants/constants";
+import { BuyerFormProps, PropertyType } from "@/types/forms.d";
+import InputField from "./InputField";
 
-const BuyerFormFields = ({
+const BuyerForm: React.FC<BuyerFormProps> = ({
   formData,
   setFormData,
   handleSubmit,
-}: {
-  formData: any;
-  setFormData: any;
-  handleSubmit: any;
 }) => {
-  const handleInputChange = (field: string, value: any) => {
-    setFormData({ ...formData, [field]: value });
-  };
-
-  const renderPersonalInput = (fieldKey: string) => {
-    const field = PERSONAL_DATA[fieldKey];
-    return (
-      <div className="mb-2">
-        <label className="block mb-1 text-sm font-medium text-secondary-900 dark:text-primary-200">
-          {field.label}
-        </label>
-        <input
-          type={field.type}
-          className="block w-full px-4 py-3 text-secondary-900 placeholder-secondary-700 bg-gray-50 border border-secondary-700 rounded-lg shadow-sm dark:bg-secondary-800 dark:border-primary-600 dark:text-primary-50 dark:placeholder-primary-200"
-          value={formData[fieldKey] || ""}
-          onChange={(e) => handleInputChange(fieldKey, e.target.value)}
-        />
-      </div>
-    );
-  };
-
-  const renderInput = (fieldKey: string) => {
-    const field = INPUT_INFO[fieldKey];
-    switch (field.type) {
-      case "number":
-      case "text":
-        return (
-          <div className="mb-2">
-            <label className="block mb-1 text-sm font-medium text-secondary-900 dark:text-primary-200">
-              {field.label}
-            </label>
-            <input
-              type={field.type}
-              className="block w-full px-4 py-3 text-secondary-900 placeholder-secondary-700 bg-gray-50 border border-secondary-700 rounded-lg shadow-sm dark:bg-secondary-800 dark:border-primary-600 dark:text-primary-50 dark:placeholder-primary-200"
-              value={formData[fieldKey] || ""}
-              onChange={(e) => handleInputChange(fieldKey, e.target.value)}
-            />
-          </div>
-        );
-      case "select":
-        return (
-          <div className="mb-2">
-            <label className="block mb-1 text-sm font-medium text-secondary-900 dark:text-primary-200">
-              {field.label}
-            </label>
-            <select
-              className="block w-full px-4 py-3 text-secondary-900 placeholder-secondary-700 bg-gray-50 border border-secondary-700 rounded-lg shadow-sm dark:bg-secondary-800 dark:border-primary-600 dark:text-primary-50 dark:placeholder-primary-200"
-              value={formData[fieldKey] || ""}
-              onChange={(e) => handleInputChange(fieldKey, e.target.value)}
-            >
-              {field.options?.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-            {fieldKey === "situacionJuridica" &&
-              formData[fieldKey] === "OTRA" && (
-                <input
-                  type="text"
-                  placeholder="Especifique la situación jurídica"
-                  className="mt-2 block w-full px-4 py-3 text-secondary-900 placeholder-secondary-700 bg-gray-50 border border-secondary-700 rounded-lg shadow-sm dark:bg-secondary-800 dark:border-primary-600 dark:text-primary-50 dark:placeholder-primary-200"
-                  value={formData["detalleSituacionJuridica"] || ""}
-                  onChange={(e) =>
-                    handleInputChange(
-                      "detalleSituacionJuridica",
-                      e.target.value
-                    )
-                  }
-                />
-              )}
-          </div>
-        );
-      case "radio":
-        return (
-          <div className="mb-2">
-            <label className="block mb-1 text-sm font-medium text-secondary-900 dark:text-primary-200">
-              {field.label}
-            </label>
-            <div className="flex">
-              {field.options?.map((option) => (
-                <label
-                  key={option.label}
-                  className="inline-flex items-center mr-4"
-                >
-                  <input
-                    type="radio"
-                    className="form-radio"
-                    name={fieldKey}
-                    value={option.value}
-                    checked={formData[fieldKey] === option.value}
-                    onChange={() => handleInputChange(fieldKey, option.value)}
-                  />
-                  <span className="ml-2 text-secondary-900 dark:text-primary-200">
-                    {option.label}
-                  </span>
-                </label>
-              ))}
-            </div>
-          </div>
-        );
-      default:
-        return null;
-    }
+  const handleInputChange = (fieldKey: string, value: any) => {
+    setFormData({ ...formData, [fieldKey]: value });
   };
 
   return (
     <form className="space-y-4" onSubmit={handleSubmit}>
       <div className="grid grid-cols-1 gap-4">
-        {Object.keys(PERSONAL_DATA).map((field) => renderPersonalInput(field))}
+        {/* Datos Personales */}
+        {Object.entries(PERSONAL_DATA).map(([fieldKey, field]) => (
+          <InputField
+            key={fieldKey}
+            fieldKey={fieldKey}
+            field={field}
+            formData={formData}
+            handleInputChange={handleInputChange}
+          />
+        ))}
 
-        <div>
-          <label className="block mb-1 text-sm font-medium text-secondary-900 dark:text-primary-200">
-            Ciudad
-          </label>
-          <select
-            className="block w-full px-4 py-3 text-secondary-900 placeholder-secondary-700 bg-gray-50 border border-secondary-700 rounded-lg shadow-sm dark:bg-secondary-800 dark:border-primary-600 dark:text-primary-50 dark:placeholder-primary-200"
-            value={formData.ciudad || ""}
-            onChange={(e) => handleInputChange("ciudad", e.target.value)}
-          >
-            {CITY_OPTIONS.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-        </div>
+        {/* Ciudad */}
+        <InputField
+          fieldKey="ciudad"
+          field={{ type: "select", label: "Ciudad", options: CITY_OPTIONS }}
+          formData={formData}
+          handleInputChange={handleInputChange}
+        />
 
-        <div>
-          <label className="block mb-1 text-sm font-medium text-secondary-900 dark:text-primary-200">
-            Tipo de Propiedad
-          </label>
-          <select
-            className="block w-full px-4 py-3 text-secondary-900 placeholder-secondary-700 bg-gray-50 border border-secondary-700 rounded-lg shadow-sm dark:bg-secondary-800 dark:border-primary-600 dark:text-primary-50 dark:placeholder-primary-200"
-            value={formData.propertyType || ""}
-            onChange={(e) => handleInputChange("propertyType", e.target.value)}
-          >
-            {PROPERTY_TYPE_OPTIONS.filter(
+        {/* Tipo de propiedad */}
+        <InputField
+          fieldKey="propertyType"
+          field={{
+            type: "select",
+            label: "Tipo de Propiedad",
+            options: PROPERTY_TYPE_OPTIONS.filter(
               (option) => option.value !== "PROYECTO_INMOBILIARIO"
-            ).map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-        </div>
+            ),
+          }}
+          formData={formData}
+          handleInputChange={handleInputChange}
+        />
 
-        {PROPERTY_INFO_BUYER[
-          formData.propertyType as keyof typeof PROPERTY_INFO_BUYER
-        ]?.map((field) => renderInput(field)) ?? (
-          <></>
+        {/* Campos específicos del tipo de propiedad seleccionado */}
+        {PROPERTY_INFO_BUYER[formData.propertyType as PropertyType]?.map(
+          (fieldKey) => (
+            <InputField
+              key={fieldKey}
+              fieldKey={fieldKey}
+              field={INPUT_INFO[fieldKey]}
+              formData={formData}
+              handleInputChange={handleInputChange}
+            />
+          )
         )}
 
         <button
@@ -179,4 +78,4 @@ const BuyerFormFields = ({
   );
 };
 
-export default BuyerFormFields;
+export default BuyerForm;
