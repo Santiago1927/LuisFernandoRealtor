@@ -1,11 +1,6 @@
-import React from "react";
+import { WhatsAppButtonProps } from "@/types/whatsapp.d";
 import WhatsAppIcon from "./assets/WhatsAppIcon";
 import Link from "next/link";
-
-interface WhatsAppButtonProps {
-  phoneNumber: string;
-  message?: string;
-}
 
 const WhatsAppButton: React.FC<WhatsAppButtonProps> = ({
   phoneNumber,

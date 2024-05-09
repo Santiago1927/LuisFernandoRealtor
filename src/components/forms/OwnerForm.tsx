@@ -1,13 +1,13 @@
 import {
-  propertyTypeOptions,
-  cityOptions,
-  additionalFields,
-  inputFields,
-  personalFields,
-  questions,
-} from "@/types/forms";
+  PROPERTY_TYPE_OPTIONS,
+  CITY_OPTIONS,
+  PROPERTY_INFO_OWNER,
+  INPUT_INFO,
+  PERSONAL_DATA,
+  QUESTIONS,
+} from "@/constants/constants";
 
-const SellerFormFields = ({
+const OwnerForm = ({
   formData,
   setFormData,
   handleSubmit,
@@ -21,7 +21,7 @@ const SellerFormFields = ({
   };
 
   const renderPersonalInput = (fieldKey: string) => {
-    const field = personalFields[fieldKey];
+    const field = PERSONAL_DATA[fieldKey];
     return (
       <div className="mb-2">
         <label className="block mb-1 text-sm font-medium text-secondary-900 dark:text-primary-200">
@@ -37,8 +37,8 @@ const SellerFormFields = ({
     );
   };
 
-  const renderQuestions = (fieldKey: string) => {
-    const field = questions[fieldKey];
+  const renderQUESTIONS = (fieldKey: string) => {
+    const field = QUESTIONS[fieldKey];
     return (
       <div className="mb-2">
         <label className="block mb-1 text-sm font-medium text-secondary-900 dark:text-primary-200">
@@ -66,7 +66,7 @@ const SellerFormFields = ({
   };
 
   const renderInput = (fieldKey: string) => {
-    const field = inputFields[fieldKey];
+    const field = INPUT_INFO[fieldKey];
     switch (field.type) {
       case "number":
       case "text":
@@ -153,8 +153,8 @@ const SellerFormFields = ({
   return (
     <form className="space-y-4" onSubmit={handleSubmit}>
       <div className="grid grid-cols-1 gap-4">
-        {Object.keys(questions).map((field) => renderQuestions(field))}
-        {Object.keys(personalFields).map((field) => renderPersonalInput(field))}
+        {Object.keys(QUESTIONS).map((field) => renderQUESTIONS(field))}
+        {Object.keys(PERSONAL_DATA).map((field) => renderPersonalInput(field))}
 
         <div>
           <label className="block mb-1 text-sm font-medium text-secondary-900 dark:text-primary-200">
@@ -165,7 +165,7 @@ const SellerFormFields = ({
             value={formData.ciudad || ""}
             onChange={(e) => handleInputChange("ciudad", e.target.value)}
           >
-            {cityOptions.map((option) => (
+            {CITY_OPTIONS.map((option) => (
               <option key={option.value} value={option.value}>
                 {option.label}
               </option>
@@ -182,7 +182,7 @@ const SellerFormFields = ({
             value={formData.propertyType || ""}
             onChange={(e) => handleInputChange("propertyType", e.target.value)}
           >
-            {propertyTypeOptions.map((option) => (
+            {PROPERTY_TYPE_OPTIONS.map((option) => (
               <option key={option.value} value={option.value}>
                 {option.label}
               </option>
@@ -190,11 +190,11 @@ const SellerFormFields = ({
           </select>
         </div>
 
-        {additionalFields[
-          formData.propertyType as keyof typeof additionalFields
+        {PROPERTY_INFO_OWNER[
+          formData.propertyType as keyof typeof PROPERTY_INFO_OWNER
         ] &&
-          additionalFields[
-            formData.propertyType as keyof typeof additionalFields
+          PROPERTY_INFO_OWNER[
+            formData.propertyType as keyof typeof PROPERTY_INFO_OWNER
           ].map((field) => renderInput(field))}
       </div>
       <button
@@ -207,4 +207,4 @@ const SellerFormFields = ({
   );
 };
 
-export default SellerFormFields;
+export default OwnerForm;

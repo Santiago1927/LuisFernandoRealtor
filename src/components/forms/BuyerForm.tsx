@@ -1,10 +1,10 @@
 import {
-  propertyTypeOptions,
-  cityOptions,
-  additionalFieldsBuyer,
-  inputFields,
-  personalFields,
-} from "@/types/forms";
+  PROPERTY_TYPE_OPTIONS,
+  CITY_OPTIONS,
+  PROPERTY_INFO_BUYER,
+  INPUT_INFO,
+  PERSONAL_DATA,
+} from "@/constants/constants";
 
 const BuyerFormFields = ({
   formData,
@@ -20,7 +20,7 @@ const BuyerFormFields = ({
   };
 
   const renderPersonalInput = (fieldKey: string) => {
-    const field = personalFields[fieldKey];
+    const field = PERSONAL_DATA[fieldKey];
     return (
       <div className="mb-2">
         <label className="block mb-1 text-sm font-medium text-secondary-900 dark:text-primary-200">
@@ -37,7 +37,7 @@ const BuyerFormFields = ({
   };
 
   const renderInput = (fieldKey: string) => {
-    const field = inputFields[fieldKey];
+    const field = INPUT_INFO[fieldKey];
     switch (field.type) {
       case "number":
       case "text":
@@ -124,7 +124,7 @@ const BuyerFormFields = ({
   return (
     <form className="space-y-4" onSubmit={handleSubmit}>
       <div className="grid grid-cols-1 gap-4">
-        {Object.keys(personalFields).map((field) => renderPersonalInput(field))}
+        {Object.keys(PERSONAL_DATA).map((field) => renderPersonalInput(field))}
 
         <div>
           <label className="block mb-1 text-sm font-medium text-secondary-900 dark:text-primary-200">
@@ -135,7 +135,7 @@ const BuyerFormFields = ({
             value={formData.ciudad || ""}
             onChange={(e) => handleInputChange("ciudad", e.target.value)}
           >
-            {cityOptions.map((option) => (
+            {CITY_OPTIONS.map((option) => (
               <option key={option.value} value={option.value}>
                 {option.label}
               </option>
@@ -152,22 +152,21 @@ const BuyerFormFields = ({
             value={formData.propertyType || ""}
             onChange={(e) => handleInputChange("propertyType", e.target.value)}
           >
-            {propertyTypeOptions
-              .filter((option) => option.value !== "PROYECTO_INMOBILIARIO")
-              .map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
+            {PROPERTY_TYPE_OPTIONS.filter(
+              (option) => option.value !== "PROYECTO_INMOBILIARIO"
+            ).map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
           </select>
         </div>
 
-        {additionalFieldsBuyer[
-          formData.propertyType as keyof typeof additionalFieldsBuyer
-        ] &&
-          additionalFieldsBuyer[
-            formData.propertyType as keyof typeof additionalFieldsBuyer
-          ].map((field) => renderInput(field))}
+        {PROPERTY_INFO_BUYER[
+          formData.propertyType as keyof typeof PROPERTY_INFO_BUYER
+        ]?.map((field) => renderInput(field)) ?? (
+          <></>
+        )}
 
         <button
           type="submit"

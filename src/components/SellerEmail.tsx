@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import SellerFormFields from "./forms/SellerFormFileds";
+import OwnerForm from "./forms/OwnerForm";
 
 const SellerEmail: React.FC = () => {
   const [loading, setLoading] = useState(false);
@@ -17,7 +17,7 @@ const SellerEmail: React.FC = () => {
   };
 
   return (
-    <SellerFormFields
+    <OwnerForm
       formData={formData}
       setFormData={setFormData}
       handleSubmit={handleSubmit}

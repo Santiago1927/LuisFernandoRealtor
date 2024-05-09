@@ -1,5 +1,5 @@
 import { useState } from "react";
-import BuyerFormFields from "./forms/BuyerFormFileds";
+import BuyerForm from "./forms/BuyerForm";
 
 const BuyerEmail: React.FC = () => {
   const [loading, setLoading] = useState(false);
@@ -16,7 +16,7 @@ const BuyerEmail: React.FC = () => {
   };
 
   return (
-    <BuyerFormFields
+    <BuyerForm
       formData={formData}
       setFormData={setFormData}
       handleSubmit={handleSubmit}

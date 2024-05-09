@@ -2,11 +2,7 @@
 import { useState } from "react";
 import BuyerEmail from "./BuyerEmail";
 import SellerEmail from "./SellerEmail";
-
-const USER_ROLES = {
-  BUYER: "buyer",
-  SELLER: "seller",
-};
+import { USER_ROLES } from "@/constants/constants";
 
 export default function ContactSection() {
   const [roleUser, setRoleUser] = useState(USER_ROLES.SELLER);
