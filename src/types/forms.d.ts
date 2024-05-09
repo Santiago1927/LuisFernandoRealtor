@@ -1,4 +1,3 @@
-// Enums for standardized values
 export enum PropertyType {
     Casa = "CASA",
     Apartamento = "APARTAMENTO",
@@ -37,7 +36,6 @@ export enum ProjectType {
     Conjunto = "CONJUNTO",
 }
 
-// Interface definitions
 export interface Field {
     type: "number" | "text" | "select" | "radio" | "email" | "tel";
     label: string;
