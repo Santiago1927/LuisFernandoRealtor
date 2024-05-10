@@ -15,7 +15,7 @@ export default function ContactSection() {
   };
 
   return (
-    <section className="bg-secondary-50 dark:bg-secondary-800 text-secondary-900 dark:text-primary-50">
+    <section id="contacto" className="bg-secondary-50 dark:bg-secondary-800 text-secondary-900 dark:text-primary-50">
       <div className="py-12 lg:py-24 px-4 mx-auto max-w-screen-md">
         <h2 className="mb-6 text-4xl font-bold text-center text-secondary-900 dark:text-primary-400">
           Contacta a un Agente Inmobiliario

@@ -24,11 +24,7 @@ export default function CarouselSection() {
   };
 
   return (
-    <div
-      id="animation-carousel"
-      className="relative w-full overflow-hidden"
-      data-carousel="static"
-    >
+    <div className="relative w-full overflow-hidden" data-carousel="static">
       <div
         className="relative h-[500px] flex transition-transform duration-500 ease-in-out"
         style={{ transform: `translateX(-${activeIndex * 100}%)` }}
