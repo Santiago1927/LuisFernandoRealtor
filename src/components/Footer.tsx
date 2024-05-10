@@ -86,7 +86,7 @@ export default function Footer() {
                     href="mailto:realtorluisfernando@gmail.com"
                     className="hover:underline text-black dark:text-white"
                   >
-                    luisfernandorealtor@gmail.com
+                    realtorluisfernando@gmail.com
                   </a>
                 </li>
               </ul>

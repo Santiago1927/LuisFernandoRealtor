@@ -9,7 +9,7 @@ export async function POST(request: Request) {
     try {
         const data = await resend.emails.send({
             from: 'Luis Fernando Realtor <onboarding@resend.dev>',
-            to: ['a.santiago.salas.b@gmail.com'],
+            to: ['a.santiago.salas.b@gmail.com', 'realtorluisfernando@gmail.com'],
             subject: 'Nuevo mensaje desde tu sitio web',
             text: '',
             react: React.createElement(ContactEmail, dataForm),
