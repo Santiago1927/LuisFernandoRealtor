@@ -15,7 +15,7 @@ const WhatsAppButton: React.FC<WhatsAppButtonProps> = ({
       href={waLink}
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-4 right-4 z-50 p-2 bg-green-500 rounded-full shadow-lg transition-all duration-300 ease-in-out transform hover:scale-110"
+      className="fixed bottom-4 right-4 z-50 p-3 bg-green-500 rounded-full shadow-lg transition-all duration-300 ease-in-out transform hover:scale-110"
       aria-label="Chat with us on WhatsApp"
     >
       <WhatsAppIcon />

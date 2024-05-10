@@ -6,12 +6,12 @@ export default function CarouselSection() {
   const [activeIndex, setActiveIndex] = useState(0);
 
   const images = [
-    "/photos/carousel1.webp",
-    "/photos/carousel2.webp",
-    "/photos/carousel3.webp",
-    "/photos/carousel4.webp",
-    "/photos/carousel5.webp",
-    "/photos/carousel6.webp",
+    "/images/photos/carousel1.webp",
+    "/images/photos/carousel2.webp",
+    "/images/photos/carousel3.webp",
+    "/images/photos/carousel4.webp",
+    "/images/photos/carousel5.webp",
+    "/images/photos/carousel6.webp",
   ];
 
   const goToPrevSlide = () => {
