@@ -29,6 +29,8 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit }) => {
     },
   });
 
+  console.log('errors', errors)
+
   const tipoPropiedad = watch("tipoPropiedad");
   const situacionJuridica = watch("situacionJuridica");
 

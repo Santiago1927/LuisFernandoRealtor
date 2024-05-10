@@ -5,6 +5,7 @@ const BuyerEmail: React.FC = () => {
   const [loading, setLoading] = useState(false);
 
   const formSubmit = async (data: any) => {
+    console.log('dataB', data)
     setLoading(true);
     await fetch("/api/send", {
       method: "POST",
