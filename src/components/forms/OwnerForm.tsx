@@ -8,8 +8,9 @@ import {
   PERSONAL_DATA,
   QUESTIONS,
   INPUT_INFO,
+  LEGAL_SITUATION_OPTIONS,
 } from "@/constants/constants";
-import { FormData, OwnerFormProps } from "@/types/forms.d";
+import { FormData, OwnerFormProps, PropertyType } from "@/types/forms.d";
 import InputField from "./InputField";
 import { ownerSchema } from "@/validations/ownerSchema";
 
@@ -21,9 +22,13 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit }) => {
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(ownerSchema),
+    defaultValues: {
+      tipoPropiedad: PropertyType.Casa,
+    },
   });
 
   const tipoPropiedad = watch("tipoPropiedad");
+  const situacionJuridica = watch("situacionJuridica");
 
   return (
     <form
@@ -69,6 +74,7 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit }) => {
           }}
           register={register}
         />
+
         {tipoPropiedad && PROPERTY_INFO_OWNER[tipoPropiedad]
           ? PROPERTY_INFO_OWNER[tipoPropiedad].map((fieldKey) => (
               <InputField
@@ -80,6 +86,29 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit }) => {
               />
             ))
           : null}
+        {situacionJuridica === "OTRA" && (
+          <InputField
+            fieldKey="situacionJuridicaEspecifica"
+            field={{
+              id: "situacionJuridicaEspecifica",
+              type: "text",
+              label: "Especifique la Situación Jurídica",
+            }}
+            register={register}
+            errors={errors}
+          />
+        )}
+
+        <InputField
+          fieldKey="comentariosAdicionales"
+          field={{
+            id: "comentariosAdicionales",
+            type: "text",
+            label: "Comentarios Adicionales",
+          }}
+          register={register}
+          errors={errors}
+        />
       </div>
       <button
         type="submit"

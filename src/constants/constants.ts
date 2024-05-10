@@ -1,8 +1,8 @@
-import { Field, LegalSituation, PaymentMethod, ProjectType, PropertyType } from "@/types/forms.d";
+import { Field, LegalSituation, PaymentMethod, ProjectType, PropertyType, City, PersonalData, Role } from "@/types/forms.d";
 
 export const USER_ROLES = {
-    BUYER: "buyer",
-    SELLER: "seller",
+    [Role.Owner]: 'Propietario',
+    [Role.Buyer]: 'Comprador',
 };
 
 const booleanOptions = [{ value: true, label: 'Sí' }, { value: false, label: 'No' }];
@@ -13,19 +13,28 @@ export const QUESTIONS: Record<string, Field> = {
 };
 
 export const PERSONAL_DATA: Record<string, Field> = {
-    nombre: { id: 'nombre', type: 'text', label: 'Nombre' },
-    correo: { id: 'correo', type: 'email', label: 'Correo Electrónico' },
-    telefono: { id: 'telefono', type: 'tel', label: 'Telefono' },
+    [PersonalData.Nombre]: { id: PersonalData.Nombre, type: 'text', label: 'Nombre' },
+    [PersonalData.Correo]: { id: PersonalData.Correo, type: 'email', label: 'Correo' },
+    [PersonalData.Telefono]: { id: PersonalData.Telefono, type: 'tel', label: 'Teléfono' },
 };
 
 export const CITY_OPTIONS = [
-    { value: 'Bogota', label: 'Bogotá' },
-    { value: 'Cali', label: 'Cali' },
-    { value: 'Medellin', label: 'Medellin' },
-    { value: 'Pasto', label: 'Pasto' },
+    { value: City.Medellin, label: 'Medellín' },
+    { value: City.Bogota, label: 'Bogotá' },
+    { value: City.Cali, label: 'Cali' },
+    { value: City.Pasto, label: 'Pasto' },
 ];
 
-export const LEGAL_SITUATIONS_OPTIONS = [
+export const PROJECT_TYPE_OPTIONS = [
+    { value: ProjectType.Rural, label: 'Rural' },
+    { value: ProjectType.Urbano, label: 'Urbano' },
+    { value: ProjectType.Residencial, label: 'Residencial' },
+    { value: ProjectType.Comercial, label: 'Comercial' },
+    { value: ProjectType.Edificio, label: 'Edificio' },
+    { value: ProjectType.Conjunto, label: 'Conjunto' },
+];
+
+export const LEGAL_SITUATION_OPTIONS = [
     { value: LegalSituation.ListaParaEscriturar, label: 'Lista para escriturar' },
     { value: LegalSituation.CreditoHipotecarioLeasing, label: 'Credito Hipotecario Leasing' },
     { value: LegalSituation.CreditoPersonaNatural, label: 'Credito Persona Natural' },
@@ -54,24 +63,24 @@ export const PROPERTY_TYPE_OPTIONS = [
     { value: PropertyType.ProyectoInmobiliario, label: 'Proyecto Inmobiliario' },
 ];
 
-const livingInfoOwner = ['direccion', 'edadPropiedad', 'areaConstruida', 'terraza', 'patio', 'habitaciones', 'baños', 'parqueaderos', 'piso', 'estudio', 'deposito', 'balcon', 'vigilancia', 'piscina', 'valorAdministracion', 'valorAproximado', 'situacionJuridica', 'comentariosAdicionales'];
+const livingInfoOwner = ['direccion', 'edadPropiedad', 'areaConstruida', 'terraza', 'patio', 'habitaciones', 'baños', 'parqueaderos', 'piso', 'estudio', 'deposito', 'balcon', 'vigilancia', 'piscina', 'valorAdministracion', 'valorAproximado', 'situacionJuridica'];
 export const PROPERTY_INFO_OWNER: Record<PropertyType | "default", string[]> = {
     default: [],
-    [PropertyType.Casa]: livingInfoOwner,
+    [PropertyType.Casa]: ['direccion', 'edadPropiedad', 'areaConstruida', 'terraza', 'patio', 'habitaciones', 'baños', 'parqueaderos', 'estudio', 'deposito', 'balcon', 'vigilancia', 'piscina', 'valorAdministracion', 'valorAproximado', 'situacionJuridica'],
     [PropertyType.Apartamento]: livingInfoOwner,
     [PropertyType.ApartamentoDuplex]: livingInfoOwner,
     [PropertyType.Penthouse]: livingInfoOwner,
-    [PropertyType.CasaCampestre]: livingInfoOwner,
+    [PropertyType.CasaCampestre]: ['direccion', 'edadPropiedad', 'areaConstruida', 'terraza', 'patio', 'habitaciones', 'baños', 'parqueaderos', 'estudio', 'deposito', 'balcon', 'vigilancia', 'piscina', 'valorAdministracion', 'valorAproximado', 'situacionJuridica'],
     [PropertyType.Apartaestudio]: livingInfoOwner,
-    [PropertyType.Lote]: ['direccion', 'area', 'valorAproximado', 'situacionJuridica', 'comentariosAdicionales'],
-    [PropertyType.Oficina]: ['direccion', 'edadPropiedad', 'baños', 'parqueaderos', 'piso', 'deposito', 'balcon', 'vigilancia', 'valorAdministracion', 'valorAproximado', 'situacionJuridica', 'comentariosAdicionales'],
-    [PropertyType.Local]: ['direccion', 'edadPropiedad', 'baños', 'parqueaderos', 'piso', 'deposito', 'valorAdministracion', 'valorAproximado', 'situacionJuridica', 'comentariosAdicionales'],
-    [PropertyType.Bodega]: ['direccion', 'edadPropiedad', 'area', 'valorAproximado', 'situacionJuridica', 'comentariosAdicionales'],
-    [PropertyType.ProyectoInmobiliario]: ['tipoProyecto', 'comentariosAdicionales'],
+    [PropertyType.Lote]: ['direccion', 'area', 'valorAproximado', 'situacionJuridica'],
+    [PropertyType.Oficina]: ['direccion', 'edadPropiedad', 'baños', 'parqueaderos', 'deposito', 'balcon', 'vigilancia', 'valorAdministracion', 'valorAproximado', 'situacionJuridica'],
+    [PropertyType.Local]: ['direccion', 'edadPropiedad', 'baños', 'parqueaderos', 'deposito', 'valorAdministracion', 'valorAproximado', 'situacionJuridica'],
+    [PropertyType.Bodega]: ['direccion', 'edadPropiedad', 'area', 'valorAproximado', 'situacionJuridica'],
+    [PropertyType.ProyectoInmobiliario]: ['tipoProyecto'],
 };
 
-const livingInfoBuyer = ['habitaciones', 'baños', 'parqueaderos', 'deposito', 'formaDePago', 'presupuesto', 'comentariosAdicionales'];
-const comercialInfoBuyer = ['area', 'formaDePago', 'presupuesto', 'comentariosAdicionales'];
+const livingInfoBuyer = ['habitaciones', 'baños', 'parqueaderos', 'deposito', 'formaDePago', 'presupuesto'];
+const comercialInfoBuyer = ['area', 'formaDePago', 'presupuesto'];
 export const PROPERTY_INFO_BUYER: Partial<Record<PropertyType, string[]>> = {
     [PropertyType.Casa]: livingInfoBuyer,
     [PropertyType.Apartamento]: livingInfoBuyer,

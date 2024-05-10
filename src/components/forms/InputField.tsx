@@ -21,7 +21,9 @@ const InputField: React.FC<InputFieldProps> = ({
         {field.label}
       </label>
       {errors && errors[fieldKey] && errors[fieldKey].message && (
-        <span className="text-red-500">{errors[fieldKey].message}</span>
+        <span className="text-primary-950 dark:text-primary-700 text-xs">
+          {errors[fieldKey].message}
+        </span>
       )}
       {field.type === "select" ? (
         <select
@@ -44,7 +46,6 @@ const InputField: React.FC<InputFieldProps> = ({
                 value={option.value}
                 {...register(fieldKey)}
               />
-
               <span className="ml-2 text-secondary-900 dark:text-primary-200">
                 {option.label}
               </span>

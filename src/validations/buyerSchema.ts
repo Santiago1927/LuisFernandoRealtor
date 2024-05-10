@@ -16,7 +16,7 @@ export const buyerSchema = z.object({
     habitaciones: z.string().optional(),
     baños: z.string().optional(),
     parqueaderos: z.string().optional(),
-    deposito: z.string().optional(),
+    // deposito: z.string().optional(),
     formaDePago: z.enum(PAYMENT_METHOD_OPTIONS.map(({ value }) => value) as [string], { message: 'Este campo es obligatorio' }),
     presupuesto: z.string()
         .min(1, { message: 'Este campo es obligatorio' })

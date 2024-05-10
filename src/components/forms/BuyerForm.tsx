@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { buyerSchema } from "@/validations/buyerSchema";
 import InputField from "./InputField";
-import { FormData, BuyerFormProps } from "@/types/forms.d";
+import { FormData, BuyerFormProps, PropertyType, City } from "@/types/forms.d";
 import {
   PERSONAL_DATA,
   CITY_OPTIONS,
@@ -20,6 +20,10 @@ const BuyerForm: React.FC<BuyerFormProps> = ({ formSubmit }) => {
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(buyerSchema),
+    defaultValues: {
+      ciudad: City.Medellin,
+      tipoPropiedad: PropertyType.Casa
+    }
   });
 
   const tipoPropiedad = watch("tipoPropiedad");

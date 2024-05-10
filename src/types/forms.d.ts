@@ -1,3 +1,8 @@
+export enum Role {
+    Owner = "OWNER",
+    Buyer = "BUYER",
+}
+
 export enum PropertyType {
     Casa = "CASA",
     Apartamento = "APARTAMENTO",
@@ -10,6 +15,19 @@ export enum PropertyType {
     Local = "LOCAL",
     Bodega = "BODEGA",
     ProyectoInmobiliario = "PROYECTO_INMOBILIARIO",
+}
+
+export enum City {
+    Medellin = "MEDELLIN",
+    Bogota = "BOGOTA",
+    Cali = "CALI",
+    Pasto = "PASTO",
+}
+
+export enum PersonalData {
+    Nombre = "nombre",
+    Correo = "correo",
+    Telefono = "telefono",
 }
 
 export enum PaymentMethod {
@@ -51,7 +69,6 @@ export interface FormData {
 export interface BuyerFormProps {
     formSubmit: (data: FormData) => void;
 }
-
 
 export interface OwnerFormProps {
     formSubmit: (data: FormData) => void;
