@@ -10,7 +10,7 @@ import {
   INPUT_INFO,
   LEGAL_SITUATION_OPTIONS,
 } from "@/constants/constants";
-import { FormData, OwnerFormProps, PropertyType } from "@/types/forms.d";
+import { City, FormData, LegalSituation, OwnerFormProps, PropertyType } from "@/types/forms.d";
 import InputField from "./InputField";
 import { ownerSchema } from "@/validations/ownerSchema";
 
@@ -23,7 +23,9 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit }) => {
   } = useForm<FormData>({
     resolver: zodResolver(ownerSchema),
     defaultValues: {
+      ciudad: City.Medellin,
       tipoPropiedad: PropertyType.Casa,
+      situacionJuridica: LegalSituation.ListaParaEscriturar,
     },
   });
 
