@@ -8,14 +8,14 @@ export const USER_ROLES = {
 const booleanOptions = [{ value: true, label: 'Sí' }, { value: false, label: 'No' }];
 
 export const QUESTIONS: Record<string, Field> = {
-    firstQuestion: { id:'firstQuestion', type: 'radio', label: '¿Deseas vender tu propiedad en menos de tres meses?', options: booleanOptions },
-    secondQuestion: { id:'secondQuestion', type: 'radio', label: '¿Estás de acuerdo en vender tu propiedad a un precio competitivo en el mercado?', options: booleanOptions },
+    firstQuestion: { id: 'firstQuestion', type: 'radio', label: '¿Deseas vender tu propiedad en menos de tres meses?', options: booleanOptions },
+    secondQuestion: { id: 'secondQuestion', type: 'radio', label: '¿Estás de acuerdo en vender tu propiedad a un precio competitivo en el mercado?', options: booleanOptions },
 };
 
 export const PERSONAL_DATA: Record<string, Field> = {
-    nombre: { id:'nombre', type: 'text', label: 'Nombre' },
-    correo: { id:'correo', type: 'email', label: 'Correo Electrónico' },
-    telefono: { id:'telefono', type: 'tel', label: 'Telefono' },
+    nombre: { id: 'nombre', type: 'text', label: 'Nombre' },
+    correo: { id: 'correo', type: 'email', label: 'Correo Electrónico' },
+    telefono: { id: 'telefono', type: 'tel', label: 'Telefono' },
 };
 
 export const CITY_OPTIONS = [
@@ -32,6 +32,12 @@ export const LEGAL_SITUATIONS_OPTIONS = [
     { value: LegalSituation.PatrimonioDeFamilia, label: 'Patrimonio de Familia' },
     { value: LegalSituation.Sucesion, label: 'Sucesión' },
     { value: LegalSituation.Otra, label: 'Otra' },
+];
+
+export const PAYMENT_METHOD_OPTIONS = [
+    { value: PaymentMethod.Credito, label: 'Crédito' },
+    { value: PaymentMethod.RecursosPropios, label: 'Recursos Propios' },
+    { value: PaymentMethod.Permutas, label: 'Permutas' },
 ];
 
 export const PROPERTY_TYPE_OPTIONS = [

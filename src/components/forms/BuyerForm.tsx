@@ -79,7 +79,6 @@ const BuyerForm: React.FC<BuyerFormProps> = ({ formSubmit }) => {
           Submit
         </button>
       </form>
-      <div>{JSON.stringify(watch(), null, 2)}</div>
     </>
   );
 };
