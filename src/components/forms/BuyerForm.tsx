@@ -11,19 +11,20 @@ import {
   PROPERTY_INFO_BUYER,
   INPUT_INFO,
 } from "@/constants/constants";
+import Loader from "../assets/Loader";
 
-const BuyerForm: React.FC<BuyerFormProps> = ({ formSubmit }) => {
+const BuyerForm: React.FC<BuyerFormProps> = ({ formSubmit, loading }) => {
   const {
     register,
     handleSubmit,
     watch,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<FormData>({
     resolver: zodResolver(buyerSchema),
     defaultValues: {
       ciudad: City.Medellin,
-      tipoPropiedad: PropertyType.Casa
-    }
+      tipoPropiedad: PropertyType.Casa,
+    },
   });
 
   const tipoPropiedad = watch("tipoPropiedad");
@@ -76,11 +77,23 @@ const BuyerForm: React.FC<BuyerFormProps> = ({ formSubmit }) => {
               />
             ))
           : null}
+        {!isValid && (
+          <span className="text-primary-950 dark:text-primary-700 text-xs">
+            Por favor, complete los campos del formulario
+          </span>
+        )}
         <button
+          disabled={loading}
           type="submit"
-          className="w-full py-3 px-5 text-sm font-medium text-secondary-900 bg-primary-500 rounded-lg hover:bg-primary-600"
+          className={`flex justify-center items-center gap-4 w-full py-3 px-5 text-sm font-medium rounded-lg shadow-lg transform transition-transform duration-200 focus:outline-none focus:ring-4
+    ${
+      !loading
+        ? "text-secondary-900 bg-primary-500 hover:bg-primary-600 focus:ring-primary-300 dark:focus:ring-primary-700 hover:scale-105"
+        : "bg-gray-300 dark:bg-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed"
+    }`}
         >
           Submit
+          <Loader loading={loading} />
         </button>
       </form>
     </>

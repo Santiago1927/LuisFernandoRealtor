@@ -68,8 +68,10 @@ export interface FormData {
 
 export interface BuyerFormProps {
     formSubmit: (data: FormData) => void;
+    loading: boolean;
 }
 
 export interface OwnerFormProps {
     formSubmit: (data: FormData) => void;
+    loading: boolean;
 }

@@ -18,7 +18,7 @@ const InputField: React.FC<InputFieldProps> = ({
   return (
     <div className="mb-2">
       <label className="block mb-1 text-sm font-medium text-secondary-900 dark:text-primary-200">
-        {field.label}
+        {field.label} *
       </label>
       {errors && errors[fieldKey] && errors[fieldKey].message && (
         <span className="text-primary-950 dark:text-primary-700 text-xs">

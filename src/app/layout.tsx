@@ -5,6 +5,8 @@ import Header from "../components/Header";
 import { ThemeProvider } from "../state/ThemeContext";
 import Footer from "../components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import { AlertProvider } from "@/state/AlertContext";
+import Alert from "@/components/assets/Alert";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,15 +25,17 @@ export default function RootLayout({
   return (
     <html lang="es">
       <ThemeProvider>
-        <body
-          className={`${inter.className} bg-white dark:bg-black text-black dark:text-white`}
-        >
-          <Header />
-          <div className="mt-16"></div>
-          <WhatsAppButton phoneNumber="573214223931" />
-          {children}
-          <Footer />
-        </body>
+        <AlertProvider>
+          <body
+            className={`${inter.className} bg-white dark:bg-black text-black dark:text-white`}
+          >
+            <Header />
+            <div className="mt-16"></div>
+            <WhatsAppButton phoneNumber="573214223931" />
+            {children}
+            <Footer />
+          </body>
+        </AlertProvider>
       </ThemeProvider>
     </html>
   );
