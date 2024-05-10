@@ -1,4 +1,6 @@
 import React from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   CITY_OPTIONS,
   PROPERTY_TYPE_OPTIONS,
@@ -7,77 +9,78 @@ import {
   QUESTIONS,
   INPUT_INFO,
 } from "@/constants/constants";
-import { OwnerFormProps, PropertyType } from "@/types/forms.d";
+import { FormData, OwnerFormProps } from "@/types/forms.d";
 import InputField from "./InputField";
+import { ownerSchema } from "@/validations/ownerSchema";
 
-const OwnerForm: React.FC<OwnerFormProps> = ({
-  formData,
-  setFormData,
-  handleSubmit,
-}) => {
-  const handleInputChange = (fieldKey: string, value: any) => {
-    setFormData({ ...formData, [fieldKey]: value });
-  };
+const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit }) => {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<FormData>({
+    resolver: zodResolver(ownerSchema),
+  });
+
+  const tipoPropiedad = watch("tipoPropiedad");
 
   return (
-    <form className="space-y-4" onSubmit={handleSubmit}>
+    <form
+      onSubmit={handleSubmit((data) => formSubmit(data))}
+      className="space-y-4"
+    >
       <div className="grid grid-cols-1 gap-4">
-        {/* Preguntas rápidas */}
         {Object.entries(QUESTIONS).map(([fieldKey, field]) => (
           <InputField
             key={fieldKey}
             fieldKey={fieldKey}
             field={field}
-            formData={formData}
-            handleInputChange={handleInputChange}
+            register={register}
+            errors={errors}
           />
         ))}
-
-        {/* Datos personales */}
         {Object.entries(PERSONAL_DATA).map(([fieldKey, field]) => (
           <InputField
             key={fieldKey}
             fieldKey={fieldKey}
             field={field}
-            formData={formData}
-            handleInputChange={handleInputChange}
+            register={register}
+            errors={errors}
           />
         ))}
-
-        {/* Ciudad */}
         <InputField
           fieldKey="ciudad"
-          field={{ type: "select", label: "Ciudad", options: CITY_OPTIONS }}
-          formData={formData}
-          handleInputChange={handleInputChange}
-        />
-
-        {/* Tipo de propiedad */}
-        <InputField
-          fieldKey="propertyType"
           field={{
+            id: "ciudad",
+            type: "select",
+            label: "Ciudad",
+            options: CITY_OPTIONS,
+          }}
+          register={register}
+        />
+        <InputField
+          fieldKey="tipoPropiedad"
+          field={{
+            id: "tipoPropiedad",
             type: "select",
             label: "Tipo de Propiedad",
             options: PROPERTY_TYPE_OPTIONS,
           }}
-          formData={formData}
-          handleInputChange={handleInputChange}
+          register={register}
         />
-
-        {/* Campos específicos del tipo de propiedad seleccionado */}
-        {PROPERTY_INFO_OWNER[formData.propertyType as PropertyType]?.map(
-          (fieldKey) => (
-            <InputField
-              key={fieldKey}
-              fieldKey={fieldKey}
-              field={INPUT_INFO[fieldKey]}
-              formData={formData}
-              handleInputChange={handleInputChange}
-            />
-          )
-        )}
+        {tipoPropiedad && PROPERTY_INFO_OWNER[tipoPropiedad]
+          ? PROPERTY_INFO_OWNER[tipoPropiedad].map((fieldKey) => (
+              <InputField
+                key={fieldKey}
+                fieldKey={fieldKey}
+                field={INPUT_INFO[fieldKey]}
+                register={register}
+                errors={errors}
+              />
+            ))
+          : null}
       </div>
-
       <button
         type="submit"
         className="w-full py-3 px-5 text-sm font-medium text-secondary-900 bg-primary-500 rounded-lg hover:bg-primary-600 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-700 shadow-lg transform transition-transform duration-200 hover:scale-105"

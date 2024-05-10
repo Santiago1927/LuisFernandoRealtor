@@ -37,24 +37,22 @@ export enum ProjectType {
 }
 
 export interface Field {
+    id: string;
     type: "number" | "text" | "select" | "radio" | "email" | "tel";
     label: string;
     options?: Array<{ value: any; label: string }>;
 }
 
 export interface FormData {
-    propertyType?: PropertyType;
+    tipoPropiedad?: PropertyType;
     [key: string]: any;
 }
 
 export interface BuyerFormProps {
-    formData: FormData;
-    setFormData: (data: FormData) => void;
-    handleSubmit: (event: React.FormEvent) => void;
+    formSubmit: (data: FormData) => void;
 }
 
+
 export interface OwnerFormProps {
-    formData: FormData;
-    setFormData: (data: FormData) => void;
-    handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
+    formSubmit: (data: FormData) => void;
 }

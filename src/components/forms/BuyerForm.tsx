@@ -1,80 +1,86 @@
 import React from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { buyerSchema } from "@/validations/buyerSchema";
+import InputField from "./InputField";
+import { FormData, BuyerFormProps } from "@/types/forms.d";
 import {
-  PROPERTY_TYPE_OPTIONS,
+  PERSONAL_DATA,
   CITY_OPTIONS,
+  PROPERTY_TYPE_OPTIONS,
   PROPERTY_INFO_BUYER,
   INPUT_INFO,
-  PERSONAL_DATA,
 } from "@/constants/constants";
-import { BuyerFormProps, PropertyType } from "@/types/forms.d";
-import InputField from "./InputField";
 
-const BuyerForm: React.FC<BuyerFormProps> = ({
-  formData,
-  setFormData,
-  handleSubmit,
-}) => {
-  const handleInputChange = (fieldKey: string, value: any) => {
-    setFormData({ ...formData, [fieldKey]: value });
-  };
+const BuyerForm: React.FC<BuyerFormProps> = ({ formSubmit }) => {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<FormData>({
+    resolver: zodResolver(buyerSchema),
+  });
+
+  const tipoPropiedad = watch("tipoPropiedad");
 
   return (
-    <form className="space-y-4" onSubmit={handleSubmit}>
-      <div className="grid grid-cols-1 gap-4">
-        {/* Datos Personales */}
+    <>
+      <form
+        onSubmit={handleSubmit((data) => formSubmit(data))}
+        className="space-y-4"
+      >
         {Object.entries(PERSONAL_DATA).map(([fieldKey, field]) => (
           <InputField
             key={fieldKey}
             fieldKey={fieldKey}
             field={field}
-            formData={formData}
-            handleInputChange={handleInputChange}
+            register={register}
+            errors={errors}
           />
         ))}
-
-        {/* Ciudad */}
         <InputField
           fieldKey="ciudad"
-          field={{ type: "select", label: "Ciudad", options: CITY_OPTIONS }}
-          formData={formData}
-          handleInputChange={handleInputChange}
-        />
-
-        {/* Tipo de propiedad */}
-        <InputField
-          fieldKey="propertyType"
           field={{
+            id: "ciudad",
+            type: "select",
+            label: "Ciudad",
+            options: CITY_OPTIONS,
+          }}
+          register={register}
+          errors={errors}
+        />
+        <InputField
+          fieldKey="tipoPropiedad"
+          field={{
+            id: "tipoPropiedad",
             type: "select",
             label: "Tipo de Propiedad",
-            options: PROPERTY_TYPE_OPTIONS.filter(
-              (option) => option.value !== "PROYECTO_INMOBILIARIO"
-            ),
+            options: PROPERTY_TYPE_OPTIONS,
           }}
-          formData={formData}
-          handleInputChange={handleInputChange}
+          register={register}
+          errors={errors}
         />
-
-        {/* Campos específicos del tipo de propiedad seleccionado */}
-        {PROPERTY_INFO_BUYER[formData.propertyType as PropertyType]?.map(
-          (fieldKey) => (
-            <InputField
-              key={fieldKey}
-              fieldKey={fieldKey}
-              field={INPUT_INFO[fieldKey]}
-              formData={formData}
-              handleInputChange={handleInputChange}
-            />
-          )
-        )}
-
+        {tipoPropiedad && PROPERTY_INFO_BUYER[tipoPropiedad]
+          ? PROPERTY_INFO_BUYER[tipoPropiedad]?.map((fieldKey) => (
+              <InputField
+                key={fieldKey}
+                fieldKey={fieldKey}
+                field={INPUT_INFO[fieldKey]}
+                register={register}
+                errors={errors}
+              />
+            ))
+          : null}
         <button
           type="submit"
-          className="w-full py-3 px-5 text-sm font-medium text-secondary-900 bg-primary-500 rounded-lg hover:bg-primary-600 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-700 shadow-lg transform transition-transform duration-200 hover:scale-105"
+          className="w-full py-3 px-5 text-sm font-medium text-secondary-900 bg-primary-500 rounded-lg hover:bg-primary-600"
         >
           Submit
         </button>
-      </div>
-    </form>
+      </form>
+      <div>{JSON.stringify(watch(), null, 2)}</div>
+    </>
   );
 };
 

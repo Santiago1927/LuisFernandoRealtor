@@ -1,7 +1,8 @@
+"use client";
 import { useState } from "react";
-import BuyerForm from "./forms/BuyerForm";
+import OwnerForm from "./forms/OwnerForm";
 
-const BuyerEmail: React.FC = () => {
+const OwnerEmail: React.FC = () => {
   const [loading, setLoading] = useState(false);
 
   const formSubmit = async (data: any) => {
@@ -13,7 +14,7 @@ const BuyerEmail: React.FC = () => {
     setLoading(false);
   };
 
-  return <BuyerForm formSubmit={formSubmit} />;
+  return <OwnerForm formSubmit={formSubmit} />;
 };
 
-export default BuyerEmail;
+export default OwnerEmail;

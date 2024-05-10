@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import BuyerEmail from "./BuyerEmail";
-import SellerEmail from "./SellerEmail";
+import OwnerEmail from "./OwnerEmail";
 import { USER_ROLES } from "@/constants/constants";
 
 export default function ContactSection() {
@@ -40,7 +40,7 @@ export default function ContactSection() {
             Soy Comprador
           </button>
         </div>
-        {roleUser === USER_ROLES.SELLER ? <SellerEmail /> : <BuyerEmail />}
+        {roleUser === USER_ROLES.SELLER ? <OwnerEmail /> : <BuyerEmail />}
       </div>
     </section>
   );

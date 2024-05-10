@@ -22,7 +22,7 @@ interface ContactEmailProps {
   ciudad: string;
   deposito: boolean;
   detalleSituacionJuridica: string;
-  dirección: string;
+  direccion: string;
   edadPropiedad: string;
   estudio: boolean;
   formaDePago: string;
@@ -34,7 +34,7 @@ interface ContactEmailProps {
   piscina: boolean;
   piso: string;
   presupuesto: string;
-  propertyType: string;
+  tipoPropiedad: string;
   situacionJuridica: string;
   telefono: string;
   terraza: string;
@@ -55,7 +55,7 @@ export const ContactEmail: React.FC<ContactEmailProps> = ({
   ciudad,
   deposito,
   detalleSituacionJuridica,
-  dirección,
+  direccion,
   edadPropiedad,
   estudio,
   formaDePago,
@@ -66,7 +66,7 @@ export const ContactEmail: React.FC<ContactEmailProps> = ({
   piscina,
   piso,
   presupuesto,
-  propertyType,
+  tipoPropiedad,
   situacionJuridica,
   telefono,
   terraza,
@@ -111,8 +111,8 @@ export const ContactEmail: React.FC<ContactEmailProps> = ({
                     </Text>
                     <Text className="text-base">
                       <b>Tipo de Propiedad:</b>{" "}
-                      {propertyType
-                        ? propertyType
+                      {tipoPropiedad
+                        ? tipoPropiedad
                             .split("_")
                             .map(
                               (word) =>
@@ -165,8 +165,8 @@ export const ContactEmail: React.FC<ContactEmailProps> = ({
                     </Text>
                     <Text className="text-base">
                       <b>Tipo de Propiedad:</b>{" "}
-                      {propertyType
-                        ? propertyType
+                      {tipoPropiedad
+                        ? tipoPropiedad
                             .split("_")
                             .map(
                               (word) =>
@@ -177,7 +177,7 @@ export const ContactEmail: React.FC<ContactEmailProps> = ({
                         : "N/A"}
                     </Text>
                     <Text className="text-base">
-                      <b>Dirección:</b> {dirección ? dirección : "N/A"}
+                      <b>Dirección:</b> {direccion ? direccion : "N/A"}
                     </Text>
                     <Text className="text-base">
                       <b>Edad Propiedad:</b>{" "}
