@@ -1,11 +1,19 @@
-"use client";
+'use client'
 import { useState } from "react";
 import BuyerEmail from "./BuyerEmail";
 import OwnerEmail from "./OwnerEmail";
 import { USER_ROLES } from "@/constants/constants";
+import { AnimatePresence, motion } from "framer-motion";
 
 export default function ContactSection() {
-  const [roleUser, setRoleUser] = useState(USER_ROLES.SELLER);
+  const [roleUser, setRoleUser] = useState(USER_ROLES.OWNER);
+
+  const variants = {
+    initial: { opacity: 0, y: 20 },
+    animate: { opacity: 1, y: 0 },
+    exit: { opacity: 0, y: -20 },
+  };
+
   return (
     <section className="bg-secondary-50 dark:bg-secondary-800 text-secondary-900 dark:text-primary-50">
       <div className="py-12 lg:py-24 px-4 mx-auto max-w-screen-md">
@@ -20,9 +28,9 @@ export default function ContactSection() {
         </p>
         <div className="flex justify-center mb-10 space-x-4">
           <button
-            onClick={() => setRoleUser(USER_ROLES.SELLER)}
+            onClick={() => setRoleUser(USER_ROLES.OWNER)}
             className={`${
-              roleUser === USER_ROLES.SELLER
+              roleUser === USER_ROLES.OWNER
                 ? "bg-primary-500 text-secondary-900"
                 : "bg-secondary-700 text-primary-50"
             } px-6 py-3 font-medium text-sm rounded-lg focus:outline-none focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-700`}
@@ -40,7 +48,29 @@ export default function ContactSection() {
             Soy Comprador
           </button>
         </div>
-        {roleUser === USER_ROLES.SELLER ? <OwnerEmail /> : <BuyerEmail />}
+        <AnimatePresence mode="wait">
+          {roleUser === USER_ROLES.OWNER ? (
+            <motion.div
+              key="owner"
+              variants={variants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+            >
+              <OwnerEmail />
+            </motion.div>
+          ) : (
+            <motion.div
+              key="buyer"
+              variants={variants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+            >
+              <BuyerEmail />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </section>
   );

@@ -1,100 +1,55 @@
+"use client";
 import Image from "next/image";
+import { useState } from "react";
 
 export default function CarouselSection() {
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const images = [
+    "/images/carousel/carousel1.webp",
+    "/images/carousel/carousel2.webp",
+    "/images/carousel/carousel3.webp",
+    "/images/carousel/carousel4.webp",
+    "/images/carousel/carousel5.webp",
+  ];
+
+  const goToPrevSlide = () => {
+    const newIndex = activeIndex === 0 ? images.length - 1 : activeIndex - 1;
+    setActiveIndex(newIndex);
+  };
+
+  const goToNextSlide = () => {
+    const newIndex = activeIndex === images.length - 1 ? 0 : activeIndex + 1;
+    setActiveIndex(newIndex);
+  };
+
   return (
     <div
-      id="default-carousel"
-      className="relative w-full"
-      data-carousel="slide"
+      id="animation-carousel"
+      className="relative w-full overflow-hidden"
+      data-carousel="static"
     >
-      <div className="relative h-56 overflow-hidden rounded-lg md:h-96">
-        <div className="hidden duration-700 ease-in-out" data-carousel-item>
-          <Image
-            width={1920}
-            height={1080}
-            src="/docs/images/carousel/carousel-1.svg"
-            className="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
-            alt="..."
-          ></Image>
-        </div>
-        <div className="hidden duration-700 ease-in-out" data-carousel-item>
-          <Image
-            width={1920}
-            height={1080}
-            src="/docs/images/carousel/carousel-2.svg"
-            className="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
-            alt="..."
-          ></Image>
-        </div>
-        <div className="hidden duration-700 ease-in-out" data-carousel-item>
-          <Image
-            width={1920}
-            height={1080}
-            src="/docs/images/carousel/carousel-3.svg"
-            className="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
-            alt="..."
-          ></Image>
-        </div>
-        <div className="hidden duration-700 ease-in-out" data-carousel-item>
-          <Image
-            width={1920}
-            height={1080}
-            src="/docs/images/carousel/carousel-4.svg"
-            className="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
-            alt="..."
-          ></Image>
-        </div>
-        <div className="hidden duration-700 ease-in-out" data-carousel-item>
-          <Image
-            width={1920}
-            height={1080}
-            src="/docs/images/carousel/carousel-5.svg"
-            className="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
-            alt="..."
-          ></Image>
-        </div>
-      </div>
-      <div className="absolute z-30 flex -translate-x-1/2 bottom-5 left-1/2 space-x-3 rtl:space-x-reverse">
-        <button
-          type="button"
-          className="w-3 h-3 rounded-full"
-          aria-current="true"
-          aria-label="Slide 1"
-          data-carousel-slide-to="0"
-        ></button>
-        <button
-          type="button"
-          className="w-3 h-3 rounded-full"
-          aria-current="false"
-          aria-label="Slide 2"
-          data-carousel-slide-to="1"
-        ></button>
-        <button
-          type="button"
-          className="w-3 h-3 rounded-full"
-          aria-current="false"
-          aria-label="Slide 3"
-          data-carousel-slide-to="2"
-        ></button>
-        <button
-          type="button"
-          className="w-3 h-3 rounded-full"
-          aria-current="false"
-          aria-label="Slide 4"
-          data-carousel-slide-to="3"
-        ></button>
-        <button
-          type="button"
-          className="w-3 h-3 rounded-full"
-          aria-current="false"
-          aria-label="Slide 5"
-          data-carousel-slide-to="4"
-        ></button>
+      <div
+        className="relative h-[500px] flex transition-transform duration-500 ease-in-out"
+        style={{ transform: `translateX(-${activeIndex * 100}%)` }}
+      >
+        {images.map((src, index) => (
+          <div key={index} className="flex-none w-full" data-carousel-item>
+            <Image
+              width={1920}
+              height={1080}
+              src={src}
+              className="block w-full h-full object-cover object-center"
+              alt="Property Image"
+              loading="lazy"
+            />
+          </div>
+        ))}
       </div>
       <button
         type="button"
         className="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
-        data-carousel-prev
+        onClick={goToPrevSlide}
       >
         <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
           <svg
@@ -106,9 +61,9 @@ export default function CarouselSection() {
           >
             <path
               stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
               d="M5 1 1 5l4 4"
             />
           </svg>
@@ -118,7 +73,7 @@ export default function CarouselSection() {
       <button
         type="button"
         className="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
-        data-carousel-next
+        onClick={goToNextSlide}
       >
         <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
           <svg
@@ -130,9 +85,9 @@ export default function CarouselSection() {
           >
             <path
               stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
               d="m1 9 4-4-4-4"
             />
           </svg>

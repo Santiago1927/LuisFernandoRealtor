@@ -5,7 +5,7 @@ export default function Footer() {
     <footer className="p-4 sm:p-6 border-t border-black dark:border-white bg-secondary-50 dark:bg-secondary-800">
       <div className="mx-auto max-w-screen-xl">
         <div className="md:flex md:justify-between">
-          <div className="mb-6 md:mb-0 flex justify-center md:justify-start">
+          <div className="mb-0 flex justify-center md:justify-start">
             <a href="#" className="flex items-center">
               <Image
                 src="/logo.svg"
@@ -21,27 +21,27 @@ export default function Footer() {
           </div>
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 justify-center md:justify-between text-center md:text-left">
             <div>
-              <h2 className="mb-6 text-md font-bold uppercase text-black dark:text-white">
+              {/* <h2 className="mb-6 text-md font-bold uppercase text-black dark:text-white">
                 Información
-              </h2>
-              <ul className="">
-                <li className="mb-4">
+              </h2> */}
+              {/* <ul className=""> */}
+                {/* <li className="mb-4">
                   <a
                     href="#servicios"
                     className="hover:underline text-black dark:text-white"
                   >
                     Servicios
                   </a>
-                </li>
-                <li>
+                </li> */}
+                {/* <li>
                   <a
                     href="#nosotros"
                     className="hover:underline text-black dark:text-white"
                   >
                     Nosotros
                   </a>
-                </li>
-              </ul>
+                </li> */}
+              {/* </ul> */}
             </div>
             <div>
               <h2 className="mb-6 text-md font-bold uppercase text-black dark:text-white">
@@ -144,7 +144,7 @@ export default function Footer() {
             >
               Luis Fernando Realtor ™
             </a>
-            | Todos los derechos reservados | Desarrollado por
+            | Todos los derechos reservados | Desarrollado por {''}
             <a
               href="https://santiagosalas.com"
               className="hover:underline font-bold text-black dark:text-white"

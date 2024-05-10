@@ -2,8 +2,6 @@ import Image from "next/image";
 import ThemeToggleButton from "./ThemeToggleButton";
 
 const links = [
-  { href: "#servicios", text: "Servicios" },
-  { href: "#nosotros", text: "Nosotros" },
   { href: "#contacto", text: "Contacto" },
 ];
 
