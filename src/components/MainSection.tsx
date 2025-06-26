@@ -17,7 +17,7 @@ export default function MainSection() {
               href="#"
               className="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-secondary-900 border border-primary-900 rounded-lg hover:bg-primary-700 focus:ring-4 focus:ring-primary-200 dark:text-white dark:border-primary-700 dark:hover:bg-primary-600 hover:dark:text-black dark:focus:ring-primary-800"
             >
-              Hablar con un Agente
+              Hablar con un Agente.
             </a>
           </div>
         </div>
