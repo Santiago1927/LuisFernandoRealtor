@@ -2,6 +2,7 @@
 import { useState } from "react";
 import BuyerEmail from "./BuyerEmail";
 import OwnerEmail from "./OwnerEmail";
+import ContactEmail from "./ContactEmail";
 import { USER_ROLES } from "@/constants/constants";
 import { AnimatePresence, motion } from "framer-motion";
 
@@ -47,6 +48,16 @@ export default function ContactSection() {
           >
             Soy Comprador
           </button>
+          <button
+            onClick={() => setRoleUser("contact")}
+            className={`${
+              roleUser === "contact"
+                ? "bg-primary-500 text-secondary-900"
+                : "bg-secondary-700 text-primary-50"
+            } px-6 py-3 font-medium text-sm rounded-lg focus:outline-none focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-700`}
+          >
+            Contacto General
+          </button>
         </div>
         <AnimatePresence mode="wait">
           {roleUser === USER_ROLES.OWNER ? (
@@ -59,7 +70,7 @@ export default function ContactSection() {
             >
               <OwnerEmail />
             </motion.div>
-          ) : (
+          ) : roleUser === USER_ROLES.BUYER ? (
             <motion.div
               key="buyer"
               variants={variants}
@@ -68,6 +79,16 @@ export default function ContactSection() {
               exit="exit"
             >
               <BuyerEmail />
+            </motion.div>
+          ) : (
+            <motion.div
+              key="contact"
+              variants={variants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+            >
+              <ContactEmail />
             </motion.div>
           )}
         </AnimatePresence>
