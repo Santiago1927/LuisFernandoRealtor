@@ -13,36 +13,38 @@ import {
 import * as React from "react";
 
 interface ContactEmailProps {
-  area: string;
-  areaConstruida: string;
-  balcon: boolean;
-  baños: string;
-  comentariosAdicionales: string;
+  area?: string;
+  areaConstruida?: string;
+  balcon?: boolean;
+  baños?: string;
+  comentariosAdicionales?: string;
   correo: string;
-  ciudad: string;
-  deposito: boolean;
-  detalleSituacionJuridica: string;
-  direccion: string;
-  edadPropiedad: string;
-  estudio: boolean;
-  formaDePago: string;
-  habitaciones: string;
+  ciudad?: string;
+  deposito?: boolean;
+  detalleSituacionJuridica?: string;
+  direccion?: string;
+  edadPropiedad?: string;
+  estudio?: boolean;
+  formaDePago?: string;
+  habitaciones?: string;
   nombre: string;
-  one: boolean;
-  parqueaderos: string;
-  patio: string;
-  piscina: boolean;
-  piso: string;
-  presupuesto: string;
-  tipoPropiedad: string;
-  situacionJuridica: string;
+  one?: boolean;
+  parqueaderos?: string;
+  patio?: string;
+  piscina?: boolean;
+  piso?: string;
+  presupuesto?: string;
+  tipoPropiedad?: string;
+  situacionJuridica?: string;
   telefono: string;
-  terraza: string;
-  two: boolean;
+  terraza?: string;
+  two?: boolean;
   userType: string;
-  valorAdministracion: string;
-  valorAproximado: string;
-  vigilancia: boolean;
+  valorAdministracion?: string;
+  valorAproximado?: string;
+  vigilancia?: boolean;
+  asunto?: string;
+  mensaje?: string;
 }
 
 export const ContactEmail: React.FC<ContactEmailProps> = ({
@@ -74,11 +76,18 @@ export const ContactEmail: React.FC<ContactEmailProps> = ({
   valorAdministracion,
   valorAproximado,
   vigilancia,
+  asunto,
+  mensaje,
 }) => {
   return (
     <Html>
       <Head />
-      <Preview>New Property Inquiry</Preview>
+      <Preview>
+        {userType === "contact" 
+          ? "Nuevo mensaje de contacto"
+          : "Nueva consulta de propiedad"
+        }
+      </Preview>
       <Tailwind>
         <Body className="bg-gray-50 font-sans my-auto mx-auto max-w-[465px]">
           <Container className="mx-auto p-4 bg-white shadow-md rounded-lg">
@@ -89,8 +98,10 @@ export const ContactEmail: React.FC<ContactEmailProps> = ({
                     Hola Luis Fernando,
                   </Text>
                   <Text className="text-center font-medium text-lg">
-                    Has recibido una nueva consulta de propiedad desde tu sitio
-                    web!
+                    {userType === "contact" 
+                      ? "Has recibido un nuevo mensaje de contacto desde tu sitio web!"
+                      : "Has recibido una nueva consulta de propiedad desde tu sitio web!"
+                    }
                   </Text>
                 </Column>
               </Row>
@@ -148,7 +159,7 @@ export const ContactEmail: React.FC<ContactEmailProps> = ({
                     </Text>
                   </Column>
                 </Row>
-              ) : (
+              ) : userType === "owner" ? (
                 <Row className="py-2">
                   <Column>
                     <Text className="text-base">
@@ -252,6 +263,26 @@ export const ContactEmail: React.FC<ContactEmailProps> = ({
                     <Text className="text-base">
                       <b>Comentarios Adicionales:</b>{" "}
                       {comentariosAdicionales ? comentariosAdicionales : "N/A"}
+                    </Text>
+                  </Column>
+                </Row>
+              ) : (
+                <Row className="py-2">
+                  <Column>
+                    <Text className="text-base">
+                      <b>Nombre:</b> {nombre ? nombre : "N/A"}
+                    </Text>
+                    <Text className="text-base">
+                      <b>Correo Electrónico:</b> {correo ? correo : "N/A"}
+                    </Text>
+                    <Text className="text-base">
+                      <b>Teléfono:</b> {telefono ? telefono : "N/A"}
+                    </Text>
+                    <Text className="text-base">
+                      <b>Asunto:</b> {asunto ? asunto : "N/A"}
+                    </Text>
+                    <Text className="text-base">
+                      <b>Mensaje:</b> {mensaje ? mensaje : "N/A"}
                     </Text>
                   </Column>
                 </Row>
