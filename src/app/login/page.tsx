@@ -1,20 +1,11 @@
 'use client';
 
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { useAuthContext } from '../../state/AuthContext';
+import { useLoginAuthGuard } from '../../hooks/useLoginAuthGuard';
 import LoginForm from '../../components/forms/LoginForm';
 import ThemeToggleButton from '../../components/ThemeToggleButton';
 
 export default function LoginPage() {
-  const { isAuthenticated, loading } = useAuthContext();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (!loading && isAuthenticated) {
-      router.push('/admin');
-    }
-  }, [isAuthenticated, loading, router]);
+  const { isAuthenticated, loading } = useLoginAuthGuard();
 
   if (loading) {
     return (

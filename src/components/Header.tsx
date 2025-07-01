@@ -2,36 +2,22 @@
 
 import Image from "next/image";
 import ThemeToggleButton from "./ThemeToggleButton";
-import { useAuthContext } from "../state/AuthContext";
-import { useRouter } from "next/navigation";
-import { useState } from 'react';
 import Link from 'next/link';
+import { useHeaderLogic } from '../hooks/useHeaderLogic';
 
 const links = [
   { href: "#contacto", text: "Contacto" },
 ];
 
 export default function Header() {
-  const { user, logout, isAuthenticated } = useAuthContext();
-  const router = useRouter();
-  const [menuOpen, setMenuOpen] = useState(false);
-
-  const handleLogout = async () => {
-    try {
-      await logout();
-      router.push('/');
-    } catch (error) {
-      console.error('Error al cerrar sesión:', error);
-    }
-  };
-
-  const handleAdminPanel = () => {
-    if (isAuthenticated) {
-      router.push('/admin');
-    } else {
-      router.push('/login');
-    }
-  };
+  const {
+    isAuthenticated,
+    menuOpen,
+    setMenuOpen,
+    handleLogout,
+    handleAdminPanel,
+    router,
+  } = useHeaderLogic();
 
   return (
     <header className="bg-white dark:bg-gray-900 shadow-md sticky top-0 z-50">
@@ -46,7 +32,7 @@ export default function Header() {
           <Link href="/contacto" className="hover:text-primary-600 dark:hover:text-primary-400 font-medium">Contacto</Link>
           {isAuthenticated && (
             <button
-              onClick={() => router.push('/admin')}
+              onClick={handleAdminPanel}
               className="ml-4 px-4 py-2 bg-primary-700 text-white rounded-lg hover:bg-primary-800 transition-colors dark:bg-primary-500 dark:hover:bg-primary-600 dark:text-secondary-900"
             >
               Panel Administrador
@@ -67,7 +53,7 @@ export default function Header() {
             <Link href="/contacto" className="hover:text-primary-600 dark:hover:text-primary-400 font-medium">Contacto</Link>
             {isAuthenticated && (
               <button
-                onClick={() => { setMenuOpen(false); router.push('/admin'); }}
+                onClick={() => { setMenuOpen(false); handleAdminPanel(); }}
                 className="mt-2 px-4 py-2 bg-primary-700 text-white rounded-lg hover:bg-primary-800 transition-colors dark:bg-primary-500 dark:hover:bg-primary-600 dark:text-secondary-900"
               >
                 Panel Administrador
