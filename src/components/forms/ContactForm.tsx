@@ -1,62 +1,39 @@
 import React from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import InputField from "./InputField";
 import Loader from "../assets/Loader";
+import { useContactFormLogic } from "@/hooks/useContactFormLogic";
 
-const contactSchema = z.object({
-  nombre: z.string().min(1, "El nombre es requerido"),
-  correo: z.string().email("Correo electrónico inválido"),
-  telefono: z.string().min(1, "El teléfono es requerido"),
-  asunto: z.string().min(1, "El asunto es requerido"),
-  mensaje: z.string().min(10, "El mensaje debe tener al menos 10 caracteres"),
-});
-
-type ContactFormData = z.infer<typeof contactSchema>;
-
+/**
+ * Interfaz que define las propiedades del componente ContactForm
+ * @param formSubmit - Función que se ejecuta al enviar el formulario
+ * @param loading - Estado de carga del formulario
+ */
 interface ContactFormProps {
-  formSubmit: (data: ContactFormData) => void;
+  formSubmit: (data: any) => void;
   loading: boolean;
 }
 
+/**
+ * Componente ContactForm - Formulario de contacto general
+ * Maneja la recolección de información de contacto para consultas generales
+ */
 const ContactForm: React.FC<ContactFormProps> = ({ formSubmit, loading }) => {
+  // Hook personalizado que maneja toda la lógica del formulario de contacto
   const {
-    register,
-    handleSubmit,
-    formState: { errors, isValid },
-  } = useForm<ContactFormData>({
-    resolver: zodResolver(contactSchema),
-  });
-
-  const contactFields = [
-    {
-      fieldKey: "nombre",
-      field: { id: "nombre", type: "text" as const, label: "Nombre completo" },
-    },
-    {
-      fieldKey: "correo",
-      field: { id: "correo", type: "email" as const, label: "Correo electrónico" },
-    },
-    {
-      fieldKey: "telefono",
-      field: { id: "telefono", type: "tel" as const, label: "Teléfono" },
-    },
-    {
-      fieldKey: "asunto",
-      field: { id: "asunto", type: "text" as const, label: "Asunto" },
-    },
-    {
-      fieldKey: "mensaje",
-      field: { id: "mensaje", type: "text" as const, label: "Mensaje" },
-    },
-  ];
+    register,        // Función de registro de campos de react-hook-form
+    handleSubmit,    // Función para manejar el envío del formulario
+    errors,          // Objeto con errores de validación
+    isValid,         // Estado de validez del formulario
+    contactFields,   // Array de campos de contacto definidos dinámicamente
+    onSubmit,        // Función que se ejecuta al enviar el formulario
+  } = useContactFormLogic({ formSubmit, loading });
 
   return (
     <form
-      onSubmit={handleSubmit((data) => formSubmit(data))}
+      onSubmit={handleSubmit(onSubmit)}
       className="space-y-4"
     >
+      {/* Renderizado dinámico de todos los campos de contacto */}
       {contactFields.map(({ fieldKey, field }) => (
         <InputField
           key={fieldKey}
@@ -67,12 +44,14 @@ const ContactForm: React.FC<ContactFormProps> = ({ formSubmit, loading }) => {
         />
       ))}
       
+      {/* Mensaje de error cuando el formulario no es válido */}
       {!isValid && (
         <span className="text-primary-950 dark:text-primary-700 text-xs">
           Por favor, complete todos los campos correctamente
         </span>
       )}
       
+      {/* Botón de envío con estados de carga y validación */}
       <button
         disabled={loading}
         type="submit"

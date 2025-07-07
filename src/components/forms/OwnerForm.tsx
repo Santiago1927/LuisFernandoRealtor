@@ -1,6 +1,4 @@
 import React from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import {
   CITY_OPTIONS,
   PROPERTY_TYPE_OPTIONS,
@@ -8,43 +6,36 @@ import {
   PERSONAL_DATA,
   QUESTIONS,
   INPUT_INFO,
-  LEGAL_SITUATION_OPTIONS,
 } from "@/constants/constants";
-import {
-  City,
-  FormData,
-  LegalSituation,
-  OwnerFormProps,
-  PropertyType,
-} from "@/types/forms.d";
+import { OwnerFormProps } from "@/types/forms.d";
 import InputField from "./InputField";
-import { ownerSchema } from "@/validations/ownerSchema";
 import Loader from "../assets/Loader";
+import { useOwnerFormLogic } from "@/hooks/useOwnerFormLogic";
 
+/**
+ * Componente OwnerForm - Formulario para propietarios que desean vender/alquilar
+ * Maneja la recolección de datos personales, información de la propiedad y situación jurídica
+ */
 const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
+  // Hook personalizado que maneja toda la lógica del formulario
   const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors, isValid },
-  } = useForm<FormData>({
-    resolver: zodResolver(ownerSchema),
-    defaultValues: {
-      ciudad: City.Medellin,
-      tipoPropiedad: PropertyType.Casa,
-      situacionJuridica: LegalSituation.ListaParaEscriturar,
-    },
-  });
-
-  const tipoPropiedad = watch("tipoPropiedad");
-  const situacionJuridica = watch("situacionJuridica");
+    register,              // Función de registro de campos de react-hook-form
+    handleSubmit,          // Función para manejar el envío del formulario
+    errors,                // Objeto con errores de validación
+    isValid,               // Estado de validez del formulario
+    tipoPropiedad,         // Tipo de propiedad seleccionada
+    situacionJuridica,     // Situación jurídica seleccionada
+    onSubmit,              // Función que se ejecuta al enviar el formulario
+  } = useOwnerFormLogic({ formSubmit, loading });
 
   return (
     <form
-      onSubmit={handleSubmit((data) => formSubmit(data))}
+      onSubmit={handleSubmit(onSubmit)}
       className="space-y-4"
     >
+      {/* Contenedor con grid para organizar los campos del formulario */}
       <div className="grid grid-cols-1 gap-4">
+        {/* Renderizado dinámico de campos de preguntas iniciales */}
         {Object.entries(QUESTIONS).map(([fieldKey, field]) => (
           <InputField
             key={fieldKey}
@@ -54,6 +45,8 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
             errors={errors}
           />
         ))}
+        
+        {/* Renderizado dinámico de campos de datos personales */}
         {Object.entries(PERSONAL_DATA).map(([fieldKey, field]) => (
           <InputField
             key={fieldKey}
@@ -63,6 +56,8 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
             errors={errors}
           />
         ))}
+        
+        {/* Campo de selección de ciudad */}
         <InputField
           fieldKey="ciudad"
           field={{
@@ -72,7 +67,10 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
             options: CITY_OPTIONS,
           }}
           register={register}
+          errors={errors}
         />
+        
+        {/* Campo de selección de tipo de propiedad */}
         <InputField
           fieldKey="tipoPropiedad"
           field={{
@@ -82,8 +80,10 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
             options: PROPERTY_TYPE_OPTIONS,
           }}
           register={register}
+          errors={errors}
         />
 
+        {/* Renderizado condicional de campos específicos según el tipo de propiedad */}
         {tipoPropiedad && PROPERTY_INFO_OWNER[tipoPropiedad]
           ? PROPERTY_INFO_OWNER[tipoPropiedad].map((fieldKey) => (
               <InputField
@@ -95,6 +95,8 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
               />
             ))
           : null}
+          
+        {/* Campo adicional para especificar situación jurídica cuando se selecciona "OTRA" */}
         {situacionJuridica === "OTRA" && (
           <InputField
             fieldKey="situacionJuridicaEspecifica"
@@ -108,6 +110,7 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
           />
         )}
 
+        {/* Campo de comentarios adicionales opcional */}
         <InputField
           fieldKey="comentariosAdicionales"
           field={{
@@ -119,11 +122,15 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
           errors={errors}
         />
       </div>
+      
+      {/* Mensaje de error cuando el formulario no es válido */}
       {!isValid && (
         <span className="text-primary-950 dark:text-primary-700 text-xs">
           Por favor, complete los campos del formulario
         </span>
       )}
+      
+      {/* Botón de envío con estados de carga y validación */}
       <button
         disabled={loading}
         type="submit"

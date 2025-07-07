@@ -1,10 +1,16 @@
 import Image from "next/image";
 
+/**
+ * Componente Footer - Pie de página de la aplicación
+ * Contiene información de contacto, enlaces a redes sociales y copyright
+ */
 export default function Footer() {
   return (
     <footer className="p-4 sm:p-6 border-t border-black dark:border-white bg-secondary-50 dark:bg-secondary-800">
       <div className="mx-auto max-w-screen-xl">
+        {/* Contenedor principal con layout flexible */}
         <div className="md:flex md:justify-between">
+          {/* Sección del logo y nombre de la empresa */}
           <div className="mb-0 flex justify-center md:justify-start">
             <a href="#" className="flex items-center">
               <Image
@@ -19,7 +25,10 @@ export default function Footer() {
               </span>
             </a>
           </div>
+          
+          {/* Grid de enlaces organizados en columnas responsivas */}
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 justify-center md:justify-between text-center md:text-left">
+            {/* Columna de información (actualmente comentada) */}
             <div>
               {/* <h2 className="mb-6 text-md font-bold uppercase text-black dark:text-white">
                 Información
@@ -43,11 +52,14 @@ export default function Footer() {
                 </li> */}
               {/* </ul> */}
             </div>
+            
+            {/* Columna de redes sociales */}
             <div>
               <h2 className="mb-6 text-md font-bold uppercase text-black dark:text-white">
                 Siguenos
               </h2>
               <ul className=" ">
+                {/* Enlace a TikTok */}
                 <li className="mb-4">
                   <a
                     href="https://www.tiktok.com/@luisfernandorealtor"
@@ -57,6 +69,7 @@ export default function Footer() {
                     TikTok
                   </a>
                 </li>
+                {/* Enlace a Instagram */}
                 <li>
                   <a
                     href="https://www.instagram.com/luisfernandorealtor/"
@@ -68,11 +81,14 @@ export default function Footer() {
                 </li>
               </ul>
             </div>
+            
+            {/* Columna de información de contacto */}
             <div>
               <h2 className="mb-6 text-md font-bold uppercase text-black dark:text-white">
                 Contacto
               </h2>
               <ul className=" ">
+                {/* Número de teléfono */}
                 <li className="mb-4">
                   <a
                     href="tel:+573214223931"
@@ -81,6 +97,7 @@ export default function Footer() {
                     +57 3251256487
                   </a>
                 </li>
+                {/* Dirección de correo electrónico */}
                 <li>
                   <a
                     href="mailto:realtorluisfernando@gmail.com"
@@ -93,9 +110,15 @@ export default function Footer() {
             </div>
           </div>
         </div>
+        
+        {/* Línea divisoria horizontal */}
         <hr className="my-6 border-black sm:mx-auto dark:border-white lg:my-8" />
+        
+        {/* Sección inferior con iconos de redes sociales y copyright */}
         <div className="sm:flex sm:items-center sm:justify-between sm:flex-row-reverse text-center">
+          {/* Iconos de redes sociales */}
           <div className="flex mb-3 space-x-6 justify-center sm:mt-0">
+            {/* Icono de TikTok */}
             <a
               href="https://www.tiktok.com/@luisfernandorealtor"
               className="text-black dark:text-primary-400 hover:text-primary-950"
@@ -117,6 +140,8 @@ export default function Footer() {
                 <path d="M21 7.917v4.034a9.948 9.948 0 0 1 -5 -1.951v4.5a6.5 6.5 0 1 1 -8 -6.326v4.326a2.5 2.5 0 1 0 4 2v-11.5h4.083a6.005 6.005 0 0 0 4.917 4.917z" />
               </svg>
             </a>
+            
+            {/* Icono de Instagram */}
             <a
               href="https://www.instagram.com/luisfernandorealtor/"
               className="text-black dark:text-primary-400 hover:text-primary-950"
@@ -136,6 +161,8 @@ export default function Footer() {
               </svg>
             </a>
           </div>
+          
+          {/* Información de copyright y créditos */}
           <span className="mb-3 text-sm sm:text-center text-black dark:text-white">
             © 2024
             <a

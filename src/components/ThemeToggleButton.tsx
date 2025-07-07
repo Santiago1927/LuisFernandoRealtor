@@ -1,12 +1,19 @@
 "use client";
 import { useTheme } from "../state/ThemeContext";
 
+/**
+ * Componente ThemeToggleButton - Botón para alternar entre tema claro y oscuro
+ * Permite a los usuarios cambiar el tema de la aplicación con un solo clic
+ */
 const ThemeToggleButton = () => {
+  // Hook personalizado que proporciona el estado actual del tema y la función para cambiarlo
   const { theme, toggleTheme } = useTheme();
 
   return (
     <button onClick={toggleTheme} className="focus:outline-none">
+      {/* Renderizado condicional basado en el tema actual */}
       {theme === "dark" ? (
+        // Icono de sol - se muestra cuando el tema es oscuro (para cambiar a claro)
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -22,6 +29,7 @@ const ThemeToggleButton = () => {
           />
         </svg>
       ) : (
+        // Icono de luna - se muestra cuando el tema es claro (para cambiar a oscuro)
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"

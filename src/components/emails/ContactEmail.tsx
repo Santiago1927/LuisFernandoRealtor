@@ -1,53 +1,84 @@
+// Importaciones de componentes de React Email para crear plantillas de correo electrónico
+// Estos componentes permiten crear emails HTML responsivos y bien estructurados
 import {
-  Body,
-  Container,
-  Column,
-  Head,
-  Html,
-  Preview,
-  Row,
-  Section,
-  Text,
-  Tailwind,
+  Body,        // Contenedor principal del cuerpo del email
+  Container,   // Contenedor para centrar y limitar el ancho del contenido
+  Column,      // Componente para crear columnas en el layout
+  Head,        // Sección de metadatos del email
+  Html,        // Elemento raíz del documento HTML
+  Preview,     // Texto de vista previa que aparece en el cliente de correo
+  Row,         // Componente para crear filas en el layout
+  Section,     // Sección de contenido con estilos predefinidos
+  Text,        // Componente para texto con estilos consistentes
+  Tailwind,    // Wrapper para usar clases de Tailwind CSS en el email
 } from "@react-email/components";
 import * as React from "react";
 
+/**
+ * Interfaz TypeScript que define todas las propiedades posibles para el email de contacto
+ * 
+ * Esta interfaz incluye campos para diferentes tipos de formularios:
+ * - Formulario de comprador (buyer): campos específicos para personas que buscan comprar
+ * - Formulario de propietario (owner): campos específicos para personas que quieren vender
+ * - Formulario de contacto general (contact): campos básicos de contacto
+ * 
+ * La mayoría de campos son opcionales (?) para permitir flexibilidad en el uso
+ */
 interface ContactEmailProps {
-  area?: string;
-  areaConstruida?: string;
-  balcon?: boolean;
-  baños?: string;
-  comentariosAdicionales?: string;
-  correo: string;
-  ciudad?: string;
-  deposito?: boolean;
-  detalleSituacionJuridica?: string;
-  direccion?: string;
-  edadPropiedad?: string;
-  estudio?: boolean;
-  formaDePago?: string;
-  habitaciones?: string;
-  nombre: string;
-  one?: boolean;
-  parqueaderos?: string;
-  patio?: string;
-  piscina?: boolean;
-  piso?: string;
-  presupuesto?: string;
-  tipoPropiedad?: string;
-  situacionJuridica?: string;
-  telefono: string;
-  terraza?: string;
-  two?: boolean;
-  userType: string;
-  valorAdministracion?: string;
-  valorAproximado?: string;
-  vigilancia?: boolean;
-  asunto?: string;
-  mensaje?: string;
+  // Campos básicos de contacto (requeridos)
+  correo: string;      // Dirección de correo electrónico del remitente
+  nombre: string;      // Nombre completo del remitente
+  telefono: string;    // Número de teléfono del remitente
+  userType: string;    // Tipo de usuario: "buyer", "owner", o "contact"
+
+  // Campos específicos para compradores y propietarios
+  area?: string;                    // Área total de la propiedad
+  areaConstruida?: string;          // Área construida de la propiedad
+  balcon?: boolean;                 // Indica si la propiedad tiene balcón
+  baños?: string;                   // Número de baños
+  comentariosAdicionales?: string;  // Comentarios adicionales del usuario
+  ciudad?: string;                  // Ciudad donde se encuentra la propiedad
+  deposito?: boolean;               // Indica si la propiedad tiene depósito
+  detalleSituacionJuridica?: string; // Detalles adicionales de la situación jurídica
+  direccion?: string;               // Dirección de la propiedad
+  edadPropiedad?: string;           // Edad de la propiedad
+  estudio?: boolean;                // Indica si la propiedad tiene estudio
+  formaDePago?: string;             // Forma de pago preferida
+  habitaciones?: string;            // Número de habitaciones
+  one?: boolean;                    // Campo adicional (propósito no especificado)
+  parqueaderos?: string;            // Número de parqueaderos
+  patio?: string;                   // Tamaño o descripción del patio
+  piscina?: boolean;                // Indica si la propiedad tiene piscina
+  piso?: string;                    // Número de piso
+  presupuesto?: string;             // Presupuesto del comprador
+  tipoPropiedad?: string;           // Tipo de propiedad (casa, apartamento, etc.)
+  situacionJuridica?: string;       // Situación jurídica de la propiedad
+  terraza?: string;                 // Tamaño o descripción de la terraza
+  two?: boolean;                    // Campo adicional (propósito no especificado)
+  valorAdministracion?: string;     // Valor de la administración
+  valorAproximado?: string;         // Valor aproximado de la propiedad
+  vigilancia?: boolean;             // Indica si la propiedad tiene vigilancia
+
+  // Campos específicos para formulario de contacto general
+  asunto?: string;                  // Asunto del mensaje
+  mensaje?: string;                 // Contenido del mensaje
 }
 
+/**
+ * Componente ContactEmail - Plantilla de correo electrónico para formularios de contacto
+ * 
+ * Este componente genera un email HTML responsivo que se envía cuando un usuario
+ * completa cualquiera de los formularios del sitio web (comprador, propietario, contacto).
+ * 
+ * Características:
+ * - Renderizado condicional basado en el tipo de usuario
+ * - Formato consistente y profesional
+ * - Diseño responsivo usando Tailwind CSS
+ * - Manejo de campos opcionales con valores por defecto
+ * - Formateo automático de texto (capitalización)
+ */
 export const ContactEmail: React.FC<ContactEmailProps> = ({
+  // Desestructuración de todas las propiedades de la interfaz
   area,
   areaConstruida,
   balcon,
@@ -80,23 +111,39 @@ export const ContactEmail: React.FC<ContactEmailProps> = ({
   mensaje,
 }) => {
   return (
+    // Estructura HTML base del email
     <Html>
+      {/* Metadatos del email */}
       <Head />
+      
+      {/* Texto de vista previa que aparece en el cliente de correo */}
       <Preview>
         {userType === "contact" 
           ? "Nuevo mensaje de contacto"
           : "Nueva consulta de propiedad"
         }
       </Preview>
+
+      {/* Wrapper de Tailwind CSS para aplicar estilos */}
       <Tailwind>
+        {/* Cuerpo principal del email con fondo gris y fuente sans-serif */}
         <Body className="bg-gray-50 font-sans my-auto mx-auto max-w-[465px]">
+          
+          {/* Contenedor principal con fondo blanco y sombra */}
           <Container className="mx-auto p-4 bg-white shadow-md rounded-lg">
+            
+            {/* Sección principal del contenido con borde superior */}
             <Section className="border-t border-gray-200">
+              
+              {/* Encabezado del email con saludo y descripción */}
               <Row className="py-4">
                 <Column>
+                  {/* Saludo personalizado */}
                   <Text className="text-center font-semibold text-2xl mb-2">
                     Hola Luis Fernando,
                   </Text>
+                  
+                  {/* Descripción del tipo de mensaje recibido */}
                   <Text className="text-center font-medium text-lg">
                     {userType === "contact" 
                       ? "Has recibido un nuevo mensaje de contacto desde tu sitio web!"
@@ -105,9 +152,13 @@ export const ContactEmail: React.FC<ContactEmailProps> = ({
                   </Text>
                 </Column>
               </Row>
+
+              {/* Renderizado condicional basado en el tipo de usuario */}
               {userType === "buyer" ? (
+                // Sección para formulario de comprador
                 <Row className="py-2">
                   <Column>
+                    {/* Información básica del comprador */}
                     <Text className="text-base">
                       <b>Nombre:</b> {nombre ? nombre : "N/A"}
                     </Text>
@@ -120,6 +171,8 @@ export const ContactEmail: React.FC<ContactEmailProps> = ({
                     <Text className="text-base">
                       <b>Ciudad:</b> {ciudad ? ciudad : "N/A"}
                     </Text>
+                    
+                    {/* Preferencias de propiedad del comprador */}
                     <Text className="text-base">
                       <b>Tipo de Propiedad:</b>{" "}
                       {tipoPropiedad
@@ -160,8 +213,10 @@ export const ContactEmail: React.FC<ContactEmailProps> = ({
                   </Column>
                 </Row>
               ) : userType === "owner" ? (
+                // Sección para formulario de propietario
                 <Row className="py-2">
                   <Column>
+                    {/* Información básica del propietario */}
                     <Text className="text-base">
                       <b>Nombre:</b> {nombre ? nombre : "N/A"}
                     </Text>
@@ -174,6 +229,8 @@ export const ContactEmail: React.FC<ContactEmailProps> = ({
                     <Text className="text-base">
                       <b>Ciudad:</b> {ciudad ? ciudad : "N/A"}
                     </Text>
+                    
+                    {/* Detalles específicos de la propiedad a vender */}
                     <Text className="text-base">
                       <b>Tipo de Propiedad:</b>{" "}
                       {tipoPropiedad
@@ -218,6 +275,8 @@ export const ContactEmail: React.FC<ContactEmailProps> = ({
                     <Text className="text-base">
                       <b>Piso:</b> {piso ? piso : "N/A"}
                     </Text>
+                    
+                    {/* Amenidades y características de la propiedad */}
                     <Text className="text-base">
                       <b>Estudio:</b> {estudio ? "Sí" : "No"}
                     </Text>
@@ -233,6 +292,8 @@ export const ContactEmail: React.FC<ContactEmailProps> = ({
                     <Text className="text-base">
                       <b>Piscina:</b> {piscina ? "Sí" : "No"}
                     </Text>
+                    
+                    {/* Información financiera y legal */}
                     <Text className="text-base">
                       <b>Valor Administración:</b>{" "}
                       {valorAdministracion ? valorAdministracion : "N/A"}
@@ -267,8 +328,10 @@ export const ContactEmail: React.FC<ContactEmailProps> = ({
                   </Column>
                 </Row>
               ) : (
+                // Sección para formulario de contacto general
                 <Row className="py-2">
                   <Column>
+                    {/* Información básica del contacto */}
                     <Text className="text-base">
                       <b>Nombre:</b> {nombre ? nombre : "N/A"}
                     </Text>
@@ -288,6 +351,8 @@ export const ContactEmail: React.FC<ContactEmailProps> = ({
                 </Row>
               )}
             </Section>
+            
+            {/* Pie de página con información de copyright */}
             <Text className="text-center text-xs text-gray-600 py-4">
               © 2024 | Luis Fernando Realtor | Colombia |
               www.luisfernandorealtor.com
@@ -299,4 +364,5 @@ export const ContactEmail: React.FC<ContactEmailProps> = ({
   );
 };
 
+// Exportación por defecto del componente
 export default ContactEmail;

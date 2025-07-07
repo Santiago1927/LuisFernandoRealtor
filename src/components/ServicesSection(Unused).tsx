@@ -1,7 +1,13 @@
+/**
+ * Componente ServicesSection - Sección de servicios inmobiliarios (NO UTILIZADO)
+ * Muestra información sobre los servicios proporcionados por el agente inmobiliario
+ * NOTA: Este componente está marcado como no utilizado en el proyecto actual
+ */
 export default function ServicesSection() {
   return (
     <section className="text-gray-800 dark:text-primary-50">
       <div className="py-8 px-4 mx-auto max-w-screen-xl sm:py-16 lg:px-6">
+        {/* Encabezado de la sección con título y descripción */}
         <div className="max-w-screen-md mb-8 lg:mb-16">
           <h2 className="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-primary-400">
             Servicios de Agente Inmobiliario
@@ -12,8 +18,12 @@ export default function ServicesSection() {
             una casa y análisis de mercado.
           </p>
         </div>
+        
+        {/* Grid responsivo de tarjetas de servicios */}
         <div className="space-y-8 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-12 md:space-y-0">
+          {/* Tarjeta de servicio: Listados de Propiedades */}
           <div className="space-y-4">
+            {/* Icono del servicio con fondo circular */}
             <div className="flex justify-center items-center mb-4 w-10 h-10 rounded-full bg-primary-400 dark:bg-primary-700">
               <svg
                 className="w-6 h-6 dark:text-black"
@@ -33,16 +43,21 @@ export default function ServicesSection() {
                 />
               </svg>
             </div>
+            {/* Título del servicio */}
             <h3 className="mb-2 text-xl font-bold text-gray-900 dark:text-primary-400">
               Listados de Propiedades
             </h3>
+            {/* Descripción del servicio */}
             <p>
               Explora nuestra extensa colección de propiedades en venta o
               alquiler. Encuentra la casa de tus sueños con la ayuda de nuestros
               experimentados agentes inmobiliarios.
             </p>
           </div>
+          
+          {/* Tarjeta de servicio: Asistencia para Comprar una Casa */}
           <div className="space-y-4">
+            {/* Icono del servicio con fondo circular */}
             <div className="flex justify-center items-center mb-4 w-10 h-10 rounded-full bg-primary-400 dark:bg-primary-700">
               <svg
                 className="w-6 h-6 dark:text-black"
@@ -62,16 +77,21 @@ export default function ServicesSection() {
                 />
               </svg>
             </div>
+            {/* Título del servicio */}
             <h3 className="mb-2 text-xl font-bold text-gray-900 dark:text-primary-400">
               Asistencia para Comprar una Casa
             </h3>
+            {/* Descripción del servicio */}
             <p>
               Permítenos guiarlo a través del proceso de compra de una casa.
               Desde encontrar la propiedad perfecta hasta negociar el mejor
               trato, estamos aquí para ayudarte.
             </p>
           </div>
+          
+          {/* Tarjeta de servicio: Análisis de Mercado */}
           <div className="space-y-4">
+            {/* Icono del servicio con fondo circular */}
             <div className="flex justify-center items-center mb-4 w-10 h-10 rounded-full bg-primary-400 dark:bg-primary-700">
               <svg
                 className="w-6 h-6 dark:text-black"
@@ -91,9 +111,11 @@ export default function ServicesSection() {
                 />
               </svg>
             </div>
+            {/* Título del servicio */}
             <h3 className="mb-2 text-xl font-bold text-gray-900 dark:text-primary-400">
               Análisis de Mercado
             </h3>
+            {/* Descripción del servicio */}
             <p>
               Mantente informado sobre las últimas tendencias del mercado
               inmobiliario con nuestros detallados análisis y reportes. Toma

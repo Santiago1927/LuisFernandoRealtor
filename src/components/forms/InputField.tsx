@@ -1,7 +1,15 @@
 import React from "react";
 import { UseFormRegister } from "react-hook-form";
 import { Field } from "@/types/forms.d";
+import { useInputFieldLogic } from "../../hooks/useInputFieldLogic";
 
+/**
+ * Interfaz que define las propiedades del componente InputField
+ * @param fieldKey - Clave única del campo en el formulario
+ * @param field - Configuración del campo (tipo, label, opciones, etc.)
+ * @param register - Función de registro de react-hook-form
+ * @param errors - Objeto de errores de validación (opcional)
+ */
 interface InputFieldProps {
   fieldKey: string;
   field: Field;
@@ -9,26 +17,48 @@ interface InputFieldProps {
   errors?: any;
 }
 
+/**
+ * Componente InputField - Campo de entrada reutilizable y dinámico
+ * Renderiza diferentes tipos de campos (input, select, radio) según la configuración
+ */
 const InputField: React.FC<InputFieldProps> = ({
   fieldKey,
   field,
   register,
   errors,
 }) => {
+  // Hook personalizado que maneja la lógica del campo de entrada
+  const {
+    hasError,           // Indica si el campo tiene errores de validación
+    errorMessage,       // Mensaje de error específico para este campo
+    isSelectField,      // Indica si el campo es de tipo select
+    isRadioField,       // Indica si el campo es de tipo radio
+    isInputField,       // Indica si el campo es de tipo input
+    commonInputClasses, // Clases CSS comunes para todos los tipos de input
+    labelClasses,       // Clases CSS para el label del campo
+    errorClasses,       // Clases CSS para el mensaje de error
+  } = useInputFieldLogic({ fieldKey, field, register, errors });
+
   return (
     <div className="mb-2">
-      <label className="block mb-1 text-sm font-medium text-secondary-900 dark:text-primary-200">
+      {/* Label del campo con indicador de campo requerido */}
+      <label className={labelClasses}>
         {field.label} *
       </label>
-      {errors && errors[fieldKey] && errors[fieldKey].message && (
-        <span className="text-primary-950 dark:text-primary-700 text-xs">
-          {errors[fieldKey].message}
+      
+      {/* Mensaje de error condicional - se muestra solo si hay errores */}
+      {hasError && (
+        <span className={errorClasses}>
+          {errorMessage}
         </span>
       )}
-      {field.type === "select" ? (
+      
+      {/* Renderizado condicional según el tipo de campo */}
+      {isSelectField ? (
+        // Campo de tipo select con opciones desplegables
         <select
           {...register(fieldKey)}
-          className="block w-full px-4 py-3 text-secondary-900 placeholder-secondary-700 bg-gray-50 border border-secondary-700 rounded-lg shadow-sm dark:bg-secondary-800 dark:border-primary-600 dark:text-primary-50 dark:placeholder-primary-200"
+          className={commonInputClasses}
         >
           {field.options?.map((option) => (
             <option key={option.value} value={option.value}>
@@ -36,7 +66,8 @@ const InputField: React.FC<InputFieldProps> = ({
             </option>
           ))}
         </select>
-      ) : field.type === "radio" ? (
+      ) : isRadioField ? (
+        // Campo de tipo radio con opciones de selección única
         <div className="flex">
           {field.options?.map((option) => (
             <label key={option.label} className="inline-flex items-center mr-4">
@@ -53,10 +84,11 @@ const InputField: React.FC<InputFieldProps> = ({
           ))}
         </div>
       ) : (
+        // Campo de tipo input estándar (text, email, password, etc.)
         <input
           type={field.type}
           {...register(fieldKey)}
-          className="block w-full px-4 py-3 text-secondary-900 placeholder-secondary-700 bg-gray-50 border border-secondary-700 rounded-lg shadow-sm dark:bg-secondary-800 dark:border-primary-600 dark:text-primary-50 dark:placeholder-primary-200"
+          className={commonInputClasses}
         />
       )}
     </div>
