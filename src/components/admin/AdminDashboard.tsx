@@ -26,16 +26,16 @@ export default function AdminDashboard() {
   } = useAdminDashboardLogic();
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-gradient-to-b from-gray-50/80 to-gray-100 dark:from-secondary-800/80 dark:to-secondary-900 flex flex-col items-center">
       {/* Header del panel de administración */}
-      <div className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-6">
+      <div className="bg-gray-50 dark:bg-secondary-800 shadow-sm border-b border-gray-200 dark:border-gray-700 w-full">
+        <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-12">
+          <div className="flex justify-between items-center py-10">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+              <h1 className="text-4xl font-extrabold text-yellow-500 mb-2">
                 Panel de Administrador
               </h1>
-              <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+              <p className="mt-2 text-lg text-gray-500 dark:text-gray-300 font-light">
                 Gestiona las propiedades de tu sitio web
               </p>
             </div>
@@ -43,14 +43,14 @@ export default function AdminDashboard() {
               {/* Botón para ver el sitio web público */}
               <button
                 onClick={() => router.push('/')}
-                className="px-4 py-2 text-sm bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
+                className="px-5 py-2.5 text-base bg-secondary-700 text-white rounded-xl hover:bg-secondary-900 transition-shadow shadow-md hover:shadow-lg"
               >
                 Ver Sitio Web
               </button>
               {/* Botón para cerrar sesión */}
               <button
                 onClick={handleLogout}
-                className="px-4 py-2 text-sm bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                className="px-5 py-2.5 text-base bg-red-600 text-white rounded-xl hover:bg-red-700 transition-shadow shadow-md hover:shadow-lg"
               >
                 Cerrar Sesión
               </button>
@@ -60,15 +60,15 @@ export default function AdminDashboard() {
       </div>
 
       {/* Contenido principal */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="flex justify-between items-center mb-8">
-          <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 py-12">
+        <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-12 gap-6 md:gap-0">
+          <h2 className="text-3xl font-bold text-yellow-500 mb-0">
             Propiedades
           </h2>
           {/* Botón para crear una nueva propiedad */}
           <button
             onClick={handleCreateProperty}
-            className="px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors font-medium"
+            className="px-7 py-3 bg-yellow-500 text-black rounded-xl hover:bg-yellow-400 transition-shadow shadow-md hover:shadow-lg font-bold text-lg"
           >
             + Nueva Propiedad
           </button>

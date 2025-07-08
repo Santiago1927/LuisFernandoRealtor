@@ -17,6 +17,7 @@ export default function DetallePropiedadPage() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="bg-gray-50 dark:bg-secondary-800 rounded-2xl shadow-lg p-6">
       {/* Título de la propiedad */}
       <h1 className="text-3xl font-bold text-primary-700 dark:text-primary-400 mb-4">{property.title}</h1>
       <div className="mb-6">
@@ -52,38 +53,42 @@ export default function DetallePropiedadPage() {
           )}
         </div>
       </div>
-      <div className="mb-6">
-        {/* Información básica de la propiedad */}
-        <div className="flex flex-wrap gap-4 text-secondary-900 dark:text-white">
-          <span className="px-3 py-1 bg-primary-100 dark:bg-primary-900 rounded-full font-semibold">{property.type}</span>
-          <span className="px-3 py-1 bg-secondary-100 dark:bg-secondary-900 rounded-full">{property.status === 'available' ? 'Disponible' : property.status === 'sold' ? 'Vendida' : 'Alquilada'}</span>
-          {property.bedrooms && <span>{property.bedrooms} hab</span>}
-          {property.bathrooms && <span>{property.bathrooms} baños</span>}
-          {property.area && <span>{property.area} m²</span>}
-        </div>
-        {/* Precio, dirección y descripción */}
-        <div className="text-xl font-bold text-primary-600 dark:text-primary-400 mt-4 mb-2">${property.price.toLocaleString()}</div>
-        <div className="text-secondary-900 dark:text-white mb-2">{property.address}</div>
-        <div className="text-secondary-900 dark:text-white mb-4">{property.description}</div>
-      </div>
-      {/* Mapa de ubicación */}
-      {mapUrl && (
-        <div className="mb-8">
-          <h2 className="text-xl font-semibold text-primary-700 dark:text-primary-400 mb-2">Ubicación</h2>
-          <div className="rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700" style={{height:'350px'}}>
-            <iframe
-              src={mapUrl}
-              width="100%"
-              height="350"
-              style={{ border: 0 }}
-              allowFullScreen={true}
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              title="Mapa de la propiedad"
-            ></iframe>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+        {/* Tarjeta de descripción */}
+        <div className="bg-gray-50 dark:bg-secondary-800 rounded-xl shadow-lg p-6 mb-8">
+          {/* Información básica de la propiedad */}
+          <div className="flex flex-wrap gap-4 text-secondary-900 dark:text-white">
+            <span className="px-3 py-1 bg-primary-100 dark:bg-primary-900 rounded-full font-semibold">{property.type}</span>
+            <span className="px-3 py-1 bg-secondary-100 dark:bg-secondary-900 rounded-full">{property.status === 'available' ? 'Disponible' : property.status === 'sold' ? 'Vendida' : 'Alquilada'}</span>
+            {property.bedrooms && <span>{property.bedrooms} hab</span>}
+            {property.bathrooms && <span>{property.bathrooms} baños</span>}
+            {property.area && <span>{property.area} m²</span>}
           </div>
+          {/* Precio, dirección y descripción */}
+          <div className="text-xl font-bold text-yellow-500 mt-4 mb-2">${property.price.toLocaleString()}</div>
+          <div className="text-secondary-900 dark:text-white mb-2">{property.address}</div>
+          <div className="text-secondary-900 dark:text-white mb-4">{property.description}</div>
         </div>
-      )}
+        {/* Mapa de ubicación */}
+        {mapUrl && (
+          <div className="mb-8">
+            <h2 className="text-xl font-semibold text-primary-700 dark:text-primary-400 mb-2">Ubicación</h2>
+            <div className="rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700" style={{height:'350px'}}>
+              <iframe
+                src={mapUrl}
+                width="100%"
+                height="350"
+                style={{ border: 0 }}
+                allowFullScreen={true}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Mapa de la propiedad"
+              ></iframe>
+            </div>
+          </div>
+        )}
+      </div>
+      </div>
     </div>
   );
 } 

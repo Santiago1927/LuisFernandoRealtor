@@ -5,10 +5,10 @@ import ContactSection from '../../components/ContactSection';
 
 export default function ContactoPage() {
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-secondary-800">
-      <div className="flex justify-end p-4">
+    <div className="min-h-screen bg-gray-50 dark:bg-black">
+      {/* <div className="flex justify-end p-4">
         <ThemeToggleButton />
-      </div>
+      </div> */}
       
       {/* Formularios de contacto */}
       <ContactSection />

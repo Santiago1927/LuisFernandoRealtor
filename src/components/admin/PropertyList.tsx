@@ -24,8 +24,8 @@ function PropertyCard({ property, onEdit, onDelete }: any) {
   const { activeImage, nextImage, prevImage } = usePropertyCardLogic(images);
   return (
     // Enlace a la página de detalle de la propiedad
-    <Link href={`/propiedades/${property.id}`} className="block">
-      <div className="bg-gray-50 rounded-2xl shadow-xl border border-gray-200 overflow-hidden hover:shadow-2xl transition-shadow duration-300 cursor-pointer">
+    <Link href={`/propiedades/${property.id}`} className="block h-full">
+      <div className="bg-gray-50 dark:bg-secondary-800 rounded-3xl shadow-lg border border-gray-200 dark:border-secondary-700 overflow-hidden hover:shadow-2xl hover:scale-[1.025] transition-all duration-300 cursor-pointer flex flex-col h-full">
         {/* Carrusel de imágenes de la propiedad */}
         <div className="relative aspect-w-16 aspect-h-9 bg-primary-50 flex items-center justify-center">
           {images.length > 0 ? (
@@ -58,9 +58,9 @@ function PropertyCard({ property, onEdit, onDelete }: any) {
           )}
         </div>
         {/* Información de la propiedad */}
-        <div className="p-6 bg-white">
+        <div className="flex flex-col justify-between flex-1 p-7 gap-3">
           <div className="flex justify-between items-start mb-2">
-            <h3 className="text-lg font-bold text-primary-700 truncate">
+            <h3 className="text-xl font-bold text-primary-700 dark:text-primary-400 truncate mb-1">
               {property.title}
             </h3>
             {/* Estado de la propiedad */}
@@ -74,15 +74,15 @@ function PropertyCard({ property, onEdit, onDelete }: any) {
             </span>
           </div>
           {/* Dirección de la propiedad */}
-          <p className="text-sm text-gray-700 mb-2">
+          <p className="text-base text-gray-700 dark:text-gray-200 mb-1">
             {property.address}
           </p>
           {/* Precio y características principales */}
-          <div className="flex items-center justify-between mb-4">
-            <span className="text-xl font-extrabold text-primary-700">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-2xl font-extrabold text-yellow-500">
               ${property.price.toLocaleString()}
             </span>
-            <div className="flex space-x-2 text-sm text-primary-500">
+            <div className="flex space-x-2 text-base text-primary-500">
               {property.bedrooms && (
                 <span>{property.bedrooms} hab</span>
               )}
@@ -95,16 +95,16 @@ function PropertyCard({ property, onEdit, onDelete }: any) {
             </div>
           </div>
           {/* Descripción corta de la propiedad */}
-          <p className="text-sm text-gray-600 mb-4 line-clamp-2">
+          <p className="text-base text-gray-600 dark:text-gray-300 mb-4 line-clamp-2">
             {property.description}
           </p>
           {/* Acciones de editar y eliminar, si están disponibles */}
           {(onEdit || onDelete) && (
-            <div className="flex space-x-2">
+            <div className="flex space-x-3 mt-auto pt-2">
               {onEdit && (
                 <button
                   onClick={e => { e.preventDefault(); onEdit(property); }}
-                  className="flex-1 px-3 py-2 text-sm bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors"
+                  className="flex-1 px-4 py-2.5 text-base bg-yellow-500 text-black rounded-xl hover:bg-yellow-400 transition-shadow shadow-md hover:shadow-lg font-bold"
                 >
                   Editar
                 </button>
@@ -112,7 +112,7 @@ function PropertyCard({ property, onEdit, onDelete }: any) {
               {onDelete && (
                 <button
                   onClick={e => { e.preventDefault(); onDelete(property.id); }}
-                  className="px-3 py-2 text-sm bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
+                  className="px-4 py-2.5 text-base bg-red-500 text-white rounded-xl hover:bg-red-600 transition-shadow shadow-md hover:shadow-lg font-bold"
                 >
                   Eliminar
                 </button>

@@ -29,7 +29,7 @@ export default function RootLayout({
         <AuthProvider>
           <AlertProvider>
             <body
-              className={`${inter.className} bg-white dark:bg-black text-black dark:text-white`}
+              className={`${inter.className} bg-gray-50 dark:bg-black text-black dark:text-white`}
             >
               <Header />
               <div className="mt-16"></div>

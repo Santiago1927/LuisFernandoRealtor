@@ -39,11 +39,11 @@ export default function PropertyForm({ property, onSave, onClose }: PropertyForm
     // Modal de fondo oscuro para el formulario
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       {/* Contenedor principal del formulario */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+      <div className="bg-gray-50 dark:bg-secondary-800 rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
         <div className="p-6">
           {/* Encabezado con título y botón de cerrar */}
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+            <h2 className="text-2xl font-bold text-yellow-500">
               {property ? 'Editar Propiedad' : 'Nueva Propiedad'}
             </h2>
             {/* Botón para cerrar el formulario */}
@@ -72,7 +72,7 @@ export default function PropertyForm({ property, onSave, onClose }: PropertyForm
                   value={formData.title}
                   onChange={handleInputChange}
                   required
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+                  className="w-full px-3 py-2 border-2 border-yellow-500 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 bg-white text-black dark:bg-secondary-900 dark:text-white"
                 />
               </div>
 
@@ -87,7 +87,7 @@ export default function PropertyForm({ property, onSave, onClose }: PropertyForm
                   value={mapAddress}
                   onChange={e => { setMapAddress(e.target.value); handleInputChange(e); }}
                   required
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+                  className="w-full px-3 py-2 border-2 border-yellow-500 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 bg-white text-black dark:bg-secondary-900 dark:text-white"
                 />
                 {/* Muestra el mapa si hay latitud y longitud geocodificadas */}
                 {lat && lng && (
@@ -114,7 +114,7 @@ export default function PropertyForm({ property, onSave, onClose }: PropertyForm
                   name="city"
                   value={formData.city}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+                  className="w-full px-3 py-2 border-2 border-yellow-500 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 bg-white text-black dark:bg-secondary-900 dark:text-white"
                 >
                   <option value="">Seleccionar ciudad</option>
                   <option value="Medellin">Medellín</option>
@@ -136,7 +136,7 @@ export default function PropertyForm({ property, onSave, onClose }: PropertyForm
                   onChange={handleInputChange}
                   required
                   min="0"
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+                  className="w-full px-3 py-2 border-2 border-yellow-500 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 bg-white text-black dark:bg-secondary-900 dark:text-white"
                 />
               </div>
 
@@ -149,7 +149,7 @@ export default function PropertyForm({ property, onSave, onClose }: PropertyForm
                   name="type"
                   value={formData.type}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+                  className="w-full px-3 py-2 border-2 border-yellow-500 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 bg-white text-black dark:bg-secondary-900 dark:text-white"
                 >
                   <option value="house">Casa</option>
                   <option value="apartment">Apartamento</option>
@@ -167,7 +167,7 @@ export default function PropertyForm({ property, onSave, onClose }: PropertyForm
                   name="status"
                   value={formData.status}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+                  className="w-full px-3 py-2 border-2 border-yellow-500 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 bg-white text-black dark:bg-secondary-900 dark:text-white"
                 >
                   <option value="available">Disponible</option>
                   <option value="sold">Vendida</option>
@@ -186,7 +186,7 @@ export default function PropertyForm({ property, onSave, onClose }: PropertyForm
                   value={formData.bedrooms}
                   onChange={handleInputChange}
                   min="0"
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+                  className="w-full px-3 py-2 border-2 border-yellow-500 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 bg-white text-black dark:bg-secondary-900 dark:text-white"
                 />
               </div>
 
@@ -201,7 +201,7 @@ export default function PropertyForm({ property, onSave, onClose }: PropertyForm
                   value={formData.bathrooms}
                   onChange={handleInputChange}
                   min="0"
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+                  className="w-full px-3 py-2 border-2 border-yellow-500 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 bg-white text-black dark:bg-secondary-900 dark:text-white"
                 />
               </div>
 
@@ -216,7 +216,7 @@ export default function PropertyForm({ property, onSave, onClose }: PropertyForm
                   value={formData.area}
                   onChange={handleInputChange}
                   min="0"
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+                  className="w-full px-3 py-2 border-2 border-yellow-500 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 bg-white text-black dark:bg-secondary-900 dark:text-white"
                 />
               </div>
             </div>
@@ -231,7 +231,7 @@ export default function PropertyForm({ property, onSave, onClose }: PropertyForm
                 value={formData.description}
                 onChange={handleInputChange}
                 rows={4}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+                className="w-full px-3 py-2 border-2 border-yellow-500 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 bg-white text-black dark:bg-secondary-900 dark:text-white"
               />
             </div>
 
@@ -247,7 +247,7 @@ export default function PropertyForm({ property, onSave, onClose }: PropertyForm
                   accept="image/*"
                   multiple
                   onChange={handleImageChange}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+                  className="w-full px-3 py-2 border-2 border-yellow-500 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 bg-white text-black dark:bg-secondary-900 dark:text-white"
                 />
                 {/* Muestra la cantidad de imágenes actuales */}
                 {imageUrls.length > 0 && (
@@ -267,7 +267,7 @@ export default function PropertyForm({ property, onSave, onClose }: PropertyForm
                   accept="video/*"
                   multiple
                   onChange={handleVideoChange}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+                  className="w-full px-3 py-2 border-2 border-yellow-500 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 bg-white text-black dark:bg-secondary-900 dark:text-white"
                 />
                 {/* Muestra la cantidad de videos actuales */}
                 {videoUrls.length > 0 && (
@@ -283,14 +283,14 @@ export default function PropertyForm({ property, onSave, onClose }: PropertyForm
               <button
                 type="button"
                 onClick={handleClose}
-                className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                className="px-4 py-2 text-sm font-medium text-white bg-secondary-700 rounded-lg hover:bg-secondary-900 transition-colors"
               >
                 Cancelar
               </button>
               <button
                 type="submit"
                 disabled={uploading}
-                className="px-6 py-2 text-sm font-medium text-white bg-primary-600 rounded-lg hover:bg-primary-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-6 py-2 text-sm font-medium text-black bg-yellow-500 rounded-lg hover:bg-yellow-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {uploading ? 'Guardando...' : (property ? 'Actualizar' : 'Crear')}
               </button>
