@@ -60,25 +60,25 @@ export default function CarouselSection() {
 
   return (
     // Contenedor principal del carrusel con posicionamiento relativo y overflow oculto
-    <div className="relative w-full overflow-hidden" data-carousel="static">
+    <div className="relative w-full overflow-hidden rounded-none" data-carousel="static">
       
       {/* Contenedor de las imágenes con transición suave */}
       <div
-        className="relative h-[500px] flex transition-transform duration-500 ease-in-out"
+        className="relative w-full h-[500px] flex transition-transform duration-500 ease-in-out"
         style={{ transform: `translateX(-${activeIndex * 100}%)` }}
       >
         {/* Mapeo de todas las imágenes del carrusel */}
         {images.map((src, index) => (
           // Contenedor individual para cada imagen
-          <div key={index} className="flex-none w-full" data-carousel-item>
+          <div key={index} className="flex-none w-full h-full" data-carousel-item>
             {/* Imagen optimizada con Next.js Image component */}
             <Image
-              width={1920}
-              height={1080}
+              fill
               src={src}
               className="block w-full h-full object-cover object-center"
               alt="Property Image"
               loading="lazy"
+              sizes="100vw"
             />
           </div>
         ))}

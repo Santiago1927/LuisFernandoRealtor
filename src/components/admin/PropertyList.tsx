@@ -78,19 +78,25 @@ function PropertyCard({ property, onEdit, onDelete }: any) {
             {property.address}
           </p>
           {/* Precio y características principales */}
-          <div className="flex items-center justify-between mb-2">
+          <div className="flex flex-col gap-2 mb-2">
             <span className="text-2xl font-extrabold text-yellow-500">
               ${property.price.toLocaleString()}
             </span>
-            <div className="flex space-x-2 text-base text-primary-500">
+            <div className="flex flex-wrap gap-2 mt-1">
               {property.bedrooms && (
-                <span>{property.bedrooms} hab</span>
+                <span className="inline-flex items-center px-3 py-1 bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-200 rounded-full text-sm font-medium">
+                  {property.bedrooms} hab
+                </span>
               )}
               {property.bathrooms && (
-                <span>{property.bathrooms} baños</span>
+                <span className="inline-flex items-center px-3 py-1 bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-200 rounded-full text-sm font-medium">
+                  {property.bathrooms} baños
+                </span>
               )}
               {property.area && (
-                <span>{property.area}m²</span>
+                <span className="inline-flex items-center px-3 py-1 bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-200 rounded-full text-sm font-medium">
+                  {property.area} m²
+                </span>
               )}
             </div>
           </div>
@@ -144,7 +150,7 @@ export default function PropertyList({ properties, onEdit, onDelete }: PropertyL
 
   // Si hay propiedades, las muestra en un grid responsivo
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 max-w-screen-2xl mx-auto px-4">
       {properties.map((property) => (
         <PropertyCard key={property.id} property={property} onEdit={onEdit} onDelete={onDelete} />
       ))}
