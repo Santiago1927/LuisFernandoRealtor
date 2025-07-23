@@ -11,7 +11,6 @@ import { useAdminDashboardLogic } from '../../hooks/useAdminDashboardLogic';
 
 // Componente principal del panel de administración
 export default function AdminDashboard() {
-  // Usa el hook para obtener los estados y handlers del dashboard
   const {
     properties,
     showForm,
@@ -23,6 +22,11 @@ export default function AdminDashboard() {
     handleFormClose,
     handlePropertySave,
     router,
+    page,
+    setPage,
+    totalPages,
+    showVerMas,
+    isLoading,
   } = useAdminDashboardLogic();
 
   return (
@@ -40,14 +44,12 @@ export default function AdminDashboard() {
               </p>
             </div>
             <div className="flex items-center space-x-4">
-              {/* Botón para ver el sitio web público */}
               <button
                 onClick={() => router.push('/')}
                 className="px-5 py-2.5 text-base bg-secondary-700 text-white rounded-xl hover:bg-secondary-900 transition-shadow shadow-md hover:shadow-lg"
               >
                 Ver Sitio Web
               </button>
-              {/* Botón para cerrar sesión */}
               <button
                 onClick={handleLogout}
                 className="px-5 py-2.5 text-base bg-red-600 text-white rounded-xl hover:bg-red-700 transition-shadow shadow-md hover:shadow-lg"
@@ -65,7 +67,6 @@ export default function AdminDashboard() {
           <h2 className="text-3xl font-bold text-yellow-500 mb-0">
             Propiedades
           </h2>
-          {/* Botón para crear una nueva propiedad */}
           <button
             onClick={handleCreateProperty}
             className="px-7 py-3 bg-yellow-500 text-black rounded-xl hover:bg-yellow-400 transition-shadow shadow-md hover:shadow-lg font-bold text-lg"
@@ -74,12 +75,37 @@ export default function AdminDashboard() {
           </button>
         </div>
 
-        {/* Lista de propiedades con opciones de editar y eliminar */}
-        <PropertyList
-          properties={properties}
-          onEdit={handleEditProperty}
-          onDelete={handleDeleteProperty}
-        />
+        {/* Loader */}
+        {isLoading ? (
+          <div className="text-center py-12">Cargando propiedades...</div>
+        ) : (
+          <PropertyList
+            properties={properties}
+            onEdit={handleEditProperty}
+            onDelete={handleDeleteProperty}
+          />
+        )}
+
+        {/* Paginación */}
+        <div className="flex justify-center mt-8 gap-2">
+          {Array.from({ length: Math.min(totalPages, 9) }, (_, i) => (
+            <button
+              key={i + 1}
+              onClick={() => setPage(i + 1)}
+              className={`px-4 py-2 rounded ${page === i + 1 ? 'bg-yellow-500 text-black font-bold' : 'bg-gray-200 dark:bg-secondary-700 text-gray-700 dark:text-white'}`}
+            >
+              {i + 1}
+            </button>
+          ))}
+          {showVerMas && (
+            <button
+              onClick={() => setPage(page + 1)}
+              className="px-4 py-2 rounded bg-yellow-500 text-black font-bold"
+            >
+              Ver más
+            </button>
+          )}
+        </div>
 
         {/* Modal del formulario para crear o editar una propiedad */}
         {showForm && (

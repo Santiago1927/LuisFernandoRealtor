@@ -5,7 +5,8 @@ import PropertyList from '../../components/admin/PropertyList';
 // Importa el botón para cambiar el tema (claro/oscuro)
 import ThemeToggleButton from '../../components/ThemeToggleButton';
 // Importa el hook personalizado para la lógica de filtrado y búsqueda de propiedades
-import { usePropertyListPageLogic } from '../../hooks/usePropertyListPageLogic';
+import { useState } from 'react';
+import { usePaginatedProperties } from '../../hooks/usePaginatedProperties';
 
 // Arreglo de ciudades disponibles para el filtro
 const ciudades = ['Medellin', 'Bogota', 'Cali', 'Pasto'];
@@ -19,20 +20,20 @@ const tipos = [
 
 // Componente principal de la página de listado de propiedades
 export default function PropiedadesPage() {
-  // Usa el hook para obtener los estados y funciones de filtrado y búsqueda
-  const {
-    filtered,
-    search,
-    setSearch,
-    city,
-    setCity,
-    type,
-    setType,
-    minPrice,
-    setMinPrice,
-    maxPrice,
-    setMaxPrice,
-  } = usePropertyListPageLogic();
+  const [page, setPage] = useState(1);
+  const { data, isLoading } = usePaginatedProperties({ page, pageSize: 12 });
+  const total = data?.total || 0;
+  const properties = data?.properties || [];
+  const totalPages = Math.ceil(total / 12);
+  const showVerMas = totalPages > 9 && page === 9;
+
+  // Filtros (puedes implementar la lógica de filtros con backend más adelante)
+  // Por ahora solo UI
+  const [search, setSearch] = useState('');
+  const [city, setCity] = useState('');
+  const [type, setType] = useState('');
+  const [minPrice, setMinPrice] = useState('');
+  const [maxPrice, setMaxPrice] = useState('');
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-black">
@@ -75,8 +76,30 @@ export default function PropiedadesPage() {
             className="px-3 py-2 border-2 border-yellow-500 rounded w-32 bg-white text-black dark:bg-secondary-900 dark:text-white focus:border-yellow-400 focus:ring-0"
           />
         </div>
-        {/* Lista de propiedades filtradas */}
-        <PropertyList properties={filtered} />
+        {isLoading ? (
+          <div className="text-center py-12">Cargando propiedades...</div>
+        ) : (
+          <PropertyList properties={properties} />
+        )}
+        <div className="flex justify-center mt-8 gap-2">
+          {Array.from({ length: Math.min(totalPages, 9) }, (_, i) => (
+            <button
+              key={i + 1}
+              onClick={() => setPage(i + 1)}
+              className={`px-4 py-2 rounded ${page === i + 1 ? 'bg-yellow-500 text-black font-bold' : 'bg-gray-200 dark:bg-secondary-700 text-gray-700 dark:text-white'}`}
+            >
+              {i + 1}
+            </button>
+          ))}
+          {showVerMas && (
+            <button
+              onClick={() => setPage(page + 1)}
+              className="px-4 py-2 rounded bg-yellow-500 text-black font-bold"
+            >
+              Ver más
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );

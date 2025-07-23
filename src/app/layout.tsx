@@ -8,6 +8,7 @@ import Footer from "../components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import { AlertProvider } from "@/state/AlertContext";
 import Alert from "@/components/assets/Alert";
+import ReactQueryProvider from '../ReactQueryProvider';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,21 +26,23 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      <ThemeProvider>
-        <AuthProvider>
-          <AlertProvider>
-            <body
-              className={`${inter.className} bg-gray-50 dark:bg-black text-black dark:text-white`}
-            >
-              <Header />
-              <div className="mt-16"></div>
-              <WhatsAppButton phoneNumber="573214223931" />
-              {children}
-              <Footer />
-            </body>
-          </AlertProvider>
-        </AuthProvider>
-      </ThemeProvider>
+      <ReactQueryProvider>
+        <ThemeProvider>
+          <AuthProvider>
+            <AlertProvider>
+              <body
+                className={`${inter.className} bg-gray-50 dark:bg-black text-black dark:text-white`}
+              >
+                <Header />
+                <div className="mt-16"></div>
+                <WhatsAppButton phoneNumber="573214223931" />
+                {children}
+                <Footer />
+              </body>
+            </AlertProvider>
+          </AuthProvider>
+        </ThemeProvider>
+      </ReactQueryProvider>
     </html>
   );
 }

@@ -259,6 +259,42 @@ export const propertyService = {
 };
 
 /**
+ * Obtener propiedades paginadas
+ * 
+ * Recupera una página de propiedades ordenadas por fecha de creación (más recientes primero).
+ * @param page - Número de página (1-indexed)
+ * @param pageSize - Cantidad de propiedades por página
+ * @returns Promise<{ properties: Property[]; total: number; }>
+ */
+export async function getPaginatedProperties(page: number, pageSize: number): Promise<{ properties: any[]; total: number; }> {
+  try {
+    const offset = (page - 1) * pageSize;
+    const allSnapshot = await getDocs(collection(db, COLLECTIONS.PROPERTIES));
+    const total = allSnapshot.size;
+    const q = query(
+      collection(db, COLLECTIONS.PROPERTIES),
+      orderBy('createdAt', 'desc'),
+      limit(offset + pageSize)
+    );
+    const querySnapshot = await getDocs(q);
+    const docs = querySnapshot.docs.slice(offset, offset + pageSize);
+    const properties = docs.map(doc => {
+      const data = doc.data();
+      return {
+        id: doc.id,
+        ...data,
+        createdAt: data.createdAt?.toDate ? data.createdAt.toDate().toISOString() : null,
+        updatedAt: data.updatedAt?.toDate ? data.updatedAt.toDate().toISOString() : null,
+      };
+    });
+    return { properties, total };
+  } catch (error) {
+    console.error('Error getting paginated properties:', error);
+    throw error;
+  }
+}
+
+/**
  * Servicio de operaciones para compradores
  * 
  * Gestiona las operaciones CRUD para la colección de compradores
