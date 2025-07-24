@@ -2,70 +2,93 @@
 
 import React from "react";
 import { useLoginFormLogic } from "../../hooks/useLoginFormLogic";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Shield, Mail, Lock, AlertCircle } from "lucide-react";
 
-/**
- * Componente LoginForm - Formulario de autenticación para administradores
- * Maneja el proceso de login con email y contraseña para acceder al panel administrativo
- */
 const LoginForm: React.FC = () => {
-  // Hook personalizado que maneja toda la lógica del formulario de login
   const {
-    email,              // Estado del campo email
-    password,           // Estado del campo contraseña
-    loading,            // Estado de carga durante el proceso de autenticación
-    error,              // Mensaje de error si la autenticación falla
-    handleSubmit,       // Función que maneja el envío del formulario
-    handleEmailChange,  // Función que actualiza el estado del email
-    handlePasswordChange, // Función que actualiza el estado de la contraseña
+    email,
+    password,
+    loading,
+    error,
+    handleSubmit,
+    handleEmailChange,
+    handlePasswordChange,
   } = useLoginFormLogic();
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-md mx-auto mt-10 p-8 bg-secondary-50 dark:bg-secondary-800 rounded-lg shadow-md border border-secondary-700 dark:border-primary-600">
-      {/* Título del formulario */}
-      <h2 className="text-2xl font-bold mb-6 text-center text-primary-700 dark:text-primary-500">Panel de Administrador</h2>
-      
-      {/* Mensaje de error condicional - se muestra solo si hay un error */}
-      {error && (
-        <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
-          {error}
+    <Card className="w-full max-w-md mx-auto border-0 shadow-2xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur">
+      <CardHeader className="text-center">
+        <div className="w-16 h-16 bg-gradient-to-br from-amber-500 to-yellow-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+          <Shield className="w-8 h-8 text-white" />
         </div>
-      )}
-      
-      {/* Campo de entrada para el correo electrónico */}
-      <div className="mb-4">
-        <label className="block mb-1 text-sm font-medium text-secondary-900 dark:text-primary-200">Correo electrónico *</label>
-        <input
-          type="email"
-          required
-          value={email}
-          onChange={handleEmailChange}
-          className="block w-full px-4 py-3 text-secondary-900 placeholder-secondary-700 bg-gray-50 border border-secondary-700 rounded-lg shadow-sm dark:bg-secondary-800 dark:border-primary-600 dark:text-primary-50 dark:placeholder-primary-200"
-          placeholder="Ingresa tu correo"
-        />
-      </div>
-      
-      {/* Campo de entrada para la contraseña */}
-      <div className="mb-6">
-        <label className="block mb-1 text-sm font-medium text-secondary-900 dark:text-primary-200">Contraseña *</label>
-        <input
-          type="password"
-          required
-          value={password}
-          onChange={handlePasswordChange}
-          className="block w-full px-4 py-3 text-secondary-900 placeholder-secondary-700 bg-gray-50 border border-secondary-700 rounded-lg shadow-sm dark:bg-secondary-800 dark:border-primary-600 dark:text-primary-50 dark:placeholder-primary-200"
-          placeholder="Ingresa tu contraseña"
-        />
-      </div>
-      
-      {/* Botón de envío con estado de carga dinámico */}
-      <button
-        type="submit"
-        disabled={loading}
-        className="w-full py-3 px-4 bg-primary-700 text-secondary-50 font-semibold rounded-lg hover:bg-primary-800 transition-colors dark:bg-primary-500 dark:hover:bg-primary-600 dark:text-secondary-900 disabled:opacity-50 disabled:cursor-not-allowed"
-      >
-        {loading ? "Iniciando sesión..." : "Acceder al Panel"}
-      </button>
-    </form>
+        <CardTitle className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">
+          Panel de Administrador
+        </CardTitle>
+        <p className="text-zinc-600 dark:text-zinc-400">
+          Accede a tu panel de control
+        </p>
+      </CardHeader>
+      <CardContent>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {error && (
+            <Alert variant="destructive">
+              <AlertCircle className="h-4 w-4" />
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          )}
+          
+          <div className="space-y-2">
+            <Label htmlFor="email" className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+              Correo electrónico *
+            </Label>
+            <div className="relative">
+              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-zinc-400" />
+              <Input
+                id="email"
+                type="email"
+                required
+                value={email}
+                onChange={handleEmailChange}
+                className="pl-10 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
+                placeholder="Ingresa tu correo"
+              />
+            </div>
+          </div>
+          
+          <div className="space-y-2">
+            <Label htmlFor="password" className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+              Contraseña *
+            </Label>
+            <div className="relative">
+              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-zinc-400" />
+              <Input
+                id="password"
+                type="password"
+                required
+                value={password}
+                onChange={handlePasswordChange}
+                className="pl-10 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
+                placeholder="Ingresa tu contraseña"
+              />
+            </div>
+          </div>
+          
+          <Button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-700 hover:to-yellow-700 text-white font-semibold py-3 h-auto"
+          >
+            <Shield className="w-4 h-4 mr-2" />
+            {loading ? "Iniciando sesión..." : "Acceder al Panel"}
+          </Button>
+        </form>
+      </CardContent>
+    </Card>
   );
 };
 

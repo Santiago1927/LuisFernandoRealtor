@@ -1,124 +1,220 @@
 'use client';
+
 import Image from 'next/image';
-import ThemeToggleButton from '../../components/ThemeToggleButton';
 import ContactSection from '../../components/ContactSection';
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { 
+  Mail, 
+  Phone, 
+  MapPin, 
+  Star,
+  CheckCircle,
+  Award,
+  Users,
+  Target
+} from "lucide-react";
 
 export default function ContactoPage() {
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-black">
-      {/* <div className="flex justify-end p-4">
-        <ThemeToggleButton />
-      </div> */}
+    <div className="min-h-screen bg-gradient-to-br from-zinc-50 via-white to-amber-50/30 dark:from-zinc-900 dark:via-black dark:to-amber-900/10">
       
-      {/* Formularios de contacto */}
       <ContactSection />
 
-      {/* Información de contacto profesional */}
-      <section className="bg-yellow-50 dark:bg-yellow-900/20 py-16">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-yellow-800 dark:text-yellow-200 mb-4">
+      <section className="py-16 lg:py-24">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <Badge variant="secondary" className="bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300 border-amber-200 dark:border-amber-800 mb-4">
+              Contacto Directo
+            </Badge>
+            <h2 className="text-4xl lg:text-5xl font-bold text-zinc-900 dark:text-zinc-100 mb-6">
               Información de Contacto
             </h2>
-            <p className="text-lg text-yellow-700 dark:text-yellow-300 max-w-2xl mx-auto">
+            <p className="text-lg text-zinc-600 dark:text-zinc-400 max-w-3xl mx-auto leading-relaxed">
               Estamos aquí para ayudarte con todas tus necesidades inmobiliarias. 
-              Contáctanos a través de cualquiera de estos medios.
+              Contáctanos a través de cualquiera de estos medios para una atención personalizada.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8 mb-12">
-            {/* Email */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg border-l-4 border-yellow-500 hover:shadow-xl transition-shadow">
-              <div className="flex items-center mb-4">
-                <div className="bg-yellow-100 dark:bg-yellow-900 p-3 rounded-full mr-4">
-                  <svg className="w-6 h-6 text-yellow-600 dark:text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                  </svg>
+          <div className="grid lg:grid-cols-3 gap-8 mb-16">
+            
+            <Card className="border-0 shadow-xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur hover:shadow-2xl transition-all duration-300 group">
+              <CardContent className="p-8">
+                <div className="flex items-center mb-6">
+                  <div className="w-12 h-12 bg-gradient-to-br from-amber-500 to-yellow-600 rounded-xl flex items-center justify-center mr-4 group-hover:scale-110 transition-transform">
+                    <Mail className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-semibold text-zinc-900 dark:text-zinc-100">Email</h3>
+                    <p className="text-zinc-500 dark:text-zinc-400 text-sm">Envíanos un mensaje</p>
+                  </div>
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Email</h3>
-              </div>
-              <p className="text-gray-600 dark:text-gray-300 mb-2">Envíanos un correo electrónico</p>
-              <a 
-                href="mailto:contacto@luisfernandorealtor.com" 
-                className="text-yellow-600 dark:text-yellow-400 font-medium hover:text-yellow-700 dark:hover:text-yellow-300 transition-colors"
-              >
-                contacto@luisfernandorealtor.com
-              </a>
-            </div>
+                <p className="text-zinc-600 dark:text-zinc-300 mb-4">
+                  Para consultas detalladas y propuestas personalizadas
+                </p>
+                <a 
+                  href="mailto:realtorluisfernando@gmail.com" 
+                  className="text-amber-600 dark:text-amber-400 font-medium hover:text-amber-700 dark:hover:text-amber-300 transition-colors inline-flex items-center"
+                >
+                  realtorluisfernando@gmail.com
+                  <Mail className="w-4 h-4 ml-2" />
+                </a>
+              </CardContent>
+            </Card>
 
-            {/* Teléfono */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg border-l-4 border-yellow-500 hover:shadow-xl transition-shadow">
-              <div className="flex items-center mb-4">
-                <div className="bg-yellow-100 dark:bg-yellow-900 p-3 rounded-full mr-4">
-                  <svg className="w-6 h-6 text-yellow-600 dark:text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                  </svg>
+            <Card className="border-0 shadow-xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur hover:shadow-2xl transition-all duration-300 group">
+              <CardContent className="p-8">
+                <div className="flex items-center mb-6">
+                  <div className="w-12 h-12 bg-gradient-to-br from-amber-500 to-yellow-600 rounded-xl flex items-center justify-center mr-4 group-hover:scale-110 transition-transform">
+                    <Phone className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-semibold text-zinc-900 dark:text-zinc-100">Teléfono</h3>
+                    <p className="text-zinc-500 dark:text-zinc-400 text-sm">Llámanos directamente</p>
+                  </div>
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Teléfono</h3>
-              </div>
-              <p className="text-gray-600 dark:text-gray-300 mb-2">Llámanos directamente</p>
-              <a 
-                href="tel:+573001234567" 
-                className="text-yellow-600 dark:text-yellow-400 font-medium hover:text-yellow-700 dark:hover:text-yellow-300 transition-colors"
-              >
-                +57 300 123 4567
-              </a>
-            </div>
+                <p className="text-zinc-600 dark:text-zinc-300 mb-4">
+                  Atención inmediata y personalizada
+                </p>
+                <a 
+                  href="tel:+573214223931" 
+                  className="text-amber-600 dark:text-amber-400 font-medium hover:text-amber-700 dark:hover:text-amber-300 transition-colors inline-flex items-center"
+                >
+                  +57 321 422 3931
+                  <Phone className="w-4 h-4 ml-2" />
+                </a>
+              </CardContent>
+            </Card>
 
-            {/* Dirección */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg border-l-4 border-yellow-500 hover:shadow-xl transition-shadow">
-              <div className="flex items-center mb-4">
-                <div className="bg-yellow-100 dark:bg-yellow-900 p-3 rounded-full mr-4">
-                  <svg className="w-6 h-6 text-yellow-600 dark:text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                  </svg>
+            <Card className="border-0 shadow-xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur hover:shadow-2xl transition-all duration-300 group">
+              <CardContent className="p-8">
+                <div className="flex items-center mb-6">
+                  <div className="w-12 h-12 bg-gradient-to-br from-amber-500 to-yellow-600 rounded-xl flex items-center justify-center mr-4 group-hover:scale-110 transition-transform">
+                    <MapPin className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-semibold text-zinc-900 dark:text-zinc-100">Oficina</h3>
+                    <p className="text-zinc-500 dark:text-zinc-400 text-sm">Visítanos personalmente</p>
+                  </div>
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Oficina</h3>
-              </div>
-              <p className="text-gray-600 dark:text-gray-300 mb-2">Visítanos en nuestra oficina</p>
-              <p className="text-yellow-600 dark:text-yellow-400 font-medium">
-                Calle 123 #45-67<br />
-                Medellín, Colombia
-              </p>
-            </div>
+                <p className="text-zinc-600 dark:text-zinc-300 mb-4">
+                  Reuniones y asesorías presenciales
+                </p>
+                <div className="text-amber-600 dark:text-amber-400 font-medium">
+                  <p>Medellín, Colombia</p>
+                  <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1">Cita previa</p>
+                </div>
+              </CardContent>
+            </Card>
           </div>
 
-          {/* Imagen y descripción adicional */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg">
-            <div className="flex flex-col md:flex-row items-center gap-8">
-              <div className="flex-1">
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            
+            <Card className="border-0 shadow-xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur">
+              <CardHeader>
+                <CardTitle className="text-3xl font-bold text-zinc-900 dark:text-zinc-100 mb-2">
                   ¿Por qué elegirnos?
-                </h3>
-                <div className="space-y-3 text-gray-600 dark:text-gray-300">
-                  <div className="flex items-center">
-                    <div className="w-2 h-2 bg-yellow-500 rounded-full mr-3"></div>
-                    <span>Experiencia de más de 10 años en el mercado inmobiliario</span>
+                </CardTitle>
+                <p className="text-zinc-600 dark:text-zinc-400">
+                  Más de una década de experiencia en el mercado inmobiliario de lujo
+                </p>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="grid gap-4">
+                  <div className="flex items-start space-x-4">
+                    <div className="w-8 h-8 bg-gradient-to-br from-amber-500 to-yellow-600 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                      <Award className="w-4 h-4 text-white" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-zinc-900 dark:text-zinc-100 mb-1">
+                        Experiencia Comprobada
+                      </h4>
+                      <p className="text-zinc-600 dark:text-zinc-400 text-sm">
+                        Más de 10 años en el mercado inmobiliario de alto valor
+                      </p>
+                    </div>
                   </div>
-                  <div className="flex items-center">
-                    <div className="w-2 h-2 bg-yellow-500 rounded-full mr-3"></div>
-                    <span>Atención personalizada y profesional</span>
+
+                  <div className="flex items-start space-x-4">
+                    <div className="w-8 h-8 bg-gradient-to-br from-amber-500 to-yellow-600 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                      <Users className="w-4 h-4 text-white" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-zinc-900 dark:text-zinc-100 mb-1">
+                        Atención Personalizada
+                      </h4>
+                      <p className="text-zinc-600 dark:text-zinc-400 text-sm">
+                        Servicio exclusivo y dedicado para cada cliente
+                      </p>
+                    </div>
                   </div>
-                  <div className="flex items-center">
-                    <div className="w-2 h-2 bg-yellow-500 rounded-full mr-3"></div>
-                    <span>Estrategias de marketing digital innovadoras</span>
+
+                  <div className="flex items-start space-x-4">
+                    <div className="w-8 h-8 bg-gradient-to-br from-amber-500 to-yellow-600 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                      <Target className="w-4 h-4 text-white" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-zinc-900 dark:text-zinc-100 mb-1">
+                        Estrategias Innovadoras
+                      </h4>
+                      <p className="text-zinc-600 dark:text-zinc-400 text-sm">
+                        Marketing digital y tecnologías de vanguardia
+                      </p>
+                    </div>
                   </div>
-                  <div className="flex items-center">
-                    <div className="w-2 h-2 bg-yellow-500 rounded-full mr-3"></div>
-                    <span>Resultados garantizados en tiempo récord</span>
+
+                  <div className="flex items-start space-x-4">
+                    <div className="w-8 h-8 bg-gradient-to-br from-amber-500 to-yellow-600 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                      <CheckCircle className="w-4 h-4 text-white" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-zinc-900 dark:text-zinc-100 mb-1">
+                        Resultados Garantizados
+                      </h4>
+                      <p className="text-zinc-600 dark:text-zinc-400 text-sm">
+                        Éxito comprobado en tiempo récord
+                      </p>
+                    </div>
                   </div>
                 </div>
+
+                <div className="flex items-center space-x-4 pt-4 border-t border-zinc-200 dark:border-zinc-700">
+                  <div className="flex items-center space-x-1">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="w-5 h-5 text-amber-500 fill-current" />
+                    ))}
+                  </div>
+                  <span className="text-zinc-600 dark:text-zinc-400 text-sm">
+                    5.0 Rating • 200+ Clientes Satisfechos
+                  </span>
+                </div>
+              </CardContent>
+            </Card>
+
+            <div className="relative">
+              <div className="relative z-10 flex flex-col items-center justify-center h-full min-h-[400px]">
+                <div className="w-32 h-32 mb-6">
+                  <Image 
+                    src="/logo.svg" 
+                    alt="Luis Fernando Realtor" 
+                    width={128} 
+                    height={128} 
+                    className="w-full h-full" 
+                  />
+                </div>
+                <div className="text-center">
+                  <h3 className="text-3xl font-bold text-zinc-900 dark:text-zinc-100 mb-2">
+                    Luis Fernando
+                  </h3>
+                  <p className="text-xl font-semibold text-amber-600 dark:text-amber-400">
+                    REALTOR
+                  </p>
+                  <p className="text-zinc-600 dark:text-zinc-400 mt-4 text-sm">
+                    Especialistas en bienes raíces de lujo
+                  </p>
+                </div>
               </div>
-              <div className="flex-shrink-0">
-                <Image 
-                  src="/images/email.png" 
-                  alt="Contacto Profesional" 
-                  width={200} 
-                  height={200} 
-                  className="rounded-lg shadow-md" 
-                />
-              </div>
+              <div className="absolute -inset-4 bg-gradient-to-br from-amber-500/10 to-yellow-600/10 rounded-2xl blur-xl"></div>
             </div>
           </div>
         </div>
