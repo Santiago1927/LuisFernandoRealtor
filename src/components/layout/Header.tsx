@@ -22,7 +22,6 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full bg-gradient-to-r from-zinc-900 via-black to-zinc-900 dark:from-black dark:via-zinc-900 dark:to-black border-b border-amber-500/20 shadow-2xl">
-      {/* Barra superior con información de contacto */}
       <div className="bg-gradient-to-r from-amber-600 to-yellow-600 text-black py-2">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between text-sm font-medium">
@@ -42,10 +41,8 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Header principal */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-20 items-center justify-between">
-          {/* Logo y branding mejorado */}
           <Link href="/" className="flex items-center space-x-4 group">
             <div className="relative h-14 w-14 overflow-hidden rounded-xl bg-gradient-to-br from-amber-500 to-yellow-600 p-2 shadow-xl transition-transform duration-300 group-hover:scale-110">
               <img 
@@ -64,7 +61,6 @@ export default function Header() {
             </div>
           </Link>
 
-          {/* Navegación principal - Desktop */}
           <nav className="hidden lg:flex items-center space-x-8">
             {navigationLinks.map((link) => {
               const Icon = link.icon;
@@ -81,7 +77,6 @@ export default function Header() {
             })}
           </nav>
 
-          {/* Acciones del lado derecho - Desktop */}
           <div className="hidden lg:flex items-center space-x-6">
             {isAuthenticated && (
               <Button
@@ -100,7 +95,6 @@ export default function Header() {
             </div>
           </div>
 
-          {/* Menú móvil */}
           <div className="lg:hidden">
             <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
               <SheetTrigger asChild>
@@ -111,7 +105,6 @@ export default function Header() {
               </SheetTrigger>
               <SheetContent side="right" className="w-[350px] bg-zinc-900/95 backdrop-blur border-l border-amber-500/20">
                 <div className="flex flex-col space-y-8 pt-8">
-                  {/* Logo en menú móvil */}
                   <div className="flex items-center space-x-4 pb-6 border-b border-zinc-700">
                     <div className="relative h-12 w-12 overflow-hidden rounded-xl bg-gradient-to-br from-amber-500 to-yellow-600 p-2">
                       <img 
@@ -130,7 +123,6 @@ export default function Header() {
                     </div>
                   </div>
 
-                  {/* Enlaces de navegación móvil */}
                   <nav className="flex flex-col space-y-6">
                     {navigationLinks.map((link) => {
                       const Icon = link.icon;
@@ -148,7 +140,6 @@ export default function Header() {
                     })}
                   </nav>
 
-                  {/* Acciones móviles */}
                   <div className="flex flex-col space-y-6 pt-6 border-t border-zinc-700">
                     {isAuthenticated && (
                       <Button

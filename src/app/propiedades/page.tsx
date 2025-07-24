@@ -1,80 +1,110 @@
 'use client';
 
-import PropertyList from '../../components/admin/PropertyList';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { usePaginatedProperties } from '../../hooks/usePaginatedProperties';
+import PropertyList from '../../components/admin/PropertyList';
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { 
   Search, 
-  MapPin, 
-  Building2, 
   DollarSign, 
-  Filter,
-  ChevronLeft,
+  Building2, 
+  Home, 
+  MapPin, 
+  ChevronLeft, 
   ChevronRight,
   Loader2
 } from "lucide-react";
 
-const ciudades = ['Medellín', 'Bogotá', 'Cali', 'Pasto', 'Envigado', 'Rionegro'];
 const tipos = [
-  { value: 'house', label: 'Casa', icon: Building2 },
-  { value: 'apartment', label: 'Apartamento', icon: Building2 },
-  { value: 'commercial', label: 'Comercial', icon: Building2 },
-  { value: 'land', label: 'Terreno', icon: MapPin },
+  { value: 'Casa', label: 'Casa', icon: Home },
+  { value: 'Apartamento', label: 'Apartamento', icon: Building2 },
+  { value: 'Casa Campestre', label: 'Casa Campestre', icon: Home },
+  { value: 'Penthouse', label: 'Penthouse', icon: Building2 },
+  { value: 'Lote', label: 'Lote', icon: MapPin },
+  { value: 'Oficina', label: 'Oficina', icon: Building2 },
+  { value: 'Local', label: 'Local', icon: Building2 },
+  { value: 'Bodega', label: 'Bodega', icon: Building2 },
 ];
 
-export default function PropiedadesPage() {
-  const [page, setPage] = useState(1);
-  const { data, isLoading } = usePaginatedProperties({ page, pageSize: 12 });
-  const total = data?.total || 0;
-  const properties = data?.properties || [];
-  const totalPages = Math.ceil(total / 12);
-  const showVerMas = totalPages > 9 && page === 9;
+const ciudades = ['Medellín', 'Bogotá', 'Cali', 'Pasto'];
 
+export default function PropiedadesPage() {
+  const [currentPage, setCurrentPage] = useState(1);
   const [search, setSearch] = useState('');
   const [city, setCity] = useState('');
   const [type, setType] = useState('');
   const [minPrice, setMinPrice] = useState('');
   const [maxPrice, setMaxPrice] = useState('');
 
+  const { data, isLoading, error } = usePaginatedProperties({ 
+    page: currentPage, 
+    pageSize: 12 
+  });
+
+  const properties = data?.properties || [];
+  const total = data?.total || 0;
+  const totalPages = Math.ceil(total / 12);
+
   const handlePageChange = (newPage: number) => {
-    setPage(newPage);
+    setCurrentPage(newPage);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const filteredProperties = properties.filter(property => {
+    const matchesSearch = !search || 
+      property.title.toLowerCase().includes(search.toLowerCase()) ||
+      property.description.toLowerCase().includes(search.toLowerCase());
+    
+    const matchesCity = !city || property.city === city;
+    const matchesType = !type || property.type === type;
+    
+    const matchesMinPrice = !minPrice || property.price >= parseInt(minPrice);
+    const matchesMaxPrice = !maxPrice || property.price <= parseInt(maxPrice);
+    
+    return matchesSearch && matchesCity && matchesType && matchesMinPrice && matchesMaxPrice;
+  });
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-zinc-50 via-white to-amber-50/30 dark:from-zinc-900 dark:via-black dark:to-amber-900/10">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <div className="text-center">
+            <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 mb-4">
+              Error al cargar las propiedades
+            </h1>
+            <p className="text-zinc-600 dark:text-zinc-400">
+              Por favor, intenta de nuevo más tarde.
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-zinc-50 via-white to-amber-50/30 dark:from-zinc-900 dark:via-black dark:to-amber-900/10">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-16">
-        
-        <div className="text-center mb-12 lg:mb-16">
-          <Badge variant="secondary" className="mb-4 bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300 border-amber-200 dark:border-amber-800">
-            Catálogo Completo
-          </Badge>
-          <h1 className="text-4xl lg:text-6xl font-bold text-zinc-900 dark:text-zinc-100 mb-4">
-            Propiedades
-            <span className="block bg-gradient-to-r from-amber-600 to-yellow-600 bg-clip-text text-transparent">
-              Disponibles
-            </span>
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-bold text-zinc-900 dark:text-zinc-100 mb-4">
+            Propiedades Disponibles
           </h1>
           <p className="text-lg text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto">
-            Explora nuestra colección completa de propiedades premium en las mejores ubicaciones
+            Descubre nuestra exclusiva selección de propiedades de lujo en las mejores ubicaciones
           </p>
         </div>
 
-        <Card className="mb-12 border-0 shadow-xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur">
+        <Card className="mb-8 border-0 shadow-xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur">
           <CardHeader>
-            <CardTitle className="flex items-center space-x-2 text-zinc-900 dark:text-zinc-100">
-              <Filter className="w-5 h-5 text-amber-600" />
-              <span>Filtros de Búsqueda</span>
+            <CardTitle className="text-xl font-bold text-zinc-900 dark:text-zinc-100">
+              Filtros de Búsqueda
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
-              
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-zinc-400" />
                 <Input
@@ -86,7 +116,6 @@ export default function PropiedadesPage() {
                 />
               </div>
 
-              {/* Filtro por ciudad */}
               <Select value={city} onValueChange={setCity}>
                 <SelectTrigger className="border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 focus:border-amber-500 dark:focus:border-amber-400">
                   <SelectValue placeholder="Ciudad" />
@@ -100,7 +129,6 @@ export default function PropiedadesPage() {
                 </SelectContent>
               </Select>
 
-              {/* Filtro por tipo */}
               <Select value={type} onValueChange={setType}>
                 <SelectTrigger className="border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 focus:border-amber-500 dark:focus:border-amber-400">
                   <SelectValue placeholder="Tipo" />
@@ -179,62 +207,65 @@ export default function PropiedadesPage() {
               <div className="flex items-center justify-center mt-12 space-x-2">
                 <Button
                   variant="outline"
-                  size="sm"
-                  onClick={() => handlePageChange(page - 1)}
-                  disabled={page === 1}
-                  className="border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 disabled:opacity-50"
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  className="border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800"
                 >
-                  <ChevronLeft className="w-4 h-4 mr-1" />
+                  <ChevronLeft className="w-4 h-4 mr-2" />
                   Anterior
                 </Button>
 
-                <div className="flex items-center space-x-1">
-                  {Array.from({ length: Math.min(totalPages, 9) }, (_, i) => (
+                <div className="flex items-center space-x-2">
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
                     <Button
-                      key={i + 1}
-                      variant={page === i + 1 ? "default" : "outline"}
-                      size="sm"
-                      onClick={() => handlePageChange(i + 1)}
-                      className={
-                        page === i + 1
-                          ? "bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-700 hover:to-yellow-700 text-white border-0"
-                          : "border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800"
+                      key={page}
+                      variant={currentPage === page ? "default" : "outline"}
+                      onClick={() => handlePageChange(page)}
+                      className={currentPage === page 
+                        ? "bg-amber-600 hover:bg-amber-700 text-white" 
+                        : "border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800"
                       }
                     >
-                      {i + 1}
+                      {page}
                     </Button>
                   ))}
-                  
-                  {showVerMas && (
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handlePageChange(page + 1)}
-                      className="border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800"
-                    >
-                      ...
-                    </Button>
-                  )}
                 </div>
 
                 <Button
                   variant="outline"
-                  size="sm"
-                  onClick={() => handlePageChange(page + 1)}
-                  disabled={page === totalPages}
-                  className="border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 disabled:opacity-50"
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                  className="border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800"
                 >
                   Siguiente
-                  <ChevronRight className="w-4 h-4 ml-1" />
+                  <ChevronRight className="w-4 h-4 ml-2" />
                 </Button>
               </div>
             )}
 
-            {total > 0 && (
-              <div className="text-center mt-8">
-                <p className="text-sm text-zinc-600 dark:text-zinc-400">
-                  Mostrando {((page - 1) * 12) + 1} - {Math.min(page * 12, total)} de {total} propiedades
-                </p>
+            {filteredProperties.length === 0 && !isLoading && (
+              <div className="text-center py-16">
+                <div className="max-w-md mx-auto">
+                  <Building2 className="h-16 w-16 text-zinc-400 mx-auto mb-4" />
+                  <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100 mb-2">
+                    No se encontraron propiedades
+                  </h3>
+                  <p className="text-zinc-600 dark:text-zinc-400 mb-4">
+                    Intenta ajustar los filtros de búsqueda o contacta con nosotros para más información.
+                  </p>
+                  <Button
+                    onClick={() => {
+                      setSearch('');
+                      setCity('');
+                      setType('');
+                      setMinPrice('');
+                      setMaxPrice('');
+                    }}
+                    className="bg-amber-600 hover:bg-amber-700 text-white"
+                  >
+                    Limpiar Filtros
+                  </Button>
+                </div>
               </div>
             )}
           </>

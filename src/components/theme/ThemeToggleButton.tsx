@@ -3,12 +3,7 @@ import { useTheme } from "./ThemeContext";
 import { Button } from "@/components/ui/button";
 import { Sun, Moon } from "lucide-react";
 
-/**
- * Componente ThemeToggleButton - Botón para alternar entre tema claro y oscuro
- * Diseño moderno y elegante para bienes raíces de alto valor
- */
 const ThemeToggleButton = () => {
-  // Hook personalizado que proporciona el estado actual del tema y la función para cambiarlo
   const { theme, toggleTheme } = useTheme();
 
   return (

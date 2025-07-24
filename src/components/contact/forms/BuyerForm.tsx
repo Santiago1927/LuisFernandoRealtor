@@ -6,16 +6,9 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Home, User, AlertCircle } from "lucide-react";
-import {
-  PERSONAL_DATA,
-  CITY_OPTIONS,
-  PROPERTY_TYPE_OPTIONS,
-  PROPERTY_INFO_BUYER,
-  INPUT_INFO,
-} from "@/constants/constants";
+import { Home, AlertCircle } from "lucide-react";
+import { PERSONAL_DATA, CITY_OPTIONS, PROPERTY_TYPE_OPTIONS, PROPERTY_INFO_BUYER, INPUT_INFO } from "@/constants/constants";
 
 interface BuyerFormProps {
   formSubmit: (data: any) => void;
@@ -33,7 +26,6 @@ const BuyerForm: React.FC<BuyerFormProps> = ({ formSubmit, loading }) => {
   } = useBuyerFormLogic({ formSubmit, loading });
 
   const renderField = (fieldKey: string, field: any) => {
-    // Campos booleanos que deben usar checkbox
     const booleanFields = ['deposito'];
     
     if (booleanFields.includes(fieldKey)) {
@@ -59,7 +51,6 @@ const BuyerForm: React.FC<BuyerFormProps> = ({ formSubmit, loading }) => {
       );
     }
 
-    // Campo formaDePago que debe usar Select
     if (fieldKey === 'formaDePago') {
       return (
         <div key={fieldKey} className="space-y-2">
@@ -88,7 +79,6 @@ const BuyerForm: React.FC<BuyerFormProps> = ({ formSubmit, loading }) => {
       );
     }
 
-    // Campos normales
     return (
       <div key={fieldKey} className="space-y-2">
         <Label htmlFor={fieldKey} className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
@@ -128,74 +118,31 @@ const BuyerForm: React.FC<BuyerFormProps> = ({ formSubmit, loading }) => {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           
           <div className="grid md:grid-cols-2 gap-6">
-            <div className="space-y-2">
-              <Label htmlFor="nombre" className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
-                {PERSONAL_DATA.nombre.label} *
-              </Label>
-              {errors.nombre && (
-                <div className="flex items-center space-x-2 text-red-600 dark:text-red-400 text-sm">
-                  <AlertCircle className="w-4 h-4" />
-                  <span>
-                    {String(errors.nombre?.message)}</span>
-                </div>
-              )}
-              <Input
-                id="nombre"
-                type={PERSONAL_DATA.nombre.type}
-                {...register("nombre")}
-                className={`w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400 ${
-                  errors.nombre ? 'border-red-500 dark:border-red-400' : ''
-                }`}
-                placeholder={`Ingresa ${PERSONAL_DATA.nombre.label.toLowerCase()}`}
-              />
-            </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="correo" className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
-                {PERSONAL_DATA.correo.label} *
-              </Label>
-              {errors.correo && (
-                <div className="flex items-center space-x-2 text-red-600 dark:text-red-400 text-sm">
-                  <AlertCircle className="w-4 h-4" />
-                  <span>
-                    {String(errors.correo?.message)}</span>
-                </div>
-              )}
-              <Input
-                id="correo"
-                type={PERSONAL_DATA.correo.type}
-                {...register("correo")}
-                className={`w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400 ${
-                  errors.correo ? 'border-red-500 dark:border-red-400' : ''
-                }`}
-                placeholder={`Ingresa ${PERSONAL_DATA.correo.label.toLowerCase()}`}
-              />
-            </div>
+            {Object.entries(PERSONAL_DATA).map(([key, field]) => (
+              <div key={key} className="space-y-2">
+                <Label htmlFor={key} className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+                  {field.label} *
+                </Label>
+                {errors[key] && (
+                  <div className="flex items-center space-x-2 text-red-600 dark:text-red-400 text-sm">
+                    <AlertCircle className="w-4 h-4" />
+                    <span>{String(errors[key]?.message)}</span>
+                  </div>
+                )}
+                <Input
+                  id={key}
+                  type={field.type}
+                  {...register(key)}
+                  className={`w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400 ${
+                    errors[key] ? 'border-red-500 dark:border-red-400' : ''
+                  }`}
+                  placeholder={`Ingresa ${field.label.toLowerCase()}`}
+                />
+              </div>
+            ))}
           </div>
-          
+
           <div className="grid md:grid-cols-2 gap-6">
-            <div className="space-y-2">
-              <Label htmlFor="telefono" className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
-                {PERSONAL_DATA.telefono.label} *
-              </Label>
-              {errors.telefono && (
-                <div className="flex items-center space-x-2 text-red-600 dark:text-red-400 text-sm">
-                  <AlertCircle className="w-4 h-4" />
-                  <span>
-                    {String(errors.telefono?.message)}</span>
-                </div>
-              )}
-              <Input
-                id="telefono"
-                type={PERSONAL_DATA.telefono.type}
-                {...register("telefono")}
-                className={`w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400 ${
-                  errors.telefono ? 'border-red-500 dark:border-red-400' : ''
-                }`}
-                placeholder={`Ingresa ${PERSONAL_DATA.telefono.label.toLowerCase()}`}
-              />
-            </div>
-            
             <div className="space-y-2">
               <Label htmlFor="ciudad" className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
                 Ciudad *
@@ -219,9 +166,7 @@ const BuyerForm: React.FC<BuyerFormProps> = ({ formSubmit, loading }) => {
                 </SelectContent>
               </Select>
             </div>
-          </div>
-          
-          <div className="grid md:grid-cols-2 gap-6">
+
             <div className="space-y-2">
               <Label htmlFor="tipoPropiedad" className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
                 Tipo de Propiedad *
@@ -245,55 +190,27 @@ const BuyerForm: React.FC<BuyerFormProps> = ({ formSubmit, loading }) => {
                 </SelectContent>
               </Select>
             </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="presupuesto" className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
-                Presupuesto (COP) *
-              </Label>
-              {errors.presupuesto && (
-                <div className="flex items-center space-x-2 text-red-600 dark:text-red-400 text-sm">
-                  <AlertCircle className="w-4 h-4" />
-                  <span>{String(errors.presupuesto?.message)}</span>
-                </div>
-              )}
-              <Input
-                id="presupuesto"
-                type="number"
-                {...register("presupuesto")}
-                className={`w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400 ${
-                  errors.presupuesto ? 'border-red-500 dark:border-red-400' : ''
-                }`}
-                placeholder="Ingresa presupuesto (cop)"
-              />
-            </div>
           </div>
-          
+
           {tipoPropiedad && PROPERTY_INFO_BUYER[tipoPropiedad] && (
             <div className="grid md:grid-cols-2 gap-6">
-              {PROPERTY_INFO_BUYER[tipoPropiedad]?.map((fieldKey) => {
+              {PROPERTY_INFO_BUYER[tipoPropiedad].map((fieldKey) => {
                 const field = INPUT_INFO[fieldKey];
+                if (!field) return null;
                 return renderField(fieldKey, field);
               })}
             </div>
           )}
-          
+
           <div className="space-y-2">
             <Label htmlFor="comentariosAdicionales" className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
               Comentarios Adicionales
             </Label>
-            {errors.comentariosAdicionales && (
-              <div className="flex items-center space-x-2 text-red-600 dark:text-red-400 text-sm">
-                <AlertCircle className="w-4 h-4" />
-                <span>{String(errors.comentariosAdicionales?.message)}</span>
-              </div>
-            )}
-            <Textarea
+            <textarea
               id="comentariosAdicionales"
               {...register("comentariosAdicionales")}
-              className={`w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400 min-h-[120px] ${
-                errors.comentariosAdicionales ? 'border-red-500 dark:border-red-400' : ''
-              }`}
-              placeholder="Cuéntanos más detalles sobre lo que buscas..."
+              className="w-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-md px-3 py-2 focus:border-amber-500 dark:focus:border-amber-400 min-h-[100px] resize-none"
+              placeholder="Comentarios adicionales sobre tu búsqueda..."
             />
           </div>
           
@@ -314,7 +231,7 @@ const BuyerForm: React.FC<BuyerFormProps> = ({ formSubmit, loading }) => {
             {loading ? (
               <div className="w-4 h-4 mr-2 animate-spin rounded-full border-2 border-white border-t-transparent" />
             ) : (
-              <User className="w-4 h-4 mr-2" />
+              <Home className="w-4 h-4 mr-2" />
             )}
             {loading ? "Enviando..." : "Enviar Solicitud"}
           </Button>

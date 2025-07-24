@@ -6,16 +6,9 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Building2, User, AlertCircle } from "lucide-react";
-import {
-  PERSONAL_DATA,
-  CITY_OPTIONS,
-  PROPERTY_TYPE_OPTIONS,
-  PROPERTY_INFO_OWNER,
-  INPUT_INFO,
-} from "@/constants/constants";
+import { Building2, User, Home, AlertCircle } from "lucide-react";
+import { PERSONAL_DATA, CITY_OPTIONS, PROPERTY_TYPE_OPTIONS, PROPERTY_INFO_OWNER, INPUT_INFO } from "@/constants/constants";
 
 interface OwnerFormProps {
   formSubmit: (data: any) => void;
@@ -33,7 +26,6 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
   } = useOwnerFormLogic({ formSubmit, loading });
 
   const renderField = (fieldKey: string, field: any) => {
-    // Campos booleanos que deben usar checkbox
     const booleanFields = ['estudio', 'deposito', 'balcon', 'vigilancia', 'piscina'];
     
     if (booleanFields.includes(fieldKey)) {
@@ -59,7 +51,6 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
       );
     }
 
-    // Campos normales
     return (
       <div key={fieldKey} className="space-y-2">
         <Label htmlFor={fieldKey} className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
@@ -133,7 +124,7 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
 
           <div className="space-y-6">
             <div className="flex items-center space-x-2 pb-2 border-b border-zinc-200 dark:border-zinc-700">
-              <Building2 className="w-5 h-5 text-amber-600" />
+              <Home className="w-5 h-5 text-amber-600" />
               <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">
                 Información de la Propiedad
               </h3>
@@ -162,7 +153,7 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
                   </SelectContent>
                 </Select>
               </div>
-              
+
               <div className="space-y-2">
                 <Label htmlFor="tipoPropiedad" className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
                   Tipo de Propiedad *
@@ -187,28 +178,11 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
                 </Select>
               </div>
             </div>
-            
-            {tipoPropiedad && PROPERTY_INFO_OWNER[tipoPropiedad] && (
-              <div className="grid md:grid-cols-2 gap-6">
-                {PROPERTY_INFO_OWNER[tipoPropiedad]?.map((fieldKey) => {
-                  const field = INPUT_INFO[fieldKey];
-                  return renderField(fieldKey, field);
-                })}
-              </div>
-            )}
-          </div>
 
-          <div className="space-y-6">
-            <div className="flex items-center space-x-2 pb-2 border-b border-zinc-200 dark:border-zinc-700">
-              <Building2 className="w-5 h-5 text-amber-600" />
-              <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">
-                Preguntas Adicionales
-              </h3>
-            </div>
             <div className="grid md:grid-cols-2 gap-6">
               <div className="space-y-2">
                 <Label htmlFor="valorAproximado" className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
-                  Valor Aproximado *
+                  Valor Aproximado Propiedad (COP) *
                 </Label>
                 {errors.valorAproximado && (
                   <div className="flex items-center space-x-2 text-red-600 dark:text-red-400 text-sm">
@@ -218,18 +192,18 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
                 )}
                 <Input
                   id="valorAproximado"
-                  type="text"
+                  type="number"
                   {...register("valorAproximado")}
                   className={`w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400 ${
                     errors.valorAproximado ? 'border-red-500 dark:border-red-400' : ''
                   }`}
-                  placeholder="Ej: $500,000,000"
+                  placeholder="Ingresa el valor aproximado"
                 />
               </div>
-              
+
               <div className="space-y-2">
                 <Label htmlFor="valorAdministracion" className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
-                  Valor Administración
+                  Valor Administración (COP)
                 </Label>
                 {errors.valorAdministracion && (
                   <div className="flex items-center space-x-2 text-red-600 dark:text-red-400 text-sm">
@@ -239,33 +213,43 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
                 )}
                 <Input
                   id="valorAdministracion"
-                  type="text"
+                  type="number"
                   {...register("valorAdministracion")}
                   className={`w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400 ${
                     errors.valorAdministracion ? 'border-red-500 dark:border-red-400' : ''
                   }`}
-                  placeholder="Ej: $150,000"
+                  placeholder="Ingresa el valor de administración"
                 />
               </div>
             </div>
-            
+
+            {tipoPropiedad && PROPERTY_INFO_OWNER[tipoPropiedad] && (
+              <div className="grid md:grid-cols-2 gap-6">
+                {PROPERTY_INFO_OWNER[tipoPropiedad].map((fieldKey) => {
+                  const field = INPUT_INFO[fieldKey];
+                  if (!field) return null;
+                  return renderField(fieldKey, field);
+                })}
+              </div>
+            )}
+          </div>
+
+          <div className="space-y-6">
+            <div className="flex items-center space-x-2 pb-2 border-b border-zinc-200 dark:border-zinc-700">
+              <AlertCircle className="w-5 h-5 text-amber-600" />
+              <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">
+                Preguntas Adicionales
+              </h3>
+            </div>
             <div className="space-y-2">
               <Label htmlFor="comentariosAdicionales" className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
                 Comentarios Adicionales
               </Label>
-              {errors.comentariosAdicionales && (
-                <div className="flex items-center space-x-2 text-red-600 dark:text-red-400 text-sm">
-                  <AlertCircle className="w-4 h-4" />
-                  <span>{String(errors.comentariosAdicionales?.message)}</span>
-                </div>
-              )}
-              <Textarea
+              <textarea
                 id="comentariosAdicionales"
                 {...register("comentariosAdicionales")}
-                className={`w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400 min-h-[120px] ${
-                  errors.comentariosAdicionales ? 'border-red-500 dark:border-red-400' : ''
-                }`}
-                placeholder="Cuéntanos más detalles sobre tu propiedad..."
+                className="w-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-md px-3 py-2 focus:border-amber-500 dark:focus:border-amber-400 min-h-[100px] resize-none"
+                placeholder="Comentarios adicionales sobre tu propiedad..."
               />
             </div>
           </div>

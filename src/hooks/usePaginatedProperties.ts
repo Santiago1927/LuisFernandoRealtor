@@ -16,6 +16,5 @@ export function usePaginatedProperties({ page, pageSize = 12 }: UsePaginatedProp
   return useQuery({
     queryKey: ['properties', page, pageSize],
     queryFn: () => getPaginatedProperties(page, pageSize),
-    // keepPreviousData: true, // Descomenta si tu versión lo soporta
   });
 }

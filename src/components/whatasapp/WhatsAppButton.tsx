@@ -2,17 +2,10 @@ import { WhatsAppButtonProps } from "@/types/whatsapp.d";
 import WhatsAppIcon from "./WhatsAppIcon";
 import Link from "next/link";
 
-/**
- * Componente WhatsAppButton - Botón flotante para contacto directo por WhatsApp
- * Crea un enlace directo a WhatsApp con número de teléfono y mensaje predefinido
- * @param phoneNumber - Número de teléfono de WhatsApp (sin espacios ni caracteres especiales)
- * @param message - Mensaje predefinido que se enviará (opcional)
- */
 const WhatsAppButton: React.FC<WhatsAppButtonProps> = ({
   phoneNumber,
   message,
 }) => {
-  // Construcción de la URL de WhatsApp con parámetros
   const waLink = `https://wa.me/${phoneNumber}${
     message ? `?text=${encodeURIComponent(message)}` : ""
   }`;
