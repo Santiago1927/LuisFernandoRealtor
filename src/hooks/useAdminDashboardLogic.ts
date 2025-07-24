@@ -1,7 +1,7 @@
 // Importa los hooks useState y useEffect de React para manejar el estado y los efectos secundarios
 import { useState } from 'react';
 // Importa el contexto de autenticación para acceder a funciones como logout
-import { useAuthContext } from '../state/AuthContext';
+import { useAuthContext } from '../components/auth/AuthContext';
 // Importa useRouter de Next.js para la navegación programática
 import { useRouter } from 'next/navigation';
 // Importa el tipo Property para tipar las propiedades

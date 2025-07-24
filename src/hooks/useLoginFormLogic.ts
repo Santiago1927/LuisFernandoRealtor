@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useAuthContext } from "../state/AuthContext";
+import { useAuthContext } from "../components/auth/AuthContext";
 import { useRouter } from "next/navigation";
 
 /**

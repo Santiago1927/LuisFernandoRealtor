@@ -1,8 +1,7 @@
 import { useState } from "react";
-import OwnerForm from "./forms/OwnerForm";
-import { useAlert } from "@/state/AlertContext";
-import { ownerService } from "../../firebase/firestoreService";
-import { PropertyType } from "@/types/forms.d";
+import OwnerForm from "../forms/OwnerForm";
+import { useAlert } from "@/components/layout/AlertContext";
+import { ownerService } from "../../../../firebase/firestoreService";
 
 const OwnerEmail: React.FC = () => {
   const [loading, setLoading] = useState(false);
@@ -11,11 +10,9 @@ const OwnerEmail: React.FC = () => {
   const formSubmit = async (data: any) => {
     setLoading(true);
     try {
-      // Preparar datos completos para Firestore
       const ownerData = {
         ...data,
         userType: "owner",
-        // Asegurar que todos los campos tengan valores por defecto
         firstQuestion: data.firstQuestion || false,
         secondQuestion: data.secondQuestion || false,
         direccion: data.direccion || "",
@@ -39,15 +36,12 @@ const OwnerEmail: React.FC = () => {
         situacionJuridicaEspecifica: data.situacionJuridicaEspecifica || "",
         tipoProyecto: data.tipoProyecto || null,
         comentariosAdicionales: data.comentariosAdicionales || "",
-        // Campos adicionales que pueden no estar en el formulario
         createdAt: new Date(),
         updatedAt: new Date(),
       };
 
-      // Save to Firestore
       await ownerService.createOwner(ownerData);
 
-      // Send email
       const response = await fetch("/api/send", {
         method: "POST",
         body: JSON.stringify(ownerData),

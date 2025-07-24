@@ -1,5 +1,5 @@
 import { WhatsAppButtonProps } from "@/types/whatsapp.d";
-import WhatsAppIcon from "./assets/WhatsAppIcon";
+import WhatsAppIcon from "./WhatsAppIcon";
 import Link from "next/link";
 
 /**

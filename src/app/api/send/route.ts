@@ -1,4 +1,4 @@
-import ContactEmail from "@/components/emails/ContactEmail";
+import ContactEmail from "@/components/contact/emails/ContactEmailTemplate";
 import React from "react";
 import { Resend } from "resend";
 

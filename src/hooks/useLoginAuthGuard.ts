@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuthContext } from '../state/AuthContext';
+import { useAuthContext } from '../components/auth/AuthContext';
 
 // Hook personalizado para proteger la ruta de login y redirigir si ya está autenticado
 export function useLoginAuthGuard() {

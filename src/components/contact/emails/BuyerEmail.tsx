@@ -1,8 +1,7 @@
 import { useState } from "react";
-import BuyerForm from "./forms/BuyerForm";
-import { useAlert } from "@/state/AlertContext";
-import { buyerService } from "../../firebase/firestoreService";
-import { PropertyType } from "@/types/forms.d";
+import BuyerForm from "../forms/BuyerForm";
+import { useAlert } from "@/components/layout/AlertContext";
+import { buyerService } from "../../../../firebase/firestoreService";
 
 const BuyerEmail: React.FC = () => {
   const [loading, setLoading] = useState(false);

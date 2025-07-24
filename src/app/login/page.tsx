@@ -1,7 +1,7 @@
 'use client';
 
+import LoginForm from '@/components/auth/LoginForm';
 import { useLoginAuthGuard } from '../../hooks/useLoginAuthGuard';
-import LoginForm from '../../components/forms/LoginForm';
 import { Shield } from "lucide-react";
 
 export default function LoginPage() {

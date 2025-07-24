@@ -1,9 +1,9 @@
 'use client'
 
 import { useState } from "react";
-import BuyerEmail from "./BuyerEmail";
-import OwnerEmail from "./OwnerEmail";
-import ContactEmail from "./ContactEmail";
+import OwnerEmail from "./emails/OwnerEmail";
+import ContactEmail from "./emails/ContactEmail";
+import BuyerEmail from "./emails/BuyerEmail";
 import { USER_ROLES } from "@/constants/constants";
 import { AnimatePresence, motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -11,7 +11,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { 
   Home, 
-  User, 
   MessageSquare, 
   ArrowRight,
   Building2

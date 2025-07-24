@@ -1,6 +1,6 @@
 'use client';
 
-import ThemeToggleButton from "../ThemeToggleButton";
+import ThemeToggleButton from "../theme/ThemeToggleButton";
 import Link from 'next/link';
 import { useHeaderLogic } from '../../hooks/useHeaderLogic';
 import { Button } from "@/components/ui/button";
