@@ -74,7 +74,11 @@ export const ThemeProvider = ({ children }: Props) => {
     setTheme(storedTheme);
     
     // Aplicar la clase del tema al elemento raíz del documento
-    document.documentElement.className = storedTheme;
+    if (storedTheme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
   }, []);
 
   /**
@@ -90,7 +94,11 @@ export const ThemeProvider = ({ children }: Props) => {
       localStorage.setItem("theme", newTheme);
       
       // Aplicar la clase del nuevo tema al elemento raíz del documento
-      document.documentElement.className = newTheme;
+      if (newTheme === "dark") {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
       
       return newTheme;
     });
