@@ -8,7 +8,6 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu, Building2, Home, Phone, User, Star } from "lucide-react";
 
 const navigationLinks = [
-  { href: "/", text: "Inicio", icon: Home },
   { href: "/propiedades", text: "Propiedades", icon: Building2 },
   { href: "/contacto", text: "Contacto", icon: Phone },
 ];
