@@ -1,7 +1,7 @@
 'use client';
 
-import CarouselSection from "@/components/CarouselSection";
-import MainSection from "../components/MainSection";
+import CarouselSection from "@/components/home/CarouselSection";
+import MainSection from "../components/home/MainSection";
 import PropertyList from "../components/admin/PropertyList";
 import { useState } from "react";
 import { usePaginatedProperties } from "../hooks/usePaginatedProperties";

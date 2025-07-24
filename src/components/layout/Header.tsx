@@ -1,8 +1,8 @@
 'use client';
 
-import ThemeToggleButton from "./ThemeToggleButton";
+import ThemeToggleButton from "../ThemeToggleButton";
 import Link from 'next/link';
-import { useHeaderLogic } from '../hooks/useHeaderLogic';
+import { useHeaderLogic } from '../../hooks/useHeaderLogic';
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu, Building2, Home, Phone, User, Star } from "lucide-react";
