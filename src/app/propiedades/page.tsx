@@ -1,24 +1,32 @@
-'use client'; // Indica que este archivo se ejecuta del lado del cliente en Next.js
+'use client';
 
-// Importa el componente que muestra la lista de propiedades
 import PropertyList from '../../components/admin/PropertyList';
-// Importa el botón para cambiar el tema (claro/oscuro)
-import ThemeToggleButton from '../../components/ThemeToggleButton';
-// Importa el hook personalizado para la lógica de filtrado y búsqueda de propiedades
 import { useState } from 'react';
 import { usePaginatedProperties } from '../../hooks/usePaginatedProperties';
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { 
+  Search, 
+  MapPin, 
+  Building2, 
+  DollarSign, 
+  Filter,
+  ChevronLeft,
+  ChevronRight,
+  Loader2
+} from "lucide-react";
 
-// Arreglo de ciudades disponibles para el filtro
-const ciudades = ['Medellin', 'Bogota', 'Cali', 'Pasto'];
-// Arreglo de tipos de propiedad disponibles para el filtro
+const ciudades = ['Medellín', 'Bogotá', 'Cali', 'Pasto', 'Envigado', 'Rionegro'];
 const tipos = [
-  { value: 'house', label: 'Casa' },
-  { value: 'apartment', label: 'Apartamento' },
-  { value: 'commercial', label: 'Comercial' },
-  { value: 'land', label: 'Terreno' },
+  { value: 'house', label: 'Casa', icon: Building2 },
+  { value: 'apartment', label: 'Apartamento', icon: Building2 },
+  { value: 'commercial', label: 'Comercial', icon: Building2 },
+  { value: 'land', label: 'Terreno', icon: MapPin },
 ];
 
-// Componente principal de la página de listado de propiedades
 export default function PropiedadesPage() {
   const [page, setPage] = useState(1);
   const { data, isLoading } = usePaginatedProperties({ page, pageSize: 12 });
@@ -27,79 +35,210 @@ export default function PropiedadesPage() {
   const totalPages = Math.ceil(total / 12);
   const showVerMas = totalPages > 9 && page === 9;
 
-  // Filtros (puedes implementar la lógica de filtros con backend más adelante)
-  // Por ahora solo UI
   const [search, setSearch] = useState('');
   const [city, setCity] = useState('');
   const [type, setType] = useState('');
   const [minPrice, setMinPrice] = useState('');
   const [maxPrice, setMaxPrice] = useState('');
 
+  const handlePageChange = (newPage: number) => {
+    setPage(newPage);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-black">
-      {/* Botón de cambio de tema en la parte superior derecha */}
-      {/* <div className="flex justify-end p-4">
-        <ThemeToggleButton />
-      </div> */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Título de la página */}
-        <h1 className="text-3xl font-bold text-yellow-500 mb-6">Propiedades</h1>
-        {/* Filtros de búsqueda */}
-        <div className="flex flex-wrap gap-4 mb-8 bg-gray-100 dark:bg-secondary-800 p-4 rounded-lg shadow">
-          <input
-            type="text"
-            placeholder="Buscar por título..."
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-            className="px-3 py-2 border-2 border-yellow-500 rounded w-48 bg-white text-black dark:bg-secondary-900 dark:text-white focus:border-yellow-400 focus:ring-0"
-          />
-          <select value={city} onChange={e => setCity(e.target.value)} className="px-3 py-2 border-2 border-yellow-500 rounded w-40 bg-white text-black dark:bg-secondary-900 dark:text-white focus:border-yellow-400 focus:ring-0">
-            <option value="">Todas las ciudades</option>
-            {ciudades.map(c => <option key={c} value={c}>{c}</option>)}
-          </select>
-          <select value={type} onChange={e => setType(e.target.value)} className="px-3 py-2 border-2 border-yellow-500 rounded w-40 bg-white text-black dark:bg-secondary-900 dark:text-white focus:border-yellow-400 focus:ring-0">
-            <option value="">Todos los tipos</option>
-            {tipos.map(t => <option key={t.value} value={t.value}>{t.label}</option>)}
-          </select>
-          <input
-            type="number"
-            placeholder="Precio mínimo"
-            value={minPrice}
-            onChange={e => setMinPrice(e.target.value)}
-            className="px-3 py-2 border-2 border-yellow-500 rounded w-32 bg-white text-black dark:bg-secondary-900 dark:text-white focus:border-yellow-400 focus:ring-0"
-          />
-          <input
-            type="number"
-            placeholder="Precio máximo"
-            value={maxPrice}
-            onChange={e => setMaxPrice(e.target.value)}
-            className="px-3 py-2 border-2 border-yellow-500 rounded w-32 bg-white text-black dark:bg-secondary-900 dark:text-white focus:border-yellow-400 focus:ring-0"
-          />
+    <div className="min-h-screen bg-gradient-to-br from-zinc-50 via-white to-amber-50/30 dark:from-zinc-900 dark:via-black dark:to-amber-900/10">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-16">
+        
+        <div className="text-center mb-12 lg:mb-16">
+          <Badge variant="secondary" className="mb-4 bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300 border-amber-200 dark:border-amber-800">
+            Catálogo Completo
+          </Badge>
+          <h1 className="text-4xl lg:text-6xl font-bold text-zinc-900 dark:text-zinc-100 mb-4">
+            Propiedades
+            <span className="block bg-gradient-to-r from-amber-600 to-yellow-600 bg-clip-text text-transparent">
+              Disponibles
+            </span>
+          </h1>
+          <p className="text-lg text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto">
+            Explora nuestra colección completa de propiedades premium en las mejores ubicaciones
+          </p>
         </div>
+
+        <Card className="mb-12 border-0 shadow-xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur">
+          <CardHeader>
+            <CardTitle className="flex items-center space-x-2 text-zinc-900 dark:text-zinc-100">
+              <Filter className="w-5 h-5 text-amber-600" />
+              <span>Filtros de Búsqueda</span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
+              
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-zinc-400" />
+                <Input
+                  type="text"
+                  placeholder="Buscar propiedades..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  className="pl-10 border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 focus:border-amber-500 dark:focus:border-amber-400"
+                />
+              </div>
+
+              {/* Filtro por ciudad */}
+              <Select value={city} onValueChange={setCity}>
+                <SelectTrigger className="border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 focus:border-amber-500 dark:focus:border-amber-400">
+                  <SelectValue placeholder="Ciudad" />
+                </SelectTrigger>
+                <SelectContent>
+                  {ciudades.map((ciudad) => (
+                    <SelectItem key={ciudad} value={ciudad}>
+                      {ciudad}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
+              {/* Filtro por tipo */}
+              <Select value={type} onValueChange={setType}>
+                <SelectTrigger className="border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 focus:border-amber-500 dark:focus:border-amber-400">
+                  <SelectValue placeholder="Tipo" />
+                </SelectTrigger>
+                <SelectContent>
+                  {tipos.map((tipo) => (
+                    <SelectItem key={tipo.value} value={tipo.value}>
+                      <div className="flex items-center space-x-2">
+                        <tipo.icon className="w-4 h-4" />
+                        <span>{tipo.label}</span>
+                      </div>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
+              <div className="relative">
+                <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-zinc-400" />
+                <Input
+                  type="number"
+                  placeholder="Precio mínimo"
+                  value={minPrice}
+                  onChange={(e) => setMinPrice(e.target.value)}
+                  className="pl-10 border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 focus:border-amber-500 dark:focus:border-amber-400"
+                />
+              </div>
+
+              <div className="relative">
+                <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-zinc-400" />
+                <Input
+                  type="number"
+                  placeholder="Precio máximo"
+                  value={maxPrice}
+                  onChange={(e) => setMaxPrice(e.target.value)}
+                  className="pl-10 border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 focus:border-amber-500 dark:focus:border-amber-400"
+                />
+              </div>
+
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setSearch('');
+                  setCity('');
+                  setType('');
+                  setMinPrice('');
+                  setMaxPrice('');
+                }}
+                className="border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800"
+              >
+                Limpiar Filtros
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+
         {isLoading ? (
-          <div className="text-center py-12">Cargando propiedades...</div>
+          <div className="flex items-center justify-center py-16">
+            <div className="text-center">
+              <Loader2 className="h-8 w-8 animate-spin text-amber-600 dark:text-amber-400 mx-auto mb-4" />
+              <p className="text-zinc-600 dark:text-zinc-400">Cargando propiedades...</p>
+            </div>
+          </div>
         ) : (
-          <PropertyList properties={properties} />
+          <>
+            {total > 0 && (
+              <div className="mb-8 text-center">
+                <p className="text-lg text-zinc-600 dark:text-zinc-400">
+                  Mostrando <span className="font-semibold text-amber-600 dark:text-amber-400">{properties.length}</span> de <span className="font-semibold text-amber-600 dark:text-amber-400">{total}</span> propiedades
+                </p>
+              </div>
+            )}
+
+            <PropertyList properties={properties} />
+
+            {totalPages > 1 && (
+              <div className="flex items-center justify-center mt-12 space-x-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handlePageChange(page - 1)}
+                  disabled={page === 1}
+                  className="border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 disabled:opacity-50"
+                >
+                  <ChevronLeft className="w-4 h-4 mr-1" />
+                  Anterior
+                </Button>
+
+                <div className="flex items-center space-x-1">
+                  {Array.from({ length: Math.min(totalPages, 9) }, (_, i) => (
+                    <Button
+                      key={i + 1}
+                      variant={page === i + 1 ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => handlePageChange(i + 1)}
+                      className={
+                        page === i + 1
+                          ? "bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-700 hover:to-yellow-700 text-white border-0"
+                          : "border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800"
+                      }
+                    >
+                      {i + 1}
+                    </Button>
+                  ))}
+                  
+                  {showVerMas && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handlePageChange(page + 1)}
+                      className="border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800"
+                    >
+                      ...
+                    </Button>
+                  )}
+                </div>
+
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handlePageChange(page + 1)}
+                  disabled={page === totalPages}
+                  className="border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 disabled:opacity-50"
+                >
+                  Siguiente
+                  <ChevronRight className="w-4 h-4 ml-1" />
+                </Button>
+              </div>
+            )}
+
+            {total > 0 && (
+              <div className="text-center mt-8">
+                <p className="text-sm text-zinc-600 dark:text-zinc-400">
+                  Mostrando {((page - 1) * 12) + 1} - {Math.min(page * 12, total)} de {total} propiedades
+                </p>
+              </div>
+            )}
+          </>
         )}
-        <div className="flex justify-center mt-8 gap-2">
-          {Array.from({ length: Math.min(totalPages, 9) }, (_, i) => (
-            <button
-              key={i + 1}
-              onClick={() => setPage(i + 1)}
-              className={`px-4 py-2 rounded ${page === i + 1 ? 'bg-yellow-500 text-black font-bold' : 'bg-gray-200 dark:bg-secondary-700 text-gray-700 dark:text-white'}`}
-            >
-              {i + 1}
-            </button>
-          ))}
-          {showVerMas && (
-            <button
-              onClick={() => setPage(page + 1)}
-              className="px-4 py-2 rounded bg-yellow-500 text-black font-bold"
-            >
-              Ver más
-            </button>
-          )}
-        </div>
       </div>
     </div>
   );

@@ -7,7 +7,6 @@ import { AuthProvider } from "../state/AuthContext";
 import Footer from "../components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import { AlertProvider } from "@/state/AlertContext";
-import Alert from "@/components/assets/Alert";
 import ReactQueryProvider from '../ReactQueryProvider';
 
 const inter = Inter({ subsets: ["latin"] });

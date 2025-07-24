@@ -1,93 +1,284 @@
-'use client'; // Indica que este archivo se ejecuta del lado del cliente en Next.js
+'use client';
 
-// Importa el hook para obtener los parámetros de la URL
 import { useParams } from 'next/navigation';
-// Importa el hook personalizado para la lógica de la página de detalle de propiedad
 import { usePropertyDetailPageLogic } from '../../../hooks/usePropertyDetailPageLogic';
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { 
+  ChevronLeft, 
+  ChevronRight, 
+  MapPin, 
+  Bed, 
+  Bath, 
+  Square, 
+  Building2,
+  Image as ImageIcon,
+  Phone,
+  Mail,
+  Share2,
+  Heart
+} from "lucide-react";
 
-// Componente principal para mostrar el detalle de una propiedad
 export default function DetallePropiedadPage() {
-  // Obtiene el id de la propiedad desde los parámetros de la URL
   const { id } = useParams();
-  // Usa el hook para obtener la propiedad, imágenes y lógica de navegación
   const { property, activeImage, images, nextImage, prevImage, mapUrl } = usePropertyDetailPageLogic(id);
 
-  // Si la propiedad aún no se ha cargado, muestra un mensaje de carga
-  if (!property) return <div className="max-w-4xl mx-auto py-16 text-center text-lg">Cargando propiedad...</div>;
+  if (!property) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-zinc-50 via-white to-amber-50/30 dark:from-zinc-900 dark:via-black dark:to-amber-900/10 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-600 mx-auto mb-4"></div>
+          <p className="text-lg text-zinc-600 dark:text-zinc-400">Cargando propiedad...</p>
+        </div>
+      </div>
+    );
+  }
+
+  const getStatusConfig = (status: string) => {
+    switch (status) {
+      case 'available':
+        return {
+          label: 'Disponible',
+          className: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300 border-green-200 dark:border-green-800'
+        };
+      case 'sold':
+        return {
+          label: 'Vendida',
+          className: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300 border-red-200 dark:border-red-800'
+        };
+      default:
+        return {
+          label: 'Alquilada',
+          className: 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300 border-amber-200 dark:border-amber-800'
+        };
+    }
+  };
+
+  const statusConfig = getStatusConfig(property.status);
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="bg-gray-50 dark:bg-secondary-800 rounded-2xl shadow-lg p-6">
-      {/* Título de la propiedad */}
-      <h1 className="text-3xl font-bold text-primary-700 dark:text-primary-400 mb-4">{property.title}</h1>
-      <div className="mb-6">
-        {/* Carrusel de imágenes de la propiedad */}
-        <div className="relative aspect-w-16 aspect-h-9 bg-gray-200 dark:bg-gray-700 rounded-xl overflow-hidden">
-          {images.length > 0 ? (
-            <>
-              <img
-                src={images[activeImage]}
-                alt={property.title}
-                className="w-full h-96 object-cover object-center"
-              />
-              {images.length > 1 && (
-                <>
-                  {/* Botón para imagen anterior */}
-                  <button onClick={prevImage} className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/70 dark:bg-gray-900/70 rounded-full p-1 hover:bg-primary-600 hover:text-white transition-colors">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
-                  </button>
-                  {/* Botón para imagen siguiente */}
-                  <button onClick={nextImage} className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/70 dark:bg-gray-900/70 rounded-full p-1 hover:bg-primary-600 hover:text-white transition-colors">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
-                  </button>
-                </>
-              )}
-            </>
-          ) : (
-            // Si no hay imágenes, muestra un ícono de imagen vacía
-            <div className="w-full h-96 flex items-center justify-center text-gray-400">
-              <svg className="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-              </svg>
-            </div>
-          )}
+    <div className="min-h-screen bg-gradient-to-br from-zinc-50 via-white to-amber-50/30 dark:from-zinc-900 dark:via-black dark:to-amber-900/10">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
+        
+        <div className="mb-6">
+          <Button variant="ghost" className="text-zinc-600 dark:text-zinc-400 hover:text-amber-600 dark:hover:text-amber-400">
+            <ChevronLeft className="w-4 h-4 mr-2" />
+            Volver a Propiedades
+          </Button>
         </div>
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
-        {/* Tarjeta de descripción */}
-        <div className="bg-gray-50 dark:bg-secondary-800 rounded-xl shadow-lg p-6 mb-8">
-          {/* Información básica de la propiedad */}
-          <div className="flex flex-wrap gap-4 text-secondary-900 dark:text-white">
-            <span className="px-3 py-1 bg-primary-100 dark:bg-primary-900 rounded-full font-semibold">{property.type}</span>
-            <span className="px-3 py-1 bg-secondary-100 dark:bg-secondary-900 rounded-full">{property.status === 'available' ? 'Disponible' : property.status === 'sold' ? 'Vendida' : 'Alquilada'}</span>
-            {property.bedrooms && <span>{property.bedrooms} hab</span>}
-            {property.bathrooms && <span>{property.bathrooms} baños</span>}
-            {property.area && <span>{property.area} m²</span>}
+
+        <div className="grid xl:grid-cols-4 gap-6 lg:gap-8">
+          
+          <div className="xl:col-span-3 space-y-6">
+            
+            <div className="grid lg:grid-cols-2 gap-6">
+              
+              <div className="lg:col-span-2">
+                <Card className="border-0 shadow-2xl overflow-hidden">
+                  <CardContent className="p-0">
+                    <div className="relative aspect-[21/9] bg-zinc-100 dark:bg-zinc-800">
+                      {images.length > 0 ? (
+                        <>
+                          <img
+                            src={images[activeImage]}
+                            alt={property.title}
+                            className="w-full h-full object-cover"
+                          />
+                          
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent"></div>
+                          
+                          {images.length > 1 && (
+                            <>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={prevImage}
+                                className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/90 dark:bg-zinc-900/90 backdrop-blur border border-zinc-200/50 dark:border-zinc-700/50 shadow-lg hover:bg-white dark:hover:bg-zinc-800"
+                              >
+                                <ChevronLeft className="w-6 h-6 text-zinc-700 dark:text-zinc-300" />
+                              </Button>
+                              
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={nextImage}
+                                className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/90 dark:bg-zinc-900/90 backdrop-blur border border-zinc-200/50 dark:border-zinc-700/50 shadow-lg hover:bg-white dark:hover:bg-zinc-800"
+                              >
+                                <ChevronRight className="w-6 h-6 text-zinc-700 dark:text-zinc-300" />
+                              </Button>
+                            </>
+                          )}
+                        </>
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center">
+                          <div className="text-center text-zinc-400 dark:text-zinc-500">
+                            <ImageIcon className="h-16 w-16 mx-auto mb-4" />
+                            <span className="text-lg">Sin imágenes disponibles</span>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+
+              <div className="lg:col-span-2">
+                <Card className="border-0 shadow-xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur">
+                  <CardHeader className="pb-4">
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1">
+                        <h1 className="text-3xl lg:text-4xl font-bold text-zinc-900 dark:text-zinc-100 mb-2">
+                          {property.title}
+                        </h1>
+                        <div className="flex items-center space-x-1 text-zinc-600 dark:text-zinc-400 mb-4">
+                          <MapPin className="w-4 h-4" />
+                          <span>{property.address}</span>
+                        </div>
+                      </div>
+                      <div className="flex items-center space-x-2 ml-4">
+                        <Button variant="ghost" size="icon" className="text-zinc-600 dark:text-zinc-400 hover:text-amber-600 dark:hover:text-amber-400">
+                          <Heart className="w-5 h-5" />
+                        </Button>
+                        <Button variant="ghost" size="icon" className="text-zinc-600 dark:text-zinc-400 hover:text-amber-600 dark:hover:text-amber-400">
+                          <Share2 className="w-5 h-5" />
+                        </Button>
+                      </div>
+                    </div>
+                  </CardHeader>
+                  
+                  <CardContent className="space-y-6">
+                    <div className="flex items-center space-x-3">
+                      <Badge variant="secondary" className="bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-200 border-zinc-200 dark:border-zinc-700">
+                        <Building2 className="w-3 h-3 mr-1" />
+                        {property.type}
+                      </Badge>
+                      <Badge variant="secondary" className={statusConfig.className}>
+                        {statusConfig.label}
+                      </Badge>
+                    </div>
+
+                    <div className="grid grid-cols-3 gap-4">
+                      {property.bedrooms && (
+                        <div className="text-center p-4 bg-zinc-50 dark:bg-zinc-800 rounded-lg">
+                          <Bed className="w-6 h-6 text-amber-600 dark:text-amber-400 mx-auto mb-2" />
+                          <div className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">{property.bedrooms}</div>
+                          <div className="text-sm text-zinc-600 dark:text-zinc-400">Habitaciones</div>
+                        </div>
+                      )}
+                      {property.bathrooms && (
+                        <div className="text-center p-4 bg-zinc-50 dark:bg-zinc-800 rounded-lg">
+                          <Bath className="w-6 h-6 text-amber-600 dark:text-amber-400 mx-auto mb-2" />
+                          <div className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">{property.bathrooms}</div>
+                          <div className="text-sm text-zinc-600 dark:text-zinc-400">Baños</div>
+                        </div>
+                      )}
+                      {property.area && (
+                        <div className="text-center p-4 bg-zinc-50 dark:bg-zinc-800 rounded-lg">
+                          <Square className="w-6 h-6 text-amber-600 dark:text-amber-400 mx-auto mb-2" />
+                          <div className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">{property.area}</div>
+                          <div className="text-sm text-zinc-600 dark:text-zinc-400">m²</div>
+                        </div>
+                      )}
+                    </div>
+
+                    <div>
+                      <h3 className="text-xl font-semibold text-zinc-900 dark:text-zinc-100 mb-3">Descripción</h3>
+                      <p className="text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                        {property.description}
+                      </p>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+
+            {mapUrl && (
+              <Card className="border-0 shadow-xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur">
+                <CardHeader>
+                  <CardTitle className="flex items-center space-x-2 text-zinc-900 dark:text-zinc-100">
+                    <MapPin className="w-5 h-5 text-amber-600" />
+                    <span>Ubicación</span>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="p-0">
+                  <div className="relative bg-zinc-50 dark:bg-zinc-800 h-96">
+                    <iframe
+                      src={mapUrl}
+                      width="100%"
+                      height="100%"
+                      style={{ border: 0 }}
+                      allowFullScreen={true}
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                      title="Mapa de la propiedad"
+                      className="w-full h-full"
+                    />
+                  </div>
+                </CardContent>
+              </Card>
+            )}
           </div>
-          {/* Precio, dirección y descripción */}
-          <div className="text-xl font-bold text-yellow-500 mt-4 mb-2">${property.price.toLocaleString()}</div>
-          <div className="text-secondary-900 dark:text-white mb-2">{property.address}</div>
-          <div className="text-secondary-900 dark:text-white mb-4">{property.description}</div>
-        </div>
-        {/* Mapa de ubicación */}
-        {mapUrl && (
-          <div className="mb-8">
-            <h2 className="text-xl font-semibold text-primary-700 dark:text-primary-400 mb-2">Ubicación</h2>
-            <div className="rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700" style={{height:'350px'}}>
-              <iframe
-                src={mapUrl}
-                width="100%"
-                height="350"
-                style={{ border: 0 }}
-                allowFullScreen={true}
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                title="Mapa de la propiedad"
-              ></iframe>
+
+          <div className="xl:col-span-1 space-y-6">
+            
+            <div className="sticky top-6 space-y-6">
+              <Card className="border-0 shadow-xl bg-gradient-to-br from-amber-500 to-yellow-600 text-white">
+                <CardContent className="p-6">
+                  <div className="text-center">
+                    <div className="text-3xl lg:text-4xl font-bold mb-2">
+                      ${property.price.toLocaleString()}
+                    </div>
+                    <div className="text-amber-100 text-sm">Precio de venta</div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="border-0 shadow-xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur">
+                <CardHeader>
+                  <CardTitle className="text-zinc-900 dark:text-zinc-100">Contactar Agente</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <Button className="w-full bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-700 hover:to-yellow-700 text-white font-semibold">
+                    <Phone className="w-4 h-4 mr-2" />
+                    Llamar Ahora
+                  </Button>
+                  <Button variant="outline" className="w-full border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800">
+                    <Mail className="w-4 h-4 mr-2" />
+                    Enviar Mensaje
+                  </Button>
+                  <div className="text-center text-sm text-zinc-600 dark:text-zinc-400 pt-2 border-t border-zinc-200 dark:border-zinc-700">
+                    <p className="font-semibold text-zinc-900 dark:text-zinc-100">Agente: Luis Fernando</p>
+                    <p className="mt-1">+57 321 422 3931</p>
+                    <p className="text-xs mt-2 text-zinc-500 dark:text-zinc-500">Agente Certificado</p>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="border-0 shadow-xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur">
+                <CardHeader>
+                  <CardTitle className="text-zinc-900 dark:text-zinc-100">Información Adicional</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <div className="flex justify-between items-center">
+                    <span className="text-zinc-600 dark:text-zinc-400">Referencia</span>
+                    <span className="font-semibold text-zinc-900 dark:text-zinc-100">#{id}</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-zinc-600 dark:text-zinc-400">Tipo</span>
+                    <span className="font-semibold text-zinc-900 dark:text-zinc-100">{property.type}</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-zinc-600 dark:text-zinc-400">Estado</span>
+                    <Badge variant="secondary" className={statusConfig.className}>
+                      {statusConfig.label}
+                    </Badge>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
           </div>
-        )}
-      </div>
+        </div>
       </div>
     </div>
   );
