@@ -3,55 +3,55 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowRight, Star, Award, Shield } from "lucide-react";
+import { ArrowRight, Star, Award, Shield, MapPin, Phone } from "lucide-react";
 
 export default function MainSection() {
   return (
-    <main className="relative w-full overflow-hidden">
+    <main className="relative w-full min-h-screen flex items-center">
       <div className="absolute inset-0 bg-gradient-to-br from-zinc-50 via-white to-amber-50/30 dark:from-zinc-900 dark:via-black dark:to-amber-900/10"></div>
       
-      <div className="relative z-10">
-        <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+      <div className="relative z-10 w-full">
+        <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-16">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 xl:gap-16 items-center min-h-[80vh]">
             
-            <div className="space-y-8">
-              <div className="flex items-center space-x-2">
-                <Badge variant="secondary" className="bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300 border-amber-200 dark:border-amber-800">
-                  <Award className="w-3 h-3 mr-1" />
+            <div className="space-y-6 lg:space-y-8">
+              <div className="flex items-center space-x-3">
+                <Badge variant="secondary" className="bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300 border-amber-200 dark:border-amber-800 px-3 py-1">
+                  <Award className="w-4 h-4 mr-1" />
                   Agente Certificado
                 </Badge>
-                <Badge variant="outline" className="border-zinc-300 dark:border-zinc-600">
-                  <Star className="w-3 h-3 mr-1 fill-amber-500 text-amber-500" />
+                <Badge variant="outline" className="border-zinc-300 dark:border-zinc-600 px-3 py-1">
+                  <Star className="w-4 h-4 mr-1 fill-amber-500 text-amber-500" />
                   5.0 Rating
                 </Badge>
               </div>
 
-              <div className="space-y-4">
-                <h1 className="text-4xl lg:text-6xl xl:text-7xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 leading-tight">
+              <div className="space-y-4 lg:space-y-6">
+                <h1 className="text-5xl lg:text-7xl xl:text-8xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 leading-tight">
                   Propiedades de
                   <span className="block bg-gradient-to-r from-amber-600 to-yellow-600 bg-clip-text text-transparent">
                     Lujo Exclusivo
                   </span>
                 </h1>
-                <p className="text-xl lg:text-2xl text-zinc-600 dark:text-zinc-400 font-light leading-relaxed">
+                <p className="text-xl lg:text-3xl xl:text-4xl text-zinc-600 dark:text-zinc-400 font-light leading-relaxed">
                   Descubre propiedades únicas en las mejores ubicaciones de Colombia
                 </p>
               </div>
 
-              <p className="text-lg text-zinc-700 dark:text-zinc-300 leading-relaxed max-w-2xl">
+              <p className="text-lg lg:text-xl text-zinc-700 dark:text-zinc-300 leading-relaxed max-w-2xl">
                 Aplicamos estrategias de marketing digital avanzadas para ayudarte a vender 
                 o comprar propiedades premium que superen tus expectativas.
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex flex-col sm:flex-row gap-4 lg:gap-6">
                 <Button 
                   asChild
                   size="lg"
-                  className="bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-700 hover:to-yellow-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
+                  className="bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-700 hover:to-yellow-700 text-white font-bold shadow-xl hover:shadow-2xl transition-all duration-300 text-lg px-8 py-6"
                 >
                   <Link href="/contacto" className="flex items-center space-x-2">
                     <span>Hablar con un Agente</span>
-                    <ArrowRight className="w-4 h-4" />
+                    <ArrowRight className="w-5 h-5" />
                   </Link>
                 </Button>
                 
@@ -59,50 +59,61 @@ export default function MainSection() {
                   asChild
                   variant="outline"
                   size="lg"
-                  className="border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800"
+                  className="border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-lg px-8 py-6"
                 >
                   <Link href="/propiedades">Ver Propiedades</Link>
                 </Button>
               </div>
 
-              <div className="grid grid-cols-3 gap-6 pt-8 border-t border-zinc-200 dark:border-zinc-800">
+              <div className="grid grid-cols-3 gap-4 lg:gap-8 pt-6 lg:pt-8 border-t border-zinc-200 dark:border-zinc-800">
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-amber-600 dark:text-amber-400">500+</div>
-                  <div className="text-sm text-zinc-600 dark:text-zinc-400">Propiedades Vendidas</div>
+                  <div className="text-3xl lg:text-4xl font-bold text-amber-600 dark:text-amber-400">500+</div>
+                  <div className="text-sm lg:text-base text-zinc-600 dark:text-zinc-400">Propiedades Vendidas</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-amber-600 dark:text-amber-400">98%</div>
-                  <div className="text-sm text-zinc-600 dark:text-zinc-400">Satisfacción</div>
+                  <div className="text-3xl lg:text-4xl font-bold text-amber-600 dark:text-amber-400">98%</div>
+                  <div className="text-sm lg:text-base text-zinc-600 dark:text-zinc-400">Satisfacción</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-amber-600 dark:text-amber-400">15+</div>
-                  <div className="text-sm text-zinc-600 dark:text-zinc-400">Años de Experiencia</div>
+                  <div className="text-3xl lg:text-4xl font-bold text-amber-600 dark:text-amber-400">15+</div>
+                  <div className="text-sm lg:text-base text-zinc-600 dark:text-zinc-400">Años de Experiencia</div>
+                </div>
+              </div>
+
+              <div className="flex items-center space-x-6 pt-4">
+                <div className="flex items-center space-x-2 text-zinc-600 dark:text-zinc-400">
+                  <Phone className="w-4 h-4" />
+                  <span className="text-sm">+57 321 422 3931</span>
+                </div>
+                <div className="flex items-center space-x-2 text-zinc-600 dark:text-zinc-400">
+                  <MapPin className="w-4 h-4" />
+                  <span className="text-sm">Medellín, Colombia</span>
                 </div>
               </div>
             </div>
 
             <div className="relative">
-              <div className="relative rounded-2xl overflow-hidden shadow-2xl">
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl">
                 <Image
                   src="/images/home.webp"
                   alt="Propiedad de lujo exclusiva"
-                  width={600}
-                  height={700}
+                  width={800}
+                  height={900}
                   className="w-full h-auto object-cover"
                   priority
                 />
                 
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent"></div>
               </div>
 
-              <Card className="absolute -bottom-6 -left-6 bg-white/95 dark:bg-zinc-900/95 backdrop-blur border-0 shadow-xl">
-                <CardContent className="p-4">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-amber-500 to-yellow-600 flex items-center justify-center">
-                      <Shield className="w-6 h-6 text-white" />
+              <Card className="absolute -bottom-8 -left-8 bg-white/95 dark:bg-zinc-900/95 backdrop-blur border-0 shadow-2xl">
+                <CardContent className="p-6">
+                  <div className="flex items-center space-x-4">
+                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-amber-500 to-yellow-600 flex items-center justify-center">
+                      <Shield className="w-8 h-8 text-white" />
                     </div>
                     <div>
-                      <div className="font-semibold text-zinc-900 dark:text-zinc-100">
+                      <div className="font-bold text-lg text-zinc-900 dark:text-zinc-100">
                         Garantía de Calidad
                       </div>
                       <div className="text-sm text-zinc-600 dark:text-zinc-400">
@@ -116,45 +127,45 @@ export default function MainSection() {
           </div>
         </section>
 
-        <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <div className="grid md:grid-cols-3 gap-8">
-            <Card className="border-0 shadow-lg bg-white/80 dark:bg-zinc-900/80 backdrop-blur">
-              <CardContent className="p-6 text-center">
-                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-amber-500 to-yellow-600 flex items-center justify-center">
-                  <Award className="w-8 h-8 text-white" />
+        <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20">
+          <div className="grid md:grid-cols-3 gap-8 lg:gap-12">
+            <Card className="border-0 shadow-xl bg-white/90 dark:bg-zinc-900/90 backdrop-blur hover:shadow-2xl transition-all duration-300">
+              <CardContent className="p-8 text-center">
+                <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-amber-500 to-yellow-600 flex items-center justify-center">
+                  <Award className="w-10 h-10 text-white" />
                 </div>
-                <h3 className="text-xl font-semibold text-zinc-900 dark:text-zinc-100 mb-2">
+                <h3 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 mb-4">
                   Experiencia Premium
                 </h3>
-                <p className="text-zinc-600 dark:text-zinc-400">
+                <p className="text-zinc-600 dark:text-zinc-400 text-lg">
                   Más de 15 años en el mercado de bienes raíces de lujo
                 </p>
               </CardContent>
             </Card>
 
-            <Card className="border-0 shadow-lg bg-white/80 dark:bg-zinc-900/80 backdrop-blur">
-              <CardContent className="p-6 text-center">
-                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-amber-500 to-yellow-600 flex items-center justify-center">
-                  <Star className="w-8 h-8 text-white" />
+            <Card className="border-0 shadow-xl bg-white/90 dark:bg-zinc-900/90 backdrop-blur hover:shadow-2xl transition-all duration-300">
+              <CardContent className="p-8 text-center">
+                <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-amber-500 to-yellow-600 flex items-center justify-center">
+                  <Star className="w-10 h-10 text-white" />
                 </div>
-                <h3 className="text-xl font-semibold text-zinc-900 dark:text-zinc-100 mb-2">
+                <h3 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 mb-4">
                   Atención Personalizada
                 </h3>
-                <p className="text-zinc-600 dark:text-zinc-400">
+                <p className="text-zinc-600 dark:text-zinc-400 text-lg">
                   Servicio exclusivo y dedicado para cada cliente
                 </p>
               </CardContent>
             </Card>
 
-            <Card className="border-0 shadow-lg bg-white/80 dark:bg-zinc-900/80 backdrop-blur">
-              <CardContent className="p-6 text-center">
-                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-amber-500 to-yellow-600 flex items-center justify-center">
-                  <Shield className="w-8 h-8 text-white" />
+            <Card className="border-0 shadow-xl bg-white/90 dark:bg-zinc-900/90 backdrop-blur hover:shadow-2xl transition-all duration-300">
+              <CardContent className="p-8 text-center">
+                <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-amber-500 to-yellow-600 flex items-center justify-center">
+                  <Shield className="w-10 h-10 text-white" />
                 </div>
-                <h3 className="text-xl font-semibold text-zinc-900 dark:text-zinc-100 mb-2">
+                <h3 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 mb-4">
                   Transparencia Total
                 </h3>
-                <p className="text-zinc-600 dark:text-zinc-400">
+                <p className="text-zinc-600 dark:text-zinc-400 text-lg">
                   Procesos claros y honestos en cada transacción
                 </p>
               </CardContent>

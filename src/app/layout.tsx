@@ -34,7 +34,6 @@ export default function RootLayout({
                 className={`${inter.className} bg-gray-50 dark:bg-black text-black dark:text-white`}
               >
                 <Header />
-                <div className="mt-16"></div>
                 <WhatsAppButton phoneNumber="573214223931" />
                 {children}
                 <Footer />

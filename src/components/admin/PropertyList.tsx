@@ -1,158 +1,216 @@
-'use client'; // Indica que este archivo se ejecuta del lado del cliente en Next.js
+'use client';
 
-// Importa React para usar JSX y componentes funcionales
 import React from 'react';
-// Importa el tipo Property para tipar las propiedades
 import { Property } from '../../types/property';
-// Importa Link de Next.js para navegación entre páginas
 import Link from 'next/link';
-// Importa el hook personalizado para la lógica de navegación de imágenes en la tarjeta
 import { usePropertyCardLogic } from '../../hooks/usePropertyCardLogic';
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { 
+  ChevronLeft, 
+  ChevronRight, 
+  MapPin, 
+  Bed, 
+  Bath, 
+  Square, 
+  Edit, 
+  Trash2,
+  Building2,
+  Image as ImageIcon
+} from "lucide-react";
 
-// Interfaz de las props que recibe la lista de propiedades
 interface PropertyListProps {
-  properties: Property[]; // Arreglo de propiedades a mostrar
-  onEdit?: (property: Property) => void; // Función para editar una propiedad (opcional)
-  onDelete?: (id: string) => void; // Función para eliminar una propiedad (opcional)
+  properties: Property[];
+  onEdit?: (property: Property) => void;
+  onDelete?: (id: string) => void;
 }
 
-// Componente para mostrar una tarjeta individual de propiedad
 function PropertyCard({ property, onEdit, onDelete }: any) {
-  // Obtiene el arreglo de imágenes de la propiedad
   const images = Array.isArray(property.images) ? property.images : [];
-  // Usa el hook para manejar la navegación de imágenes
   const { activeImage, nextImage, prevImage } = usePropertyCardLogic(images);
+
+  const getStatusConfig = (status: string) => {
+    switch (status) {
+      case 'available':
+        return {
+          label: 'Disponible',
+          className: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300 border-green-200 dark:border-green-800'
+        };
+      case 'sold':
+        return {
+          label: 'Vendida',
+          className: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300 border-red-200 dark:border-red-800'
+        };
+      default:
+        return {
+          label: 'Alquilada',
+          className: 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300 border-amber-200 dark:border-amber-800'
+        };
+    }
+  };
+
+  const statusConfig = getStatusConfig(property.status);
+
   return (
-    // Enlace a la página de detalle de la propiedad
-    <Link href={`/propiedades/${property.id}`} className="block h-full">
-      <div className="bg-gray-50 dark:bg-secondary-800 rounded-3xl shadow-lg border border-gray-200 dark:border-secondary-700 overflow-hidden hover:shadow-2xl hover:scale-[1.025] transition-all duration-300 cursor-pointer flex flex-col h-full">
-        {/* Carrusel de imágenes de la propiedad */}
-        <div className="relative aspect-w-16 aspect-h-9 bg-primary-50 flex items-center justify-center">
-          {images.length > 0 ? (
-            <>
-              <img
-                src={images[activeImage]}
-                alt={property.title}
-                className="w-full h-56 object-cover object-center rounded-t-2xl"
-              />
-              {images.length > 1 && (
-                <>
-                  {/* Botón para imagen anterior */}
-                  <button onClick={prevImage} className="absolute left-2 top-1/2 -translate-y-1/2 bg-primary-100/80 rounded-full p-1 hover:bg-primary-400 hover:text-white transition-colors shadow">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
-                  </button>
-                  {/* Botón para imagen siguiente */}
-                  <button onClick={nextImage} className="absolute right-2 top-1/2 -translate-y-1/2 bg-primary-100/80 rounded-full p-1 hover:bg-primary-400 hover:text-white transition-colors shadow">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
-                  </button>
-                </>
-              )}
-            </>
-          ) : (
-            // Si no hay imágenes, muestra un ícono de imagen vacía
-            <div className="w-full h-56 flex items-center justify-center text-primary-200">
-              <svg className="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-              </svg>
+    <Card className="group overflow-hidden border-0 shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-[1.02] bg-white/95 dark:bg-zinc-900/95 backdrop-blur">
+      <Link href={`/propiedades/${property.id}`} className="block">
+        <CardHeader className="p-0">
+          <div className="relative aspect-[4/3] overflow-hidden">
+            {images.length > 0 ? (
+              <>
+                <img
+                  src={images[activeImage]}
+                  alt={property.title}
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+                
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                
+                {images.length > 1 && (
+                  <>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={(e) => { e.preventDefault(); prevImage(); }}
+                      className="absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 dark:bg-zinc-900/90 backdrop-blur border border-zinc-200/50 dark:border-zinc-700/50 shadow-lg hover:bg-white dark:hover:bg-zinc-800 opacity-0 group-hover:opacity-100 transition-all duration-200"
+                    >
+                      <ChevronLeft className="w-4 h-4 text-zinc-700 dark:text-zinc-300" />
+                    </Button>
+                    
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={(e) => { e.preventDefault(); nextImage(); }}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 dark:bg-zinc-900/90 backdrop-blur border border-zinc-200/50 dark:border-zinc-700/50 shadow-lg hover:bg-white dark:hover:bg-zinc-800 opacity-0 group-hover:opacity-100 transition-all duration-200"
+                    >
+                      <ChevronRight className="w-4 h-4 text-zinc-700 dark:text-zinc-300" />
+                    </Button>
+                  </>
+                )}
+              </>
+            ) : (
+              <div className="w-full h-full flex items-center justify-center bg-zinc-100 dark:bg-zinc-800">
+                <div className="text-center text-zinc-400 dark:text-zinc-500">
+                  <ImageIcon className="h-12 w-12 mx-auto mb-2" />
+                  <span className="text-sm">Sin imagen</span>
+                </div>
+              </div>
+            )}
+            
+            <div className="absolute top-3 right-3">
+              <Badge variant="secondary" className={statusConfig.className}>
+                {statusConfig.label}
+              </Badge>
             </div>
-          )}
-        </div>
-        {/* Información de la propiedad */}
-        <div className="flex flex-col justify-between flex-1 p-7 gap-3">
-          <div className="flex justify-between items-start mb-2">
-            <h3 className="text-xl font-bold text-primary-700 dark:text-primary-400 truncate mb-1">
+          </div>
+        </CardHeader>
+      </Link>
+
+      <CardContent className="p-6">
+        <div className="space-y-4">
+          <div>
+            <h3 className="text-xl font-bold text-zinc-900 dark:text-zinc-100 mb-2 line-clamp-1">
               {property.title}
             </h3>
-            {/* Estado de la propiedad */}
-            <span className={`px-3 py-1 text-xs font-semibold rounded-full shadow-sm ${
-              property.status === 'available' ? 'bg-green-50 text-green-700' :
-              property.status === 'sold' ? 'bg-red-50 text-red-700' :
-              'bg-yellow-50 text-yellow-700'
-            }`}>
-              {property.status === 'available' ? 'Disponible' :
-               property.status === 'sold' ? 'Vendida' : 'Alquilada'}
-            </span>
-          </div>
-          {/* Dirección de la propiedad */}
-          <p className="text-base text-gray-700 dark:text-gray-200 mb-1">
-            {property.address}
-          </p>
-          {/* Precio y características principales */}
-          <div className="flex flex-col gap-2 mb-2">
-            <span className="text-2xl font-extrabold text-yellow-500">
-              ${property.price.toLocaleString()}
-            </span>
-            <div className="flex flex-wrap gap-2 mt-1">
-              {property.bedrooms && (
-                <span className="inline-flex items-center px-3 py-1 bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-200 rounded-full text-sm font-medium">
-                  {property.bedrooms} hab
-                </span>
-              )}
-              {property.bathrooms && (
-                <span className="inline-flex items-center px-3 py-1 bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-200 rounded-full text-sm font-medium">
-                  {property.bathrooms} baños
-                </span>
-              )}
-              {property.area && (
-                <span className="inline-flex items-center px-3 py-1 bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-200 rounded-full text-sm font-medium">
-                  {property.area} m²
-                </span>
-              )}
+            <div className="flex items-center space-x-1 text-zinc-600 dark:text-zinc-400 mb-3">
+              <MapPin className="w-4 h-4" />
+              <span className="text-sm line-clamp-1">{property.address}</span>
             </div>
           </div>
-          {/* Descripción corta de la propiedad */}
-          <p className="text-base text-gray-600 dark:text-gray-300 mb-4 line-clamp-2">
+
+          <div className="flex items-center justify-between">
+            <div className="text-2xl font-bold text-amber-600 dark:text-amber-400">
+              ${property.price.toLocaleString()}
+            </div>
+          </div>
+
+          <div className="flex items-center space-x-4 text-sm text-zinc-600 dark:text-zinc-400">
+            {property.bedrooms && (
+              <div className="flex items-center space-x-1">
+                <Bed className="w-4 h-4" />
+                <span>{property.bedrooms}</span>
+              </div>
+            )}
+            {property.bathrooms && (
+              <div className="flex items-center space-x-1">
+                <Bath className="w-4 h-4" />
+                <span>{property.bathrooms}</span>
+              </div>
+            )}
+            {property.area && (
+              <div className="flex items-center space-x-1">
+                <Square className="w-4 h-4" />
+                <span>{property.area} m²</span>
+              </div>
+            )}
+          </div>
+
+          <p className="text-sm text-zinc-600 dark:text-zinc-400 line-clamp-2">
             {property.description}
           </p>
-          {/* Acciones de editar y eliminar, si están disponibles */}
+
           {(onEdit || onDelete) && (
-            <div className="flex space-x-3 mt-auto pt-2">
+            <div className="flex space-x-2 pt-2">
               {onEdit && (
-                <button
-                  onClick={e => { e.preventDefault(); onEdit(property); }}
-                  className="flex-1 px-4 py-2.5 text-base bg-yellow-500 text-black rounded-xl hover:bg-yellow-400 transition-shadow shadow-md hover:shadow-lg font-bold"
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={(e) => { e.preventDefault(); onEdit(property); }}
+                  className="flex-1 border-amber-300 text-amber-700 hover:bg-amber-50 dark:border-amber-600 dark:text-amber-300 dark:hover:bg-amber-900/30"
                 >
+                  <Edit className="w-4 h-4 mr-2" />
                   Editar
-                </button>
+                </Button>
               )}
               {onDelete && (
-                <button
-                  onClick={e => { e.preventDefault(); onDelete(property.id); }}
-                  className="px-4 py-2.5 text-base bg-red-500 text-white rounded-xl hover:bg-red-600 transition-shadow shadow-md hover:shadow-lg font-bold"
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={(e) => { e.preventDefault(); onDelete(property.id); }}
+                  className="border-red-300 text-red-700 hover:bg-red-50 dark:border-red-600 dark:text-red-300 dark:hover:bg-red-900/30"
                 >
-                  Eliminar
-                </button>
+                  <Trash2 className="w-4 h-4" />
+                </Button>
               )}
             </div>
           )}
         </div>
-      </div>
-    </Link>
+      </CardContent>
+    </Card>
   );
 }
 
-// Componente principal que muestra la lista de propiedades
 export default function PropertyList({ properties, onEdit, onDelete }: PropertyListProps) {
-  // Si no hay propiedades, muestra un mensaje informativo
   if (properties.length === 0) {
     return (
-      <div className="text-center py-12">
-        <div className="text-gray-500 dark:text-gray-400">
-          <svg className="mx-auto h-12 w-12 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-          </svg>
-          <h3 className="text-lg font-medium">No hay propiedades</h3>
-          <p className="mt-1">Comienza creando tu primera propiedad.</p>
-        </div>
+      <div className="text-center py-16">
+        <Card className="max-w-md mx-auto bg-white/50 dark:bg-zinc-900/50 backdrop-blur border-0 shadow-lg">
+          <CardContent className="p-8">
+            <div className="text-zinc-500 dark:text-zinc-400">
+              <Building2 className="mx-auto h-16 w-16 mb-4 text-zinc-300 dark:text-zinc-600" />
+              <h3 className="text-xl font-semibold text-zinc-900 dark:text-zinc-100 mb-2">
+                No hay propiedades
+              </h3>
+              <p className="text-zinc-600 dark:text-zinc-400">
+                Comienza creando tu primera propiedad para mostrar en el catálogo.
+              </p>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     );
   }
 
-  // Si hay propiedades, las muestra en un grid responsivo
   return (
-    <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 max-w-screen-2xl mx-auto px-4">
+    <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 max-w-screen-2xl mx-auto px-4">
       {properties.map((property) => (
-        <PropertyCard key={property.id} property={property} onEdit={onEdit} onDelete={onDelete} />
+        <PropertyCard 
+          key={property.id} 
+          property={property} 
+          onEdit={onEdit} 
+          onDelete={onDelete} 
+        />
       ))}
     </div>
   );
