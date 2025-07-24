@@ -1,6 +1,10 @@
 import React from "react";
 import InputField from "./InputField";
-import { BuyerFormProps } from "@/types/forms.d";
+import { useBuyerFormLogic } from "@/hooks/useBuyerFormLogic";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Home, User, AlertCircle, Loader2 } from "lucide-react";
 import {
   PERSONAL_DATA,
   CITY_OPTIONS,
@@ -8,12 +12,11 @@ import {
   PROPERTY_INFO_BUYER,
   INPUT_INFO,
 } from "@/constants/constants";
-import Loader from "../assets/Loader";
-import { useBuyerFormLogic } from "@/hooks/useBuyerFormLogic";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Home, User, AlertCircle } from "lucide-react";
+
+interface BuyerFormProps {
+  formSubmit: (data: any) => void;
+  loading: boolean;
+}
 
 const BuyerForm: React.FC<BuyerFormProps> = ({ formSubmit, loading }) => {
   const {
@@ -30,10 +33,10 @@ const BuyerForm: React.FC<BuyerFormProps> = ({ formSubmit, loading }) => {
       <CardHeader>
         <CardTitle className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 flex items-center space-x-2">
           <Home className="w-6 h-6 text-amber-600" />
-          <span>Formulario de Comprador</span>
+          <span>Solicitud de Compra</span>
         </CardTitle>
         <p className="text-zinc-600 dark:text-zinc-400">
-          Cuéntanos sobre tus preferencias para encontrar la propiedad perfecta.
+          Cuéntanos sobre la propiedad que estás buscando y te ayudaremos a encontrarla.
         </p>
       </CardHeader>
       <CardContent>
@@ -104,9 +107,12 @@ const BuyerForm: React.FC<BuyerFormProps> = ({ formSubmit, loading }) => {
             type="submit"
             className="w-full bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-700 hover:to-yellow-700 text-white font-semibold py-3 h-auto"
           >
-            <User className="w-4 h-4 mr-2" />
-            Enviar Solicitud
-            <Loader loading={loading} />
+            {loading ? (
+              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+            ) : (
+              <User className="w-4 h-4 mr-2" />
+            )}
+            {loading ? "Enviando..." : "Enviar Solicitud"}
           </Button>
         </form>
       </CardContent>

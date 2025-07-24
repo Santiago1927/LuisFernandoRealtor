@@ -1,11 +1,10 @@
 import React from "react";
 import InputField from "./InputField";
-import Loader from "../assets/Loader";
 import { useContactFormLogic } from "@/hooks/useContactFormLogic";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Send, AlertCircle } from "lucide-react";
+import { Send, AlertCircle, Loader2 } from "lucide-react";
 
 interface ContactFormProps {
   formSubmit: (data: any) => void;
@@ -59,9 +58,12 @@ const ContactForm: React.FC<ContactFormProps> = ({ formSubmit, loading }) => {
             type="submit"
             className="w-full bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-700 hover:to-yellow-700 text-white font-semibold py-3 h-auto"
           >
-            <Send className="w-4 h-4 mr-2" />
-            Enviar Mensaje
-            <Loader loading={loading} />
+            {loading ? (
+              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+            ) : (
+              <Send className="w-4 h-4 mr-2" />
+            )}
+            {loading ? "Enviando..." : "Enviar Mensaje"}
           </Button>
         </form>
       </CardContent>

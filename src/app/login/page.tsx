@@ -2,7 +2,7 @@
 
 import { useLoginAuthGuard } from '../../hooks/useLoginAuthGuard';
 import LoginForm from '../../components/forms/LoginForm';
-import { Loader2, Shield } from "lucide-react";
+import { Shield } from "lucide-react";
 
 export default function LoginPage() {
   const { isAuthenticated, loading } = useLoginAuthGuard();

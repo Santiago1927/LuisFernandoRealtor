@@ -9,12 +9,11 @@ import {
 } from "@/constants/constants";
 import { OwnerFormProps } from "@/types/forms.d";
 import InputField from "./InputField";
-import Loader from "../assets/Loader";
 import { useOwnerFormLogic } from "@/hooks/useOwnerFormLogic";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Building2, User, AlertCircle } from "lucide-react";
+import { Building2, User, AlertCircle, Loader2 } from "lucide-react";
 
 const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
   const {
@@ -166,9 +165,12 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
             type="submit"
             className="w-full bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-700 hover:to-yellow-700 text-white font-semibold py-3 h-auto"
           >
-            <Building2 className="w-4 h-4 mr-2" />
-            Enviar Solicitud
-            <Loader loading={loading} />
+            {loading ? (
+              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+            ) : (
+              <Building2 className="w-4 h-4 mr-2" />
+            )}
+            {loading ? "Enviando..." : "Enviar Solicitud"}
           </Button>
         </form>
       </CardContent>

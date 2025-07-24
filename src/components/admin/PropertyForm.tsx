@@ -1,303 +1,354 @@
-'use client'; // Indica que este archivo se ejecuta del lado del cliente en Next.js
+'use client';
 
-// Importa React para poder usar JSX y componentes funcionales
 import React from 'react';
-// Importa el tipo Property para tipar las propiedades que se gestionan en el formulario
 import { Property } from '../../types/property';
-// Importa el hook personalizado que maneja la lógica y el estado del formulario de propiedad
 import { usePropertyFormLogic } from '../../hooks/usePropertyFormLogic';
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { 
+  X, 
+  Building2, 
+  MapPin, 
+  DollarSign, 
+  Bed, 
+  Bath, 
+  Square, 
+  Image as ImageIcon,
+  Video,
+  Save,
+  Loader2
+} from "lucide-react";
 
-// Interfaz que define las props que recibe el formulario de propiedad
 interface PropertyFormProps {
-  property?: Property | null; // Propiedad a editar (opcional)
-  onSave: (property: Property) => void; // Función que se ejecuta al guardar la propiedad
-  onClose: () => void; // Función que se ejecuta al cerrar el formulario
+  property?: Property | null;
+  onSave: (property: Property) => void;
+  onClose: () => void;
 }
 
-// Componente principal del formulario para crear o editar una propiedad
 export default function PropertyForm({ property, onSave, onClose }: PropertyFormProps) {
-  // Hook personalizado que maneja el estado y lógica del formulario
   const {
-    formData, // Estado con los datos del formulario
-    images, // Archivos de imágenes seleccionados
-    videos, // Archivos de videos seleccionados
-    uploading, // Estado de carga al guardar
-    imageUrls, // URLs de imágenes ya subidas
-    videoUrls, // URLs de videos ya subidos
-    mapAddress, // Dirección para geocodificación
-    setMapAddress, // Setter para la dirección
-    lat, // Latitud geocodificada
-    lng, // Longitud geocodificada
-    handleInputChange, // Handler para cambios en los inputs
-    handleImageChange, // Handler para selección de imágenes
-    handleVideoChange, // Handler para selección de videos
-    handleSubmit, // Handler para el envío del formulario
-    onClose: handleClose, // Handler para cerrar el formulario
+    formData,
+    images,
+    videos,
+    uploading,
+    imageUrls,
+    videoUrls,
+    mapAddress,
+    setMapAddress,
+    lat,
+    lng,
+    handleInputChange,
+    handleImageChange,
+    handleVideoChange,
+    handleSubmit,
+    onClose: handleClose,
   } = usePropertyFormLogic({ property, onSave, onClose });
 
   return (
-    // Modal de fondo oscuro para el formulario
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      {/* Contenedor principal del formulario */}
-      <div className="bg-gray-50 dark:bg-secondary-800 rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-        <div className="p-6">
-          {/* Encabezado con título y botón de cerrar */}
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-bold text-yellow-500">
-              {property ? 'Editar Propiedad' : 'Nueva Propiedad'}
-            </h2>
-            {/* Botón para cerrar el formulario */}
-            <button
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+      <Card className="w-full max-w-4xl max-h-[90vh] overflow-y-auto border-0 shadow-2xl bg-white/95 dark:bg-zinc-900/95">
+        <CardHeader className="border-b border-zinc-200 dark:border-zinc-700">
+          <div className="flex justify-between items-center">
+            <div className="flex items-center space-x-3">
+              <div className="w-10 h-10 bg-gradient-to-br from-amber-500 to-yellow-600 rounded-xl flex items-center justify-center">
+                <Building2 className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <CardTitle className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">
+                  {property ? 'Editar Propiedad' : 'Nueva Propiedad'}
+                </CardTitle>
+                <p className="text-sm text-zinc-600 dark:text-zinc-400">
+                  {property ? 'Modifica los datos de la propiedad' : 'Crea una nueva propiedad'}
+                </p>
+              </div>
+            </div>
+            <Button
+              variant="ghost"
+              size="icon"
               onClick={handleClose}
-              className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+              className="text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300"
             >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
+              <X className="w-5 h-5" />
+            </Button>
           </div>
+        </CardHeader>
 
-          {/* Formulario de la propiedad */}
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Sección de información básica de la propiedad */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {/* Campo para el título de la propiedad */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Título *
-                </label>
-                <input
-                  type="text"
-                  name="title"
-                  value={formData.title}
-                  onChange={handleInputChange}
-                  required
-                  className="w-full px-3 py-2 border-2 border-yellow-500 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 bg-white text-black dark:bg-secondary-900 dark:text-white"
-                />
-              </div>
+        <CardContent className="p-6">
+          <form onSubmit={handleSubmit} className="space-y-8">
+            
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="space-y-4">
+                <div>
+                  <Label htmlFor="title" className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+                    Título *
+                  </Label>
+                  <Input
+                    id="title"
+                    name="title"
+                    value={formData.title}
+                    onChange={handleInputChange}
+                    required
+                    className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
+                    placeholder="Ej: Hermosa casa en el norte de Medellín"
+                  />
+                </div>
 
-              {/* Campo para la dirección y mapa de la propiedad */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Dirección *
-                </label>
-                <input
-                  type="text"
-                  name="address"
-                  value={mapAddress}
-                  onChange={e => { setMapAddress(e.target.value); handleInputChange(e); }}
-                  required
-                  className="w-full px-3 py-2 border-2 border-yellow-500 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 bg-white text-black dark:bg-secondary-900 dark:text-white"
-                />
-                {/* Muestra el mapa si hay latitud y longitud geocodificadas */}
-                {lat && lng && (
-                  <div className="mt-2 rounded overflow-hidden border border-gray-200 dark:border-gray-700">
-                    <iframe
-                      width="100%"
-                      height="200"
-                      style={{ border: 0 }}
-                      loading="lazy"
-                      allowFullScreen
-                      referrerPolicy="no-referrer-when-downgrade"
-                      src={`https://www.google.com/maps?q=${lat},${lng}&z=16&output=embed`}
-                    ></iframe>
+                <div>
+                  <Label htmlFor="address" className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+                    Dirección *
+                  </Label>
+                  <div className="relative mt-1">
+                    <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-zinc-400" />
+                    <Input
+                      id="address"
+                      name="address"
+                      value={mapAddress}
+                      onChange={e => { setMapAddress(e.target.value); handleInputChange(e); }}
+                      required
+                      className="pl-10 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
+                      placeholder="Ingresa la dirección completa"
+                    />
                   </div>
-                )}
+                  {lat && lng && (
+                    <div className="mt-3 rounded-lg overflow-hidden border border-zinc-200 dark:border-zinc-700">
+                      <iframe
+                        width="100%"
+                        height="200"
+                        style={{ border: 0 }}
+                        loading="lazy"
+                        allowFullScreen
+                        referrerPolicy="no-referrer-when-downgrade"
+                        src={`https://www.google.com/maps?q=${lat},${lng}&z=16&output=embed`}
+                      />
+                    </div>
+                  )}
+                </div>
+
+                <div>
+                  <Label htmlFor="city" className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+                    Ciudad
+                  </Label>
+                  <Select name="city" value={formData.city} onValueChange={(value) => handleInputChange({ target: { name: 'city', value } } as any)}>
+                    <SelectTrigger className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400">
+                      <SelectValue placeholder="Seleccionar ciudad" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Medellin">Medellín</SelectItem>
+                      <SelectItem value="Bogota">Bogotá</SelectItem>
+                      <SelectItem value="Cali">Cali</SelectItem>
+                      <SelectItem value="Pasto">Pasto</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div>
+                  <Label htmlFor="price" className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+                    Precio *
+                  </Label>
+                  <div className="relative mt-1">
+                    <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-zinc-400" />
+                    <Input
+                      id="price"
+                      type="number"
+                      name="price"
+                      value={formData.price}
+                      onChange={handleInputChange}
+                      required
+                      min="0"
+                      className="pl-10 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
+                      placeholder="0"
+                    />
+                  </div>
+                </div>
               </div>
 
-              {/* Campo para la ciudad de la propiedad */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Ciudad
-                </label>
-                <select
-                  name="city"
-                  value={formData.city}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border-2 border-yellow-500 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 bg-white text-black dark:bg-secondary-900 dark:text-white"
-                >
-                  <option value="">Seleccionar ciudad</option>
-                  <option value="Medellin">Medellín</option>
-                  <option value="Bogota">Bogotá</option>
-                  <option value="Cali">Cali</option>
-                  <option value="Pasto">Pasto</option>
-                </select>
-              </div>
+              <div className="space-y-4">
+                <div>
+                  <Label htmlFor="type" className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+                    Tipo de Propiedad
+                  </Label>
+                  <Select name="type" value={formData.type} onValueChange={(value) => handleInputChange({ target: { name: 'type', value } } as any)}>
+                    <SelectTrigger className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400">
+                      <SelectValue placeholder="Seleccionar tipo" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="house">Casa</SelectItem>
+                      <SelectItem value="apartment">Apartamento</SelectItem>
+                      <SelectItem value="commercial">Comercial</SelectItem>
+                      <SelectItem value="land">Terreno</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
 
-              {/* Campo para el precio de la propiedad */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Precio *
-                </label>
-                <input
-                  type="number"
-                  name="price"
-                  value={formData.price}
-                  onChange={handleInputChange}
-                  required
-                  min="0"
-                  className="w-full px-3 py-2 border-2 border-yellow-500 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 bg-white text-black dark:bg-secondary-900 dark:text-white"
-                />
-              </div>
+                <div>
+                  <Label htmlFor="status" className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+                    Estado
+                  </Label>
+                  <Select name="status" value={formData.status} onValueChange={(value) => handleInputChange({ target: { name: 'status', value } } as any)}>
+                    <SelectTrigger className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400">
+                      <SelectValue placeholder="Seleccionar estado" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="available">Disponible</SelectItem>
+                      <SelectItem value="sold">Vendida</SelectItem>
+                      <SelectItem value="rented">Alquilada</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
 
-              {/* Campo para el tipo de propiedad */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Tipo de Propiedad
-                </label>
-                <select
-                  name="type"
-                  value={formData.type}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border-2 border-yellow-500 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 bg-white text-black dark:bg-secondary-900 dark:text-white"
-                >
-                  <option value="house">Casa</option>
-                  <option value="apartment">Apartamento</option>
-                  <option value="commercial">Comercial</option>
-                  <option value="land">Terreno</option>
-                </select>
-              </div>
+                <div className="grid grid-cols-3 gap-4">
+                  <div>
+                    <Label htmlFor="bedrooms" className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+                      Habitaciones
+                    </Label>
+                    <div className="relative mt-1">
+                      <Bed className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-zinc-400" />
+                      <Input
+                        id="bedrooms"
+                        type="number"
+                        name="bedrooms"
+                        value={formData.bedrooms}
+                        onChange={handleInputChange}
+                        min="0"
+                        className="pl-10 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
+                        placeholder="0"
+                      />
+                    </div>
+                  </div>
 
-              {/* Campo para el estado de la propiedad */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Estado
-                </label>
-                <select
-                  name="status"
-                  value={formData.status}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border-2 border-yellow-500 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 bg-white text-black dark:bg-secondary-900 dark:text-white"
-                >
-                  <option value="available">Disponible</option>
-                  <option value="sold">Vendida</option>
-                  <option value="rented">Alquilada</option>
-                </select>
-              </div>
+                  <div>
+                    <Label htmlFor="bathrooms" className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+                      Baños
+                    </Label>
+                    <div className="relative mt-1">
+                      <Bath className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-zinc-400" />
+                      <Input
+                        id="bathrooms"
+                        type="number"
+                        name="bathrooms"
+                        value={formData.bathrooms}
+                        onChange={handleInputChange}
+                        min="0"
+                        className="pl-10 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
+                        placeholder="0"
+                      />
+                    </div>
+                  </div>
 
-              {/* Campo para habitaciones */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Habitaciones
-                </label>
-                <input
-                  type="number"
-                  name="bedrooms"
-                  value={formData.bedrooms}
-                  onChange={handleInputChange}
-                  min="0"
-                  className="w-full px-3 py-2 border-2 border-yellow-500 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 bg-white text-black dark:bg-secondary-900 dark:text-white"
-                />
-              </div>
-
-              {/* Campo para baños */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Baños
-                </label>
-                <input
-                  type="number"
-                  name="bathrooms"
-                  value={formData.bathrooms}
-                  onChange={handleInputChange}
-                  min="0"
-                  className="w-full px-3 py-2 border-2 border-yellow-500 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 bg-white text-black dark:bg-secondary-900 dark:text-white"
-                />
-              </div>
-
-              {/* Campo para área */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Área (m²)
-                </label>
-                <input
-                  type="number"
-                  name="area"
-                  value={formData.area}
-                  onChange={handleInputChange}
-                  min="0"
-                  className="w-full px-3 py-2 border-2 border-yellow-500 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 bg-white text-black dark:bg-secondary-900 dark:text-white"
-                />
+                  <div>
+                    <Label htmlFor="area" className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+                      Área (m²)
+                    </Label>
+                    <div className="relative mt-1">
+                      <Square className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-zinc-400" />
+                      <Input
+                        id="area"
+                        type="number"
+                        name="area"
+                        value={formData.area}
+                        onChange={handleInputChange}
+                        min="0"
+                        className="pl-10 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
+                        placeholder="0"
+                      />
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
 
-            {/* Campo para la descripción de la propiedad */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <Label htmlFor="description" className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
                 Descripción
-              </label>
-              <textarea
+              </Label>
+              <Textarea
+                id="description"
                 name="description"
                 value={formData.description}
                 onChange={handleInputChange}
                 rows={4}
-                className="w-full px-3 py-2 border-2 border-yellow-500 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 bg-white text-black dark:bg-secondary-900 dark:text-white"
+                className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
+                placeholder="Describe las características y beneficios de la propiedad..."
               />
             </div>
 
-            {/* Sección para subir imágenes y videos */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {/* Input para imágenes */}
+            <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Imágenes
-                </label>
-                <input
+                <Label htmlFor="images" className="text-sm font-medium text-zinc-900 dark:text-zinc-100 flex items-center space-x-2">
+                  <ImageIcon className="w-4 h-4" />
+                  <span>Imágenes</span>
+                </Label>
+                <Input
+                  id="images"
                   type="file"
                   accept="image/*"
                   multiple
                   onChange={handleImageChange}
-                  className="w-full px-3 py-2 border-2 border-yellow-500 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 bg-white text-black dark:bg-secondary-900 dark:text-white"
+                  className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
                 />
-                {/* Muestra la cantidad de imágenes actuales */}
                 {imageUrls.length > 0 && (
-                  <div className="mt-2">
-                    <p className="text-sm text-gray-600 dark:text-gray-400">Imágenes actuales: {imageUrls.length}</p>
-                  </div>
+                  <Badge variant="secondary" className="mt-2 bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300">
+                    {imageUrls.length} imagen{imageUrls.length !== 1 ? 'es' : ''} actual{imageUrls.length !== 1 ? 'es' : ''}
+                  </Badge>
                 )}
               </div>
 
-              {/* Input para videos */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Videos
-                </label>
-                <input
+                <Label htmlFor="videos" className="text-sm font-medium text-zinc-900 dark:text-zinc-100 flex items-center space-x-2">
+                  <Video className="w-4 h-4" />
+                  <span>Videos</span>
+                </Label>
+                <Input
+                  id="videos"
                   type="file"
                   accept="video/*"
                   multiple
                   onChange={handleVideoChange}
-                  className="w-full px-3 py-2 border-2 border-yellow-500 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 bg-white text-black dark:bg-secondary-900 dark:text-white"
+                  className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
                 />
-                {/* Muestra la cantidad de videos actuales */}
                 {videoUrls.length > 0 && (
-                  <div className="mt-2">
-                    <p className="text-sm text-gray-600 dark:text-gray-400">Videos actuales: {videoUrls.length}</p>
-                  </div>
+                  <Badge variant="secondary" className="mt-2 bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300">
+                    {videoUrls.length} video{videoUrls.length !== 1 ? 's' : ''} actual{videoUrls.length !== 1 ? 'es' : ''}
+                  </Badge>
                 )}
               </div>
             </div>
 
-            {/* Acciones del formulario: cancelar y guardar */}
-            <div className="flex justify-end space-x-4 pt-6 border-t border-gray-200 dark:border-gray-700">
-              <button
+            <div className="flex justify-end space-x-4 pt-6 border-t border-zinc-200 dark:border-zinc-700">
+              <Button
                 type="button"
+                variant="outline"
                 onClick={handleClose}
-                className="px-4 py-2 text-sm font-medium text-white bg-secondary-700 rounded-lg hover:bg-secondary-900 transition-colors"
+                className="border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800"
               >
                 Cancelar
-              </button>
-              <button
+              </Button>
+              <Button
                 type="submit"
                 disabled={uploading}
-                className="px-6 py-2 text-sm font-medium text-black bg-yellow-500 rounded-lg hover:bg-yellow-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-700 hover:to-yellow-700 text-white font-semibold"
               >
-                {uploading ? 'Guardando...' : (property ? 'Actualizar' : 'Crear')}
-              </button>
+                {uploading ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    Guardando...
+                  </>
+                ) : (
+                  <>
+                    <Save className="w-4 h-4 mr-2" />
+                    {property ? 'Actualizar' : 'Crear'}
+                  </>
+                )}
+              </Button>
             </div>
           </form>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     </div>
   );
 } 

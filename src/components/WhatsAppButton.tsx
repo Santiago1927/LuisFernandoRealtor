@@ -22,10 +22,15 @@ const WhatsAppButton: React.FC<WhatsAppButtonProps> = ({
       href={waLink}
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-4 right-4 z-50 p-3 bg-green-500 rounded-full shadow-lg transition-all duration-300 ease-in-out transform hover:scale-110"
+      className="fixed bottom-6 right-6 z-50 group"
       aria-label="Chat with us on WhatsApp"
     >
-      <WhatsAppIcon />
+      <div className="relative">
+        <div className="absolute inset-0 bg-green-500 rounded-full blur-lg opacity-75 group-hover:opacity-100 transition-opacity duration-300"></div>
+        <div className="relative bg-gradient-to-br from-green-500 to-green-600 p-4 rounded-full shadow-2xl transition-all duration-300 ease-in-out transform group-hover:scale-110 group-hover:shadow-3xl">
+          <WhatsAppIcon className="w-6 h-6 text-white" />
+        </div>
+      </div>
     </Link>
   );
 };

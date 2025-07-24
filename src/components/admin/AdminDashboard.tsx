@@ -1,15 +1,21 @@
-'use client'; // Indica que este archivo se ejecuta del lado del cliente en Next.js
+'use client';
 
-// Importa React para usar JSX
 import React from 'react';
-// Importa el componente que muestra la lista de propiedades
 import PropertyList from './PropertyList';
-// Importa el formulario para crear/editar propiedades
 import PropertyForm from './PropertyForm';
-// Importa el hook personalizado para la lógica del dashboard de administrador
 import { useAdminDashboardLogic } from '../../hooks/useAdminDashboardLogic';
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { 
+  Building2, 
+  Plus, 
+  LogOut, 
+  Globe, 
+  Loader2,
+  ChevronLeft,
+  ChevronRight
+} from "lucide-react";
 
-// Componente principal del panel de administración
 export default function AdminDashboard() {
   const {
     properties,
@@ -30,84 +36,158 @@ export default function AdminDashboard() {
   } = useAdminDashboardLogic();
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50/80 to-gray-100 dark:from-secondary-800/80 dark:to-secondary-900 flex flex-col items-center">
-      {/* Header del panel de administración */}
-      <div className="bg-gray-50 dark:bg-secondary-800 shadow-sm border-b border-gray-200 dark:border-gray-700 w-full">
-        <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-12">
-          <div className="flex justify-between items-center py-10">
-            <div>
-              <h1 className="text-4xl font-extrabold text-yellow-500 mb-2">
-                Panel de Administrador
-              </h1>
-              <p className="mt-2 text-lg text-gray-500 dark:text-gray-300 font-light">
-                Gestiona las propiedades de tu sitio web
-              </p>
-            </div>
+    <div className="min-h-screen bg-gradient-to-br from-zinc-50 via-white to-amber-50/30 dark:from-zinc-900 dark:via-black dark:to-amber-900/10">
+      
+      <div className="bg-white/95 dark:bg-zinc-900/95 backdrop-blur border-b border-zinc-200 dark:border-zinc-700">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
             <div className="flex items-center space-x-4">
-              <button
+              <div className="w-16 h-16 bg-gradient-to-br from-amber-500 to-yellow-600 rounded-2xl flex items-center justify-center shadow-lg">
+                <Building2 className="w-8 h-8 text-white" />
+              </div>
+              <div>
+                <h1 className="text-3xl lg:text-4xl font-bold text-zinc-900 dark:text-zinc-100 mb-2">
+                  Panel de Administrador
+                </h1>
+                <p className="text-zinc-600 dark:text-zinc-400">
+                  Gestiona las propiedades de tu sitio web
+                </p>
+              </div>
+            </div>
+            
+            <div className="flex items-center space-x-3">
+              <Button
+                variant="outline"
                 onClick={() => router.push('/')}
-                className="px-5 py-2.5 text-base bg-secondary-700 text-white rounded-xl hover:bg-secondary-900 transition-shadow shadow-md hover:shadow-lg"
+                className="border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800"
               >
+                <Globe className="w-4 h-4 mr-2" />
                 Ver Sitio Web
-              </button>
-              <button
+              </Button>
+              <Button
+                variant="destructive"
                 onClick={handleLogout}
-                className="px-5 py-2.5 text-base bg-red-600 text-white rounded-xl hover:bg-red-700 transition-shadow shadow-md hover:shadow-lg"
+                className="bg-red-600 hover:bg-red-700 text-white"
               >
+                <LogOut className="w-4 h-4 mr-2" />
                 Cerrar Sesión
-              </button>
+              </Button>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Contenido principal */}
-      <div className="w-full max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 py-12">
-        <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-12 gap-6 md:gap-0">
-          <h2 className="text-3xl font-bold text-yellow-500 mb-0">
-            Propiedades
-          </h2>
-          <button
-            onClick={handleCreateProperty}
-            className="px-7 py-3 bg-yellow-500 text-black rounded-xl hover:bg-yellow-400 transition-shadow shadow-md hover:shadow-lg font-bold text-lg"
-          >
-            + Nueva Propiedad
-          </button>
-        </div>
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
+        
+        <Card className="border-0 shadow-xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur mb-8">
+          <CardHeader>
+            <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
+              <div>
+                <CardTitle className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 flex items-center space-x-2">
+                  <Building2 className="w-6 h-6 text-amber-600" />
+                  <span>Propiedades</span>
+                </CardTitle>
+                <p className="text-zinc-600 dark:text-zinc-400 mt-1">
+                  Administra el catálogo de propiedades disponibles
+                </p>
+              </div>
+              <Button
+                onClick={handleCreateProperty}
+                className="bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-700 hover:to-yellow-700 text-white font-semibold"
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                Nueva Propiedad
+              </Button>
+            </div>
+          </CardHeader>
+        </Card>
 
-        {/* Loader */}
         {isLoading ? (
-          <div className="text-center py-12">Cargando propiedades...</div>
+          <Card className="border-0 shadow-xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur">
+            <CardContent className="py-16">
+              <div className="text-center">
+                <div className="w-16 h-16 bg-gradient-to-br from-amber-500 to-yellow-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                  <Loader2 className="w-8 h-8 text-white animate-spin" />
+                </div>
+                <p className="text-lg text-zinc-600 dark:text-zinc-400">
+                  Cargando propiedades...
+                </p>
+              </div>
+            </CardContent>
+          </Card>
         ) : (
-          <PropertyList
-            properties={properties}
-            onEdit={handleEditProperty}
-            onDelete={handleDeleteProperty}
-          />
+          <>
+            <PropertyList
+              properties={properties}
+              onEdit={handleEditProperty}
+              onDelete={handleDeleteProperty}
+            />
+
+            {totalPages > 1 && (
+              <Card className="border-0 shadow-xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur mt-8">
+                <CardContent className="py-6">
+                  <div className="flex justify-center items-center space-x-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setPage(Math.max(1, page - 1))}
+                      disabled={page === 1}
+                      className="border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800"
+                    >
+                      <ChevronLeft className="w-4 h-4" />
+                    </Button>
+                    
+                    <div className="flex items-center space-x-1">
+                      {Array.from({ length: Math.min(totalPages, 7) }, (_, i) => {
+                        const pageNumber = i + 1;
+                        const isActive = page === pageNumber;
+                        
+                        return (
+                          <Button
+                            key={pageNumber}
+                            variant={isActive ? "default" : "outline"}
+                            size="sm"
+                            onClick={() => setPage(pageNumber)}
+                            className={
+                              isActive 
+                                ? "bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-700 hover:to-yellow-700 text-white" 
+                                : "border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800"
+                            }
+                          >
+                            {pageNumber}
+                          </Button>
+                        );
+                      })}
+                    </div>
+                    
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setPage(Math.min(totalPages, page + 1))}
+                      disabled={page === totalPages}
+                      className="border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800"
+                    >
+                      <ChevronRight className="w-4 h-4" />
+                    </Button>
+                  </div>
+                  
+                  {showVerMas && (
+                    <div className="text-center mt-4">
+                      <Button
+                        variant="outline"
+                        onClick={() => setPage(page + 1)}
+                        className="border-amber-300 dark:border-amber-600 text-amber-700 dark:text-amber-300 hover:bg-amber-50 dark:hover:bg-amber-900/20"
+                      >
+                        Ver más propiedades
+                      </Button>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            )}
+          </>
         )}
 
-        {/* Paginación */}
-        <div className="flex justify-center mt-8 gap-2">
-          {Array.from({ length: Math.min(totalPages, 9) }, (_, i) => (
-            <button
-              key={i + 1}
-              onClick={() => setPage(i + 1)}
-              className={`px-4 py-2 rounded ${page === i + 1 ? 'bg-yellow-500 text-black font-bold' : 'bg-gray-200 dark:bg-secondary-700 text-gray-700 dark:text-white'}`}
-            >
-              {i + 1}
-            </button>
-          ))}
-          {showVerMas && (
-            <button
-              onClick={() => setPage(page + 1)}
-              className="px-4 py-2 rounded bg-yellow-500 text-black font-bold"
-            >
-              Ver más
-            </button>
-          )}
-        </div>
-
-        {/* Modal del formulario para crear o editar una propiedad */}
         {showForm && (
           <PropertyForm
             property={editingProperty}
