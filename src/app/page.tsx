@@ -22,7 +22,6 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-black">
       <MainSection />
-      {/* Carrusel de imágenes fuera del contenedor para ancho completo */}
       <div className="w-full mb-10">
         <CarouselSection />
       </div>
@@ -33,7 +32,6 @@ export default function Home() {
         ) : (
           <PropertyList properties={properties} />
         )}
-        {/* Paginación */}
         <div className="flex justify-center mt-8 gap-2">
           {Array.from({ length: Math.min(totalPages, 9) }, (_, i) => (
             <button
