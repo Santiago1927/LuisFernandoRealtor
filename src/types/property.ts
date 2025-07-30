@@ -12,6 +12,7 @@ export interface Property {
   area?: number;
   type: 'house' | 'apartment' | 'commercial' | 'land';
   status: 'available' | 'sold' | 'rented';
+  phone?: string;
   createdAt: Date;
   updatedAt: Date;
   lat?: number | null;
@@ -29,6 +30,7 @@ export interface PropertyFormData {
   area?: number;
   type: 'house' | 'apartment' | 'commercial' | 'land';
   status: 'available' | 'sold' | 'rented';
+  phone?: string;
   lat?: number | null;
   lng?: number | null;
 } 

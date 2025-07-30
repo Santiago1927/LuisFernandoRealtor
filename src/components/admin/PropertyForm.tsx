@@ -3,6 +3,7 @@
 import React from 'react';
 import { Property } from '../../types/property';
 import { usePropertyFormLogic } from '../../hooks/usePropertyFormLogic';
+import AddressInputWithMap from '../map/AddressInputWithMap';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -21,7 +22,8 @@ import {
   Image as ImageIcon,
   Video,
   Save,
-  Loader2
+  Loader2,
+  Phone
 } from "lucide-react";
 
 interface PropertyFormProps {
@@ -46,6 +48,7 @@ export default function PropertyForm({ property, onSave, onClose }: PropertyForm
     handleImageChange,
     handleVideoChange,
     handleSubmit,
+    handleLocationChange,
     onClose: handleClose,
   } = usePropertyFormLogic({ property, onSave, onClose });
 
@@ -98,36 +101,18 @@ export default function PropertyForm({ property, onSave, onClose }: PropertyForm
                   />
                 </div>
 
-                <div>
-                  <Label htmlFor="address" className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
-                    Dirección *
-                  </Label>
-                  <div className="relative mt-1">
-                    <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-zinc-400" />
-                    <Input
-                      id="address"
-                      name="address"
-                      value={mapAddress}
-                      onChange={e => { setMapAddress(e.target.value); handleInputChange(e); }}
-                      required
-                      className="pl-10 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
-                      placeholder="Ingresa la dirección completa"
-                    />
-                  </div>
-                  {lat && lng && (
-                    <div className="mt-3 rounded-lg overflow-hidden border border-zinc-200 dark:border-zinc-700">
-                      <iframe
-                        width="100%"
-                        height="200"
-                        style={{ border: 0 }}
-                        loading="lazy"
-                        allowFullScreen
-                        referrerPolicy="no-referrer-when-downgrade"
-                        src={`https://www.google.com/maps?q=${lat},${lng}&z=16&output=embed`}
-                      />
-                    </div>
-                  )}
-                </div>
+                {/* Input de dirección con autocompletado y mapa */}
+                <AddressInputWithMap
+                  label="Dirección"
+                  placeholder="Ingresa la dirección completa (ej: Carrera 80 #45-23, Medellín)"
+                  name="address"
+                  required
+                  initialAddress={formData.address}
+                  initialCoordinates={lat && lng ? [lat, lng] : undefined}
+                  onLocationChange={(address, lat, lng) => handleLocationChange(lat, lng, address)}
+                  mapHeight="300px"
+                  draggable={true}
+                />
 
                 <div>
                   <Label htmlFor="city" className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
@@ -162,6 +147,24 @@ export default function PropertyForm({ property, onSave, onClose }: PropertyForm
                       min="0"
                       className="pl-10 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
                       placeholder="0"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <Label htmlFor="phone" className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+                    Teléfono de Contacto
+                  </Label>
+                  <div className="relative mt-1">
+                    <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-zinc-400" />
+                    <Input
+                      id="phone"
+                      type="tel"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleInputChange}
+                      className="pl-10 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
+                      placeholder="+57 300 123 4567"
                     />
                   </div>
                 </div>

@@ -1,0 +1,441 @@
+📊 REPORTE COMPLETO DE PROPIEDADES - 27/7/2025
+================================================================================
+
+Total de propiedades encontradas: 20
+
+📍 PROPIEDAD 01: PH
+──────────────────────────────────────────────────
+🆔 ID: 1FUkj6VTS0yM9QipRb6e
+📍 Dirección: poblado → El Poblado, Medellín
+🌆 Ciudad: No especificada
+💰 Precio: $0
+🏠 Tipo: ❔ Casa
+📊 Estado: ✅ Disponible
+🛏️  Habitaciones: 4
+🚿 Baños: 5
+📐 Área: 500 m²
+📞 Teléfono: No especificado
+📝 Descripción: Ph
+🖼️  Imágenes: 0 archivo(s)
+🎥 Videos: 0 archivo(s)
+🗺️  Coordenadas: 6.2077, -75.5669
+📅 Fecha creación: 15 de julio de 2025, 02:54 p. m.
+⏰ Última actualización: 24 de julio de 2025, 11:14 p. m.
+
+================================================================================
+
+📍 PROPIEDAD 02: Casa
+──────────────────────────────────────────────────
+🆔 ID: 1I5PMLQiEPjWGVAX1Fnm
+📍 Dirección: Bombona
+🌆 Ciudad: No especificada
+💰 Precio: $89.000.000
+🏠 Tipo: ❔ Casa
+📊 Estado: ✅ Disponible
+🛏️  Habitaciones: 4
+🚿 Baños: 2
+📐 Área: 500 m²
+📞 Teléfono: No especificado
+📝 Descripción: dfgafasd
+🖼️  Imágenes: 0 archivo(s)
+🎥 Videos: 0 archivo(s)
+📅 Fecha creación: 23 de julio de 2025, 05:47 p. m.
+⏰ Última actualización: 25 de julio de 2025, 06:35 p. m.
+
+================================================================================
+
+📍 PROPIEDAD 03: Apartamento
+──────────────────────────────────────────────────
+🆔 ID: 2sgi1bX9kZrnm2TapWxR
+📍 Dirección: torres de mariluz Pasto
+🌆 Ciudad: No especificada
+💰 Precio: $100.000.000
+🏠 Tipo: ❔ Apartamento
+📊 Estado: ✅ Disponible
+🛏️  Habitaciones: 3
+🚿 Baños: 2
+📐 Área: 39 m²
+📞 Teléfono: No especificado
+📝 Descripción: Sin descripción
+🖼️  Imágenes: 0 archivo(s)
+🎥 Videos: 0 archivo(s)
+📅 Fecha creación: 18 de julio de 2025, 04:53 p. m.
+⏰ Última actualización: 25 de julio de 2025, 06:59 p. m.
+
+================================================================================
+
+📍 PROPIEDAD 04: apartamento
+──────────────────────────────────────────────────
+🆔 ID: AQoxG9jTGC322sxNSCgL
+📍 Dirección: El lido
+🌆 Ciudad: Cali
+💰 Precio: $99.999.999.999
+🏠 Tipo: 🏠 Casa
+📊 Estado: 🔑 Alquilada
+🛏️  Habitaciones: 5
+🚿 Baños: 2
+📐 Área: 200 m²
+📞 Teléfono: No especificado
+📝 Descripción: Sin descripción
+🖼️  Imágenes: 0 archivo(s)
+🎥 Videos: 0 archivo(s)
+📅 Fecha creación: 23 de julio de 2025, 05:47 p. m.
+⏰ Última actualización: 23 de julio de 2025, 05:47 p. m.
+
+================================================================================
+
+📍 PROPIEDAD 05: Apto
+──────────────────────────────────────────────────
+🆔 ID: BwZ71yICCW27oq7owaYQ
+📍 Dirección: Las palmas
+🌆 Ciudad: Medellin
+💰 Precio: $9.000.000
+🏠 Tipo: 🏢 Apartamento
+📊 Estado: ✅ Disponible
+🛏️  Habitaciones: 5
+🚿 Baños: 2
+📐 Área: 50 m²
+📞 Teléfono: No especificado
+📝 Descripción: Sin descripción
+🖼️  Imágenes: 0 archivo(s)
+🎥 Videos: 0 archivo(s)
+📅 Fecha creación: 22 de julio de 2025, 10:28 p. m.
+⏰ Última actualización: 22 de julio de 2025, 10:28 p. m.
+
+================================================================================
+
+📍 PROPIEDAD 06: Casa
+──────────────────────────────────────────────────
+🆔 ID: ByQIbqJu3RzWegexGdx0
+📍 Dirección: las margaritas pasto
+🌆 Ciudad: Pasto
+💰 Precio: $10.000.000
+🏠 Tipo: 🏠 Casa
+📊 Estado: ✅ Disponible
+🛏️  Habitaciones: 4
+🚿 Baños: 2
+📐 Área: 1000 m²
+📞 Teléfono: No especificado
+📝 Descripción: Sin descripción
+🖼️  Imágenes: 0 archivo(s)
+🎥 Videos: 0 archivo(s)
+📅 Fecha creación: 22 de julio de 2025, 10:26 p. m.
+⏰ Última actualización: 22 de julio de 2025, 10:26 p. m.
+
+================================================================================
+
+📍 PROPIEDAD 07: Apartamento
+──────────────────────────────────────────────────
+🆔 ID: IKz7p5sXEdIObGCcTXyF
+📍 Dirección: Chapineros
+🌆 Ciudad: Bogota
+💰 Precio: $9.999.999
+🏠 Tipo: 🏢 Apartamento
+📊 Estado: ✅ Disponible
+🛏️  Habitaciones: 4
+🚿 Baños: 2
+📐 Área: 500 m²
+📞 Teléfono: No especificado
+📝 Descripción: Sin descripción
+🖼️  Imágenes: 0 archivo(s)
+🎥 Videos: 0 archivo(s)
+📅 Fecha creación: 22 de julio de 2025, 10:29 p. m.
+⏰ Última actualización: 22 de julio de 2025, 10:29 p. m.
+
+================================================================================
+
+📍 PROPIEDAD 08: Apartamento
+──────────────────────────────────────────────────
+🆔 ID: MaDjbTdFYxmOZ7avZyuX
+📍 Dirección: Parana Pasto
+🌆 Ciudad: No especificada
+💰 Precio: $0
+🏠 Tipo: ❔ 
+📊 Estado: ✅ Disponible
+🛏️  Habitaciones: 3
+🚿 Baños: 2
+📐 Área: 50 m²
+📞 Teléfono: No especificado
+📝 Descripción: Apartamento 
+🖼️  Imágenes: 2 archivo(s)
+🎥 Videos: 0 archivo(s)
+📅 Fecha creación: 24 de julio de 2025, 03:33 p. m.
+⏰ Última actualización: 24 de julio de 2025, 03:34 p. m.
+🖼️  URLs de imágenes:
+   1. https://firebasestorage.googleapis.com/v0/b/inmapp-842fa.firebasestorage.app/o/properties%2Fimages%2F1753389229074_dinero.png?alt=media&token=f01812ca-e581-4759-8baf-2f3ce6151cab
+   2. https://firebasestorage.googleapis.com/v0/b/inmapp-842fa.firebasestorage.app/o/properties%2Fimages%2F1753389282759_WhatsApp%20Image%202025-06-26%20at%2011.06.42%20PM.jpeg?alt=media&token=65816a32-3730-4620-b750-459c8eb8a5d3
+
+================================================================================
+
+📍 PROPIEDAD 09: Casa
+──────────────────────────────────────────────────
+🆔 ID: NOWNxT4GIzmcaB7TMmPA
+📍 Dirección: Obrero
+🌆 Ciudad: Pasto
+💰 Precio: $50.000.000
+🏠 Tipo: 🏠 Casa
+📊 Estado: ✅ Disponible
+🛏️  Habitaciones: 4
+🚿 Baños: 2
+📐 Área: 500 m²
+📞 Teléfono: No especificado
+📝 Descripción: Sin descripción
+🖼️  Imágenes: 0 archivo(s)
+🎥 Videos: 0 archivo(s)
+📅 Fecha creación: 22 de julio de 2025, 10:26 p. m.
+⏰ Última actualización: 22 de julio de 2025, 10:26 p. m.
+
+================================================================================
+
+📍 PROPIEDAD 10: Bosques de la colina
+──────────────────────────────────────────────────
+🆔 ID: PXXV8b0Jx24Jbo1pibul
+📍 Dirección: Bosques de la colina pasto → Pasto, Nariño
+🌆 Ciudad: Pasto
+💰 Precio: $300.000.000
+🏠 Tipo: ❔ Apartamento
+📊 Estado: ✅ Disponible
+🛏️  Habitaciones: 3
+🚿 Baños: 2
+📐 Área: 50 m²
+📞 Teléfono: No especificado
+📝 Descripción: Sin descripción
+🖼️  Imágenes: 0 archivo(s)
+🎥 Videos: 0 archivo(s)
+🗺️  Coordenadas: 1.2136, -77.2811
+📅 Fecha creación: 25 de julio de 2025, 07:00 p. m.
+⏰ Última actualización: 25 de julio de 2025, 07:18 p. m.
+
+================================================================================
+
+📍 PROPIEDAD 11: Casa 
+──────────────────────────────────────────────────
+🆔 ID: R7QxaMJhnEz4ty7fnf1b
+📍 Dirección: Bachue Pasto
+🌆 Ciudad: Pasto
+💰 Precio: $5.000.000.000
+🏠 Tipo: 🏠 Casa
+📊 Estado: ✅ Disponible
+🛏️  Habitaciones: 4
+🚿 Baños: 2
+📐 Área: 500 m²
+📞 Teléfono: No especificado
+📝 Descripción: Sin descripción
+🖼️  Imágenes: 0 archivo(s)
+🎥 Videos: 0 archivo(s)
+📅 Fecha creación: 18 de julio de 2025, 05:01 p. m.
+⏰ Última actualización: 18 de julio de 2025, 05:01 p. m.
+
+================================================================================
+
+📍 PROPIEDAD 12: Turin
+──────────────────────────────────────────────────
+🆔 ID: ViYPaNvBqkK0BGJAaxy6
+📍 Dirección: Edificion turin pasto
+🌆 Ciudad: No especificada
+💰 Precio: $800.000
+🏠 Tipo: ❔ 
+📊 Estado: ❔ 
+🛏️  Habitaciones: 3
+🚿 Baños: 2
+📐 Área: 50 m²
+📞 Teléfono: No especificado
+📝 Descripción: Sin descripción
+🖼️  Imágenes: 0 archivo(s)
+🎥 Videos: 0 archivo(s)
+📅 Fecha creación: 18 de julio de 2025, 05:00 p. m.
+⏰ Última actualización: 24 de julio de 2025, 11:45 p. m.
+
+================================================================================
+
+📍 PROPIEDAD 13: Apartamento
+──────────────────────────────────────────────────
+🆔 ID: Ym1zxpEFin52gRtzR6tS
+📍 Dirección: Parana Pasto
+🌆 Ciudad: No especificada
+💰 Precio: $600.000
+🏠 Tipo: ❔ 
+📊 Estado: ✅ Disponible
+🛏️  Habitaciones: 4
+🚿 Baños: 1
+📐 Área: 500 m²
+📞 Teléfono: No especificado
+📝 Descripción: Sin descripción
+🖼️  Imágenes: 0 archivo(s)
+🎥 Videos: 0 archivo(s)
+📅 Fecha creación: 18 de julio de 2025, 05:02 p. m.
+⏰ Última actualización: 24 de julio de 2025, 11:45 p. m.
+
+================================================================================
+
+📍 PROPIEDAD 14: Apartamento 401
+──────────────────────────────────────────────────
+🆔 ID: cx1kmv6aqMTyXXNjgTcH
+📍 Dirección: San ignacio
+🌆 Ciudad: Pasto
+💰 Precio: $1.000.000
+🏠 Tipo: 🏢 Apartamento
+📊 Estado: 🔑 Alquilada
+🛏️  Habitaciones: 3
+🚿 Baños: 2
+📐 Área: 50 m²
+📞 Teléfono: No especificado
+📝 Descripción: dfadgfhfgdfg
+🖼️  Imágenes: 0 archivo(s)
+🎥 Videos: 0 archivo(s)
+📅 Fecha creación: 15 de julio de 2025, 02:50 p. m.
+⏰ Última actualización: 15 de julio de 2025, 02:51 p. m.
+
+================================================================================
+
+📍 PROPIEDAD 15: Casa
+──────────────────────────────────────────────────
+🆔 ID: gdcrrxC2PZxc20uAWkjE
+📍 Dirección: alicante
+🌆 Ciudad: Cali
+💰 Precio: $9.999.999
+🏠 Tipo: 🏠 Casa
+📊 Estado: ✅ Disponible
+🛏️  Habitaciones: 5
+🚿 Baños: 2
+📐 Área: 1000 m²
+📞 Teléfono: No especificado
+📝 Descripción: Sin descripción
+🖼️  Imágenes: 0 archivo(s)
+🎥 Videos: 0 archivo(s)
+📅 Fecha creación: 23 de julio de 2025, 05:48 p. m.
+⏰ Última actualización: 23 de julio de 2025, 05:48 p. m.
+
+================================================================================
+
+📍 PROPIEDAD 16: Casa
+──────────────────────────────────────────────────
+🆔 ID: jQ3Y8rn1GVesRFbyxQGv
+📍 Dirección: Obrero
+🌆 Ciudad: Pasto
+💰 Precio: $50.000.000
+🏠 Tipo: 🏠 Casa
+📊 Estado: ✅ Disponible
+🛏️  Habitaciones: 4
+🚿 Baños: 2
+📐 Área: 100 m²
+📞 Teléfono: No especificado
+📝 Descripción: sfasdfga
+🖼️  Imágenes: 0 archivo(s)
+🎥 Videos: 0 archivo(s)
+📅 Fecha creación: 27 de junio de 2025, 07:29 p. m.
+⏰ Última actualización: 27 de junio de 2025, 07:29 p. m.
+
+================================================================================
+
+📍 PROPIEDAD 17: casa
+──────────────────────────────────────────────────
+🆔 ID: oYrNHdT1sl9kgrviCutW
+📍 Dirección: Unicentro
+🌆 Ciudad: Pasto
+💰 Precio: $500.000.000
+🏠 Tipo: 🏠 Casa
+📊 Estado: ✅ Disponible
+🛏️  Habitaciones: 3
+🚿 Baños: 4
+📐 Área: 5676 m²
+📞 Teléfono: No especificado
+📝 Descripción: sdfwasdgasf
+🖼️  Imágenes: 0 archivo(s)
+🎥 Videos: 0 archivo(s)
+📅 Fecha creación: 27 de junio de 2025, 06:50 p. m.
+⏰ Última actualización: 27 de junio de 2025, 06:50 p. m.
+
+================================================================================
+
+📍 PROPIEDAD 18: Mansion
+──────────────────────────────────────────────────
+🆔 ID: qKSXiZwItDmQnp2pXWRJ
+📍 Dirección: Pinasaco
+🌆 Ciudad: Pasto
+💰 Precio: $1.000.000.000
+🏠 Tipo: 🏠 Casa
+📊 Estado: ✅ Disponible
+🛏️  Habitaciones: 7
+🚿 Baños: 4
+📐 Área: 1000 m²
+📞 Teléfono: No especificado
+📝 Descripción: Conjunto residencial
+🖼️  Imágenes: 0 archivo(s)
+🎥 Videos: 0 archivo(s)
+📅 Fecha creación: 4 de julio de 2025, 12:01 a. m.
+⏰ Última actualización: 4 de julio de 2025, 12:01 a. m.
+
+================================================================================
+
+📍 PROPIEDAD 19: Casa
+──────────────────────────────────────────────────
+🆔 ID: sFvjBRhVbfXfilNZ6trR
+📍 Dirección: san juan de dios pasto → Pasto, Nariño
+🌆 Ciudad: No especificada
+💰 Precio: $790.000.000
+🏠 Tipo: ❔ Casa
+📊 Estado: ✅ Disponible
+🛏️  Habitaciones: 5
+🚿 Baños: 3
+📐 Área: 131 m²
+📞 Teléfono: No especificado
+📝 Descripción: Sin descripción
+🖼️  Imágenes: 1 archivo(s)
+🎥 Videos: 0 archivo(s)
+🗺️  Coordenadas: 1.2136, -77.2811
+📅 Fecha creación: 24 de julio de 2025, 11:30 p. m.
+⏰ Última actualización: 24 de julio de 2025, 11:31 p. m.
+🖼️  URLs de imágenes:
+   1. https://firebasestorage.googleapis.com/v0/b/inmapp-842fa.firebasestorage.app/o/properties%2Fimages%2F1753417841583_th.outside926x816.682ddf3969e69_infocdn__rrpmqjnyzboojm5ojhfpatlpccpu4ejuvwmczwtsjpg.webp?alt=media&token=46aa6747-c36c-4269-9aa9-bced4fd7b196
+
+================================================================================
+
+📍 PROPIEDAD 20: Apartamento
+──────────────────────────────────────────────────
+🆔 ID: yhsmvxCMLQHdXUf2WjZX
+📍 Dirección: ciudad jardin
+🌆 Ciudad: Cali
+💰 Precio: $50.000.000
+🏠 Tipo: 🏠 Casa
+📊 Estado: 💰 Vendida
+🛏️  Habitaciones: 5
+🚿 Baños: 2
+📐 Área: 500 m²
+📞 Teléfono: No especificado
+📝 Descripción: Sin descripción
+🖼️  Imágenes: 0 archivo(s)
+🎥 Videos: 0 archivo(s)
+📅 Fecha creación: 23 de julio de 2025, 05:47 p. m.
+⏰ Última actualización: 23 de julio de 2025, 05:47 p. m.
+
+================================================================================
+
+📊 ESTADÍSTICAS GENERALES
+==================================================
+
+🏠 POR TIPO DE PROPIEDAD:
+   ❔ Casa: 3 propiedades
+   ❔ Apartamento: 2 propiedades
+   🏠 Casa: 9 propiedades
+   🏢 Apartamento: 3 propiedades
+   ❔ : 3 propiedades
+
+📊 POR ESTADO:
+   ✅ Disponible: 16 propiedades
+   🔑 Alquilada: 2 propiedades
+   ❔ : 1 propiedades
+   💰 Vendida: 1 propiedades
+
+🌆 POR CIUDAD:
+   Sin ciudad especificada: 7 propiedades
+   Cali: 3 propiedades
+   Medellin: 1 propiedades
+   Pasto: 8 propiedades
+   Bogota: 1 propiedades
+
+💰 ANÁLISIS DE PRECIOS:
+   Precio mínimo: $600.000
+   Precio máximo: $99.999.999.999
+   Precio promedio: $5.998.355.555
+   Propiedades con precio: 18 de 20

@@ -6,8 +6,8 @@ import { Property, PropertyFormData } from '../types/property';
 import { storage } from '../../firebase/firebaseConfig';
 // Importa funciones de Firebase Storage para subir y obtener archivos
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-// Importa el servicio para interactuar con propiedades en Firestore
-import { propertyService } from '../../firebase/firestoreService';
+// Importa las mutaciones de React Query
+import { useCreateProperty, useUpdateProperty } from './usePropertyMutations';
 
 // Interfaz para las props que recibe el hook personalizado
 interface UsePropertyFormLogicProps {
@@ -18,19 +18,23 @@ interface UsePropertyFormLogicProps {
 
 // Hook personalizado para manejar la lógica del formulario de propiedades
 export function usePropertyFormLogic({ property, onSave, onClose }: UsePropertyFormLogicProps) {
-  // Estado para los datos del formulario
-  const [formData, setFormData] = useState<PropertyFormData>({
-    title: '', // Título de la propiedad
-    address: '', // Dirección
-    city: '', // Ciudad
-    price: 0, // Precio
-    description: '', // Descripción
-    bedrooms: 0, // Número de habitaciones
-    bathrooms: 0, // Número de baños
-    area: 0, // Área en m2
-    type: 'house', // Tipo de propiedad
-    status: 'available', // Estado de la propiedad
+  // Estado inicial del formulario con valores por defecto
+  const getInitialFormData = (): PropertyFormData => ({
+    title: property?.title || '',
+    address: property?.address || '',
+    city: property?.city || '',
+    price: property?.price || 0,
+    description: property?.description || '',
+    bedrooms: property?.bedrooms || 0,
+    bathrooms: property?.bathrooms || 0,
+    area: property?.area || 0,
+    type: property?.type || 'house',  // Asegurar valor por defecto
+    status: property?.status || 'available', // Asegurar valor por defecto
+    phone: property?.phone || '',
   });
+
+  // Estado para los datos del formulario
+  const [formData, setFormData] = useState<PropertyFormData>(getInitialFormData());
   // Estado para las imágenes seleccionadas por el usuario
   const [images, setImages] = useState<File[]>([]);
   // Estado para los videos seleccionados por el usuario
@@ -42,32 +46,48 @@ export function usePropertyFormLogic({ property, onSave, onClose }: UsePropertyF
   // Estado para las URLs de videos ya subidos
   const [videoUrls, setVideoUrls] = useState<string[]>(property?.videos || []);
   // Estado para la dirección a geocodificar en el mapa
-  const [mapAddress, setMapAddress] = useState(formData.address || '');
+  const [mapAddress, setMapAddress] = useState(property?.address || '');
   // Estado para la latitud de la propiedad
   const [lat, setLat] = useState(property?.lat || null);
   // Estado para la longitud de la propiedad
   const [lng, setLng] = useState(property?.lng || null);
 
+  // Mutaciones de React Query
+  const createPropertyMutation = useCreateProperty();
+  const updatePropertyMutation = useUpdateProperty();
+
   // Efecto que actualiza los estados cuando se recibe una propiedad para editar
   useEffect(() => {
     if (property) {
-      setFormData({
-        title: property.title,
-        address: property.address,
-        city: property.city || '',
-        price: property.price,
-        description: property.description,
-        bedrooms: property.bedrooms || 0,
-        bathrooms: property.bathrooms || 0,
-        area: property.area || 0,
-        type: property.type,
-        status: property.status,
-      });
+      const newFormData = getInitialFormData();
+      setFormData(newFormData);
       setImageUrls(property.images || []);
       setVideoUrls(property.videos || []);
       setLat(property.lat || null);
       setLng(property.lng || null);
       setMapAddress(property.address || '');
+    } else {
+      // Si no hay property (modo crear), resetear todos los valores
+      setFormData({
+        title: '',
+        address: '',
+        city: '',
+        price: 0,
+        description: '',
+        bedrooms: 0,
+        bathrooms: 0,
+        area: 0,
+        type: 'house',
+        status: 'available',
+        phone: '',
+      });
+      setImageUrls([]);
+      setVideoUrls([]);
+      setImages([]);
+      setVideos([]);
+      setLat(null);
+      setLng(null);
+      setMapAddress('');
     }
   }, [property]);
 
@@ -109,18 +129,28 @@ export function usePropertyFormLogic({ property, onSave, onClose }: UsePropertyF
   // Maneja el envío del formulario, sube archivos y guarda la propiedad en Firestore
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault(); // Previene el comportamiento por defecto del formulario
+    
+    // Evitar doble envío
+    if (uploading || createPropertyMutation.isPending || updatePropertyMutation.isPending) {
+      return;
+    }
+
     setUploading(true); // Indica que se está subiendo
+    
     try {
       let newImageUrls = [...imageUrls]; // Copia URLs existentes
       let newVideoUrls = [...videoUrls]; // Copia URLs existentes
+      
       if (images.length > 0) {
         const uploadedImageUrls = await uploadFiles(images, 'properties/images'); // Sube imágenes
         newImageUrls = [...newImageUrls, ...uploadedImageUrls]; // Agrega nuevas URLs
       }
+      
       if (videos.length > 0) {
         const uploadedVideoUrls = await uploadFiles(videos, 'properties/videos'); // Sube videos
         newVideoUrls = [...newVideoUrls, ...uploadedVideoUrls]; // Agrega nuevas URLs
       }
+      
       // Construye el objeto de datos de la propiedad
       const propertyData: Omit<Property, 'id'> = {
         ...formData,
@@ -131,28 +161,56 @@ export function usePropertyFormLogic({ property, onSave, onClose }: UsePropertyF
         lat: lat || null,
         lng: lng || null,
       };
-      let savedProperty: Property;
+
       if (property?.id) {
-        // Si existe, actualiza la propiedad
-        await propertyService.updateProperty(property.id, propertyData);
-        savedProperty = {
+        // Si existe, actualiza la propiedad usando React Query
+        await updatePropertyMutation.mutateAsync({ 
+          id: property.id, 
+          propertyData 
+        });
+        
+        const updatedProperty: Property = {
           id: property.id,
           ...propertyData,
         };
+        
+        onSave(updatedProperty); // Llama a la función de guardado
+        
+        // Toast de éxito para actualización
+        alert('Propiedad actualizada exitosamente');
       } else {
-        // Si no existe, crea una nueva propiedad
-        savedProperty = await propertyService.createProperty(propertyData);
+        // Si no existe, crea una nueva propiedad usando React Query
+        const savedProperty = await createPropertyMutation.mutateAsync(propertyData);
+        onSave(savedProperty); // Llama a la función de guardado
+        
+        // Toast de éxito para creación
+        alert('Propiedad creada exitosamente');
       }
-      onSave(savedProperty); // Llama a la función de guardado
+      
     } catch (error) {
-      console.error('Error uploading files:', error); // Muestra error en consola
-      alert('Error al subir archivos. Intenta de nuevo.'); // Alerta al usuario
+      console.error('Error al procesar la propiedad:', error);
+      alert('Error al procesar la propiedad. Intenta de nuevo.');
     } finally {
       setUploading(false); // Finaliza la subida
     }
   };
 
-  // Retorna los estados y funciones para ser usados en el formulario de propiedad
+  // Maneja los cambios de ubicación desde el mapa
+  const handleLocationChange = (newLat: number, newLng: number, newAddress: string) => {
+    setLat(newLat);
+    setLng(newLng);
+    setMapAddress(newAddress);
+    
+    // Actualizar también el formData si es necesario
+    setFormData(prev => ({
+      ...prev,
+      address: newAddress
+    }));
+  };
+
+  // Determinar si está en proceso alguna operación
+  const isProcessing = uploading || createPropertyMutation.isPending || updatePropertyMutation.isPending;
+
   return {
     formData,
     setFormData,
@@ -160,7 +218,7 @@ export function usePropertyFormLogic({ property, onSave, onClose }: UsePropertyF
     setImages,
     videos,
     setVideos,
-    uploading,
+    uploading: isProcessing, // Incluir el estado de las mutaciones
     imageUrls,
     setImageUrls,
     videoUrls,
@@ -173,6 +231,11 @@ export function usePropertyFormLogic({ property, onSave, onClose }: UsePropertyF
     handleImageChange,
     handleVideoChange,
     handleSubmit,
+    handleLocationChange,
     onClose,
+    // Estados adicionales para el formulario
+    isLoading: isProcessing,
+    isError: createPropertyMutation.isError || updatePropertyMutation.isError,
+    error: createPropertyMutation.error || updatePropertyMutation.error,
   };
 }

@@ -8,6 +8,8 @@ import { useRouter } from 'next/navigation';
 import { Property } from '../types/property';
 // Importa el servicio que maneja las operaciones con propiedades en Firestore
 import { usePaginatedProperties } from '../hooks/usePaginatedProperties';
+// Importa la mutación para eliminar propiedades
+import { useDeleteProperty } from './usePropertyMutations';
 
 // Hook personalizado que encapsula la lógica del dashboard de administrador
 export function useAdminDashboardLogic() {
@@ -30,15 +32,8 @@ export function useAdminDashboardLogic() {
   // Control para mostrar el botón "Ver más"
   const showVerMas = totalPages > 9 && page === 9;
 
-  // Efecto que suscribe a los cambios en las propiedades almacenadas en Firestore
-  // useEffect(() => {
-  //   // Se suscribe a los cambios y actualiza el estado de properties
-  //   const unsubscribe = propertyService.subscribeToProperties((properties) => {
-  //     setProperties(properties);
-  //   });
-  //   // Limpia la suscripción cuando el componente se desmonta
-  //   return () => unsubscribe();
-  // }, []);
+  // Mutación para eliminar propiedades
+  const deletePropertyMutation = useDeleteProperty();
 
   // Función para cerrar sesión y redirigir al inicio
   const handleLogout = async () => {
@@ -65,10 +60,14 @@ export function useAdminDashboardLogic() {
   // Elimina una propiedad después de confirmar con el usuario
   const handleDeleteProperty = async (id: string) => {
     if (confirm('¿Estás seguro de que quieres eliminar esta propiedad?')) {
-      // Aquí podrías usar una mutación de React Query si lo deseas
-      // pero por ahora mantenemos el método directo
-      // await propertyService.deleteProperty(id);
-      window.location.reload(); // recarga para refrescar la lista
+      try {
+        await deletePropertyMutation.mutateAsync(id);
+        // La invalidación de queries se maneja automáticamente en la mutación
+        alert('Propiedad eliminada exitosamente');
+      } catch (error) {
+        console.error('Error al eliminar la propiedad:', error);
+        alert('Error al eliminar la propiedad. Intenta de nuevo.');
+      }
     }
   };
 
@@ -100,5 +99,8 @@ export function useAdminDashboardLogic() {
     totalPages,
     showVerMas,
     isLoading,
+    // Estados adicionales de la mutación de eliminación
+    isDeleting: deletePropertyMutation.isPending,
+    deleteError: deletePropertyMutation.error,
   };
 } 

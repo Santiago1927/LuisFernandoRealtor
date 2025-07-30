@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./styles/globals.css";
+import "leaflet/dist/leaflet.css";
 import Header from "../components/layout/Header";
 import { ThemeProvider } from "../components/theme/ThemeContext";
 import { AuthProvider } from "../components/auth/AuthContext";

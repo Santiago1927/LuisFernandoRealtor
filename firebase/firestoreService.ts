@@ -60,12 +60,15 @@ export const propertyService = {
       const querySnapshot = await getDocs(collection(db, COLLECTIONS.PROPERTIES));
       
       // Mapear los documentos y convertir las fechas de Firestore a Date
-      return querySnapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data(),
-        createdAt: doc.data().createdAt?.toDate() || new Date(),
-        updatedAt: doc.data().updatedAt?.toDate() || new Date(),
-      })) as Property[];
+      return querySnapshot.docs.map(doc => {
+        const data = doc.data();
+        return {
+          id: doc.id,
+          ...data,
+          createdAt: data.createdAt?.toDate ? data.createdAt.toDate() : (data.createdAt ? new Date(data.createdAt) : new Date()),
+          updatedAt: data.updatedAt?.toDate ? data.updatedAt.toDate() : (data.updatedAt ? new Date(data.updatedAt) : new Date()),
+        };
+      }) as Property[];
     } catch (error) {
       console.error('Error getting properties:', error);
       throw error;
@@ -93,8 +96,8 @@ export const propertyService = {
         return {
           id: docSnap.id,
           ...data,
-          createdAt: data.createdAt?.toDate() || new Date(),
-          updatedAt: data.updatedAt?.toDate() || new Date(),
+          createdAt: data.createdAt?.toDate ? data.createdAt.toDate() : (data.createdAt ? new Date(data.createdAt) : new Date()),
+          updatedAt: data.updatedAt?.toDate ? data.updatedAt.toDate() : (data.updatedAt ? new Date(data.updatedAt) : new Date()),
         } as Property;
       }
       return null;
@@ -247,12 +250,15 @@ export const propertyService = {
     
     // Retornar la función de cancelación del listener
     return onSnapshot(q, (querySnapshot) => {
-      const properties = querySnapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data(),
-        createdAt: doc.data().createdAt?.toDate() || new Date(),
-        updatedAt: doc.data().updatedAt?.toDate() || new Date(),
-      })) as Property[];
+      const properties = querySnapshot.docs.map(doc => {
+        const data = doc.data();
+        return {
+          id: doc.id,
+          ...data,
+          createdAt: data.createdAt?.toDate ? data.createdAt.toDate() : (data.createdAt ? new Date(data.createdAt) : new Date()),
+          updatedAt: data.updatedAt?.toDate ? data.updatedAt.toDate() : (data.updatedAt ? new Date(data.updatedAt) : new Date()),
+        };
+      }) as Property[];
       callback(properties);
     });
   }
@@ -268,16 +274,21 @@ export const propertyService = {
  */
 export async function getPaginatedProperties(page: number, pageSize: number): Promise<{ properties: any[]; total: number; }> {
   try {
-    const offset = (page - 1) * pageSize;
+    // Primero obtener todas las propiedades para calcular el total correcto
     const allSnapshot = await getDocs(collection(db, COLLECTIONS.PROPERTIES));
     const total = allSnapshot.size;
+    
+    // Obtener todas las propiedades ordenadas
     const q = query(
       collection(db, COLLECTIONS.PROPERTIES),
-      orderBy('createdAt', 'desc'),
-      limit(offset + pageSize)
+      orderBy('createdAt', 'desc')
     );
     const querySnapshot = await getDocs(q);
+    
+    // Aplicar paginación manualmente
+    const offset = (page - 1) * pageSize;
     const docs = querySnapshot.docs.slice(offset, offset + pageSize);
+    
     const properties = docs.map(doc => {
       const data = doc.data();
       return {
@@ -287,6 +298,7 @@ export async function getPaginatedProperties(page: number, pageSize: number): Pr
         updatedAt: data.updatedAt?.toDate ? data.updatedAt.toDate().toISOString() : null,
       };
     });
+    
     return { properties, total };
   } catch (error) {
     console.error('Error getting paginated properties:', error);

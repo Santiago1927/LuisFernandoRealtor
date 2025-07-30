@@ -1,7 +1,9 @@
 'use client';
 
 import { useParams } from 'next/navigation';
+import Link from 'next/link';
 import { usePropertyDetailPageLogic } from '../../../hooks/usePropertyDetailPageLogic';
+import MapView from '../../../components/map/MapView';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -22,14 +24,24 @@ import {
 
 export default function DetallePropiedadPage() {
   const { id } = useParams();
-  const { property, activeImage, images, nextImage, prevImage, mapUrl } = usePropertyDetailPageLogic(id);
+  const { property, isLoading, error, activeImage, images, nextImage, prevImage, mapUrl } = usePropertyDetailPageLogic(id);
 
-  if (!property) {
+  if (isLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-zinc-50 via-white to-amber-50/30 dark:from-zinc-900 dark:via-black dark:to-amber-900/10 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-600 mx-auto mb-4"></div>
           <p className="text-lg text-zinc-600 dark:text-zinc-400">Cargando propiedad...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !property) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-zinc-50 via-white to-amber-50/30 dark:from-zinc-900 dark:via-black dark:to-amber-900/10 flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-lg text-zinc-600 dark:text-zinc-400">Error al cargar la propiedad</p>
         </div>
       </div>
     );
@@ -193,31 +205,24 @@ export default function DetallePropiedadPage() {
               </div>
             </div>
 
-            {mapUrl && (
-              <Card className="border-0 shadow-xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur">
-                <CardHeader>
-                  <CardTitle className="flex items-center space-x-2 text-zinc-900 dark:text-zinc-100">
-                    <MapPin className="w-5 h-5 text-amber-600" />
-                    <span>Ubicación</span>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="p-0">
-                  <div className="relative bg-zinc-50 dark:bg-zinc-800 h-96">
-                    <iframe
-                      src={mapUrl}
-                      width="100%"
-                      height="100%"
-                      style={{ border: 0 }}
-                      allowFullScreen={true}
-                      loading="lazy"
-                      referrerPolicy="no-referrer-when-downgrade"
-                      title="Mapa de la propiedad"
-                      className="w-full h-full"
-                    />
-                  </div>
-                </CardContent>
-              </Card>
-            )}
+            {/* Mapa de ubicación */}
+            <Card className="border-0 shadow-xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur">
+              <CardHeader>
+                <CardTitle className="flex items-center space-x-2 text-zinc-900 dark:text-zinc-100">
+                  <MapPin className="w-5 h-5 text-amber-600" />
+                  <span>Ubicación</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <MapView
+                  address={property.address}
+                  lat={property.lat || undefined}
+                  lng={property.lng || undefined}
+                  draggable={false}
+                  height="400px"
+                />
+              </CardContent>
+            </Card>
           </div>
 
           <div className="xl:col-span-1 space-y-6">
@@ -239,13 +244,24 @@ export default function DetallePropiedadPage() {
                   <CardTitle className="text-zinc-900 dark:text-zinc-100">Contactar Agente</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <Button className="w-full bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-700 hover:to-yellow-700 text-white font-semibold">
-                    <Phone className="w-4 h-4 mr-2" />
-                    Llamar Ahora
+                  <Button 
+                    asChild
+                    className="w-full bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-700 hover:to-yellow-700 text-white font-semibold"
+                  >
+                    <a 
+                      href={property.phone ? `https://api.whatsapp.com/send?phone=${encodeURIComponent(property.phone.replace(/\s+/g, ''))}` : '#'}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <Phone className="w-4 h-4 mr-2" />
+                      Llamar Ahora
+                    </a>
                   </Button>
-                  <Button variant="outline" className="w-full border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800">
-                    <Mail className="w-4 h-4 mr-2" />
-                    Enviar Mensaje
+                  <Button asChild variant="outline" className="w-full border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800">
+                    <Link href="/contacto">
+                      <Mail className="w-4 h-4 mr-2" />
+                      Enviar Mensaje
+                    </Link>
                   </Button>
                   <div className="text-center text-sm text-zinc-600 dark:text-zinc-400 pt-2 border-t border-zinc-200 dark:border-zinc-700">
                     <p className="font-semibold text-zinc-900 dark:text-zinc-100">Agente: Luis Fernando</p>

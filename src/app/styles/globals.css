@@ -2,6 +2,47 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Leaflet Map Styles */
+@import 'leaflet/dist/leaflet.css';
+
+/* Fix for Leaflet marker icons in Next.js */
+.leaflet-default-icon-path {
+  background-image: url('https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png');
+}
+
+/* Map container styles */
+.map-container {
+  height: 400px;
+  width: 100%;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
+}
+
+.map-container.readonly {
+  pointer-events: none;
+}
+
+/* Map popup styles */
+.leaflet-popup-content-wrapper {
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.leaflet-popup-content {
+  margin: 8px 12px;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+/* Custom marker icon styles */
+.custom-marker-icon {
+  background-color: #f59e0b;
+  border: 3px solid #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
 :root {
   color-scheme: light dark;
 }

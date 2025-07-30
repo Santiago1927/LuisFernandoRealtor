@@ -42,7 +42,14 @@ export default function PropiedadesPage() {
 
   const { data, isLoading, error } = usePaginatedProperties({ 
     page: currentPage, 
-    pageSize: 12 
+    pageSize: 12,
+    filters: {
+      search,
+      city,
+      type,
+      minPrice,
+      maxPrice
+    }
   });
 
   const properties = data?.properties || [];
@@ -53,20 +60,6 @@ export default function PropiedadesPage() {
     setCurrentPage(newPage);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
-
-  const filteredProperties = properties.filter(property => {
-    const matchesSearch = !search || 
-      property.title.toLowerCase().includes(search.toLowerCase()) ||
-      property.description.toLowerCase().includes(search.toLowerCase());
-    
-    const matchesCity = !city || property.city === city;
-    const matchesType = !type || property.type === type;
-    
-    const matchesMinPrice = !minPrice || property.price >= parseInt(minPrice);
-    const matchesMaxPrice = !maxPrice || property.price <= parseInt(maxPrice);
-    
-    return matchesSearch && matchesCity && matchesType && matchesMinPrice && matchesMaxPrice;
-  });
 
   if (error) {
     return (
@@ -243,7 +236,7 @@ export default function PropiedadesPage() {
               </div>
             )}
 
-            {filteredProperties.length === 0 && !isLoading && (
+            {properties.length === 0 && !isLoading && (
               <div className="text-center py-16">
                 <div className="max-w-md mx-auto">
                   <Building2 className="h-16 w-16 text-zinc-400 mx-auto mb-4" />
