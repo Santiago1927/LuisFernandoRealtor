@@ -10,6 +10,8 @@ import { Property } from '../types/property';
 import { usePaginatedProperties } from '../hooks/usePaginatedProperties';
 // Importa la mutación para eliminar propiedades
 import { useDeleteProperty } from './usePropertyMutations';
+// Importa el contexto de alertas personalizado
+import { useAlert } from '../components/layout/AlertContext';
 
 // Hook personalizado que encapsula la lógica del dashboard de administrador
 export function useAdminDashboardLogic() {
@@ -21,6 +23,8 @@ export function useAdminDashboardLogic() {
   const { logout } = useAuthContext();
   // Obtiene el objeto router para redireccionar entre páginas
   const router = useRouter();
+  // Obtiene las funciones del contexto de alertas personalizado
+  const { showAlert, showConfirm } = useAlert();
   // Estado para la página actual de la paginación
   const [page, setPage] = useState(1);
   // Hook para manejar la paginación de propiedades
@@ -59,16 +63,19 @@ export function useAdminDashboardLogic() {
 
   // Elimina una propiedad después de confirmar con el usuario
   const handleDeleteProperty = async (id: string) => {
-    if (confirm('¿Estás seguro de que quieres eliminar esta propiedad?')) {
-      try {
-        await deletePropertyMutation.mutateAsync(id);
-        // La invalidación de queries se maneja automáticamente en la mutación
-        alert('Propiedad eliminada exitosamente');
-      } catch (error) {
-        console.error('Error al eliminar la propiedad:', error);
-        alert('Error al eliminar la propiedad. Intenta de nuevo.');
+    showConfirm(
+      '¿Estás seguro de que quieres eliminar esta propiedad?',
+      async () => {
+        try {
+          await deletePropertyMutation.mutateAsync(id);
+          // La invalidación de queries se maneja automáticamente en la mutación
+          showAlert('Propiedad eliminada exitosamente', 'success');
+        } catch (error) {
+          console.error('Error al eliminar la propiedad:', error);
+          showAlert('Error al eliminar la propiedad. Intenta de nuevo.', 'error');
+        }
       }
-    }
+    );
   };
 
   // Cierra el formulario y limpia el estado de edición

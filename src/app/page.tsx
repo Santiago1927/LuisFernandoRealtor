@@ -3,30 +3,14 @@
 import CarouselSection from "@/components/home/CarouselSection";
 import MainSection from "../components/home/MainSection";
 import PropertyList from "../components/admin/PropertyList";
-import { useState } from "react";
-import { usePaginatedProperties } from "../hooks/usePaginatedProperties";
-import { Property } from "../types/property";
-import { Button } from "@/components/ui/button";
+import { useFeaturedProperties } from "../hooks/useFeaturedProperties";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, ChevronLeft, ChevronRight } from "lucide-react";
-
-interface PaginatedPropertiesResult {
-  properties: Property[];
-  total: number;
-}
+import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
+import Link from "next/link";
 
 export default function Home() {
-  const [page, setPage] = useState(1);
-  const { data, isLoading } = usePaginatedProperties({ page, pageSize: 12 });
-  const total = (data as PaginatedPropertiesResult | undefined)?.total || 0;
-  const properties = (data as PaginatedPropertiesResult | undefined)?.properties || [];
-  const totalPages = Math.ceil(total / 12);
-  const showVerMas = totalPages > 9 && page === 9;
-
-  const handlePageChange = (newPage: number) => {
-    setPage(newPage);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+  const { data: featuredProperties, isLoading } = useFeaturedProperties();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-zinc-50 via-white to-amber-50/30 dark:from-zinc-900 dark:via-black dark:to-amber-900/10">
@@ -59,73 +43,28 @@ export default function Home() {
               <p className="text-zinc-600 dark:text-zinc-400">Cargando propiedades...</p>
             </div>
           </div>
-        ) : (
+        ) : featuredProperties && featuredProperties.length > 0 ? (
           <>
-            <PropertyList properties={properties} />
+            <PropertyList properties={featuredProperties} />
             
-            {totalPages > 1 && (
-              <div className="flex items-center justify-center mt-12 space-x-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => handlePageChange(page - 1)}
-                  disabled={page === 1}
-                  className="border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 disabled:opacity-50"
+            {/* Botón para ver todas las propiedades */}
+            <div className="text-center mt-12">
+              <Link href="/propiedades">
+                <Button 
+                  size="lg"
+                  className="bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-700 hover:to-yellow-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
                 >
-                  <ChevronLeft className="w-4 h-4 mr-1" />
-                  Anterior
+                  Ver Todas las Propiedades
                 </Button>
-
-                <div className="flex items-center space-x-1">
-                  {Array.from({ length: Math.min(totalPages, 9) }, (_, i) => (
-                    <Button
-                      key={i + 1}
-                      variant={page === i + 1 ? "default" : "outline"}
-                      size="sm"
-                      onClick={() => handlePageChange(i + 1)}
-                      className={
-                        page === i + 1
-                          ? "bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-700 hover:to-yellow-700 text-white border-0"
-                          : "border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800"
-                      }
-                    >
-                      {i + 1}
-                    </Button>
-                  ))}
-                  
-                  {showVerMas && (
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handlePageChange(page + 1)}
-                      className="border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800"
-                    >
-                      ...
-                    </Button>
-                  )}
-                </div>
-
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => handlePageChange(page + 1)}
-                  disabled={page === totalPages}
-                  className="border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 disabled:opacity-50"
-                >
-                  Siguiente
-                  <ChevronRight className="w-4 h-4 ml-1" />
-                </Button>
-              </div>
-            )}
-
-            {total > 0 && (
-              <div className="text-center mt-8">
-                <p className="text-sm text-zinc-600 dark:text-zinc-400">
-                  Mostrando {((page - 1) * 12) + 1} - {Math.min(page * 12, total)} de {total} propiedades
-                </p>
-              </div>
-            )}
+              </Link>
+            </div>
           </>
+        ) : (
+          <div className="text-center py-16">
+            <p className="text-lg text-zinc-600 dark:text-zinc-400">
+              No hay propiedades disponibles en este momento.
+            </p>
+          </div>
         )}
       </section>
     </div>

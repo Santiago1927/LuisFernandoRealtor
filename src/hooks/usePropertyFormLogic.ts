@@ -8,6 +8,8 @@ import { storage } from '../../firebase/firebaseConfig';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 // Importa las mutaciones de React Query
 import { useCreateProperty, useUpdateProperty } from './usePropertyMutations';
+// Importa el contexto de alertas personalizado
+import { useAlert } from '../components/layout/AlertContext';
 
 // Interfaz para las props que recibe el hook personalizado
 interface UsePropertyFormLogicProps {
@@ -18,6 +20,9 @@ interface UsePropertyFormLogicProps {
 
 // Hook personalizado para manejar la lógica del formulario de propiedades
 export function usePropertyFormLogic({ property, onSave, onClose }: UsePropertyFormLogicProps) {
+  // Obtiene las funciones del contexto de alertas personalizado
+  const { showAlert } = useAlert();
+
   // Estado inicial del formulario con valores por defecto
   const getInitialFormData = (): PropertyFormData => ({
     title: property?.title || '',
@@ -176,20 +181,20 @@ export function usePropertyFormLogic({ property, onSave, onClose }: UsePropertyF
         
         onSave(updatedProperty); // Llama a la función de guardado
         
-        // Toast de éxito para actualización
-        alert('Propiedad actualizada exitosamente');
+        // Alerta de éxito para actualización
+        showAlert('Propiedad actualizada exitosamente', 'success');
       } else {
         // Si no existe, crea una nueva propiedad usando React Query
         const savedProperty = await createPropertyMutation.mutateAsync(propertyData);
         onSave(savedProperty); // Llama a la función de guardado
         
-        // Toast de éxito para creación
-        alert('Propiedad creada exitosamente');
+        // Alerta de éxito para creación
+        showAlert('Propiedad creada exitosamente', 'success');
       }
       
     } catch (error) {
       console.error('Error al procesar la propiedad:', error);
-      alert('Error al procesar la propiedad. Intenta de nuevo.');
+      showAlert('Error al procesar la propiedad. Intenta de nuevo.', 'error');
     } finally {
       setUploading(false); // Finaliza la subida
     }
