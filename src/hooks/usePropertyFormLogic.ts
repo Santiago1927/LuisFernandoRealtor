@@ -1,5 +1,5 @@
 // Importa los hooks useState y useEffect de React para manejar el estado y los efectos secundarios
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 // Importa los tipos Property y PropertyFormData para tipar los datos de la propiedad y el formulario
 import { Property, PropertyFormData } from '../types/property';
 // Importa la instancia de storage de Firebase para subir archivos
@@ -24,7 +24,7 @@ export function usePropertyFormLogic({ property, onSave, onClose }: UsePropertyF
   const { showAlert } = useAlert();
 
   // Estado inicial del formulario con valores por defecto
-  const getInitialFormData = (): PropertyFormData => ({
+  const getInitialFormData = useCallback((): PropertyFormData => ({
     title: property?.title || '',
     address: property?.address || '',
     city: property?.city || '',
@@ -36,7 +36,7 @@ export function usePropertyFormLogic({ property, onSave, onClose }: UsePropertyF
     type: property?.type || 'house',  // Asegurar valor por defecto
     status: property?.status || 'available', // Asegurar valor por defecto
     phone: property?.phone || '',
-  });
+  }), [property]);
 
   // Estado para los datos del formulario
   const [formData, setFormData] = useState<PropertyFormData>(getInitialFormData());
@@ -94,7 +94,7 @@ export function usePropertyFormLogic({ property, onSave, onClose }: UsePropertyF
       setLng(null);
       setMapAddress('');
     }
-  }, [property]);
+  }, [property, getInitialFormData]);
 
   // Maneja los cambios en los campos del formulario (inputs, selects, textareas)
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {

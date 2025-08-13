@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import { Property } from '../../types/property';
 import Link from 'next/link';
 import { usePropertyCardLogic } from '../../hooks/usePropertyCardLogic';
@@ -59,10 +60,13 @@ function PropertyCard({ property, onEdit, onDelete }: any) {
           <div className="relative aspect-[4/3] overflow-hidden">
             {images.length > 0 ? (
               <>
-                <img
+                <Image
                   src={images[activeImage]}
                   alt={property.title}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  fill
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  sizes="(max-width: 1024px) 100vw, 25vw"
+                  priority={false}
                 />
                 
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>

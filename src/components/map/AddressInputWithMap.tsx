@@ -279,7 +279,7 @@ export default function AddressInputWithMap({
                   <span className="text-sm">No se encontraron resultados</span>
                 </div>
                 <div className="text-xs text-zinc-400 mt-1">
-                  Intenta con "Carrera 80 #45-23, Medellín"
+                  Intenta con &quot;Carrera 80 #45-23, Medellín&quot;
                 </div>
               </div>
             )}
@@ -324,7 +324,7 @@ export default function AddressInputWithMap({
               variant="link"
               size="sm"
               className="p-0 h-auto ml-2 text-red-600 hover:text-red-800"
-              onClick={() => window.location.reload()}
+              onClick={() => { if (typeof window !== 'undefined') window.location.reload(); }}
             >
               Reintentar
             </Button>

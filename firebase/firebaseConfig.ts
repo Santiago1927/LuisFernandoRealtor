@@ -9,22 +9,17 @@ import { getFirestore } from "firebase/firestore";   // Servicio de base de dato
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 /**
- * Configuración de Firebase para la aplicación web
- * 
- * Este objeto contiene todas las credenciales y configuraciones necesarias
- * para conectar la aplicación con los servicios de Firebase.
- * 
- * Para Firebase JS SDK v7.20.0 y versiones posteriores, measurementId es opcional
- * pero recomendado para análisis y métricas de la aplicación.
+ * Configuración de Firebase leída desde variables de entorno
+ * (prefijo NEXT_PUBLIC_ para exponerlas al cliente según Next.js)
  */
 const firebaseConfig = {
-  apiKey: "AIzaSyA0TbaZphhlB2bYWqoSFUVvbbiUnDt7jjk",                    // Clave API para autenticar las solicitudes
-  authDomain: "inmapp-842fa.firebaseapp.com",                           // Dominio autorizado para autenticación
-  projectId: "inmapp-842fa",                                            // ID único del proyecto en Firebase
-  storageBucket: "inmapp-842fa.firebasestorage.app",                    // Bucket de almacenamiento para archivos
-  messagingSenderId: "47451790122",                                     // ID del remitente para Firebase Cloud Messaging
-  appId: "1:47451790122:web:ee44b4680617202a12dc53",                    // ID único de la aplicación web
-  measurementId: "G-2NVB1GTJ99"                                         // ID de Google Analytics para Firebase
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY || "AIzaSyA0TbaZphhlB2bYWqoSFUVvbbiUnDt7jjk",
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN || "inmapp-842fa.firebaseapp.com",
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || "inmapp-842fa",
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET || "inmapp-842fa.firebasestorage.app",
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID || "47451790122",
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID || "1:47451790122:web:ee44b4680617202a12dc53",
+  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID || "G-2NVB1GTJ99",
 };
 
 /**

@@ -4,6 +4,7 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { usePropertyDetailPageLogic } from '../../../hooks/usePropertyDetailPageLogic';
 import MapView from '../../../components/map/MapView';
+import Image from 'next/image';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -92,10 +93,13 @@ export default function DetallePropiedadPage() {
                     <div className="relative aspect-[21/9] bg-zinc-100 dark:bg-zinc-800">
                       {images.length > 0 ? (
                         <>
-                          <img
+                          <Image
                             src={images[activeImage]}
                             alt={property.title}
-                            className="w-full h-full object-cover"
+                            fill
+                            className="object-cover"
+                            sizes="100vw"
+                            priority
                           />
                           
                           <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent"></div>

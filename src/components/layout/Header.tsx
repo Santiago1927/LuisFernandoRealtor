@@ -2,6 +2,7 @@
 
 import ThemeToggleButton from "../theme/ThemeToggleButton";
 import Link from 'next/link';
+import Image from 'next/image';
 import { useHeaderLogic } from '../../hooks/useHeaderLogic';
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -45,10 +46,13 @@ export default function Header() {
         <div className="flex h-20 items-center justify-between">
           <Link href="/" className="flex items-center space-x-4 group">
             <div className="relative h-14 w-14 overflow-hidden rounded-xl bg-gradient-to-br from-amber-500 to-yellow-600 p-2 shadow-xl transition-transform duration-300 group-hover:scale-110">
-              <img 
+              <Image 
                 src="/logo.svg" 
                 alt="LuisFernandoRealtor" 
-                className="h-full w-full object-contain"
+                fill
+                className="object-contain"
+                sizes="56px"
+                priority
               />
             </div>
             <div className="flex flex-col">
@@ -107,10 +111,13 @@ export default function Header() {
                 <div className="flex flex-col space-y-8 pt-8">
                   <div className="flex items-center space-x-4 pb-6 border-b border-zinc-700">
                     <div className="relative h-12 w-12 overflow-hidden rounded-xl bg-gradient-to-br from-amber-500 to-yellow-600 p-2">
-                      <img 
+                      <Image 
                         src="/logo.svg" 
                         alt="LuisFernandoRealtor" 
-                        className="h-full w-full object-contain"
+                        fill
+                        className="object-contain"
+                        sizes="48px"
+                        priority={false}
                       />
                     </div>
                     <div className="flex flex-col">
