@@ -194,7 +194,7 @@ const BuyerForm: React.FC<BuyerFormProps> = ({ formSubmit, loading }) => {
 
           {tipoPropiedad && PROPERTY_INFO_BUYER[tipoPropiedad] && (
             <div className="grid md:grid-cols-2 gap-6">
-              {PROPERTY_INFO_BUYER[tipoPropiedad].map((fieldKey) => {
+              {PROPERTY_INFO_BUYER[tipoPropiedad]?.map((fieldKey) => {
                 const field = INPUT_INFO[fieldKey];
                 if (!field) return null;
                 return renderField(fieldKey, field);

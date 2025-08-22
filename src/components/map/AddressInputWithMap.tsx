@@ -279,7 +279,7 @@ export default function AddressInputWithMap({
                   <span className="text-sm">No se encontraron resultados</span>
                 </div>
                 <div className="text-xs text-zinc-400 mt-1">
-                  Intenta con "Carrera 80 #45-23, Medellín"
+                  Intenta con &quot;Carrera 80 #45-23, Medellín&quot;
                 </div>
               </div>
             )}

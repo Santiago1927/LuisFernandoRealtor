@@ -1,4 +1,5 @@
 import { propertyService, buyerService, ownerService, contactService } from '../firebase/firestoreService';
+import { Amenity, PaymentMethod, ExchangeType } from '../src/types/property';
 
 // Datos de ejemplo para propiedades
 const sampleProperties = [
@@ -16,10 +17,17 @@ const sampleProperties = [
     bedrooms: 3,
     bathrooms: 2,
     area: 180,
-    type: "house" as const,
+    type: "Casa" as const,
     status: "available" as const,
     lat: 6.2442,
     lng: -75.5812,
+    // Nuevos campos
+    conjunto_cerrado: true,
+    valor_administracion: 150000,
+    zonas_comunes: ["piscina", "gym", "zona BBQ", "juegos infantiles", "portería"] as Amenity[],
+    numero_pisos: 2,
+    formas_de_pago: ["Crédito hipotecario", "Recursos propios"] as PaymentMethod[],
+    edad_propiedad: "5 años",
   },
   {
     title: "Apartamento de lujo en Bogotá",
@@ -35,10 +43,16 @@ const sampleProperties = [
     bedrooms: 4,
     bathrooms: 3,
     area: 220,
-    type: "apartment" as const,
+    type: "Apartamento" as const,
     status: "available" as const,
     lat: 4.7110,
     lng: -74.0721,
+    // Nuevos campos
+    conjunto_cerrado: true,
+    valor_administracion: 280000,
+    zonas_comunes: ["piscina", "gym", "sauna", "turco", "terraza", "lobby", "portería", "parqueadero para visitantes"] as Amenity[],
+    formas_de_pago: ["Crédito hipotecario", "Leasing", "Recursos propios"] as PaymentMethod[],
+    edad_propiedad: "Nueva",
   },
   {
     title: "Local comercial en Cali",
@@ -51,10 +65,40 @@ const sampleProperties = [
     ],
     videos: [],
     area: 150,
-    type: "commercial" as const,
+    type: "Local" as const,
     status: "available" as const,
     lat: 3.4516,
     lng: -76.5320,
+    // Nuevos campos
+    conjunto_cerrado: false,
+    valor_administracion: 80000,
+    zonas_comunes: ["recepción", "parqueadero para visitantes"] as Amenity[],
+    formas_de_pago: ["Recursos propios", "Permutas"] as PaymentMethod[],
+    tipo_permuta: "Propiedades" as ExchangeType,
+    permuta_porcentaje: 30,
+    edad_propiedad: "10 años",
+  },
+  {
+    title: "Lote en zona residencial",
+    address: "Carrera 50 #80-120, Medellín",
+    city: "Medellin", 
+    price: 320000000,
+    description: "Lote plano en zona residencial consolidada, ideal para construir.",
+    images: [
+      "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800"
+    ],
+    videos: [],
+    area: 400,
+    type: "Lote" as const,
+    status: "available" as const,
+    lat: 6.2518,
+    lng: -75.5636,
+    // Nuevos campos específicos para lote
+    conjunto_cerrado: false,
+    lote_frente: 16,
+    lote_fondo: 25,
+    formas_de_pago: ["Recursos propios", "Crédito hipotecario"] as PaymentMethod[],
+    edad_propiedad: "Terreno disponible",
   }
 ];
 

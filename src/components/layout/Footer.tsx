@@ -116,7 +116,7 @@ export default function Footer() {
                 rel="noopener noreferrer"
                 className="text-amber-400 hover:text-amber-300 font-semibold hover:underline transition-colors"
               >
-                Santiago Salas
+                Santiago Salas y Santiago Andrade
               </a>
             </div>
           </div>

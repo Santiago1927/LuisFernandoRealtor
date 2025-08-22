@@ -1,7 +1,7 @@
-// Importa los hooks useState y useEffect de React para manejar el estado y los efectos secundarios
-import { useState, useEffect } from 'react';
+// Importa los hooks useState, useEffect y useCallback de React para manejar el estado y los efectos secundarios
+import { useState, useEffect, useCallback } from 'react';
 // Importa los tipos Property y PropertyFormData para tipar los datos de la propiedad y el formulario
-import { Property, PropertyFormData } from '../types/property';
+import { Property, PropertyFormData, Amenity, PaymentMethod, ExchangeType } from '../types/property';
 // Importa la instancia de storage de Firebase para subir archivos
 import { storage } from '../../firebase/firebaseConfig';
 // Importa funciones de Firebase Storage para subir y obtener archivos
@@ -23,20 +23,38 @@ export function usePropertyFormLogic({ property, onSave, onClose }: UsePropertyF
   // Obtiene las funciones del contexto de alertas personalizado
   const { showAlert } = useAlert();
 
-  // Estado inicial del formulario con valores por defecto
-  const getInitialFormData = (): PropertyFormData => ({
-    title: property?.title || '',
-    address: property?.address || '',
-    city: property?.city || '',
-    price: property?.price || 0,
-    description: property?.description || '',
-    bedrooms: property?.bedrooms || 0,
-    bathrooms: property?.bathrooms || 0,
-    area: property?.area || 0,
-    type: property?.type || 'house',  // Asegurar valor por defecto
-    status: property?.status || 'available', // Asegurar valor por defecto
-    phone: property?.phone || '',
-  });
+  // Estado inicial del formulario con valores por defecto (memoizado)
+  const getInitialFormData = useCallback((): PropertyFormData => {
+    const baseData: PropertyFormData = {
+      title: property?.title || '',
+      address: property?.address || '',
+      city: property?.city || '',
+      price: property?.price || 0,
+      description: property?.description || '',
+      bedrooms: property?.bedrooms || 0,
+      bathrooms: property?.bathrooms || 0,
+      area: property?.area || 0,
+      type: property?.type || 'Casa',  // Asegurar valor por defecto
+      status: property?.status || 'available', // Asegurar valor por defecto
+      phone: property?.phone || '',
+      // Nuevos campos
+      conjunto_cerrado: property?.conjunto_cerrado || false,
+      valor_administracion: property?.valor_administracion || 0,
+      zonas_comunes: property?.zonas_comunes || [],
+      formas_de_pago: property?.formas_de_pago || [],
+      edad_propiedad: property?.edad_propiedad || '',
+    };
+
+    // Solo agregar campos opcionales si tienen valores
+    if (property?.lote_frente) baseData.lote_frente = property.lote_frente;
+    if (property?.lote_fondo) baseData.lote_fondo = property.lote_fondo;
+    if (property?.numero_pisos) baseData.numero_pisos = property.numero_pisos;
+    if (property?.tipo_permuta) baseData.tipo_permuta = property.tipo_permuta;
+    if (property?.permuta_porcentaje) baseData.permuta_porcentaje = property.permuta_porcentaje;
+    if (property?.permuta_monto_max) baseData.permuta_monto_max = property.permuta_monto_max;
+
+    return baseData;
+  }, [property]);
 
   // Estado para los datos del formulario
   const [formData, setFormData] = useState<PropertyFormData>(getInitialFormData());
@@ -82,9 +100,15 @@ export function usePropertyFormLogic({ property, onSave, onClose }: UsePropertyF
         bedrooms: 0,
         bathrooms: 0,
         area: 0,
-        type: 'house',
+        type: 'Casa',
         status: 'available',
         phone: '',
+        // Nuevos campos - solo incluir los que siempre tienen valor
+        conjunto_cerrado: false,
+        valor_administracion: 0,
+        zonas_comunes: [],
+        formas_de_pago: [],
+        edad_propiedad: '',
       });
       setImageUrls([]);
       setVideoUrls([]);
@@ -94,17 +118,71 @@ export function usePropertyFormLogic({ property, onSave, onClose }: UsePropertyF
       setLng(null);
       setMapAddress('');
     }
-  }, [property]);
+  }, [property, getInitialFormData]);
+
+  // Efecto para limpiar campos de permuta cuando se desmarca "Permutas"
+  useEffect(() => {
+    const hasPermutas = formData.formas_de_pago?.includes('Permutas');
+    if (!hasPermutas && (formData.tipo_permuta || formData.permuta_porcentaje || formData.permuta_monto_max)) {
+      setFormData(prev => {
+        const newData = { ...prev };
+        delete newData.tipo_permuta;
+        delete newData.permuta_porcentaje;
+        delete newData.permuta_monto_max;
+        return newData;
+      });
+    }
+  }, [formData.formas_de_pago, formData.tipo_permuta, formData.permuta_porcentaje, formData.permuta_monto_max]);
 
   // Maneja los cambios en los campos del formulario (inputs, selects, textareas)
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: name === 'price' || name === 'bedrooms' || name === 'bathrooms' || name === 'area' 
-        ? Number(value) // Convierte a número si corresponde
-        : value
-    }));
+    const numericFields = ['price', 'bedrooms', 'bathrooms', 'area', 'valor_administracion', 'lote_frente', 'lote_fondo', 'numero_pisos', 'permuta_porcentaje', 'permuta_monto_max'];
+    const optionalNumericFields = ['lote_frente', 'lote_fondo', 'numero_pisos', 'permuta_porcentaje', 'permuta_monto_max'];
+    
+    setFormData(prev => {
+      const newData = { ...prev };
+      
+      if (numericFields.includes(name)) {
+        const numValue = Number(value);
+        if (optionalNumericFields.includes(name)) {
+          // Para campos opcionales, solo agregar si hay valor
+          if (value && numValue > 0) {
+            (newData as any)[name] = numValue;
+          } else {
+            // Eliminar el campo si está vacío
+            delete (newData as any)[name];
+          }
+        } else {
+          // Para campos requeridos, usar 0 como mínimo
+          (newData as any)[name] = numValue || 0;
+        }
+      } else {
+        (newData as any)[name] = value;
+      }
+      
+      return newData;
+    });
+  };
+
+  // Maneja cambios en campos especiales (multi-select, switches, etc.)
+  const handleSpecialFieldChange = (name: string, value: any) => {
+    setFormData(prev => {
+      const newData = { ...prev, [name]: value };
+      
+      // Si se está modificando formas_de_pago y se quita "Permutas"
+      if (name === 'formas_de_pago' && Array.isArray(value)) {
+        const hasPermutas = value.includes('Permutas');
+        if (!hasPermutas) {
+          // Limpiar todos los campos relacionados con permutas
+          delete newData.tipo_permuta;
+          delete newData.permuta_porcentaje;
+          delete newData.permuta_monto_max;
+        }
+      }
+      
+      return newData;
+    });
   };
 
   // Maneja la selección de imágenes por el usuario
@@ -140,6 +218,12 @@ export function usePropertyFormLogic({ property, onSave, onClose }: UsePropertyF
       return;
     }
 
+    // Validación básica antes del envío
+    if (!formData.title || !formData.address || !formData.price) {
+      showAlert('Por favor completa los campos obligatorios: título, dirección y precio.', 'error');
+      return;
+    }
+
     setUploading(true); // Indica que se está subiendo
     
     try {
@@ -156,16 +240,38 @@ export function usePropertyFormLogic({ property, onSave, onClose }: UsePropertyF
         newVideoUrls = [...newVideoUrls, ...uploadedVideoUrls]; // Agrega nuevas URLs
       }
       
+      // Limpiar datos del formulario eliminando valores undefined, null, y strings vacíos
+      let cleanFormData = Object.fromEntries(
+        Object.entries(formData).filter(([key, value]) => {
+          // Mantener arrays vacíos y valores booleanos false
+          if (Array.isArray(value)) return true;
+          if (typeof value === 'boolean') return true;
+          if (typeof value === 'number') return value >= 0; // Permitir 0 para campos como bedrooms, bathrooms
+          if (typeof value === 'string') return value.trim() !== '';
+          return value !== undefined && value !== null;
+        })
+      );
+
+      // Verificación adicional: si no hay "Permutas" en formas_de_pago, eliminar campos de permuta
+      const formasDePago = cleanFormData.formas_de_pago as string[] | undefined;
+      if (!formasDePago || !formasDePago.includes('Permutas')) {
+        delete cleanFormData.tipo_permuta;
+        delete cleanFormData.permuta_porcentaje;
+        delete cleanFormData.permuta_monto_max;
+      }
+
+      // Los datos han sido limpiados y están listos para enviar
+
       // Construye el objeto de datos de la propiedad
       const propertyData: Omit<Property, 'id'> = {
-        ...formData,
+        ...cleanFormData,
         images: newImageUrls,
         videos: newVideoUrls,
         createdAt: property?.createdAt || new Date(), // Usa la fecha original o la actual
         updatedAt: new Date(), // Fecha de actualización
         lat: lat || null,
         lng: lng || null,
-      };
+      } as Omit<Property, 'id'>;
 
       if (property?.id) {
         // Si existe, actualiza la propiedad usando React Query
@@ -194,7 +300,10 @@ export function usePropertyFormLogic({ property, onSave, onClose }: UsePropertyF
       
     } catch (error) {
       console.error('Error al procesar la propiedad:', error);
-      showAlert('Error al procesar la propiedad. Intenta de nuevo.', 'error');
+      
+      // Mostrar error más específico si está disponible
+      const errorMessage = error instanceof Error ? error.message : 'Error desconocido';
+      showAlert(`Error al procesar la propiedad: ${errorMessage}. Intenta de nuevo.`, 'error');
     } finally {
       setUploading(false); // Finaliza la subida
     }
@@ -237,6 +346,7 @@ export function usePropertyFormLogic({ property, onSave, onClose }: UsePropertyF
     handleVideoChange,
     handleSubmit,
     handleLocationChange,
+    handleSpecialFieldChange,
     onClose,
     // Estados adicionales para el formulario
     isLoading: isProcessing,

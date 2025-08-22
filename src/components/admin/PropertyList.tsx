@@ -3,6 +3,7 @@
 import React from 'react';
 import { Property } from '../../types/property';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePropertyCardLogic } from '../../hooks/usePropertyCardLogic';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -59,10 +60,12 @@ function PropertyCard({ property, onEdit, onDelete }: any) {
           <div className="relative aspect-[4/3] overflow-hidden">
             {images.length > 0 ? (
               <>
-                <img
+                <Image
                   src={images[activeImage]}
                   alt={property.title}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  fill
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 />
                 
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
