@@ -49,9 +49,9 @@ export default function Header() {
               <Image 
                 src="/logo.svg" 
                 alt="LuisFernandoRealtor" 
-                fill
-                className="object-contain"
-                sizes="56px"
+                width={40}
+                height={40}
+                className="h-full w-full object-contain"
                 priority
               />
             </div>
@@ -114,10 +114,9 @@ export default function Header() {
                       <Image 
                         src="/logo.svg" 
                         alt="LuisFernandoRealtor" 
-                        fill
-                        className="object-contain"
-                        sizes="48px"
-                        priority={false}
+                        width={32}
+                        height={32}
+                        className="h-full w-full object-contain"
                       />
                     </div>
                     <div className="flex flex-col">

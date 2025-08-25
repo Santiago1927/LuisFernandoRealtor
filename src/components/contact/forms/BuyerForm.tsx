@@ -192,19 +192,15 @@ const BuyerForm: React.FC<BuyerFormProps> = ({ formSubmit, loading }) => {
             </div>
           </div>
 
-          {(() => {
-            const buyerFields = tipoPropiedad ? PROPERTY_INFO_BUYER[tipoPropiedad] : undefined;
-            if (!buyerFields) return null;
-            return (
-              <div className="grid md:grid-cols-2 gap-6">
-                {buyerFields.map((fieldKey) => {
-                  const field = INPUT_INFO[fieldKey];
-                  if (!field) return null;
-                  return renderField(fieldKey, field);
-                })}
-              </div>
-            );
-          })()}
+          {tipoPropiedad && PROPERTY_INFO_BUYER[tipoPropiedad] && (
+            <div className="grid md:grid-cols-2 gap-6">
+              {PROPERTY_INFO_BUYER[tipoPropiedad]?.map((fieldKey) => {
+                const field = INPUT_INFO[fieldKey];
+                if (!field) return null;
+                return renderField(fieldKey, field);
+              })}
+            </div>
+          )}
 
           <div className="space-y-2">
             <Label htmlFor="comentariosAdicionales" className="text-sm font-medium text-zinc-900 dark:text-zinc-100">

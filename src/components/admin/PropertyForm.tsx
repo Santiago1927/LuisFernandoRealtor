@@ -1,9 +1,11 @@
 'use client';
 
 import React from 'react';
-import { Property } from '../../types/property';
+import { Property, PropertyType, Amenity, PaymentMethod, ExchangeType, AreaConstruida } from '../../types/property';
 import { usePropertyFormLogic } from '../../hooks/usePropertyFormLogic';
 import AddressInputWithMap from '../map/AddressInputWithMap';
+import { MultiSelect } from '../ui/multi-select';
+import { Switch } from '../ui/switch';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -23,7 +25,13 @@ import {
   Video,
   Save,
   Loader2,
-  Phone
+  Phone,
+  Home,
+  Shield,
+  Settings,
+  CreditCard,
+  Calendar,
+  HelpCircle
 } from "lucide-react";
 
 interface PropertyFormProps {
@@ -31,6 +39,32 @@ interface PropertyFormProps {
   onSave: (property: Property) => void;
   onClose: () => void;
 }
+
+// Constantes para las opciones del formulario
+const PROPERTY_TYPES: PropertyType[] = [
+  'Local', 'Bodega', 'Lote', 'Casa Lote', 'Finca', 'Casa Finca', 
+  'Oficina', 'Apartaestudio', 'Apartamento', 'Penthouse', 'Dúplex', 'Tríplex', 'Casa'
+];
+
+const AMENITIES: Amenity[] = [
+  'piscina', 'gym', 'cancha de futbol', 'sintética', 'zona BBQ', 'yoga', 
+  'zona de lectura', 'juegos infantiles', 'cancha de squash', 'terraza', 
+  'turco', 'sauna', 'salón comunal', 'recepción', 'portería', 'mirador', 
+  'senderos ecologistas', 'zona de mascotas', 'coworking', 'cafetería', 
+  'cine', 'salón de reuniones', 'lobby', 'parqueadero para visitantes'
+];
+
+const PAYMENT_METHODS: PaymentMethod[] = [
+  'Crédito hipotecario', 'Leasing', 'Recursos propios', 'Permutas'
+];
+
+const EXCHANGE_TYPES: ExchangeType[] = ['Vehículos', 'Propiedades'];
+
+const AREA_CONSTRUIDA_OPTIONS: AreaConstruida[] = [
+  'Área de balcones y/o terraza', 
+  'Parqueadero', 
+  'Bodega'
+];
 
 export default function PropertyForm({ property, onSave, onClose }: PropertyFormProps) {
   const {
@@ -49,8 +83,22 @@ export default function PropertyForm({ property, onSave, onClose }: PropertyForm
     handleVideoChange,
     handleSubmit,
     handleLocationChange,
+    handleSpecialFieldChange,
     onClose: handleClose,
   } = usePropertyFormLogic({ property, onSave, onClose });
+
+  // Funciones auxiliares
+  const formatCurrency = (value: number) => {
+    return new Intl.NumberFormat('es-CO', {
+      style: 'currency',
+      currency: 'COP',
+      minimumFractionDigits: 0,
+    }).format(value);
+  };
+
+  const isLote = formData.type === 'Lote';
+  const isCasa = formData.type?.toLowerCase().includes('casa') || formData.type === 'Casa';
+  const hasPermutas = formData.formas_de_pago?.includes('Permutas');
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
@@ -82,13 +130,13 @@ export default function PropertyForm({ property, onSave, onClose }: PropertyForm
         </CardHeader>
 
         <CardContent className="p-6">
-          <form onSubmit={handleSubmit} className="space-y-8">
+          <form onSubmit={handleSubmit} className="space-y-8" noValidate>
             
             <div className="grid md:grid-cols-2 gap-6">
               <div className="space-y-4">
                 <div>
                   <Label htmlFor="title" className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
-                    Título *
+                    Título <span className="text-red-500">*</span>
                   </Label>
                   <Input
                     id="title"
@@ -133,7 +181,7 @@ export default function PropertyForm({ property, onSave, onClose }: PropertyForm
 
                 <div>
                   <Label htmlFor="price" className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
-                    Precio *
+                    Precio <span className="text-red-500">*</span>
                   </Label>
                   <div className="relative mt-1">
                     <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-zinc-400" />
@@ -173,17 +221,16 @@ export default function PropertyForm({ property, onSave, onClose }: PropertyForm
               <div className="space-y-4">
                 <div>
                   <Label htmlFor="type" className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
-                    Tipo de Propiedad
+                    Tipo de Propiedad <span className="text-red-500">*</span>
                   </Label>
-                  <Select name="type" value={formData.type} onValueChange={(value) => handleInputChange({ target: { name: 'type', value } } as any)}>
+                  <Select name="type" value={formData.type} onValueChange={(value) => handleSpecialFieldChange('type', value as PropertyType)}>
                     <SelectTrigger className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400">
                       <SelectValue placeholder="Seleccionar tipo" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="house">Casa</SelectItem>
-                      <SelectItem value="apartment">Apartamento</SelectItem>
-                      <SelectItem value="commercial">Comercial</SelectItem>
-                      <SelectItem value="land">Terreno</SelectItem>
+                      {PROPERTY_TYPES.map((type) => (
+                        <SelectItem key={type} value={type}>{type}</SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </div>
@@ -262,6 +309,268 @@ export default function PropertyForm({ property, onSave, onClose }: PropertyForm
                     </div>
                   </div>
                 </div>
+              </div>
+            </div>
+
+            {/* Sección de Campos Adicionales */}
+            <div className="space-y-6">
+              <div className="border-t pt-6">
+                <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100 mb-4 flex items-center">
+                  <Settings className="w-5 h-5 mr-2 text-amber-600" />
+                  Información Adicional
+                </h3>
+                
+                <div className="grid md:grid-cols-2 gap-6">
+                  {/* Conjunto Cerrado */}
+                  <div className="flex items-center justify-between p-4 bg-zinc-50 dark:bg-zinc-800/50 rounded-lg">
+                    <div className="space-y-1">
+                      <Label className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+                        Conjunto cerrado
+                      </Label>
+                      <p className="text-xs text-zinc-600 dark:text-zinc-400">
+                        Selecciona si la propiedad está en conjunto cerrado
+                      </p>
+                    </div>
+                    <Switch
+                      checked={formData.conjunto_cerrado || false}
+                      onCheckedChange={(checked: boolean) => handleSpecialFieldChange('conjunto_cerrado', checked)}
+                    />
+                  </div>
+
+                  {/* Valor de Administración */}
+                  <div>
+                    <Label htmlFor="valor_administracion" className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+                      Valor de la administración (COP)
+                    </Label>
+                    <div className="relative mt-1">
+                      <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-zinc-400" />
+                      <Input
+                        id="valor_administracion"
+                        type="number"
+                        name="valor_administracion"
+                        value={formData.valor_administracion || ''}
+                        onChange={handleInputChange}
+                        min="0"
+                        className="pl-10 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
+                        placeholder="Ej. 120000"
+                      />
+                    </div>
+                    <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-1">
+                      Ingrese el valor mensual en pesos
+                    </p>
+                  </div>
+
+                  {/* Edad de la Propiedad */}
+                  <div>
+                    <Label htmlFor="edad_propiedad" className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+                      Edad de la propiedad
+                    </Label>
+                    <div className="relative mt-1">
+                      <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-zinc-400" />
+                      <Input
+                        id="edad_propiedad"
+                        type="text"
+                        name="edad_propiedad"
+                        value={formData.edad_propiedad || ''}
+                        onChange={handleInputChange}
+                        className="pl-10 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
+                        placeholder="Ej. 5 años / Nueva / 20 años aprox"
+                      />
+                    </div>
+                    <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-1">
+                      Describe la antigüedad de la propiedad
+                    </p>
+                  </div>
+                </div>
+
+                {/* Área Construida */}
+                <div className="col-span-full">
+                  <Label className="text-sm font-medium text-zinc-900 dark:text-zinc-100 mb-2 block">
+                    Área construida
+                  </Label>
+                  <MultiSelect
+                    options={AREA_CONSTRUIDA_OPTIONS.map(area => ({ value: area, label: area }))}
+                    selected={formData.area_construida || []}
+                    onChange={(selected) => handleSpecialFieldChange('area_construida', selected as AreaConstruida[])}
+                    placeholder="Selecciona las áreas construidas disponibles (opcional)..."
+                    className="bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
+                  />
+                  <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-1">
+                    Selecciona todas las áreas construidas que incluye la propiedad
+                  </p>
+                </div>
+              </div>
+
+              {/* Zonas Comunes */}
+              <div>
+                <Label className="text-sm font-medium text-zinc-900 dark:text-zinc-100 mb-2 block">
+                  Zonas comunes
+                </Label>
+                <MultiSelect
+                  options={AMENITIES.map(amenity => ({ value: amenity, label: amenity }))}
+                  selected={formData.zonas_comunes || []}
+                  onChange={(selected) => handleSpecialFieldChange('zonas_comunes', selected as Amenity[])}
+                  placeholder="Selecciona las zonas comunes disponibles (opcional)..."
+                  className="bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
+                />
+                <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-1">
+                  Selecciona todas las zonas comunes disponibles
+                </p>
+              </div>
+
+              {/* Campos condicionales para Lote */}
+              {isLote && (
+                <div className="border-t pt-6">
+                  <h4 className="text-md font-semibold text-zinc-900 dark:text-zinc-100 mb-4 flex items-center">
+                    <Square className="w-4 h-4 mr-2 text-amber-600" />
+                    Dimensiones del Lote
+                  </h4>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="lote_frente" className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+                        Frente (m)
+                      </Label>
+                      <Input
+                        id="lote_frente"
+                        type="number"
+                        name="lote_frente"
+                        value={formData.lote_frente || ''}
+                        onChange={handleInputChange}
+                        min="0"
+                        step="0.1"
+                        className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
+                        placeholder="Ej. 12.5"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="lote_fondo" className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+                        Fondo (m)
+                      </Label>
+                      <Input
+                        id="lote_fondo"
+                        type="number"
+                        name="lote_fondo"
+                        value={formData.lote_fondo || ''}
+                        onChange={handleInputChange}
+                        min="0"
+                        step="0.1"
+                        className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
+                        placeholder="Ej. 30"
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Campos condicionales para Casa */}
+              {isCasa && (
+                <div className="border-t pt-6">
+                  <h4 className="text-md font-semibold text-zinc-900 dark:text-zinc-100 mb-4 flex items-center">
+                    <Home className="w-4 h-4 mr-2 text-amber-600" />
+                    Detalles de la Casa
+                  </h4>
+                  <div className="w-full md:w-1/2">
+                    <Label htmlFor="numero_pisos" className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+                      ¿Cuántos pisos?
+                    </Label>
+                    <Select 
+                      value={formData.numero_pisos?.toString() || ''} 
+                      onValueChange={(value) => handleSpecialFieldChange('numero_pisos', parseInt(value))}
+                    >
+                      <SelectTrigger className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400">
+                        <SelectValue placeholder="Seleccionar número de pisos" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {[1, 2, 3, 4, 5, 6].map((num) => (
+                          <SelectItem key={num} value={num.toString()}>{num} piso{num > 1 ? 's' : ''}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+              )}
+
+              {/* Formas de Pago */}
+              <div className="border-t pt-6">
+                <h4 className="text-md font-semibold text-zinc-900 dark:text-zinc-100 mb-4 flex items-center">
+                  <CreditCard className="w-4 h-4 mr-2 text-amber-600" />
+                  Formas de Pago
+                </h4>
+                <MultiSelect
+                  options={PAYMENT_METHODS.map(method => ({ value: method, label: method }))}
+                  selected={formData.formas_de_pago || []}
+                  onChange={(selected) => handleSpecialFieldChange('formas_de_pago', selected as PaymentMethod[])}
+                  placeholder="Selecciona las formas de pago disponibles..."
+                  className="bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
+                />
+
+                {/* Campos condicionales para Permutas */}
+                {hasPermutas && (
+                  <div className="mt-4 p-4 bg-amber-50 dark:bg-amber-900/20 rounded-lg border border-amber-200 dark:border-amber-800">
+                    <h5 className="text-sm font-semibold text-amber-800 dark:text-amber-200 mb-3">
+                      Detalles de la Permuta
+                    </h5>
+                    <div className="grid md:grid-cols-3 gap-4">
+                      <div>
+                        <Label htmlFor="tipo_permuta" className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+                          Tipo de permuta
+                        </Label>
+                        <Select 
+                          value={formData.tipo_permuta || ''} 
+                          onValueChange={(value) => handleSpecialFieldChange('tipo_permuta', value as ExchangeType)}
+                        >
+                          <SelectTrigger className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400">
+                            <SelectValue placeholder="Selecciona tipo de permuta" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {EXCHANGE_TYPES.map((type) => (
+                              <SelectItem key={type} value={type}>{type}</SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      
+                      <div>
+                        <Label htmlFor="permuta_porcentaje" className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+                          Porcentaje que cubre (%)
+                        </Label>
+                        <Input
+                          id="permuta_porcentaje"
+                          type="number"
+                          name="permuta_porcentaje"
+                          value={formData.permuta_porcentaje || ''}
+                          onChange={handleInputChange}
+                          min="1"
+                          max="100"
+                          className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
+                          placeholder="Ej. 50"
+                        />
+                        <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-1">
+                          Porcentaje del valor de la propiedad (1-100%)
+                        </p>
+                      </div>
+
+                      <div>
+                        <Label htmlFor="permuta_monto_max" className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+                          Monto máximo (COP) - opcional
+                        </Label>
+                        <div className="relative mt-1">
+                          <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-zinc-400" />
+                          <Input
+                            id="permuta_monto_max"
+                            type="number"
+                            name="permuta_monto_max"
+                            value={formData.permuta_monto_max || ''}
+                            onChange={handleInputChange}
+                            min="0"
+                            className="pl-10 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
+                            placeholder="Ej. 50000000"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
 

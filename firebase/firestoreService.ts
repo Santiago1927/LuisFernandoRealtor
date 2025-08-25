@@ -8,6 +8,7 @@ import {
   addDoc,          // Agregar un nuevo documento
   updateDoc,       // Actualizar un documento existente
   deleteDoc,       // Eliminar un documento
+  deleteField,     // Eliminar un campo específico
   query,           // Crear una consulta con filtros
   where,           // Filtro de consulta por campo
   orderBy,         // Ordenar resultados por campo
@@ -150,10 +151,21 @@ export const propertyService = {
   async updateProperty(id: string, propertyData: Partial<Property>): Promise<void> {
     try {
       const docRef = doc(db, COLLECTIONS.PROPERTIES, id);
-      await updateDoc(docRef, {
+      
+      // Preparar datos para actualización
+      const updateData: any = {
         ...propertyData,
         updatedAt: Timestamp.now(),
-      });
+      };
+
+      // Si formas_de_pago no incluye "Permutas", eliminar campos relacionados
+      if (propertyData.formas_de_pago && !propertyData.formas_de_pago.includes('Permutas')) {
+        updateData.tipo_permuta = deleteField();
+        updateData.permuta_porcentaje = deleteField();
+        updateData.permuta_monto_max = deleteField();
+      }
+
+      await updateDoc(docRef, updateData);
     } catch (error) {
       console.error('Error updating property:', error);
       throw error;
