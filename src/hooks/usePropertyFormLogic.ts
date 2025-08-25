@@ -1,7 +1,7 @@
 // Importa los hooks useState, useEffect y useCallback de React para manejar el estado y los efectos secundarios
 import { useState, useEffect, useCallback } from 'react';
 // Importa los tipos Property y PropertyFormData para tipar los datos de la propiedad y el formulario
-import { Property, PropertyFormData, Amenity, PaymentMethod, ExchangeType } from '../types/property';
+import { Property, PropertyFormData, Amenity, PaymentMethod, ExchangeType, AreaConstruida } from '../types/property';
 // Importa la instancia de storage de Firebase para subir archivos
 import { storage } from '../../firebase/firebaseConfig';
 // Importa funciones de Firebase Storage para subir y obtener archivos
@@ -10,6 +10,8 @@ import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { useCreateProperty, useUpdateProperty } from './usePropertyMutations';
 // Importa el contexto de alertas personalizado
 import { useAlert } from '../components/layout/AlertContext';
+// Importa el contexto de autenticación
+import { useAuthContext } from '../components/auth/AuthContext';
 
 // Interfaz para las props que recibe el hook personalizado
 interface UsePropertyFormLogicProps {
@@ -22,6 +24,8 @@ interface UsePropertyFormLogicProps {
 export function usePropertyFormLogic({ property, onSave, onClose }: UsePropertyFormLogicProps) {
   // Obtiene las funciones del contexto de alertas personalizado
   const { showAlert } = useAlert();
+  // Obtiene el estado de autenticación
+  const { isAuthenticated, user } = useAuthContext();
 
   // Estado inicial del formulario con valores por defecto (memoizado)
   const getInitialFormData = useCallback((): PropertyFormData => {
@@ -43,6 +47,7 @@ export function usePropertyFormLogic({ property, onSave, onClose }: UsePropertyF
       zonas_comunes: property?.zonas_comunes || [],
       formas_de_pago: property?.formas_de_pago || [],
       edad_propiedad: property?.edad_propiedad || '',
+      area_construida: property?.area_construida || [],
     };
 
     // Solo agregar campos opcionales si tienen valores
@@ -218,6 +223,12 @@ export function usePropertyFormLogic({ property, onSave, onClose }: UsePropertyF
       return;
     }
 
+    // Verificar autenticación ANTES de proceder
+    if (!isAuthenticated || !user) {
+      showAlert('Debes estar autenticado para crear o editar propiedades. Por favor, inicia sesión.', 'error');
+      return;
+    }
+
     // Validación básica antes del envío
     if (!formData.title || !formData.address || !formData.price) {
       showAlert('Por favor completa los campos obligatorios: título, dirección y precio.', 'error');
@@ -301,9 +312,23 @@ export function usePropertyFormLogic({ property, onSave, onClose }: UsePropertyF
     } catch (error) {
       console.error('Error al procesar la propiedad:', error);
       
-      // Mostrar error más específico si está disponible
-      const errorMessage = error instanceof Error ? error.message : 'Error desconocido';
-      showAlert(`Error al procesar la propiedad: ${errorMessage}. Intenta de nuevo.`, 'error');
+      // Manejo específico de errores de Firebase
+      let errorMessage = 'Error desconocido';
+      
+      if (error instanceof Error) {
+        errorMessage = error.message;
+        
+        // Errores específicos de Firebase
+        if (errorMessage.includes('permission-denied') || errorMessage.includes('insufficient permissions')) {
+          errorMessage = 'No tienes permisos para realizar esta acción. Verifica que estés autenticado correctamente.';
+        } else if (errorMessage.includes('network')) {
+          errorMessage = 'Error de conexión. Verifica tu conexión a internet e intenta de nuevo.';
+        } else if (errorMessage.includes('auth')) {
+          errorMessage = 'Error de autenticación. Por favor, cierra sesión e inicia sesión de nuevo.';
+        }
+      }
+      
+      showAlert(`Error al procesar la propiedad: ${errorMessage}`, 'error');
     } finally {
       setUploading(false); // Finaliza la subida
     }

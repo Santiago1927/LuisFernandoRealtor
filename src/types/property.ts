@@ -6,6 +6,8 @@ export type ExchangeType = 'Vehículos' | 'Propiedades';
 
 export type Amenity = 'piscina' | 'gym' | 'cancha de futbol' | 'sintética' | 'zona BBQ' | 'yoga' | 'zona de lectura' | 'juegos infantiles' | 'cancha de squash' | 'terraza' | 'turco' | 'sauna' | 'salón comunal' | 'recepción' | 'portería' | 'mirador' | 'senderos ecologistas' | 'zona de mascotas' | 'coworking' | 'cafetería' | 'cine' | 'salón de reuniones' | 'lobby' | 'parqueadero para visitantes';
 
+export type AreaConstruida = 'Área de balcones y/o terraza' | 'Parqueadero' | 'Bodega';
+
 export interface Property {
   id: string;
   title: string;
@@ -37,6 +39,7 @@ export interface Property {
   permuta_porcentaje?: number;
   permuta_monto_max?: number;
   edad_propiedad?: string;
+  area_construida?: AreaConstruida[];
 }
 
 export interface PropertyFormData {
@@ -65,4 +68,5 @@ export interface PropertyFormData {
   permuta_porcentaje?: number;
   permuta_monto_max?: number;
   edad_propiedad?: string;
+  area_construida?: AreaConstruida[];
 } 

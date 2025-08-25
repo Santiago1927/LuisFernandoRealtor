@@ -7,12 +7,14 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Eye, Plus, Edit, X } from "lucide-react";
+import { useAuthContext } from '../auth/AuthContext';
 
 export default function PropertyFormDebugPanel() {
   const [showForm, setShowForm] = useState(false);
   const [editProperty, setEditProperty] = useState<Property | null>(null);
   const [savedProperties, setSavedProperties] = useState<Property[]>([]);
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
+  const { isAuthenticated } = useAuthContext();
 
   const handleSave = (property: Property) => {
     if (editProperty) {
@@ -110,6 +112,13 @@ export default function PropertyFormDebugPanel() {
                     
                     {/* Información básica */}
                     <div className="space-y-2">
+                      {/* Referencia - Solo para administradores */}
+                      {isAuthenticated && property.id && (
+                        <div className="text-xs text-zinc-600 dark:text-zinc-400 font-mono bg-zinc-100 dark:bg-zinc-800 px-2 py-1 rounded">
+                          🔗 #{property.id}
+                        </div>
+                      )}
+                      
                       {/* Ciudad */}
                       {property.city && (
                         <div className="text-xs text-zinc-600 dark:text-zinc-400">
@@ -204,6 +213,25 @@ export default function PropertyFormDebugPanel() {
                     {property.edad_propiedad && (
                       <div className="text-xs text-zinc-600 dark:text-zinc-400">
                         🗓️ Edad: {property.edad_propiedad}
+                      </div>
+                    )}
+
+                    {/* Área construida */}
+                    {property.area_construida && property.area_construida.length > 0 && (
+                      <div className="space-y-1">
+                        <div className="text-xs font-medium text-zinc-700 dark:text-zinc-300">🏗️ Área construida:</div>
+                        <div className="flex flex-wrap gap-1">
+                          {property.area_construida.slice(0, 3).map((area) => (
+                            <Badge key={area} variant="secondary" className="text-xs bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300">
+                              {area}
+                            </Badge>
+                          ))}
+                          {property.area_construida.length > 3 && (
+                            <Badge variant="secondary" className="text-xs bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300">
+                              +{property.area_construida.length - 3} más
+                            </Badge>
+                          )}
+                        </div>
                       </div>
                     )}
 
@@ -303,6 +331,16 @@ export default function PropertyFormDebugPanel() {
               </div>
             </CardHeader>
             <CardContent className="p-6 space-y-6">
+              {/* Referencia - Solo para administradores */}
+              {isAuthenticated && selectedProperty.id && (
+                <div className="bg-zinc-100 dark:bg-zinc-800 p-3 rounded-lg">
+                  <h3 className="font-semibold text-zinc-900 dark:text-zinc-100 mb-2">🔗 Referencia de la Propiedad</h3>
+                  <div className="font-mono text-sm text-zinc-600 dark:text-zinc-400">
+                    #{selectedProperty.id}
+                  </div>
+                </div>
+              )}
+              
               {/* Información básica */}
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="space-y-3">
@@ -390,6 +428,20 @@ export default function PropertyFormDebugPanel() {
                 <div>
                   <h3 className="font-semibold text-zinc-900 dark:text-zinc-100 mb-3">🗓️ Antigüedad</h3>
                   <div className="text-sm">{selectedProperty.edad_propiedad}</div>
+                </div>
+              )}
+
+              {/* Área construida */}
+              {selectedProperty.area_construida && selectedProperty.area_construida.length > 0 && (
+                <div>
+                  <h3 className="font-semibold text-zinc-900 dark:text-zinc-100 mb-3">🏗️ Área Construida ({selectedProperty.area_construida.length})</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {selectedProperty.area_construida.map((area) => (
+                      <Badge key={area} variant="secondary" className="bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300">
+                        {area}
+                      </Badge>
+                    ))}
+                  </div>
                 </div>
               )}
 

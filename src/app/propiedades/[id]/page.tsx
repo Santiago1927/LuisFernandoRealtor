@@ -4,7 +4,15 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePropertyDetailPageLogic } from '../../../hooks/usePropertyDetailPageLogic';
-import MapView from '../../../components/map/MapView';
+import { useAuthContext } from '../../../components/auth/AuthContext';
+import dynamic from 'next/dynamic';
+
+const MapView = dynamic(() => import('../../../components/map/MapView'), {
+  ssr: false,
+  loading: () => <div className="h-96 bg-zinc-100 dark:bg-zinc-800 rounded-lg animate-pulse flex items-center justify-center">
+    <span className="text-zinc-500 dark:text-zinc-400">Cargando mapa...</span>
+  </div>
+});
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -27,12 +35,40 @@ import {
   Shield,
   CreditCard,
   ArrowRightLeft,
-  Info
+  Info,
+  Hammer
 } from "lucide-react";
 
 export default function DetallePropiedadPage() {
   const { id } = useParams();
   const { property, isLoading, error, activeImage, images, nextImage, prevImage, mapUrl } = usePropertyDetailPageLogic(id);
+  const { isAuthenticated } = useAuthContext();
+
+
+
+  // Función ULTRA SEGURA para renderizar ciudad - IMPOSIBLE que muestre "0"
+  const renderSafeCity = (cityValue: any) => {
+    // Si no existe, retorna null
+    if (!cityValue) return null;
+    
+    // Si no es string, retorna null
+    if (typeof cityValue !== 'string') return null;
+    
+    // Limpiar el valor
+    const cleanCity = cityValue.trim();
+    
+    // Si está vacío después del trim, retorna null
+    if (cleanCity.length === 0) return null;
+    
+    // Si es exactamente "0", retorna null
+    if (cleanCity === '0') return null;
+    
+    // Si es "null" o "undefined" como string, retorna null
+    if (cleanCity.toLowerCase() === 'null' || cleanCity.toLowerCase() === 'undefined') return null;
+    
+    // Si llegamos aquí, es un valor válido
+    return cleanCity;
+  };
 
   if (isLoading) {
     return (
@@ -192,21 +228,21 @@ export default function DetallePropiedadPage() {
                     </div>
 
                     <div className="grid grid-cols-3 gap-4">
-                      {property.bedrooms && (
+                      {property.bedrooms && property.bedrooms > 0 && (
                         <div className="text-center p-4 bg-zinc-50 dark:bg-zinc-800 rounded-lg">
                           <Bed className="w-6 h-6 text-amber-600 dark:text-amber-400 mx-auto mb-2" />
                           <div className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">{property.bedrooms}</div>
                           <div className="text-sm text-zinc-600 dark:text-zinc-400">Habitaciones</div>
                         </div>
                       )}
-                      {property.bathrooms && (
+                      {property.bathrooms && property.bathrooms > 0 && (
                         <div className="text-center p-4 bg-zinc-50 dark:bg-zinc-800 rounded-lg">
                           <Bath className="w-6 h-6 text-amber-600 dark:text-amber-400 mx-auto mb-2" />
                           <div className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">{property.bathrooms}</div>
                           <div className="text-sm text-zinc-600 dark:text-zinc-400">Baños</div>
                         </div>
                       )}
-                      {property.area && (
+                      {property.area && property.area > 0 && (
                         <div className="text-center p-4 bg-zinc-50 dark:bg-zinc-800 rounded-lg">
                           <Square className="w-6 h-6 text-amber-600 dark:text-amber-400 mx-auto mb-2" />
                           <div className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">{property.area}</div>
@@ -224,19 +260,24 @@ export default function DetallePropiedadPage() {
 
                     {/* Información adicional de la propiedad */}
                     <div className="space-y-4 pt-4 border-t border-zinc-200 dark:border-zinc-700">
-                      {/* Ciudad */}
-                      {property.city && (
-                        <div className="flex items-center space-x-3">
-                          <MapPin className="w-5 h-5 text-amber-600 dark:text-amber-400" />
-                          <div>
-                            <div className="font-medium text-zinc-900 dark:text-zinc-100">Ciudad</div>
-                            <div className="text-sm text-zinc-600 dark:text-zinc-400">{property.city}</div>
+                      {/* Ciudad - VERSIÓN ULTRA SEGURA */}
+                      {(() => {
+                        const safeCity = renderSafeCity(property?.city);
+                        if (!safeCity) return null;
+                        
+                        return (
+                          <div className="flex items-center space-x-3">
+                            <MapPin className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+                            <div>
+                              <div className="font-medium text-zinc-900 dark:text-zinc-100">Ciudad</div>
+                              <div className="text-sm text-zinc-600 dark:text-zinc-400">{safeCity}</div>
+                            </div>
                           </div>
-                        </div>
-                      )}
+                        );
+                      })()}
 
-                      {/* Valor de administración */}
-                      {property.valor_administracion && property.valor_administracion > 0 && (
+                      {/* Valor de administración - SOLO SI ES MAYOR A 0 */}
+                      {property.valor_administracion && Number(property.valor_administracion) > 0 && (
                         <div className="flex items-center space-x-3">
                           <DollarSign className="w-5 h-5 text-amber-600 dark:text-amber-400" />
                           <div>
@@ -258,7 +299,7 @@ export default function DetallePropiedadPage() {
                       )}
 
                       {/* Número de pisos */}
-                      {property.numero_pisos && (
+                      {property.numero_pisos && property.numero_pisos > 0 && (
                         <div className="flex items-center space-x-3">
                           <Home className="w-5 h-5 text-amber-600 dark:text-amber-400" />
                           <div>
@@ -297,13 +338,13 @@ export default function DetallePropiedadPage() {
                   </CardHeader>
                   <CardContent>
                     <div className="grid grid-cols-2 gap-4">
-                      {property.lote_frente && (
+                      {property.lote_frente && property.lote_frente > 0 && (
                         <div className="text-center p-4 bg-zinc-50 dark:bg-zinc-800 rounded-lg">
                           <div className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">{property.lote_frente}m</div>
                           <div className="text-sm text-zinc-600 dark:text-zinc-400">Frente</div>
                         </div>
                       )}
-                      {property.lote_fondo && (
+                      {property.lote_fondo && property.lote_fondo > 0 && (
                         <div className="text-center p-4 bg-zinc-50 dark:bg-zinc-800 rounded-lg">
                           <div className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">{property.lote_fondo}m</div>
                           <div className="text-sm text-zinc-600 dark:text-zinc-400">Fondo</div>
@@ -328,6 +369,27 @@ export default function DetallePropiedadPage() {
                       {property.zonas_comunes.map((zona) => (
                         <Badge key={zona} variant="secondary" className="bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300 border-green-200 dark:border-green-800">
                           {zona}
+                        </Badge>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+
+              {/* Área construida */}
+              {property.area_construida && property.area_construida.length > 0 && (
+                <Card className="border-0 shadow-xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur">
+                  <CardHeader>
+                    <CardTitle className="flex items-center space-x-2 text-zinc-900 dark:text-zinc-100">
+                      <Hammer className="w-5 h-5 text-amber-600" />
+                      <span>Área Construida ({property.area_construida.length})</span>
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="flex flex-wrap gap-2">
+                      {property.area_construida.map((area) => (
+                        <Badge key={area} variant="secondary" className="bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300 border-blue-200 dark:border-blue-800">
+                          {area}
                         </Badge>
                       ))}
                     </div>
@@ -460,10 +522,12 @@ export default function DetallePropiedadPage() {
                   <CardTitle className="text-zinc-900 dark:text-zinc-100">Información Adicional</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                  <div className="flex justify-between items-center">
-                    <span className="text-zinc-600 dark:text-zinc-400">Referencia</span>
-                    <span className="font-semibold text-zinc-900 dark:text-zinc-100">#{id}</span>
-                  </div>
+                  {isAuthenticated && (
+                    <div className="flex justify-between items-center">
+                      <span className="text-zinc-600 dark:text-zinc-400">Referencia</span>
+                      <span className="font-semibold text-zinc-900 dark:text-zinc-100">#{id}</span>
+                    </div>
+                  )}
                   <div className="flex justify-between items-center">
                     <span className="text-zinc-600 dark:text-zinc-400">Tipo</span>
                     <span className="font-semibold text-zinc-900 dark:text-zinc-100">{property.type}</span>
@@ -474,12 +538,17 @@ export default function DetallePropiedadPage() {
                       {statusConfig.label}
                     </Badge>
                   </div>
-                  {property.city && (
-                    <div className="flex justify-between items-center">
-                      <span className="text-zinc-600 dark:text-zinc-400">Ciudad</span>
-                      <span className="font-semibold text-zinc-900 dark:text-zinc-100">{property.city}</span>
-                    </div>
-                  )}
+                  {(() => {
+                    const safeCity = renderSafeCity(property?.city);
+                    if (!safeCity) return null;
+                    
+                    return (
+                      <div className="flex justify-between items-center">
+                        <span className="text-zinc-600 dark:text-zinc-400">Ciudad</span>
+                        <span className="font-semibold text-zinc-900 dark:text-zinc-100">{safeCity}</span>
+                      </div>
+                    );
+                  })()}
                   {property.conjunto_cerrado && (
                     <div className="flex justify-between items-center">
                       <span className="text-zinc-600 dark:text-zinc-400">Conjunto cerrado</span>

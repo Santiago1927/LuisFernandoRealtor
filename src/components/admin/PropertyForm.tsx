@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Property, PropertyType, Amenity, PaymentMethod, ExchangeType } from '../../types/property';
+import { Property, PropertyType, Amenity, PaymentMethod, ExchangeType, AreaConstruida } from '../../types/property';
 import { usePropertyFormLogic } from '../../hooks/usePropertyFormLogic';
 import AddressInputWithMap from '../map/AddressInputWithMap';
 import { MultiSelect } from '../ui/multi-select';
@@ -59,6 +59,12 @@ const PAYMENT_METHODS: PaymentMethod[] = [
 ];
 
 const EXCHANGE_TYPES: ExchangeType[] = ['Vehículos', 'Propiedades'];
+
+const AREA_CONSTRUIDA_OPTIONS: AreaConstruida[] = [
+  'Área de balcones y/o terraza', 
+  'Parqueadero', 
+  'Bodega'
+];
 
 export default function PropertyForm({ property, onSave, onClose }: PropertyFormProps) {
   const {
@@ -375,6 +381,23 @@ export default function PropertyForm({ property, onSave, onClose }: PropertyForm
                       Describe la antigüedad de la propiedad
                     </p>
                   </div>
+                </div>
+
+                {/* Área Construida */}
+                <div className="col-span-full">
+                  <Label className="text-sm font-medium text-zinc-900 dark:text-zinc-100 mb-2 block">
+                    Área construida
+                  </Label>
+                  <MultiSelect
+                    options={AREA_CONSTRUIDA_OPTIONS.map(area => ({ value: area, label: area }))}
+                    selected={formData.area_construida || []}
+                    onChange={(selected) => handleSpecialFieldChange('area_construida', selected as AreaConstruida[])}
+                    placeholder="Selecciona las áreas construidas disponibles (opcional)..."
+                    className="bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
+                  />
+                  <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-1">
+                    Selecciona todas las áreas construidas que incluye la propiedad
+                  </p>
                 </div>
               </div>
 
