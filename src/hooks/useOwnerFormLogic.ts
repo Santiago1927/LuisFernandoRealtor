@@ -13,6 +13,8 @@ export const useOwnerFormLogic = ({ formSubmit, loading }: UseOwnerFormLogicProp
     register,
     handleSubmit,
     watch,
+    setValue,
+    control,
     formState: { errors, isValid },
   } = useForm<FormData>({
     resolver: zodResolver(ownerSchema),
@@ -39,5 +41,8 @@ export const useOwnerFormLogic = ({ formSubmit, loading }: UseOwnerFormLogicProp
     situacionJuridica,
     onSubmit,
     loading,
+    setValue,
+    watch,
+    control,
   };
 }; 

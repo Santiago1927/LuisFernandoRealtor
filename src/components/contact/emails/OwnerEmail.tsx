@@ -9,6 +9,9 @@ const OwnerEmail: React.FC = () => {
 
   const formSubmit = async (data: any) => {
     setLoading(true);
+    console.log('=== FORM SUBMISSION START ===');
+    console.log('Form data received:', data);
+    
     try {
       const ownerData = {
         ...data,
@@ -40,26 +43,58 @@ const OwnerEmail: React.FC = () => {
         updatedAt: new Date(),
       };
 
-      await ownerService.createOwner(ownerData);
+      console.log('Processed owner data:', ownerData);
 
-      const response = await fetch("/api/send", {
-        method: "POST",
-        body: JSON.stringify(ownerData),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (response.ok) {
-        showAlert("Mensaje Enviado !", "success");
-      } else {
-        showAlert("Error al enviar el mensaje", "error");
+      // Step 1: Try to save to Firestore
+      console.log('Step 1: Saving to Firestore...');
+      try {
+        await ownerService.createOwner(ownerData);
+        console.log('✅ Firestore save successful');
+      } catch (firestoreError) {
+        console.error('❌ Firestore save failed:', firestoreError);
+        throw new Error(`Error al guardar en base de datos: ${firestoreError instanceof Error ? firestoreError.message : 'Error desconocido'}`);
       }
+
+      // Step 2: Try to send email
+      console.log('Step 2: Sending email...');
+      try {
+        const response = await fetch("/api/send", {
+          method: "POST",
+          body: JSON.stringify(ownerData),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        console.log('Email API response status:', response.status);
+        const responseData = await response.json();
+        console.log('Email API response data:', responseData);
+
+        if (response.ok) {
+          if (responseData.error?.message?.includes('Configuración de email pendiente')) {
+            console.log('✅ Data saved, email config pending');
+            showAlert("¡Datos guardados correctamente! La configuración de email está pendiente.", "success");
+          } else {
+            console.log('✅ Email sent successfully');
+            showAlert("¡Mensaje enviado exitosamente!", "success");
+          }
+        } else {
+          console.error('❌ Email API returned error:', responseData);
+          throw new Error(responseData.error?.message || `Error del servidor (${response.status})`);
+        }
+      } catch (emailError) {
+        console.error('❌ Email sending failed:', emailError);
+        // Data was saved to Firestore, but email failed
+        showAlert(`Datos guardados correctamente, pero falló el envío de email: ${emailError instanceof Error ? emailError.message : 'Error desconocido'}`, "error");
+        return; // Don't throw, data was saved successfully
+      }
+
     } catch (error) {
-      console.error('Error:', error);
-      showAlert("Error al enviar el mensaje", "error");
+      console.error('❌ Form submission failed:', error);
+      showAlert(`Error al enviar el mensaje: ${error instanceof Error ? error.message : 'Error desconocido'}`, "error");
     } finally {
       setLoading(false);
+      console.log('=== FORM SUBMISSION END ===');
     }
   };
 

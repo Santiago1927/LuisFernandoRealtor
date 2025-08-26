@@ -1,5 +1,5 @@
 'use client'
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { X, CheckCircle, AlertCircle, Info, AlertTriangle } from "lucide-react";
@@ -32,12 +32,19 @@ export const AlertProvider: React.FC<AlertProviderProps> = ({ children }) => {
     onCancel?: () => void; 
   } | null>(null);
 
+  // Clear alerts on component mount (page refresh/navigation)
+  useEffect(() => {
+    setAlert(null);
+    setConfirm(null);
+  }, []);
+
   const showAlert = (message: string, type: 'success' | 'error' | 'info') => {
     setAlert({ message, type });
-    // Auto-hide alert after 4 seconds
+    // Auto-hide alert after different times based on type
+    const timeout = type === 'error' ? 6000 : type === 'success' ? 4000 : 5000;
     setTimeout(() => {
       setAlert(null);
-    }, 4000);
+    }, timeout);
   };
 
   const showConfirm = (message: string, onConfirm: () => void, onCancel?: () => void) => {
@@ -94,25 +101,32 @@ export const AlertProvider: React.FC<AlertProviderProps> = ({ children }) => {
       
       {/* Alert Modal */}
       {alert && (
-        <div className="fixed inset-0 z-50 flex items-start justify-center p-4">
-          <div className="w-full max-w-md">
-            <Alert variant={getAlertVariant(alert.type)} className="border-2 shadow-2xl">
-              <div className="flex items-start space-x-3">
-                {getAlertIcon(alert.type)}
-                <AlertDescription className="flex-1 text-sm font-medium">
-                  {alert.message}
-                </AlertDescription>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={hideAlert}
-                  className="h-6 w-6 p-0 hover:bg-transparent"
-                >
-                  <X className="h-4 w-4" />
-                </Button>
-              </div>
-            </Alert>
-          </div>
+        <div 
+          className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-md px-4"
+          onClick={(e) => {
+            // Close alert if clicking outside of it
+            if (e.target === e.currentTarget) {
+              hideAlert();
+            }
+          }}
+        >
+          <Alert variant={getAlertVariant(alert.type)} className="border-2 shadow-2xl relative animate-in slide-in-from-top-4 duration-300">
+            <div className="flex items-start space-x-3">
+              {getAlertIcon(alert.type)}
+              <AlertDescription className="flex-1 text-sm font-medium pr-8">
+                {alert.message}
+              </AlertDescription>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={hideAlert}
+                className="absolute top-2 right-2 h-6 w-6 p-0 hover:bg-black/10 dark:hover:bg-white/10 rounded-full transition-colors"
+                aria-label="Cerrar alerta"
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
+          </Alert>
         </div>
       )}
 

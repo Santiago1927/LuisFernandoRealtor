@@ -12,22 +12,36 @@ const positiveNumberField = (message: string) =>
 
 export const buyerSchema = z.object({
     nombre: z.string()
-        .min(1, { message: 'Este campo es obligatorio' })
+        .min(2, { message: 'El nombre debe tener al menos 2 caracteres' })
         .max(200, { message: 'El nombre debe tener menos de 200 caracteres' })
-        .refine(val => /^[a-zA-Z\s]*$/.test(val), { message: 'El nombre solo puede contener letras' }),
+        .refine(val => /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(val), { message: 'El nombre solo puede contener letras y espacios' })
+        .refine(val => val.trim().length >= 2, { message: 'El nombre no puede estar vacío o solo contener espacios' }),
     
     correo: z.string()
-        .min(1, { message: 'Este campo es obligatorio' }).email({ message: 'El email debe ser válido' }),
+        .min(1, { message: 'Este campo es obligatorio' })
+        .email({ message: 'Por favor ingresa un email válido (ejemplo: usuario@dominio.com)' })
+        .refine(val => val.includes('.'), { message: 'El email debe tener un formato válido' }),
     
     telefono: z.string()
-        .min(1, { message: 'Este campo es obligatorio' })
-        .refine(val => /^[0-9]*$/.test(val), { message: 'El teléfono solo puede contener números' }),
+        .min(7, { message: 'El teléfono debe tener al menos 7 dígitos' })
+        .max(15, { message: 'El teléfono no puede tener más de 15 dígitos' })
+        .refine(val => /^[0-9+\-\s()]+$/.test(val), { message: 'El teléfono solo puede contener números, +, -, espacios y paréntesis' })
+        .refine(val => /\d{7,}/.test(val.replace(/[^0-9]/g, '')), { message: 'El teléfono debe tener al menos 7 dígitos' }),
     
-    ciudad: z.enum(CITY_OPTIONS.map(({ value }) => value) as [string], { message: 'Este campo es obligatorio' }),
+    ciudad: z.enum(CITY_OPTIONS.map(({ value }) => value) as [string], { message: 'Por favor selecciona una ciudad' }),
     
-    tipoPropiedad: z.enum(PROPERTY_TYPE_OPTIONS.map(({ value }) => value) as [string], { message: 'Este campo es obligatorio' }),
+    tipoPropiedad: z.enum(PROPERTY_TYPE_OPTIONS.map(({ value }) => value) as [string], { message: 'Por favor selecciona un tipo de propiedad' }),
     
-    formaDePago: z.enum(PAYMENT_METHOD_OPTIONS.map(({ value }) => value) as [string], { message: 'Este campo es obligatorio' }),
+    formaDePago: z.enum(PAYMENT_METHOD_OPTIONS.map(({ value }) => value) as [string], { message: 'Por favor selecciona una forma de pago' }),
     
-    presupuesto: positiveNumberField('Este campo es obligatorio y debe ser un numero entero'),
+    presupuesto: z.string()
+        .min(1, { message: 'El presupuesto es obligatorio' })
+        .refine(val => {
+            const numValue = parseInt(val.replace(/[,.]/g, ''));
+            return !isNaN(numValue) && numValue > 0;
+        }, { message: 'El presupuesto debe ser un número válido mayor a 0' })
+        .refine(val => {
+            const numValue = parseInt(val.replace(/[,.]/g, ''));
+            return numValue >= 50000000; // Mínimo 50 millones
+        }, { message: 'El presupuesto debe ser de al menos $50,000,000 COP' }),
 });

@@ -9,7 +9,8 @@ const AdminDashboard = dynamic(() => import('../../components/admin/AdminDashboa
   </div>
 });
 
-export const dynamic = 'force-dynamic';
+// Force dynamic rendering for this page
+export const revalidate = 0;
 
 export default function AdminPage() {
   return (

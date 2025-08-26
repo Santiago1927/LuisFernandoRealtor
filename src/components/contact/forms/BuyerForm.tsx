@@ -23,6 +23,8 @@ const BuyerForm: React.FC<BuyerFormProps> = ({ formSubmit, loading }) => {
     isValid,
     tipoPropiedad,
     onSubmit,
+    setValue,
+    watch,
   } = useBuyerFormLogic({ formSubmit, loading });
 
   const renderField = (fieldKey: string, field: any) => {
@@ -63,7 +65,7 @@ const BuyerForm: React.FC<BuyerFormProps> = ({ formSubmit, loading }) => {
               <span>{String(errors[fieldKey]?.message)}</span>
             </div>
           )}
-          <Select onValueChange={(value) => register(fieldKey).onChange({ target: { value } })}>
+          <Select onValueChange={(value) => setValue(fieldKey as any, value as any)} value={watch(fieldKey as any)} {...register(fieldKey)}>
             <SelectTrigger className="w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400">
               <SelectValue placeholder="Selecciona forma de pago" />
             </SelectTrigger>
@@ -153,7 +155,7 @@ const BuyerForm: React.FC<BuyerFormProps> = ({ formSubmit, loading }) => {
                   <span>{String(errors.ciudad?.message)}</span>
                 </div>
               )}
-              <Select onValueChange={(value) => register("ciudad").onChange({ target: { value } })}>
+              <Select onValueChange={(value) => setValue("ciudad", value as any)} value={watch("ciudad")} {...register("ciudad")}>
                 <SelectTrigger className="w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400">
                   <SelectValue placeholder="Selecciona una ciudad" />
                 </SelectTrigger>
@@ -177,7 +179,7 @@ const BuyerForm: React.FC<BuyerFormProps> = ({ formSubmit, loading }) => {
                   <span>{String(errors.tipoPropiedad?.message)}</span>
                 </div>
               )}
-              <Select onValueChange={(value) => register("tipoPropiedad").onChange({ target: { value } })}>
+              <Select onValueChange={(value) => setValue("tipoPropiedad", value as any)} value={watch("tipoPropiedad")} {...register("tipoPropiedad")}>
                 <SelectTrigger className="w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400">
                   <SelectValue placeholder="Selecciona tipo de propiedad" />
                 </SelectTrigger>

@@ -48,27 +48,33 @@ service cloud.firestore {
     // COLECCIÓN: buyers (Compradores)
     // ========================================
     // Propósito: Almacena datos de personas interesadas en comprar
-    // Acceso: Solo usuarios autenticados (administradores)
+    // Acceso: Lectura solo autenticados, escritura pública (para formularios)
     match /buyers/{buyerId} {
-      allow read, write: if request.auth != null; // ✅ Solo usuarios autenticados pueden acceder
+      allow read: if request.auth != null; // ✅ Solo usuarios autenticados pueden leer
+      allow create: if true; // ✅ Cualquiera puede crear (enviar formulario)
+      allow update, delete: if request.auth != null; // ✅ Solo usuarios autenticados pueden modificar/eliminar
     }
     
     // ========================================
     // COLECCIÓN: owners (Propietarios)
     // ========================================
     // Propósito: Almacena datos de propietarios que quieren vender
-    // Acceso: Solo usuarios autenticados (administradores)
+    // Acceso: Lectura solo autenticados, escritura pública (para formularios)
     match /owners/{ownerId} {
-      allow read, write: if request.auth != null; // ✅ Solo usuarios autenticados pueden acceder
+      allow read: if request.auth != null; // ✅ Solo usuarios autenticados pueden leer
+      allow create: if true; // ✅ Cualquiera puede crear (enviar formulario)
+      allow update, delete: if request.auth != null; // ✅ Solo usuarios autenticados pueden modificar/eliminar
     }
     
     // ========================================
     // COLECCIÓN: contacts (Contactos Generales)
     // ========================================
     // Propósito: Almacena consultas generales de contacto
-    // Acceso: Solo usuarios autenticados (administradores)
+    // Acceso: Lectura solo autenticados, escritura pública (para formularios)
     match /contacts/{contactId} {
-      allow read, write: if request.auth != null; // ✅ Solo usuarios autenticados pueden acceder
+      allow read: if request.auth != null; // ✅ Solo usuarios autenticados pueden leer
+      allow create: if true; // ✅ Cualquiera puede crear (enviar formulario)
+      allow update, delete: if request.auth != null; // ✅ Solo usuarios autenticados pueden modificar/eliminar
     }
   }
 }
@@ -86,10 +92,12 @@ service cloud.firestore {
        * Solo administradores pueden crear/editar/eliminar propiedades
   
   2. BUYERS, OWNERS, CONTACTS:
-     - read, write: if request.auth != null → Solo usuarios autenticados
-       * Estos datos son sensibles (información personal de usuarios)
-       * Solo administradores pueden ver y gestionar estos datos
-       * Previene acceso no autorizado a información privada
+     - read: if request.auth != null → Solo usuarios autenticados pueden leer
+       * Los administradores pueden ver todos los datos enviados
+     - create: if true → Cualquier persona puede enviar formularios
+       * Permite que visitantes del sitio web envíen formularios de contacto
+     - update, delete: if request.auth != null → Solo usuarios autenticados pueden modificar
+       * Solo administradores pueden editar o eliminar datos existentes
   
   VARIABLES UTILIZADAS:
   ====================

@@ -1,15 +1,17 @@
 'use client';
 
-import React from "react";
+import React, { useState } from "react";
 import { useLoginFormLogic } from "../../hooks/useLoginFormLogic";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Shield, Mail, Lock, AlertCircle } from "lucide-react";
+import { Shield, Mail, Lock, AlertCircle, Eye, EyeOff } from "lucide-react";
 
 const LoginForm: React.FC = () => {
+  const [showPassword, setShowPassword] = useState(false);
+  
   const {
     email,
     password,
@@ -19,6 +21,10 @@ const LoginForm: React.FC = () => {
     handleEmailChange,
     handlePasswordChange,
   } = useLoginFormLogic();
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   return (
     <Card className="w-full max-w-md mx-auto border-0 shadow-2xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur">
@@ -68,13 +74,27 @@ const LoginForm: React.FC = () => {
               <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-zinc-400" />
               <Input
                 id="password"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 required
                 value={password}
                 onChange={handlePasswordChange}
-                className="pl-10 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
+                className="pl-10 pr-10 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
                 placeholder="Ingresa tu contraseña"
               />
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={togglePasswordVisibility}
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 h-8 w-8 p-0 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                tabIndex={-1}
+              >
+                {showPassword ? (
+                  <EyeOff className="w-4 h-4 text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200" />
+                ) : (
+                  <Eye className="w-4 h-4 text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200" />
+                )}
+              </Button>
             </div>
           </div>
           

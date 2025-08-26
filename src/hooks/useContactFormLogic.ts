@@ -3,11 +3,28 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
 const contactSchema = z.object({
-  nombre: z.string().min(1, "El nombre es requerido"),
-  correo: z.string().email("Correo electrónico inválido"),
-  telefono: z.string().min(1, "El teléfono es requerido"),
-  asunto: z.string().min(1, "El asunto es requerido"),
-  mensaje: z.string().min(10, "El mensaje debe tener al menos 10 caracteres"),
+  nombre: z.string()
+    .min(2, "El nombre debe tener al menos 2 caracteres")
+    .max(200, "El nombre debe tener menos de 200 caracteres")
+    .refine(val => /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(val), { message: 'El nombre solo puede contener letras y espacios' })
+    .refine(val => val.trim().length >= 2, { message: 'El nombre no puede estar vacío o solo contener espacios' }),
+  correo: z.string()
+    .min(1, "El correo es requerido")
+    .email("Por favor ingresa un email válido (ejemplo: usuario@dominio.com)")
+    .refine(val => val.includes('.'), { message: 'El email debe tener un formato válido' }),
+  telefono: z.string()
+    .min(7, "El teléfono debe tener al menos 7 dígitos")
+    .max(15, "El teléfono no puede tener más de 15 dígitos")
+    .refine(val => /^[0-9+\-\s()]+$/.test(val), { message: 'El teléfono solo puede contener números, +, -, espacios y paréntesis' })
+    .refine(val => /\d{7,}/.test(val.replace(/[^0-9]/g, '')), { message: 'El teléfono debe tener al menos 7 dígitos' }),
+  asunto: z.string()
+    .min(5, "El asunto debe tener al menos 5 caracteres")
+    .max(100, "El asunto no puede tener más de 100 caracteres")
+    .refine(val => val.trim().length >= 5, { message: 'El asunto no puede estar vacío o solo contener espacios' }),
+  mensaje: z.string()
+    .min(20, "El mensaje debe tener al menos 20 caracteres")
+    .max(1000, "El mensaje no puede tener más de 1000 caracteres")
+    .refine(val => val.trim().length >= 20, { message: 'El mensaje no puede estar vacío o solo contener espacios' }),
 });
 
 type ContactFormData = z.infer<typeof contactSchema>;
@@ -21,6 +38,8 @@ export const useContactFormLogic = ({ formSubmit, loading }: UseContactFormLogic
   const {
     register,
     handleSubmit,
+    setValue,
+    watch,
     formState: { errors, isValid },
   } = useForm<ContactFormData>({
     resolver: zodResolver(contactSchema),
@@ -61,5 +80,7 @@ export const useContactFormLogic = ({ formSubmit, loading }: UseContactFormLogic
     contactFields,
     onSubmit,
     loading,
+    setValue,
+    watch,
   };
 }; 

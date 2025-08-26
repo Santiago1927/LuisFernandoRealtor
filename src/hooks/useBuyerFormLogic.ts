@@ -13,6 +13,7 @@ export const useBuyerFormLogic = ({ formSubmit, loading }: UseBuyerFormLogicProp
     register,
     handleSubmit,
     watch,
+    setValue,
     formState: { errors, isValid },
   } = useForm<FormData>({
     resolver: zodResolver(buyerSchema),
@@ -36,5 +37,7 @@ export const useBuyerFormLogic = ({ formSubmit, loading }: UseBuyerFormLogicProp
     tipoPropiedad,
     onSubmit,
     loading,
+    setValue,
+    watch,
   };
 }; 
