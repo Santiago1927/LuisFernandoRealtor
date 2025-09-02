@@ -1,0 +1,25 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Properties collection - read access for everyone, write access for authenticated users
+    match /properties/{propertyId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+    
+    // Buyers collection - read/write access for authenticated users only
+    match /buyers/{buyerId} {
+      allow read, write: if request.auth != null;
+    }
+    
+    // Owners collection - read/write access for authenticated users only
+    match /owners/{ownerId} {
+      allow read, write: if request.auth != null;
+    }
+    
+    // Contacts collection - read/write access for authenticated users only
+    match /contacts/{contactId} {
+      allow read, write: if request.auth != null;
+    }
+  }
+} 

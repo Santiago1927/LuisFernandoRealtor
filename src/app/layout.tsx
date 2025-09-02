@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./styles/globals.css";
 import Header from "../components/Header";
 import { ThemeProvider } from "../state/ThemeContext";
+import { AuthProvider } from "../state/AuthContext";
 import Footer from "../components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import { AlertProvider } from "@/state/AlertContext";
@@ -25,17 +26,19 @@ export default function RootLayout({
   return (
     <html lang="es">
       <ThemeProvider>
-        <AlertProvider>
-          <body
-            className={`${inter.className} bg-white dark:bg-black text-black dark:text-white`}
-          >
-            <Header />
-            <div className="mt-16"></div>
-            <WhatsAppButton phoneNumber="573214223931" />
-            {children}
-            <Footer />
-          </body>
-        </AlertProvider>
+        <AuthProvider>
+          <AlertProvider>
+            <body
+              className={`${inter.className} bg-white dark:bg-black text-black dark:text-white`}
+            >
+              <Header />
+              <div className="mt-16"></div>
+              <WhatsAppButton phoneNumber="573214223931" />
+              {children}
+              <Footer />
+            </body>
+          </AlertProvider>
+        </AuthProvider>
       </ThemeProvider>
     </html>
   );
