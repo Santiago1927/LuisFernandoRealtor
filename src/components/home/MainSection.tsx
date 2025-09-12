@@ -9,18 +9,23 @@ export default function MainSection() {
   return (
     <main className="relative w-full min-h-screen flex items-center">
       <div className="absolute inset-0 bg-gradient-to-br from-zinc-50 via-white to-amber-50/30 dark:from-zinc-900 dark:via-black dark:to-amber-900/10"></div>
-      
+
       <div className="relative z-10 w-full">
         <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-16">
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 xl:gap-16 items-center min-h-[80vh]">
-            
             <div className="space-y-6 lg:space-y-8">
               <div className="flex items-center space-x-3">
-                <Badge variant="secondary" className="bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300 border-amber-200 dark:border-amber-800 px-3 py-1">
+                <Badge
+                  variant="secondary"
+                  className="bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300 border-amber-200 dark:border-amber-800 px-3 py-1"
+                >
                   <Award className="w-4 h-4 mr-1" />
                   Agente Certificado
                 </Badge>
-                <Badge variant="outline" className="border-zinc-300 dark:border-zinc-600 px-3 py-1">
+                <Badge
+                  variant="outline"
+                  className="border-zinc-300 dark:border-zinc-600 px-3 py-1"
+                >
                   <Star className="w-4 h-4 mr-1 fill-amber-500 text-amber-500" />
                   5.0 Rating
                 </Badge>
@@ -34,28 +39,33 @@ export default function MainSection() {
                   </span>
                 </h1>
                 <p className="text-xl lg:text-3xl xl:text-4xl text-zinc-600 dark:text-zinc-400 font-light leading-relaxed">
-                  Descubre propiedades únicas en las mejores ubicaciones de Colombia
+                  Descubre propiedades únicas en las mejores ubicaciones de
+                  Colombia
                 </p>
               </div>
 
               <p className="text-lg lg:text-xl text-zinc-700 dark:text-zinc-300 leading-relaxed max-w-2xl">
-                Aplicamos estrategias de marketing digital avanzadas para ayudarte a vender 
-                o comprar propiedades premium que superen tus expectativas.
+                Aplicamos estrategias de marketing digital avanzadas para
+                ayudarte a vender o comprar propiedades premium que superen tus
+                expectativas.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 lg:gap-6">
-                <Button 
+                <Button
                   asChild
                   size="lg"
                   className="bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-700 hover:to-yellow-700 text-white font-bold shadow-xl hover:shadow-2xl transition-all duration-300 text-lg px-8 py-6"
                 >
-                  <Link href="/contacto" className="flex items-center space-x-2">
+                  <Link
+                    href="/contacto"
+                    className="flex items-center space-x-2"
+                  >
                     <span>Hablar con un Agente</span>
                     <ArrowRight className="w-5 h-5" />
                   </Link>
                 </Button>
-                
-                <Button 
+
+                <Button
                   asChild
                   variant="outline"
                   size="lg"
@@ -67,16 +77,28 @@ export default function MainSection() {
 
               <div className="grid grid-cols-3 gap-4 lg:gap-8 pt-6 lg:pt-8 border-t border-zinc-200 dark:border-zinc-800">
                 <div className="text-center">
-                  <div className="text-3xl lg:text-4xl font-bold text-amber-600 dark:text-amber-400">500+</div>
-                  <div className="text-sm lg:text-base text-zinc-600 dark:text-zinc-400">Propiedades Vendidas</div>
+                  <div className="text-3xl lg:text-4xl font-bold text-amber-600 dark:text-amber-400">
+                    500+
+                  </div>
+                  <div className="text-sm lg:text-base text-zinc-600 dark:text-zinc-400">
+                    Propiedades Vendidas
+                  </div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl lg:text-4xl font-bold text-amber-600 dark:text-amber-400">98%</div>
-                  <div className="text-sm lg:text-base text-zinc-600 dark:text-zinc-400">Satisfacción</div>
+                  <div className="text-3xl lg:text-4xl font-bold text-amber-600 dark:text-amber-400">
+                    98%
+                  </div>
+                  <div className="text-sm lg:text-base text-zinc-600 dark:text-zinc-400">
+                    Satisfacción
+                  </div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl lg:text-4xl font-bold text-amber-600 dark:text-amber-400">15+</div>
-                  <div className="text-sm lg:text-base text-zinc-600 dark:text-zinc-400">Años de Experiencia</div>
+                  <div className="text-3xl lg:text-4xl font-bold text-amber-600 dark:text-amber-400">
+                    15+
+                  </div>
+                  <div className="text-sm lg:text-base text-zinc-600 dark:text-zinc-400">
+                    Años de Experiencia
+                  </div>
                 </div>
               </div>
 
@@ -102,7 +124,7 @@ export default function MainSection() {
                   className="w-full h-auto object-cover"
                   priority
                 />
-                
+
                 <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent"></div>
               </div>
 

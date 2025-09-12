@@ -1,6 +1,6 @@
-import { useAuthContext } from '../components/auth/AuthContext';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useAuthContext } from "../components/auth/AuthContext";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 // Hook personalizado que encapsula la lógica del header de la aplicación
 export function useHeaderLogic() {
@@ -15,18 +15,19 @@ export function useHeaderLogic() {
   const handleLogout = async () => {
     try {
       await logout(); // Cierra la sesión del usuario
-      router.push('/'); // Redirige a la página principal
+      // Usar replace para forzar la redirección inmediata y limpiar el historial
+      router.replace("/"); // Redirige a la página principal
     } catch (error) {
-      console.error('Error al cerrar sesión:', error);
+      console.error("Error al cerrar sesión:", error);
     }
   };
 
   // Función para navegar al panel de administrador o al login según autenticación
   const handleAdminPanel = () => {
     if (isAuthenticated) {
-      router.push('/admin'); // Si está autenticado, va al panel admin
+      router.push("/admin"); // Si está autenticado, va al panel admin
     } else {
-      router.push('/login'); // Si no, va al login
+      router.push("/login"); // Si no, va al login
     }
   };
 
@@ -40,4 +41,4 @@ export function useHeaderLogic() {
     handleAdminPanel,
     router,
   };
-} 
+}

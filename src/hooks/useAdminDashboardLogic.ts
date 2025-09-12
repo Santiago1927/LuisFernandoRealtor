@@ -1,17 +1,17 @@
 // Importa los hooks useState y useEffect de React para manejar el estado y los efectos secundarios
-import { useState } from 'react';
+import { useState } from "react";
 // Importa el contexto de autenticación para acceder a funciones como logout
-import { useAuthContext } from '../components/auth/AuthContext';
+import { useAuthContext } from "../components/auth/AuthContext";
 // Importa useRouter de Next.js para la navegación programática
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 // Importa el tipo Property para tipar las propiedades
-import { Property } from '../types/property';
+import { Property } from "../types/property";
 // Importa el servicio que maneja las operaciones con propiedades en Firestore
-import { usePaginatedProperties } from '../hooks/usePaginatedProperties';
+import { usePaginatedProperties } from "../hooks/usePaginatedProperties";
 // Importa la mutación para eliminar propiedades
-import { useDeleteProperty } from './usePropertyMutations';
+import { useDeleteProperty } from "./usePropertyMutations";
 // Importa el contexto de alertas personalizado
-import { useAlert } from '../components/layout/AlertContext';
+import { useAlert } from "../components/layout/AlertContext";
 
 // Hook personalizado que encapsula la lógica del dashboard de administrador
 export function useAdminDashboardLogic() {
@@ -43,9 +43,10 @@ export function useAdminDashboardLogic() {
   const handleLogout = async () => {
     try {
       await logout(); // Cierra la sesión del usuario
-      router.push('/'); // Redirige a la página principal
+      // Usar replace para forzar la redirección inmediata y limpiar el historial
+      router.replace("/"); // Redirige a la página principal
     } catch (error) {
-      console.error('Error al cerrar sesión:', error);
+      console.error("Error al cerrar sesión:", error);
     }
   };
 
@@ -64,15 +65,18 @@ export function useAdminDashboardLogic() {
   // Elimina una propiedad después de confirmar con el usuario
   const handleDeleteProperty = async (id: string) => {
     showConfirm(
-      '¿Estás seguro de que quieres eliminar esta propiedad?',
+      "¿Estás seguro de que quieres eliminar esta propiedad?",
       async () => {
         try {
           await deletePropertyMutation.mutateAsync(id);
           // La invalidación de queries se maneja automáticamente en la mutación
-          showAlert('Propiedad eliminada exitosamente', 'success');
+          showAlert("Propiedad eliminada exitosamente", "success");
         } catch (error) {
-          console.error('Error al eliminar la propiedad:', error);
-          showAlert('Error al eliminar la propiedad. Intenta de nuevo.', 'error');
+          console.error("Error al eliminar la propiedad:", error);
+          showAlert(
+            "Error al eliminar la propiedad. Intenta de nuevo.",
+            "error"
+          );
         }
       }
     );
@@ -110,4 +114,4 @@ export function useAdminDashboardLogic() {
     isDeleting: deletePropertyMutation.isPending,
     deleteError: deletePropertyMutation.error,
   };
-} 
+}
