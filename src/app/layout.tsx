@@ -12,8 +12,10 @@ import ReactQueryProvider from "../providers/ReactQueryProvider";
 import WhatsAppButton from "@/components/whatasapp/WhatsAppButton";
 import ContentWithSidebar from "../components/layout/ContentWithSidebar";
 
+// Configuración de la fuente Inter para toda la aplicación
 const inter = Inter({ subsets: ["latin"] });
 
+// Metadatos SEO de la aplicación
 export const metadata: Metadata = {
   title:
     "Luis Fernando Realtor | Agente de Bienes Raíces de Lujo | Pasto, Medellín, Cali | Vende tu propiedad en tiempo record",
@@ -21,27 +23,44 @@ export const metadata: Metadata = {
     "Agente de Bienes Raíces de Lujo | Pasto, Medellín, Cali | Vende tu propiedad en tiempo record",
 };
 
+/**
+ * Layout raíz de la aplicación Next.js
+ * Establece la estructura base y proveedores globales para toda la app
+ */
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // contentMarginLeft is handled on client inside ContentWithSidebar
   return (
     <html lang="es">
+      {/* Proveedor de React Query para manejo de estado del servidor */}
       <ReactQueryProvider>
+        {/* Proveedor de tema (modo claro/oscuro) */}
         <ThemeProvider>
+          {/* Proveedor de contexto de autenticación */}
           <AuthProvider>
+            {/* Proveedor de alertas y notificaciones */}
             <AlertProvider>
               <body
                 className={`${inter.className} bg-gray-50 dark:bg-black text-black dark:text-white`}
               >
+                {/* Sidebar para usuarios autenticados - se renderiza globalmente */}
                 <Sidebar />
+
+                {/* Wrapper que ajusta el contenido según el sidebar */}
                 <ContentWithSidebar>
+                  {/* Header condicional que se muestra según la ruta y autenticación */}
                   <HeaderClient />
+
+                  {/* Botón flotante de WhatsApp */}
                   <WhatsAppButton phoneNumber="573214223931" />
+
+                  {/* Contenido de la página actual */}
                   {children}
                 </ContentWithSidebar>
+
+                {/* Footer global de la aplicación */}
                 <Footer />
               </body>
             </AlertProvider>
