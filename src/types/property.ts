@@ -1,18 +1,73 @@
 // Tipos de propiedades inmobiliarias disponibles en el sistema
 export type PropertyType =
-  | "Local"
-  | "Bodega"
-  | "Lote"
-  | "Casa Lote"
-  | "Finca"
-  | "Casa Finca"
-  | "Oficina"
   | "Apartaestudio"
   | "Apartamento"
-  | "Penthouse"
+  | "Bodega"
+  | "Bungalow"
+  | "Cabaña"
+  | "Campestre"
+  | "Campos, Chacras y Quintas"
+  | "Casa"
+  | "Casa de Playa"
+  | "Chalet"
+  | "Condominio"
+  | "Consultorio"
+  | "Cortijo"
   | "Dúplex"
-  | "Tríplex"
-  | "Casa";
+  | "Edificio"
+  | "Finca"
+  | "Finca - Hoteles"
+  | "Galpon Industrial"
+  | "Garaje"
+  | "Hostal"
+  | "Local"
+  | "Lote"
+  | "Oficina"
+  | "Penthouse"
+  | "Tríplex";
+
+// Estados de publicación de las propiedades
+export type PublicationStatus = "Destacado" | "Activo" | "Inactivo";
+
+// Tipos de negocio inmobiliario
+export type BusinessType = "Vender" | "Alquilar" | "Permutar";
+
+// Tipos de moneda
+export type CurrencyType = "Pesos colombianos" | "Dólares americanos" | "Euros";
+
+// Tiempos de alquiler
+export type RentalTime = "Mensual" | "Diario" | "Semanal" | "Anual";
+
+// Estratos socioeconómicos
+export type Stratum = "N/D" | "1" | "2" | "3" | "4" | "5" | "6";
+
+// Número de pisos
+export type FloorNumber =
+  | "1"
+  | "2"
+  | "3"
+  | "4"
+  | "5"
+  | "6"
+  | "7"
+  | "8"
+  | "9"
+  | "10"
+  | "11"
+  | "12"
+  | "13"
+  | "14"
+  | "15"
+  | "16"
+  | "17"
+  | "18"
+  | "19"
+  | "20"
+  | "21"
+  | "22"
+  | "23"
+  | "24"
+  | "25";
 
 // Métodos de pago aceptados para las propiedades
 export type PaymentMethod =
@@ -54,6 +109,9 @@ export type Amenity =
 // Tipos de área construida adicional
 export type AreaConstruida =
   | "Área de balcones y/o terraza"
+  | "Área de balcones"
+  | "Área de terraza"
+  | "Área privada"
   | "Parqueadero"
   | "Bodega";
 
@@ -77,6 +135,30 @@ export interface Property {
   updatedAt: Date; // Fecha de última actualización
   lat?: number | null; // Latitud de la ubicación
   lng?: number | null; // Longitud de la ubicación
+
+  // Nuevos campos principales
+  encargado_inmueble?: string; // Encargado del inmueble
+  matricula_inmobiliaria?: string; // Matrícula inmobiliaria
+  publication_status?: PublicationStatus; // Estado de la publicación
+  business_type?: BusinessType; // Tipo de negocio
+  rental_price?: number; // Precio de alquiler
+  rental_time?: RentalTime; // Tiempo de alquiler
+  currency_type?: CurrencyType; // Tipo de moneda
+  construction_year?: string; // Año de construcción
+  stratum?: Stratum; // Estrato
+  floor?: FloorNumber; // Piso
+
+  // Ubicación geográfica detallada
+  country?: string; // País
+  department?: string; // Departamento
+  zone_neighborhood?: string; // Zona/barrio
+  postal_code?: string; // Código postal
+  private_area?: number; // Área privada
+  built_area?: number; // Área construida
+  total_area?: number; // Área total/terreno
+  video_url?: string; // Enlace de video
+  virtual_tour?: string; // Tour virtual
+
   // Campos adicionales específicos del negocio inmobiliario
   conjunto_cerrado?: boolean; // Indica si está en conjunto cerrado
   valor_administracion?: number; // Valor mensual de administración
@@ -107,6 +189,30 @@ export interface PropertyFormData {
   phone?: string; // Teléfono de contacto
   lat?: number | null; // Latitud de la ubicación
   lng?: number | null; // Longitud de la ubicación
+
+  // Nuevos campos principales
+  encargado_inmueble?: string; // Encargado del inmueble
+  matricula_inmobiliaria?: string; // Matrícula inmobiliaria
+  publication_status?: PublicationStatus; // Estado de la publicación
+  business_type?: BusinessType; // Tipo de negocio
+  rental_price?: number; // Precio de alquiler
+  rental_time?: RentalTime; // Tiempo de alquiler
+  currency_type?: CurrencyType; // Tipo de moneda
+  construction_year?: string; // Año de construcción
+  stratum?: Stratum; // Estrato
+  floor?: FloorNumber; // Piso
+
+  // Ubicación geográfica detallada
+  country?: string; // País
+  department?: string; // Departamento
+  zone_neighborhood?: string; // Zona/barrio
+  postal_code?: string; // Código postal
+  private_area?: number; // Área privada
+  built_area?: number; // Área construida
+  total_area?: number; // Área total/terreno
+  video_url?: string; // Enlace de video
+  virtual_tour?: string; // Tour virtual
+
   // Campos adicionales específicos del formulario
   conjunto_cerrado?: boolean; // Indica si está en conjunto cerrado
   valor_administracion?: number; // Valor mensual de administración

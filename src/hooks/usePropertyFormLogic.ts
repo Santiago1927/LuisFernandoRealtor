@@ -1,17 +1,31 @@
 // Importa los hooks useState, useEffect y useCallback de React para manejar el estado y los efectos secundarios
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from "react";
 // Importa los tipos Property y PropertyFormData para tipar los datos de la propiedad y el formulario
-import { Property, PropertyFormData, Amenity, PaymentMethod, ExchangeType, AreaConstruida } from '../types/property';
+import {
+  Property,
+  PropertyFormData,
+  Amenity,
+  PaymentMethod,
+  ExchangeType,
+  AreaConstruida,
+  PublicationStatus,
+  BusinessType,
+  CurrencyType,
+  RentalTime,
+  Stratum,
+  FloorNumber,
+  GarageLayout,
+} from "../types/property";
 // Importa la instancia de storage de Firebase para subir archivos
-import { storage } from '../../firebase/firebaseConfig';
+import { storage } from "../../firebase/firebaseConfig";
 // Importa funciones de Firebase Storage para subir y obtener archivos
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 // Importa las mutaciones de React Query
-import { useCreateProperty, useUpdateProperty } from './usePropertyMutations';
+import { useCreateProperty, useUpdateProperty } from "./usePropertyMutations";
 // Importa el contexto de alertas personalizado
-import { useAlert } from '../components/layout/AlertContext';
+import { useAlert } from "../components/layout/AlertContext";
 // Importa el contexto de autenticación
-import { useAuthContext } from '../components/auth/AuthContext';
+import { useAuthContext } from "../components/auth/AuthContext";
 
 // Interfaz para las props que recibe el hook personalizado
 interface UsePropertyFormLogicProps {
@@ -21,7 +35,11 @@ interface UsePropertyFormLogicProps {
 }
 
 // Hook personalizado para manejar la lógica del formulario de propiedades
-export function usePropertyFormLogic({ property, onSave, onClose }: UsePropertyFormLogicProps) {
+export function usePropertyFormLogic({
+  property,
+  onSave,
+  onClose,
+}: UsePropertyFormLogicProps) {
   // Obtiene las funciones del contexto de alertas personalizado
   const { showAlert } = useAlert();
   // Obtiene el estado de autenticación
@@ -30,24 +48,52 @@ export function usePropertyFormLogic({ property, onSave, onClose }: UsePropertyF
   // Estado inicial del formulario con valores por defecto (memoizado)
   const getInitialFormData = useCallback((): PropertyFormData => {
     const baseData: PropertyFormData = {
-      title: property?.title || '',
-      address: property?.address || '',
-      city: property?.city || '',
+      title: property?.title || "",
+      address: property?.address || "",
+      city: property?.city || "",
       price: property?.price || 0,
-      description: property?.description || '',
+      description: property?.description || "",
       bedrooms: property?.bedrooms || 0,
       bathrooms: property?.bathrooms || 0,
       area: property?.area || 0,
-      type: property?.type || 'Casa',  // Asegurar valor por defecto
-      status: property?.status || 'available', // Asegurar valor por defecto
-      phone: property?.phone || '',
-      // Nuevos campos
+      type: property?.type || "Casa", // Asegurar valor por defecto
+      status: property?.status || "available", // Asegurar valor por defecto
+      phone: property?.phone || "",
+
+      // Nuevos campos principales
+      encargado_inmueble: property?.encargado_inmueble || "",
+      matricula_inmobiliaria: property?.matricula_inmobiliaria || "",
+      publication_status: property?.publication_status || "Activo",
+      business_type: property?.business_type || "Vender",
+      rental_price: property?.rental_price || 0,
+      rental_time: property?.rental_time || "Mensual",
+      currency_type: property?.currency_type || "Pesos colombianos",
+      construction_year: property?.construction_year || "",
+      stratum: property?.stratum || "N/D",
+      floor: property?.floor || "1",
+
+      // Ubicación geográfica detallada
+      country: property?.country || "Colombia",
+      department: property?.department || "Nariño",
+      zone_neighborhood: property?.zone_neighborhood || "",
+      postal_code: property?.postal_code || "",
+      private_area: property?.private_area || 0,
+      area_balcones: property?.area_balcones || 0,
+      area_terraza: property?.area_terraza || 0,
+      built_area: property?.built_area || 0,
+      total_area: property?.total_area || 0,
+      video_url: property?.video_url || "",
+      virtual_tour: property?.virtual_tour || "",
+
+      // Campos existentes
       conjunto_cerrado: property?.conjunto_cerrado || false,
       valor_administracion: property?.valor_administracion || 0,
       zonas_comunes: property?.zonas_comunes || [],
       formas_de_pago: property?.formas_de_pago || [],
-      edad_propiedad: property?.edad_propiedad || '',
+      edad_propiedad: property?.edad_propiedad || "",
       area_construida: property?.area_construida || [],
+      garage_capacity: property?.garage_capacity || "",
+      garage_layout: property?.garage_layout || undefined,
     };
 
     // Solo agregar campos opcionales si tienen valores
@@ -55,14 +101,18 @@ export function usePropertyFormLogic({ property, onSave, onClose }: UsePropertyF
     if (property?.lote_fondo) baseData.lote_fondo = property.lote_fondo;
     if (property?.numero_pisos) baseData.numero_pisos = property.numero_pisos;
     if (property?.tipo_permuta) baseData.tipo_permuta = property.tipo_permuta;
-    if (property?.permuta_porcentaje) baseData.permuta_porcentaje = property.permuta_porcentaje;
-    if (property?.permuta_monto_max) baseData.permuta_monto_max = property.permuta_monto_max;
+    if (property?.permuta_porcentaje)
+      baseData.permuta_porcentaje = property.permuta_porcentaje;
+    if (property?.permuta_monto_max)
+      baseData.permuta_monto_max = property.permuta_monto_max;
 
     return baseData;
   }, [property]);
 
   // Estado para los datos del formulario
-  const [formData, setFormData] = useState<PropertyFormData>(getInitialFormData());
+  const [formData, setFormData] = useState<PropertyFormData>(
+    getInitialFormData()
+  );
   // Estado para las imágenes seleccionadas por el usuario
   const [images, setImages] = useState<File[]>([]);
   // Estado para los videos seleccionados por el usuario
@@ -74,7 +124,7 @@ export function usePropertyFormLogic({ property, onSave, onClose }: UsePropertyF
   // Estado para las URLs de videos ya subidos
   const [videoUrls, setVideoUrls] = useState<string[]>(property?.videos || []);
   // Estado para la dirección a geocodificar en el mapa
-  const [mapAddress, setMapAddress] = useState(property?.address || '');
+  const [mapAddress, setMapAddress] = useState(property?.address || "");
   // Estado para la latitud de la propiedad
   const [lat, setLat] = useState(property?.lat || null);
   // Estado para la longitud de la propiedad
@@ -93,27 +143,27 @@ export function usePropertyFormLogic({ property, onSave, onClose }: UsePropertyF
       setVideoUrls(property.videos || []);
       setLat(property.lat || null);
       setLng(property.lng || null);
-      setMapAddress(property.address || '');
+      setMapAddress(property.address || "");
     } else {
       // Si no hay property (modo crear), resetear todos los valores
       setFormData({
-        title: '',
-        address: '',
-        city: '',
+        title: "",
+        address: "",
+        city: "",
         price: 0,
-        description: '',
+        description: "",
         bedrooms: 0,
         bathrooms: 0,
         area: 0,
-        type: 'Casa',
-        status: 'available',
-        phone: '',
+        type: "Casa",
+        status: "available",
+        phone: "",
         // Nuevos campos - solo incluir los que siempre tienen valor
         conjunto_cerrado: false,
         valor_administracion: 0,
         zonas_comunes: [],
         formas_de_pago: [],
-        edad_propiedad: '',
+        edad_propiedad: "",
       });
       setImageUrls([]);
       setVideoUrls([]);
@@ -121,15 +171,20 @@ export function usePropertyFormLogic({ property, onSave, onClose }: UsePropertyF
       setVideos([]);
       setLat(null);
       setLng(null);
-      setMapAddress('');
+      setMapAddress("");
     }
   }, [property, getInitialFormData]);
 
   // Efecto para limpiar campos de permuta cuando se desmarca "Permutas"
   useEffect(() => {
-    const hasPermutas = formData.formas_de_pago?.includes('Permutas');
-    if (!hasPermutas && (formData.tipo_permuta || formData.permuta_porcentaje || formData.permuta_monto_max)) {
-      setFormData(prev => {
+    const hasPermutas = formData.formas_de_pago?.includes("Permutas");
+    if (
+      !hasPermutas &&
+      (formData.tipo_permuta ||
+        formData.permuta_porcentaje ||
+        formData.permuta_monto_max)
+    ) {
+      setFormData((prev) => {
         const newData = { ...prev };
         delete newData.tipo_permuta;
         delete newData.permuta_porcentaje;
@@ -137,17 +192,43 @@ export function usePropertyFormLogic({ property, onSave, onClose }: UsePropertyF
         return newData;
       });
     }
-  }, [formData.formas_de_pago, formData.tipo_permuta, formData.permuta_porcentaje, formData.permuta_monto_max]);
+  }, [
+    formData.formas_de_pago,
+    formData.tipo_permuta,
+    formData.permuta_porcentaje,
+    formData.permuta_monto_max,
+  ]);
 
   // Maneja los cambios en los campos del formulario (inputs, selects, textareas)
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
     const { name, value } = e.target;
-    const numericFields = ['price', 'bedrooms', 'bathrooms', 'area', 'valor_administracion', 'lote_frente', 'lote_fondo', 'numero_pisos', 'permuta_porcentaje', 'permuta_monto_max'];
-    const optionalNumericFields = ['lote_frente', 'lote_fondo', 'numero_pisos', 'permuta_porcentaje', 'permuta_monto_max'];
-    
-    setFormData(prev => {
+    const numericFields = [
+      "price",
+      "bedrooms",
+      "bathrooms",
+      "area",
+      "valor_administracion",
+      "lote_frente",
+      "lote_fondo",
+      "numero_pisos",
+      "permuta_porcentaje",
+      "permuta_monto_max",
+    ];
+    const optionalNumericFields = [
+      "lote_frente",
+      "lote_fondo",
+      "numero_pisos",
+      "permuta_porcentaje",
+      "permuta_monto_max",
+    ];
+
+    setFormData((prev) => {
       const newData = { ...prev };
-      
+
       if (numericFields.includes(name)) {
         const numValue = Number(value);
         if (optionalNumericFields.includes(name)) {
@@ -165,19 +246,19 @@ export function usePropertyFormLogic({ property, onSave, onClose }: UsePropertyF
       } else {
         (newData as any)[name] = value;
       }
-      
+
       return newData;
     });
   };
 
   // Maneja cambios en campos especiales (multi-select, switches, etc.)
   const handleSpecialFieldChange = (name: string, value: any) => {
-    setFormData(prev => {
+    setFormData((prev) => {
       const newData = { ...prev, [name]: value };
-      
+
       // Si se está modificando formas_de_pago y se quita "Permutas"
-      if (name === 'formas_de_pago' && Array.isArray(value)) {
-        const hasPermutas = value.includes('Permutas');
+      if (name === "formas_de_pago" && Array.isArray(value)) {
+        const hasPermutas = value.includes("Permutas");
         if (!hasPermutas) {
           // Limpiar todos los campos relacionados con permutas
           delete newData.tipo_permuta;
@@ -185,7 +266,7 @@ export function usePropertyFormLogic({ property, onSave, onClose }: UsePropertyF
           delete newData.permuta_monto_max;
         }
       }
-      
+
       return newData;
     });
   };
@@ -205,7 +286,10 @@ export function usePropertyFormLogic({ property, onSave, onClose }: UsePropertyF
   };
 
   // Sube archivos (imágenes o videos) a Firebase Storage y retorna sus URLs
-  const uploadFiles = async (files: File[], folder: string): Promise<string[]> => {
+  const uploadFiles = async (
+    files: File[],
+    folder: string
+  ): Promise<string[]> => {
     const uploadPromises = files.map(async (file) => {
       const storageRef = ref(storage, `${folder}/${Date.now()}_${file.name}`); // Crea referencia única
       const snapshot = await uploadBytes(storageRef, file); // Sube el archivo
@@ -217,55 +301,71 @@ export function usePropertyFormLogic({ property, onSave, onClose }: UsePropertyF
   // Maneja el envío del formulario, sube archivos y guarda la propiedad en Firestore
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault(); // Previene el comportamiento por defecto del formulario
-    
+
     // Evitar doble envío
-    if (uploading || createPropertyMutation.isPending || updatePropertyMutation.isPending) {
+    if (
+      uploading ||
+      createPropertyMutation.isPending ||
+      updatePropertyMutation.isPending
+    ) {
       return;
     }
 
     // Verificar autenticación ANTES de proceder
     if (!isAuthenticated || !user) {
-      showAlert('Debes estar autenticado para crear o editar propiedades. Por favor, inicia sesión.', 'error');
+      showAlert(
+        "Debes estar autenticado para crear o editar propiedades. Por favor, inicia sesión.",
+        "error"
+      );
       return;
     }
 
     // Validación básica antes del envío
     if (!formData.title || !formData.address || !formData.price) {
-      showAlert('Por favor completa los campos obligatorios: título, dirección y precio.', 'error');
+      showAlert(
+        "Por favor completa los campos obligatorios: título, dirección y precio.",
+        "error"
+      );
       return;
     }
 
     setUploading(true); // Indica que se está subiendo
-    
+
     try {
       let newImageUrls = [...imageUrls]; // Copia URLs existentes
       let newVideoUrls = [...videoUrls]; // Copia URLs existentes
-      
+
       if (images.length > 0) {
-        const uploadedImageUrls = await uploadFiles(images, 'properties/images'); // Sube imágenes
+        const uploadedImageUrls = await uploadFiles(
+          images,
+          "properties/images"
+        ); // Sube imágenes
         newImageUrls = [...newImageUrls, ...uploadedImageUrls]; // Agrega nuevas URLs
       }
-      
+
       if (videos.length > 0) {
-        const uploadedVideoUrls = await uploadFiles(videos, 'properties/videos'); // Sube videos
+        const uploadedVideoUrls = await uploadFiles(
+          videos,
+          "properties/videos"
+        ); // Sube videos
         newVideoUrls = [...newVideoUrls, ...uploadedVideoUrls]; // Agrega nuevas URLs
       }
-      
+
       // Limpiar datos del formulario eliminando valores undefined, null, y strings vacíos
       let cleanFormData = Object.fromEntries(
         Object.entries(formData).filter(([key, value]) => {
           // Mantener arrays vacíos y valores booleanos false
           if (Array.isArray(value)) return true;
-          if (typeof value === 'boolean') return true;
-          if (typeof value === 'number') return value >= 0; // Permitir 0 para campos como bedrooms, bathrooms
-          if (typeof value === 'string') return value.trim() !== '';
+          if (typeof value === "boolean") return true;
+          if (typeof value === "number") return value >= 0; // Permitir 0 para campos como bedrooms, bathrooms
+          if (typeof value === "string") return value.trim() !== "";
           return value !== undefined && value !== null;
         })
       );
 
       // Verificación adicional: si no hay "Permutas" en formas_de_pago, eliminar campos de permuta
       const formasDePago = cleanFormData.formas_de_pago as string[] | undefined;
-      if (!formasDePago || !formasDePago.includes('Permutas')) {
+      if (!formasDePago || !formasDePago.includes("Permutas")) {
         delete cleanFormData.tipo_permuta;
         delete cleanFormData.permuta_porcentaje;
         delete cleanFormData.permuta_monto_max;
@@ -274,7 +374,7 @@ export function usePropertyFormLogic({ property, onSave, onClose }: UsePropertyF
       // Los datos han sido limpiados y están listos para enviar
 
       // Construye el objeto de datos de la propiedad
-      const propertyData: Omit<Property, 'id'> = {
+      const propertyData: Omit<Property, "id"> = {
         ...cleanFormData,
         images: newImageUrls,
         videos: newVideoUrls,
@@ -282,73 +382,87 @@ export function usePropertyFormLogic({ property, onSave, onClose }: UsePropertyF
         updatedAt: new Date(), // Fecha de actualización
         lat: lat || null,
         lng: lng || null,
-      } as Omit<Property, 'id'>;
+      } as Omit<Property, "id">;
 
       if (property?.id) {
         // Si existe, actualiza la propiedad usando React Query
-        await updatePropertyMutation.mutateAsync({ 
-          id: property.id, 
-          propertyData 
+        await updatePropertyMutation.mutateAsync({
+          id: property.id,
+          propertyData,
         });
-        
+
         const updatedProperty: Property = {
           id: property.id,
           ...propertyData,
         };
-        
+
         onSave(updatedProperty); // Llama a la función de guardado
-        
+
         // Alerta de éxito para actualización
-        showAlert('Propiedad actualizada exitosamente', 'success');
+        showAlert("Propiedad actualizada exitosamente", "success");
       } else {
         // Si no existe, crea una nueva propiedad usando React Query
-        const savedProperty = await createPropertyMutation.mutateAsync(propertyData);
+        const savedProperty = await createPropertyMutation.mutateAsync(
+          propertyData
+        );
         onSave(savedProperty); // Llama a la función de guardado
-        
+
         // Alerta de éxito para creación
-        showAlert('Propiedad creada exitosamente', 'success');
+        showAlert("Propiedad creada exitosamente", "success");
       }
-      
     } catch (error) {
-      console.error('Error al procesar la propiedad:', error);
-      
+      console.error("Error al procesar la propiedad:", error);
+
       // Manejo específico de errores de Firebase
-      let errorMessage = 'Error desconocido';
-      
+      let errorMessage = "Error desconocido";
+
       if (error instanceof Error) {
         errorMessage = error.message;
-        
+
         // Errores específicos de Firebase
-        if (errorMessage.includes('permission-denied') || errorMessage.includes('insufficient permissions')) {
-          errorMessage = 'No tienes permisos para realizar esta acción. Verifica que estés autenticado correctamente.';
-        } else if (errorMessage.includes('network')) {
-          errorMessage = 'Error de conexión. Verifica tu conexión a internet e intenta de nuevo.';
-        } else if (errorMessage.includes('auth')) {
-          errorMessage = 'Error de autenticación. Por favor, cierra sesión e inicia sesión de nuevo.';
+        if (
+          errorMessage.includes("permission-denied") ||
+          errorMessage.includes("insufficient permissions")
+        ) {
+          errorMessage =
+            "No tienes permisos para realizar esta acción. Verifica que estés autenticado correctamente.";
+        } else if (errorMessage.includes("network")) {
+          errorMessage =
+            "Error de conexión. Verifica tu conexión a internet e intenta de nuevo.";
+        } else if (errorMessage.includes("auth")) {
+          errorMessage =
+            "Error de autenticación. Por favor, cierra sesión e inicia sesión de nuevo.";
         }
       }
-      
-      showAlert(`Error al procesar la propiedad: ${errorMessage}`, 'error');
+
+      showAlert(`Error al procesar la propiedad: ${errorMessage}`, "error");
     } finally {
       setUploading(false); // Finaliza la subida
     }
   };
 
   // Maneja los cambios de ubicación desde el mapa
-  const handleLocationChange = (newLat: number, newLng: number, newAddress: string) => {
+  const handleLocationChange = (
+    newLat: number,
+    newLng: number,
+    newAddress: string
+  ) => {
     setLat(newLat);
     setLng(newLng);
     setMapAddress(newAddress);
-    
+
     // Actualizar también el formData si es necesario
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      address: newAddress
+      address: newAddress,
     }));
   };
 
   // Determinar si está en proceso alguna operación
-  const isProcessing = uploading || createPropertyMutation.isPending || updatePropertyMutation.isPending;
+  const isProcessing =
+    uploading ||
+    createPropertyMutation.isPending ||
+    updatePropertyMutation.isPending;
 
   return {
     formData,

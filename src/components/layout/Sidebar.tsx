@@ -53,8 +53,17 @@ export default function Sidebar() {
     } catch (e) {}
   }, [collapsed]);
 
-  // Solo renderiza el sidebar cuando el usuario está autenticado
+  // Solo renderiza el sidebar cuando el usuario está autenticado Y está en páginas administrativas
   if (!isAuthenticated) return null;
+
+  // Lista de rutas donde el sidebar debe aparecer
+  const adminRoutes = ["/admin", "/propiedades", "/debug"];
+  const shouldShowSidebar = adminRoutes.some((route) =>
+    pathname.startsWith(route)
+  );
+
+  // No mostrar sidebar en el home u otras páginas públicas
+  if (!shouldShowSidebar) return null;
 
   // Clases CSS dinámicas basadas en el estado de colapso
   const containerClass = collapsed

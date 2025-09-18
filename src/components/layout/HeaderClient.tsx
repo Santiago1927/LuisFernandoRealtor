@@ -45,14 +45,11 @@ export default function HeaderClient() {
   const hasSidebar = isAuthenticated && isDesktop;
 
   // Lógica para determinar cuándo mostrar el header en desktop:
-  // - Usuario NO autenticado en home, O
+  // - SIEMPRE en el home (independientemente del estado de autenticación)
   // - Usuario autenticado pero NO en desktop (sin sidebar), O
   // - Rutas que necesitan botón de regreso (pero NO cuando hay sidebar visible)
   const showHeaderOnDesktop =
-    (!isAuthenticated && cleanPath === "/") ||
-    (!hasSidebar &&
-      !isAdminRoute &&
-      (cleanPath === "/" || showReturnHomeButton));
+    cleanPath === "/" || (!hasSidebar && !isAdminRoute && showReturnHomeButton);
 
   // Decisión final: mostrar header en móvil siempre, en desktop según lógica anterior
   const shouldRenderHeader = !isDesktop || (isDesktop && showHeaderOnDesktop);

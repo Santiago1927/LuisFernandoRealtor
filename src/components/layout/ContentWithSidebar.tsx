@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useAuthContext } from "../auth/AuthContext";
+import { usePathname } from "next/navigation";
 
 /**
  * Componente wrapper que ajusta el margen izquierdo del contenido
@@ -16,6 +17,8 @@ export default function ContentWithSidebar({
   const [contentMarginLeft, setContentMarginLeft] = useState<number>(0);
   // Hook para obtener el estado de autenticación
   const { isAuthenticated } = useAuthContext();
+  // Hook para obtener la ruta actual
+  const pathname = usePathname();
 
   useEffect(() => {
     /**
@@ -27,8 +30,14 @@ export default function ContentWithSidebar({
         // Obtiene el ancho de la ventana del navegador
         const width = typeof window !== "undefined" ? window.innerWidth : 0;
 
-        // Si el usuario no está autenticado, no hay sidebar, por lo que margen = 0
-        if (!isAuthenticated) {
+        // Lista de rutas donde el sidebar debe aparecer
+        const adminRoutes = ["/admin", "/propiedades", "/debug"];
+        const shouldShowSidebar = adminRoutes.some((route) =>
+          pathname.startsWith(route)
+        );
+
+        // Si el usuario no está autenticado o no está en páginas administrativas, no hay sidebar
+        if (!isAuthenticated || !shouldShowSidebar) {
           setContentMarginLeft(0);
           return;
         }
@@ -98,7 +107,7 @@ export default function ContentWithSidebar({
         onSidebarChange as EventListener
       );
     };
-  }, [isAuthenticated]); // Dependencia: recalcula cuando cambia el estado de autenticación
+  }, [isAuthenticated, pathname]); // Dependencias: recalcula cuando cambia el estado de autenticación o la ruta
 
   // Effect para debug - muestra el margen actual en la consola
   useEffect(() => {
