@@ -14,6 +14,7 @@ import {
   RentalTime,
   Stratum,
   FloorNumber,
+  ParkingType,
 } from "../../types/property";
 import { usePropertyFormLogic } from "../../hooks/usePropertyFormLogic";
 import AddressInputWithMap from "../map/AddressInputWithMap";
@@ -80,7 +81,7 @@ const PROPERTY_TYPES: PropertyType[] = [
   "Finca",
   "Finca - Hoteles",
   "Galpon Industrial",
-  "Garaje",
+  "Parqueadero",
   "Hostal",
   "Local",
   "Lote",
@@ -181,7 +182,6 @@ const EXCHANGE_TYPES: ExchangeType[] = ["Vehículos", "Propiedades"];
 
 // Opciones para área construida adicional
 const AREA_CONSTRUIDA_OPTIONS: AreaConstruida[] = [
-  "Área de balcones y/o terraza",
   "Área de balcones",
   "Área de terraza",
   "Área privada",
@@ -508,20 +508,20 @@ export default function PropertyForm({
                       </div>
                     </div>
 
-                    {/* Área privada */}
+                    {/* Bodega */}
                     <div>
                       <Label
-                        htmlFor="private_area"
+                        htmlFor="storage_area"
                         className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
                       >
-                        Área privada
+                        Bodega
                       </Label>
                       <div className="flex">
                         <Input
-                          id="private_area"
+                          id="storage_area"
                           type="number"
-                          name="private_area"
-                          value={formData.private_area || ""}
+                          name="storage_area"
+                          value={formData.storage_area || ""}
                           onChange={handleInputChange}
                           min="0"
                           step="0.1"
@@ -575,6 +575,119 @@ export default function PropertyForm({
                         className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
                         placeholder="Enlace al Tour Virtual 360"
                       />
+                    </div>
+
+                    {/* Áreas Disponibles */}
+                    <div className="col-span-full border-t pt-4">
+                      <h4 className="text-md font-semibold text-zinc-900 dark:text-zinc-100 mb-4 flex items-center">
+                        <Square className="w-4 h-4 mr-2 text-amber-600" />
+                        Áreas con las que cuenta la propiedad
+                      </h4>
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <div className="space-y-3">
+                          <div className="flex items-center space-x-2">
+                            <input
+                              type="checkbox"
+                              id="has_total_area"
+                              name="has_total_area"
+                              checked={formData.has_total_area || false}
+                              onChange={handleInputChange}
+                              className="w-4 h-4 text-amber-600 bg-white dark:bg-zinc-900 border-zinc-300 dark:border-zinc-600 rounded focus:ring-amber-500 dark:focus:ring-amber-400"
+                            />
+                            <label
+                              htmlFor="has_total_area"
+                              className="text-sm text-zinc-700 dark:text-zinc-300"
+                            >
+                              Área total/terreno
+                            </label>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <input
+                              type="checkbox"
+                              id="has_built_area"
+                              name="has_built_area"
+                              checked={formData.has_built_area || false}
+                              onChange={handleInputChange}
+                              className="w-4 h-4 text-amber-600 bg-white dark:bg-zinc-900 border-zinc-300 dark:border-zinc-600 rounded focus:ring-amber-500 dark:focus:ring-amber-400"
+                            />
+                            <label
+                              htmlFor="has_built_area"
+                              className="text-sm text-zinc-700 dark:text-zinc-300"
+                            >
+                              Área construida
+                            </label>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <input
+                              type="checkbox"
+                              id="has_private_area"
+                              name="has_private_area"
+                              checked={formData.has_private_area || false}
+                              onChange={handleInputChange}
+                              className="w-4 h-4 text-amber-600 bg-white dark:bg-zinc-900 border-zinc-300 dark:border-zinc-600 rounded focus:ring-amber-500 dark:focus:ring-amber-400"
+                            />
+                            <label
+                              htmlFor="has_private_area"
+                              className="text-sm text-zinc-700 dark:text-zinc-300"
+                            >
+                              Área privada
+                            </label>
+                          </div>
+                        </div>
+                        <div className="space-y-3">
+                          <div className="flex items-center space-x-2">
+                            <input
+                              type="checkbox"
+                              id="has_balcony_area"
+                              name="has_balcony_area"
+                              checked={formData.has_balcony_area || false}
+                              onChange={handleInputChange}
+                              className="w-4 h-4 text-amber-600 bg-white dark:bg-zinc-900 border-zinc-300 dark:border-zinc-600 rounded focus:ring-amber-500 dark:focus:ring-amber-400"
+                            />
+                            <label
+                              htmlFor="has_balcony_area"
+                              className="text-sm text-zinc-700 dark:text-zinc-300"
+                            >
+                              Área de balcones
+                            </label>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <input
+                              type="checkbox"
+                              id="has_terrace_area"
+                              name="has_terrace_area"
+                              checked={formData.has_terrace_area || false}
+                              onChange={handleInputChange}
+                              className="w-4 h-4 text-amber-600 bg-white dark:bg-zinc-900 border-zinc-300 dark:border-zinc-600 rounded focus:ring-amber-500 dark:focus:ring-amber-400"
+                            />
+                            <label
+                              htmlFor="has_terrace_area"
+                              className="text-sm text-zinc-700 dark:text-zinc-300"
+                            >
+                              Área de terraza
+                            </label>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <input
+                              type="checkbox"
+                              id="has_storage_area"
+                              name="has_storage_area"
+                              checked={formData.has_storage_area || false}
+                              onChange={handleInputChange}
+                              className="w-4 h-4 text-amber-600 bg-white dark:bg-zinc-900 border-zinc-300 dark:border-zinc-600 rounded focus:ring-amber-500 dark:focus:ring-amber-400"
+                            />
+                            <label
+                              htmlFor="has_storage_area"
+                              className="text-sm text-zinc-700 dark:text-zinc-300"
+                            >
+                              Área de bodega
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                      <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-2">
+                        Selecciona las áreas con las que cuenta la propiedad
+                      </p>
                     </div>
                   </div>
 
@@ -761,13 +874,13 @@ export default function PropertyForm({
                       </Select>
                     </div>
 
-                    {/* Garaje */}
+                    {/* Parqueadero */}
                     <div>
                       <Label
                         htmlFor="garaje"
                         className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
                       >
-                        Garaje
+                        Parqueadero
                       </Label>
                       <Select defaultValue="0 Vehículos">
                         <SelectTrigger className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400">
@@ -789,6 +902,36 @@ export default function PropertyForm({
                           </SelectItem>
                           <SelectItem value="5+ Vehículos">
                             5+ Vehículos
+                          </SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    {/* Tipo de Parqueadero */}
+                    <div>
+                      <Label
+                        htmlFor="parking_type"
+                        className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
+                      >
+                        Tipo de parqueadero
+                      </Label>
+                      <Select
+                        name="parking_type"
+                        value={formData.parking_type || ""}
+                        onValueChange={(value) =>
+                          handleSpecialFieldChange(
+                            "parking_type",
+                            value as ParkingType
+                          )
+                        }
+                      >
+                        <SelectTrigger className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400">
+                          <SelectValue placeholder="En línea" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="En línea">En línea</SelectItem>
+                          <SelectItem value="En paralelo">
+                            En paralelo
                           </SelectItem>
                         </SelectContent>
                       </Select>
@@ -853,6 +996,37 @@ export default function PropertyForm({
                       </Select>
                     </div>
 
+                    {/* Área total / terreno */}
+                    <div>
+                      <Label
+                        htmlFor="total_area"
+                        className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
+                      >
+                        Área total / terreno
+                      </Label>
+                      <div className="flex">
+                        <Input
+                          id="total_area"
+                          type="number"
+                          name="total_area"
+                          value={formData.total_area || ""}
+                          onChange={handleInputChange}
+                          min="0"
+                          step="0.1"
+                          className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400 rounded-r-none"
+                        />
+                        <Select defaultValue="m²">
+                          <SelectTrigger className="mt-1 w-20 rounded-l-none border-l-0">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="m²">m²</SelectItem>
+                            <SelectItem value="ft²">ft²</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+
                     {/* Área construida */}
                     <div>
                       <Label
@@ -884,20 +1058,82 @@ export default function PropertyForm({
                       </div>
                     </div>
 
-                    {/* Área total / terreno */}
+                    {/* Área privada */}
                     <div>
                       <Label
-                        htmlFor="total_area"
+                        htmlFor="private_area"
                         className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
                       >
-                        Área total / terreno
+                        Área privada
                       </Label>
                       <div className="flex">
                         <Input
-                          id="total_area"
+                          id="private_area"
                           type="number"
-                          name="total_area"
-                          value={formData.total_area || ""}
+                          name="private_area"
+                          value={formData.private_area || ""}
+                          onChange={handleInputChange}
+                          min="0"
+                          step="0.1"
+                          className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400 rounded-r-none"
+                        />
+                        <Select defaultValue="m²">
+                          <SelectTrigger className="mt-1 w-20 rounded-l-none border-l-0">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="m²">m²</SelectItem>
+                            <SelectItem value="ft²">ft²</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+
+                    {/* Área de balcones */}
+                    <div>
+                      <Label
+                        htmlFor="balcony_area"
+                        className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
+                      >
+                        Área de balcones
+                      </Label>
+                      <div className="flex">
+                        <Input
+                          id="balcony_area"
+                          type="number"
+                          name="balcony_area"
+                          value={formData.balcony_area || ""}
+                          onChange={handleInputChange}
+                          min="0"
+                          step="0.1"
+                          className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400 rounded-r-none"
+                        />
+                        <Select defaultValue="m²">
+                          <SelectTrigger className="mt-1 w-20 rounded-l-none border-l-0">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="m²">m²</SelectItem>
+                            <SelectItem value="ft²">ft²</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+
+                    {/* Área de terraza */}
+                    <div>
+                      <Label
+                        htmlFor="terrace_area"
+                        className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
+                      >
+                        Área de terraza
+                      </Label>
+                      <div className="flex">
+                        <Input
+                          id="terrace_area"
+                          type="number"
+                          name="terrace_area"
+                          value={formData.terrace_area || ""}
                           onChange={handleInputChange}
                           min="0"
                           step="0.1"
@@ -1136,32 +1372,6 @@ export default function PropertyForm({
                   />
                 </div>
               </div>
-
-              {/* Área Construida */}
-              <div className="col-span-full">
-                <Label className="text-sm font-medium text-zinc-900 dark:text-zinc-100 mb-2 block">
-                  Área construida
-                </Label>
-                <MultiSelect
-                  options={AREA_CONSTRUIDA_OPTIONS.map((area) => ({
-                    value: area,
-                    label: area,
-                  }))}
-                  selected={formData.area_construida || []}
-                  onChange={(selected) =>
-                    handleSpecialFieldChange(
-                      "area_construida",
-                      selected as AreaConstruida[]
-                    )
-                  }
-                  placeholder="Selecciona las áreas construidas disponibles (opcional)..."
-                  className="bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
-                />
-                <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-1">
-                  Selecciona todas las áreas construidas que incluye la
-                  propiedad
-                </p>
-              </div>
             </div>
 
             {/* Zonas Comunes */}
@@ -1379,24 +1589,6 @@ export default function PropertyForm({
                   </div>
                 </div>
               )}
-            </div>
-
-            <div>
-              <Label
-                htmlFor="description"
-                className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
-              >
-                Descripción
-              </Label>
-              <Textarea
-                id="description"
-                name="description"
-                value={formData.description}
-                onChange={handleInputChange}
-                rows={4}
-                className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
-                placeholder="Describe las características y beneficios de la propiedad..."
-              />
             </div>
 
             <div className="grid md:grid-cols-2 gap-6">

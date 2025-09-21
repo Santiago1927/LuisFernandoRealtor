@@ -18,7 +18,7 @@ export type PropertyType =
   | "Finca"
   | "Finca - Hoteles"
   | "Galpon Industrial"
-  | "Garaje"
+  | "Parqueadero"
   | "Hostal"
   | "Local"
   | "Lote"
@@ -40,6 +40,9 @@ export type RentalTime = "Mensual" | "Diario" | "Semanal" | "Anual";
 
 // Estratos socioeconómicos
 export type Stratum = "N/D" | "1" | "2" | "3" | "4" | "5" | "6";
+
+// Tipos de parqueadero
+export type ParkingType = "En línea" | "En paralelo";
 
 // Número de pisos
 export type FloorNumber =
@@ -108,7 +111,6 @@ export type Amenity =
 
 // Tipos de área construida adicional
 export type AreaConstruida =
-  | "Área de balcones y/o terraza"
   | "Área de balcones"
   | "Área de terraza"
   | "Área privada"
@@ -156,6 +158,18 @@ export interface Property {
   private_area?: number; // Área privada
   built_area?: number; // Área construida
   total_area?: number; // Área total/terreno
+  balcony_area?: number; // Área de balcones
+  terrace_area?: number; // Área de terraza
+  storage_area?: number; // Área de bodega
+
+  // Checkboxes para indicar qué áreas tiene la propiedad
+  has_private_area?: boolean; // Tiene área privada
+  has_built_area?: boolean; // Tiene área construida
+  has_total_area?: boolean; // Tiene área total/terreno
+  has_balcony_area?: boolean; // Tiene área de balcones
+  has_terrace_area?: boolean; // Tiene área de terraza
+  has_storage_area?: boolean; // Tiene área de bodega
+
   video_url?: string; // Enlace de video
   virtual_tour?: string; // Tour virtual
 
@@ -172,6 +186,7 @@ export interface Property {
   permuta_monto_max?: number; // Monto máximo para permuta
   edad_propiedad?: string; // Edad de la propiedad
   area_construida?: AreaConstruida[]; // Tipos de área construida adicional
+  parking_type?: ParkingType; // Tipo de parqueadero (en línea o en paralelo)
 }
 
 // Interfaz para los datos del formulario de propiedades
@@ -210,6 +225,18 @@ export interface PropertyFormData {
   private_area?: number; // Área privada
   built_area?: number; // Área construida
   total_area?: number; // Área total/terreno
+  balcony_area?: number; // Área de balcones
+  terrace_area?: number; // Área de terraza
+  storage_area?: number; // Área de bodega
+
+  // Checkboxes para indicar qué áreas tiene la propiedad
+  has_private_area?: boolean; // Tiene área privada
+  has_built_area?: boolean; // Tiene área construida
+  has_total_area?: boolean; // Tiene área total/terreno
+  has_balcony_area?: boolean; // Tiene área de balcones
+  has_terrace_area?: boolean; // Tiene área de terraza
+  has_storage_area?: boolean; // Tiene área de bodega
+
   video_url?: string; // Enlace de video
   virtual_tour?: string; // Tour virtual
 
@@ -226,4 +253,5 @@ export interface PropertyFormData {
   permuta_monto_max?: number; // Monto máximo para permuta
   edad_propiedad?: string; // Edad de la propiedad
   area_construida?: AreaConstruida[]; // Tipos de área construida adicional
+  parking_type?: ParkingType; // Tipo de parqueadero (en línea o en paralelo)
 }

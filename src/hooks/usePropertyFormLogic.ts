@@ -14,7 +14,7 @@ import {
   RentalTime,
   Stratum,
   FloorNumber,
-  GarageLayout,
+  ParkingType,
 } from "../types/property";
 // Importa la instancia de storage de Firebase para subir archivos
 import { storage } from "../../firebase/firebaseConfig";
@@ -71,6 +71,7 @@ export function usePropertyFormLogic({
       construction_year: property?.construction_year || "",
       stratum: property?.stratum || "N/D",
       floor: property?.floor || "1",
+      parking_type: property?.parking_type || "En línea",
 
       // Ubicación geográfica detallada
       country: property?.country || "Colombia",
@@ -78,10 +79,20 @@ export function usePropertyFormLogic({
       zone_neighborhood: property?.zone_neighborhood || "",
       postal_code: property?.postal_code || "",
       private_area: property?.private_area || 0,
-      area_balcones: property?.area_balcones || 0,
-      area_terraza: property?.area_terraza || 0,
       built_area: property?.built_area || 0,
       total_area: property?.total_area || 0,
+      balcony_area: property?.balcony_area || 0,
+      terrace_area: property?.terrace_area || 0,
+      storage_area: property?.storage_area || 0,
+
+      // Checkboxes para indicar qué áreas tiene la propiedad
+      has_private_area: property?.has_private_area || false,
+      has_built_area: property?.has_built_area || false,
+      has_total_area: property?.has_total_area || false,
+      has_balcony_area: property?.has_balcony_area || false,
+      has_terrace_area: property?.has_terrace_area || false,
+      has_storage_area: property?.has_storage_area || false,
+
       video_url: property?.video_url || "",
       virtual_tour: property?.virtual_tour || "",
 
@@ -92,8 +103,6 @@ export function usePropertyFormLogic({
       formas_de_pago: property?.formas_de_pago || [],
       edad_propiedad: property?.edad_propiedad || "",
       area_construida: property?.area_construida || [],
-      garage_capacity: property?.garage_capacity || "",
-      garage_layout: property?.garage_layout || undefined,
     };
 
     // Solo agregar campos opcionales si tienen valores
@@ -205,7 +214,7 @@ export function usePropertyFormLogic({
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
     >
   ) => {
-    const { name, value } = e.target;
+    const { name, value, type, checked } = e.target as HTMLInputElement;
     const numericFields = [
       "price",
       "bedrooms",
@@ -217,6 +226,12 @@ export function usePropertyFormLogic({
       "numero_pisos",
       "permuta_porcentaje",
       "permuta_monto_max",
+      "private_area",
+      "built_area",
+      "total_area",
+      "balcony_area",
+      "terrace_area",
+      "storage_area",
     ];
     const optionalNumericFields = [
       "lote_frente",
@@ -224,12 +239,21 @@ export function usePropertyFormLogic({
       "numero_pisos",
       "permuta_porcentaje",
       "permuta_monto_max",
+      "private_area",
+      "built_area",
+      "total_area",
+      "balcony_area",
+      "terrace_area",
+      "storage_area",
     ];
 
     setFormData((prev) => {
       const newData = { ...prev };
 
-      if (numericFields.includes(name)) {
+      if (type === "checkbox") {
+        // Manejar checkboxes
+        (newData as any)[name] = checked;
+      } else if (numericFields.includes(name)) {
         const numValue = Number(value);
         if (optionalNumericFields.includes(name)) {
           // Para campos opcionales, solo agregar si hay valor
