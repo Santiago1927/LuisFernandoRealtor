@@ -2,12 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Reset global para evitar márgenes no deseados */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
+}
+
 /* Leaflet Map Styles */
-@import 'leaflet/dist/leaflet.css';
+@import "leaflet/dist/leaflet.css";
 
 /* Fix for Leaflet marker icons in Next.js */
 .leaflet-default-icon-path {
-  background-image: url('https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png');
+  background-image: url("https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png");
 }
 
 /* Map container styles */
@@ -82,8 +97,6 @@ select:-webkit-autofill:active {
   }
 }
 
-
-
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -139,8 +152,6 @@ select:-webkit-autofill:active {
     --chart-5: 340 75% 55%;
   }
 }
-
-
 
 @layer base {
   * {

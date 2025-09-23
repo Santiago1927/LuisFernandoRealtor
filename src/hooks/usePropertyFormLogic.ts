@@ -72,6 +72,7 @@ export function usePropertyFormLogic({
       stratum: property?.stratum || "N/D",
       floor: property?.floor || "1",
       parking_type: property?.parking_type || "En línea",
+      parking_spaces: property?.parking_spaces || "0 Vehículos",
 
       // Ubicación geográfica detallada
       country: property?.country || "Colombia",

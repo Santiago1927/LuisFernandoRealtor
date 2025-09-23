@@ -3,121 +3,76 @@
 import React, { useEffect, useState } from "react";
 import { useAuthContext } from "../auth/AuthContext";
 import { usePathname } from "next/navigation";
+import dynamic from "next/dynamic";
+
+// Importación dinámica del Sidebar para evitar problemas de chunk loading
+const Sidebar = dynamic(() => import("./Sidebar"), {
+  ssr: false,
+  loading: () => null,
+});
 
 /**
- * Componente wrapper que ajusta el margen izquierdo del contenido
- * basándose en la presencia y estado del sidebar
+ * Componente wrapper que crea un layout flexible con sidebar
+ * En desktop: flexbox layout donde sidebar y contenido son hermanos
+ * En móvil: sidebar overlay
  */
 export default function ContentWithSidebar({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  // Estado para controlar el margen izquierdo del contenido
-  const [contentMarginLeft, setContentMarginLeft] = useState<number>(0);
+  // Estado para detectar dispositivos móviles
+  const [isMobile, setIsMobile] = useState<boolean>(false);
   // Hook para obtener el estado de autenticación
   const { isAuthenticated } = useAuthContext();
   // Hook para obtener la ruta actual
   const pathname = usePathname();
 
+  // Estado para controlar si el sidebar debe mostrarse
+  const [shouldShowSidebar, setShouldShowSidebar] = useState<boolean>(false);
+
   useEffect(() => {
-    /**
-     * Función que calcula el margen izquierdo apropiado
-     * basándose en el sidebar y el estado de autenticación
-     */
-    function compute() {
-      try {
-        // Obtiene el ancho de la ventana del navegador
-        const width = typeof window !== "undefined" ? window.innerWidth : 0;
-
-        // Lista de rutas donde el sidebar debe aparecer
-        const adminRoutes = ["/admin", "/propiedades", "/debug"];
-        const shouldShowSidebar = adminRoutes.some((route) =>
-          pathname.startsWith(route)
-        );
-
-        // Si el usuario no está autenticado o no está en páginas administrativas, no hay sidebar
-        if (!isAuthenticated || !shouldShowSidebar) {
-          setContentMarginLeft(0);
-          return;
-        }
-
-        // Solo aplica lógica de sidebar en pantallas de desktop (>= 1024px)
-        if (width >= 1024) {
-          // Verifica si el sidebar está colapsado desde localStorage
-          const collapsed = localStorage.getItem("sidebar_collapsed") === "1";
-
-          if (collapsed) {
-            // Si está colapsado, el sidebar se superpone, no empuja el contenido
-            setContentMarginLeft(0);
-          } else {
-            // Si está expandido, mide el ancho real del sidebar
-            const aside = document.querySelector(
-              "aside[data-sidebar='main']"
-            ) as HTMLElement | null;
-
-            if (aside) {
-              const rect = aside.getBoundingClientRect();
-              if (rect.width && rect.width > 0) {
-                // Usa el ancho real medido
-                setContentMarginLeft(Math.round(rect.width));
-              } else {
-                // Fallback al ancho por defecto expandido
-                setContentMarginLeft(256);
-              }
-            } else {
-              // Si no encuentra el sidebar, no aplica margen
-              setContentMarginLeft(0);
-            }
-          }
-        } else {
-          // En móvil/tablet no hay sidebar fijo, por lo que margen = 0
-          setContentMarginLeft(0);
-        }
-      } catch (e) {
-        // En caso de error, no aplica margen para evitar problemas de layout
-        setContentMarginLeft(0);
-      }
-    }
-
-    // Ejecuta el cálculo inicial
-    compute();
-
-    // Añade listeners para eventos que pueden cambiar el layout
-    window.addEventListener("resize", compute); // Cambios de tamaño de ventana
-
-    // Listener para cambios en localStorage del estado de colapso
-    const onStorage = (e: StorageEvent) => {
-      if (e.key === "sidebar_collapsed") compute();
+    // Detectar dispositivo móvil
+    const checkMobile = () => {
+      const width = typeof window !== "undefined" ? window.innerWidth : 0;
+      setIsMobile(width < 1024);
     };
-    window.addEventListener("storage", onStorage);
 
-    // Listener para eventos personalizados del sidebar
-    const onSidebarChange = (e: Event) => {
-      compute();
-    };
-    window.addEventListener("sidebar:change", onSidebarChange as EventListener);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
 
-    // Cleanup: remueve todos los listeners al desmontar
-    return () => {
-      window.removeEventListener("resize", compute);
-      window.removeEventListener("storage", onStorage);
-      window.removeEventListener(
-        "sidebar:change",
-        onSidebarChange as EventListener
-      );
-    };
-  }, [isAuthenticated, pathname]); // Dependencias: recalcula cuando cambia el estado de autenticación o la ruta
+    // Determinar si mostrar sidebar
+    const adminRoutes = ["/admin", "/debug"];
+    const shouldShow =
+      isAuthenticated &&
+      adminRoutes.some((route) => pathname.startsWith(route));
+    setShouldShowSidebar(shouldShow);
 
-  // Effect para debug - muestra el margen actual en la consola
-  useEffect(() => {
-    try {
-      console.debug("ContentWithSidebar margin ->", contentMarginLeft);
-    } catch (e) {
-      // Ignora errores de consola
-    }
-  }, [contentMarginLeft]);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, [isAuthenticated, pathname]);
 
-  // Renderiza el contenido con el margen izquierdo calculado
-  return <div style={{ marginLeft: contentMarginLeft }}>{children}</div>;
+  // Si no hay sidebar (móvil, no autenticado, o página pública)
+  if (isMobile || !shouldShowSidebar) {
+    return (
+      <div className="w-full">
+        {/* En móvil o páginas públicas, sidebar overlay si existe */}
+        {shouldShowSidebar && <Sidebar />}
+        {children}
+      </div>
+    );
+  }
+
+  // En desktop con sidebar: layout flex donde sidebar y contenido son hermanos
+  return (
+    <div className="flex w-full min-h-screen">
+      {/* Sidebar como hermano del contenido - se desplaza completamente */}
+      <div className="flex-shrink-0">
+        <Sidebar />
+      </div>
+      {/* Contenido principal que se adapta automáticamente */}
+      <div className="flex-1 transition-all duration-300 ease-in-out min-h-screen">
+        {children}
+      </div>
+    </div>
+  );
 }

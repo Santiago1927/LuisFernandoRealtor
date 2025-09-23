@@ -187,6 +187,7 @@ export interface Property {
   edad_propiedad?: string; // Edad de la propiedad
   area_construida?: AreaConstruida[]; // Tipos de área construida adicional
   parking_type?: ParkingType; // Tipo de parqueadero (en línea o en paralelo)
+  parking_spaces?: string; // Número de espacios de parqueadero (ej: "1 Vehículo", "2 Vehículos")
 }
 
 // Interfaz para los datos del formulario de propiedades
@@ -254,4 +255,5 @@ export interface PropertyFormData {
   edad_propiedad?: string; // Edad de la propiedad
   area_construida?: AreaConstruida[]; // Tipos de área construida adicional
   parking_type?: ParkingType; // Tipo de parqueadero (en línea o en paralelo)
+  parking_spaces?: string; // Número de espacios de parqueadero (ej: "1 Vehículo", "2 Vehículos")
 }

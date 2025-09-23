@@ -69,8 +69,8 @@ export default function Header() {
             </div>
           </Link>
 
-          {/* Navegación principal - visible solo en desktop */}
-          <div className="hidden lg:flex items-center space-x-6">
+          {/* Navegación principal - visible en desktop y móvil en home */}
+          <div className="flex items-center space-x-6">
             {/* Enlaces de navegación generados dinámicamente */}
             {navigationLinks.map((link) => {
               const Icon = link.icon;
@@ -78,10 +78,12 @@ export default function Header() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="flex items-center space-x-2 text-white hover:text-amber-400 transition-colors font-medium"
+                  className="flex items-center space-x-2 text-white hover:text-amber-400 transition-colors font-medium text-sm lg:text-base"
                 >
                   <Icon className="h-4 w-4" />
-                  <span>{link.text}</span>
+                  <span className="hidden sm:inline lg:inline">
+                    {link.text}
+                  </span>
                 </Link>
               );
             })}

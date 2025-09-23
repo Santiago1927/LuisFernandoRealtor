@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import {
   Property,
   PropertyType,
@@ -48,6 +48,8 @@ import {
   Phone,
   Home,
   Shield,
+  Eye,
+  EyeOff,
   Settings,
   CreditCard,
   Calendar,
@@ -235,6 +237,9 @@ export default function PropertyForm({
     formData.type?.toLowerCase().includes("casa") || formData.type === "Casa";
   const hasPermutas = formData.formas_de_pago?.includes("Permutas");
 
+  // Estado para controlar la visualización de todos los datos del formulario
+  const [showFormData, setShowFormData] = useState(false);
+
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
       <Card className="w-full max-w-4xl max-h-[90vh] overflow-y-auto border-0 shadow-2xl bg-white/95 dark:bg-zinc-900/95">
@@ -255,16 +260,113 @@ export default function PropertyForm({
                 </p>
               </div>
             </div>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={handleClose}
-              className="text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300"
-            >
-              <X className="w-5 h-5" />
-            </Button>
+            <div className="flex items-center space-x-2">
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => setShowFormData(!showFormData)}
+                className="border-zinc-300 text-zinc-600 hover:bg-zinc-100 dark:border-zinc-600 dark:text-zinc-400 dark:hover:bg-zinc-700"
+                title={
+                  showFormData
+                    ? "Ocultar datos del formulario"
+                    : "Ver todos los datos del formulario"
+                }
+              >
+                {showFormData ? (
+                  <EyeOff className="w-4 h-4 mr-1" />
+                ) : (
+                  <Eye className="w-4 h-4 mr-1" />
+                )}
+                {showFormData ? "Ocultar" : "Ver Datos"}
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={handleClose}
+                className="text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300"
+              >
+                <X className="w-5 h-5" />
+              </Button>
+            </div>
           </div>
         </CardHeader>
+
+        {/* Sección de visualización de datos del formulario */}
+        {showFormData && (
+          <div className="border-b border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800/50">
+            <div className="p-6">
+              <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100 mb-4 flex items-center">
+                <Eye className="w-5 h-5 mr-2 text-blue-600" />
+                Datos del Formulario
+              </h3>
+
+              <div className="bg-white dark:bg-zinc-900 rounded-lg p-4 border border-zinc-200 dark:border-zinc-700">
+                <pre className="text-xs text-zinc-700 dark:text-zinc-300 overflow-auto max-h-96 whitespace-pre-wrap">
+                  {JSON.stringify(
+                    {
+                      ...formData,
+                      images: images?.length || 0,
+                      videos: videos?.length || 0,
+                      imageUrls: imageUrls?.length || 0,
+                      videoUrls: videoUrls?.length || 0,
+                      mapAddress,
+                      coordinates: { lat, lng },
+                    },
+                    null,
+                    2
+                  )}
+                </pre>
+
+                <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-4 text-xs">
+                  <div className="bg-blue-50 dark:bg-blue-900/20 p-2 rounded">
+                    <div className="font-semibold text-blue-700 dark:text-blue-300">
+                      Archivos
+                    </div>
+                    <div className="text-blue-600 dark:text-blue-400">
+                      Imágenes: {images?.length || 0}
+                      <br />
+                      Videos: {videos?.length || 0}
+                    </div>
+                  </div>
+
+                  <div className="bg-green-50 dark:bg-green-900/20 p-2 rounded">
+                    <div className="font-semibold text-green-700 dark:text-green-300">
+                      URLs
+                    </div>
+                    <div className="text-green-600 dark:text-green-400">
+                      Imágenes: {imageUrls?.length || 0}
+                      <br />
+                      Videos: {videoUrls?.length || 0}
+                    </div>
+                  </div>
+
+                  <div className="bg-amber-50 dark:bg-amber-900/20 p-2 rounded">
+                    <div className="font-semibold text-amber-700 dark:text-amber-300">
+                      Ubicación
+                    </div>
+                    <div className="text-amber-600 dark:text-amber-400">
+                      Lat: {lat?.toFixed(6) || "N/A"}
+                      <br />
+                      Lng: {lng?.toFixed(6) || "N/A"}
+                    </div>
+                  </div>
+
+                  <div className="bg-purple-50 dark:bg-purple-900/20 p-2 rounded">
+                    <div className="font-semibold text-purple-700 dark:text-purple-300">
+                      Estado
+                    </div>
+                    <div className="text-purple-600 dark:text-purple-400">
+                      Guardando: {uploading ? "Sí" : "No"}
+                      <br />
+                      Tipo: {formData.type || "N/A"}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
 
         <CardContent className="p-6">
           <form onSubmit={handleSubmit} className="space-y-8" noValidate>
@@ -276,7 +378,7 @@ export default function PropertyForm({
                   Datos generales
                 </h3>
 
-                <div className="grid md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-4">
                     {/* Encargado del inmueble */}
                     <div>
@@ -286,26 +388,15 @@ export default function PropertyForm({
                       >
                         Encargado del inmueble
                       </Label>
-                      <Select
+                      <Input
+                        id="encargado_inmueble"
+                        type="text"
                         name="encargado_inmueble"
                         value={formData.encargado_inmueble || ""}
-                        onValueChange={(value) =>
-                          handleInputChange({
-                            target: { name: "encargado_inmueble", value },
-                          } as any)
-                        }
-                      >
-                        <SelectTrigger className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400">
-                          <SelectValue placeholder="Santiago" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="Santiago">Santiago</SelectItem>
-                          <SelectItem value="Luis Fernando">
-                            Luis Fernando
-                          </SelectItem>
-                          <SelectItem value="Admin">Admin</SelectItem>
-                        </SelectContent>
-                      </Select>
+                        onChange={handleInputChange}
+                        className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
+                        placeholder="Nombre del encargado del inmueble"
+                      />
                     </div>
 
                     {/* Título inmueble */}
@@ -583,7 +674,7 @@ export default function PropertyForm({
                         <Square className="w-4 h-4 mr-2 text-amber-600" />
                         Áreas con las que cuenta la propiedad
                       </h4>
-                      <div className="grid md:grid-cols-2 gap-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="space-y-3">
                           <div className="flex items-center space-x-2">
                             <input
@@ -877,14 +968,25 @@ export default function PropertyForm({
                     {/* Parqueadero */}
                     <div>
                       <Label
-                        htmlFor="garaje"
+                        htmlFor="parking_spaces"
                         className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
                       >
                         Parqueadero
                       </Label>
-                      <Select defaultValue="0 Vehículos">
+                      <Select
+                        name="parking_spaces"
+                        value={formData.parking_spaces || ""}
+                        onValueChange={(value) =>
+                          handleInputChange({
+                            target: {
+                              name: "parking_spaces",
+                              value: value,
+                            },
+                          } as any)
+                        }
+                      >
                         <SelectTrigger className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400">
-                          <SelectValue />
+                          <SelectValue placeholder="0 Vehículos" />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="0 Vehículos">
@@ -1152,6 +1254,176 @@ export default function PropertyForm({
                     </div>
                   </div>
                 </div>
+
+                {/* Zonas Comunes */}
+                <div className="mt-6">
+                  <Label className="text-sm font-medium text-zinc-900 dark:text-zinc-100 mb-2 block">
+                    Zonas comunes
+                  </Label>
+                  <MultiSelect
+                    options={AMENITIES.map((amenity) => ({
+                      value: amenity,
+                      label: amenity,
+                    }))}
+                    selected={formData.zonas_comunes || []}
+                    onChange={(selected) =>
+                      handleSpecialFieldChange(
+                        "zonas_comunes",
+                        selected as Amenity[]
+                      )
+                    }
+                    placeholder="Selecciona las zonas comunes disponibles (opcional)..."
+                    className="bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
+                  />
+                  <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-1">
+                    Selecciona todas las zonas comunes disponibles
+                  </p>
+                </div>
+
+                {/* Detalles de la Casa (condicional) */}
+                {isCasa && (
+                  <div className="mt-6 border-t pt-6">
+                    <h4 className="text-md font-semibold text-zinc-900 dark:text-zinc-100 mb-4 flex items-center">
+                      <Home className="w-4 h-4 mr-2 text-amber-600" />
+                      Detalles de la Casa
+                    </h4>
+                    <div className="w-full">
+                      <Label
+                        htmlFor="numero_pisos"
+                        className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
+                      >
+                        ¿Cuántos pisos?
+                      </Label>
+                      <Select
+                        value={formData.numero_pisos?.toString() || ""}
+                        onValueChange={(value) =>
+                          handleSpecialFieldChange(
+                            "numero_pisos",
+                            parseInt(value)
+                          )
+                        }
+                      >
+                        <SelectTrigger className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400">
+                          <SelectValue placeholder="Seleccionar número de pisos" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {[1, 2, 3, 4, 5, 6].map((num) => (
+                            <SelectItem key={num} value={num.toString()}>
+                              {num} piso{num > 1 ? "s" : ""}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                )}
+
+                {/* Formas de Pago */}
+                <div className="mt-6 border-t pt-6">
+                  <h4 className="text-md font-semibold text-zinc-900 dark:text-zinc-100 mb-4 flex items-center">
+                    <CreditCard className="w-4 h-4 mr-2 text-amber-600" />
+                    Formas de Pago
+                  </h4>
+                  <MultiSelect
+                    options={PAYMENT_METHODS.map((method) => ({
+                      value: method,
+                      label: method,
+                    }))}
+                    selected={formData.formas_de_pago || []}
+                    onChange={(selected) =>
+                      handleSpecialFieldChange(
+                        "formas_de_pago",
+                        selected as PaymentMethod[]
+                      )
+                    }
+                    placeholder="Selecciona las formas de pago disponibles..."
+                    className="bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
+                  />
+
+                  {/* Campos condicionales para Permutas */}
+                  {hasPermutas && (
+                    <div className="mt-4 p-4 bg-amber-50 dark:bg-amber-900/20 rounded-lg border border-amber-200 dark:border-amber-800">
+                      <h5 className="text-sm font-semibold text-amber-800 dark:text-amber-200 mb-3">
+                        Detalles de la Permuta
+                      </h5>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                          <Label
+                            htmlFor="tipo_permuta"
+                            className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
+                          >
+                            Tipo de permuta
+                          </Label>
+                          <Select
+                            value={formData.tipo_permuta || ""}
+                            onValueChange={(value) =>
+                              handleSpecialFieldChange(
+                                "tipo_permuta",
+                                value as ExchangeType
+                              )
+                            }
+                          >
+                            <SelectTrigger className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400">
+                              <SelectValue placeholder="Selecciona tipo de permuta" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {EXCHANGE_TYPES.map((type) => (
+                                <SelectItem key={type} value={type}>
+                                  {type}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+
+                        <div>
+                          <Label
+                            htmlFor="permuta_porcentaje"
+                            className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
+                          >
+                            Porcentaje que cubre (%)
+                          </Label>
+                          <Input
+                            id="permuta_porcentaje"
+                            type="number"
+                            name="permuta_porcentaje"
+                            value={formData.permuta_porcentaje || ""}
+                            onChange={handleInputChange}
+                            min="1"
+                            max="100"
+                            className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
+                            placeholder="Ej. 50"
+                          />
+                          <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-1">
+                            Porcentaje del valor de la propiedad (1-100%)
+                          </p>
+                        </div>
+
+                        <div>
+                          <Label
+                            htmlFor="permuta_monto_max"
+                            className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
+                          >
+                            Monto máximo (COP) - opcional
+                          </Label>
+                          <div className="relative mt-1">
+                            <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-zinc-400" />
+                            <Input
+                              id="permuta_monto_max"
+                              type="number"
+                              name="permuta_monto_max"
+                              value={formData.permuta_monto_max || ""}
+                              onChange={handleInputChange}
+                              min="0"
+                              className="pl-10 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
+                              placeholder="Ej. 50000000"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
 
               {/* Sección de Ubicación geográfica */}
@@ -1161,7 +1433,7 @@ export default function PropertyForm({
                   Ubicación geográfica
                 </h3>
 
-                <div className="grid md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-4">
                     {/* País */}
                     <div>
@@ -1374,31 +1646,6 @@ export default function PropertyForm({
               </div>
             </div>
 
-            {/* Zonas Comunes */}
-            <div>
-              <Label className="text-sm font-medium text-zinc-900 dark:text-zinc-100 mb-2 block">
-                Zonas comunes
-              </Label>
-              <MultiSelect
-                options={AMENITIES.map((amenity) => ({
-                  value: amenity,
-                  label: amenity,
-                }))}
-                selected={formData.zonas_comunes || []}
-                onChange={(selected) =>
-                  handleSpecialFieldChange(
-                    "zonas_comunes",
-                    selected as Amenity[]
-                  )
-                }
-                placeholder="Selecciona las zonas comunes disponibles (opcional)..."
-                className="bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
-              />
-              <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-1">
-                Selecciona todas las zonas comunes disponibles
-              </p>
-            </div>
-
             {/* Campos condicionales para Lote */}
             {isLote && (
               <div className="border-t pt-6">
@@ -1406,7 +1653,7 @@ export default function PropertyForm({
                   <Square className="w-4 h-4 mr-2 text-amber-600" />
                   Dimensiones del Lote
                 </h4>
-                <div className="grid md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <Label
                       htmlFor="lote_frente"
@@ -1449,149 +1696,7 @@ export default function PropertyForm({
               </div>
             )}
 
-            {/* Campos condicionales para Casa */}
-            {isCasa && (
-              <div className="border-t pt-6">
-                <h4 className="text-md font-semibold text-zinc-900 dark:text-zinc-100 mb-4 flex items-center">
-                  <Home className="w-4 h-4 mr-2 text-amber-600" />
-                  Detalles de la Casa
-                </h4>
-                <div className="w-full md:w-1/2">
-                  <Label
-                    htmlFor="numero_pisos"
-                    className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
-                  >
-                    ¿Cuántos pisos?
-                  </Label>
-                  <Select
-                    value={formData.numero_pisos?.toString() || ""}
-                    onValueChange={(value) =>
-                      handleSpecialFieldChange("numero_pisos", parseInt(value))
-                    }
-                  >
-                    <SelectTrigger className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400">
-                      <SelectValue placeholder="Seleccionar número de pisos" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {[1, 2, 3, 4, 5, 6].map((num) => (
-                        <SelectItem key={num} value={num.toString()}>
-                          {num} piso{num > 1 ? "s" : ""}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-            )}
-
-            {/* Formas de Pago */}
-            <div className="border-t pt-6">
-              <h4 className="text-md font-semibold text-zinc-900 dark:text-zinc-100 mb-4 flex items-center">
-                <CreditCard className="w-4 h-4 mr-2 text-amber-600" />
-                Formas de Pago
-              </h4>
-              <MultiSelect
-                options={PAYMENT_METHODS.map((method) => ({
-                  value: method,
-                  label: method,
-                }))}
-                selected={formData.formas_de_pago || []}
-                onChange={(selected) =>
-                  handleSpecialFieldChange(
-                    "formas_de_pago",
-                    selected as PaymentMethod[]
-                  )
-                }
-                placeholder="Selecciona las formas de pago disponibles..."
-                className="bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
-              />
-
-              {/* Campos condicionales para Permutas */}
-              {hasPermutas && (
-                <div className="mt-4 p-4 bg-amber-50 dark:bg-amber-900/20 rounded-lg border border-amber-200 dark:border-amber-800">
-                  <h5 className="text-sm font-semibold text-amber-800 dark:text-amber-200 mb-3">
-                    Detalles de la Permuta
-                  </h5>
-                  <div className="grid md:grid-cols-3 gap-4">
-                    <div>
-                      <Label
-                        htmlFor="tipo_permuta"
-                        className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
-                      >
-                        Tipo de permuta
-                      </Label>
-                      <Select
-                        value={formData.tipo_permuta || ""}
-                        onValueChange={(value) =>
-                          handleSpecialFieldChange(
-                            "tipo_permuta",
-                            value as ExchangeType
-                          )
-                        }
-                      >
-                        <SelectTrigger className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400">
-                          <SelectValue placeholder="Selecciona tipo de permuta" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {EXCHANGE_TYPES.map((type) => (
-                            <SelectItem key={type} value={type}>
-                              {type}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    <div>
-                      <Label
-                        htmlFor="permuta_porcentaje"
-                        className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
-                      >
-                        Porcentaje que cubre (%)
-                      </Label>
-                      <Input
-                        id="permuta_porcentaje"
-                        type="number"
-                        name="permuta_porcentaje"
-                        value={formData.permuta_porcentaje || ""}
-                        onChange={handleInputChange}
-                        min="1"
-                        max="100"
-                        className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
-                        placeholder="Ej. 50"
-                      />
-                      <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-1">
-                        Porcentaje del valor de la propiedad (1-100%)
-                      </p>
-                    </div>
-
-                    <div>
-                      <Label
-                        htmlFor="permuta_monto_max"
-                        className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
-                      >
-                        Monto máximo (COP) - opcional
-                      </Label>
-                      <div className="relative mt-1">
-                        <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-zinc-400" />
-                        <Input
-                          id="permuta_monto_max"
-                          type="number"
-                          name="permuta_monto_max"
-                          value={formData.permuta_monto_max || ""}
-                          onChange={handleInputChange}
-                          min="0"
-                          className="pl-10 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
-                          placeholder="Ej. 50000000"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            <div className="grid md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <Label
                   htmlFor="images"

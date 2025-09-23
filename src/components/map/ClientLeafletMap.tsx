@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import React, { useEffect, useRef, useState, useCallback } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
-import L from 'leaflet';
-import { geocodingService } from '../../services/geocodingService';
-import { Alert, AlertDescription } from '../ui/alert';
-import { Button } from '../ui/button';
-import { MapPin, Navigation, RefreshCw } from 'lucide-react';
+import React, { useEffect, useRef, useState, useCallback } from "react";
+import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
+import L from "leaflet";
+import { geocodingService } from "../../services/geocodingService";
+import { Alert, AlertDescription } from "../ui/alert";
+import { Button } from "../ui/button";
+import { MapPin, Navigation, RefreshCw, RotateCcw } from "lucide-react";
 
 interface MapViewProps {
   address: string;
@@ -19,19 +19,19 @@ interface MapViewProps {
 }
 
 const customIcon = new L.Icon({
-  iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
-  shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+  iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
+  shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
   iconSize: [25, 41],
   iconAnchor: [12, 41],
   popupAnchor: [1, -34],
-  shadowSize: [41, 41]
+  shadowSize: [41, 41],
 });
 
-function DraggableMarker({ 
-  position, 
-  onPositionChange, 
+function DraggableMarker({
+  position,
+  onPositionChange,
   draggable = true,
-  address 
+  address,
 }: {
   position: [number, number];
   onPositionChange: (lat: number, lng: number) => void;
@@ -63,7 +63,8 @@ function DraggableMarker({
           <div className="font-semibold mb-1">📍 Ubicación</div>
           <div className="text-gray-600 mb-2">{address}</div>
           <div className="text-xs text-gray-500">
-            Lat: {position[0].toFixed(6)}<br />
+            Lat: {position[0].toFixed(6)}
+            <br />
             Lng: {position[1].toFixed(6)}
           </div>
           {draggable && (
@@ -85,14 +86,14 @@ function MapController({ center }: { center: [number, number] }) {
   return null;
 }
 
-export default function ClientLeafletMap({ 
-  address, 
-  lat, 
-  lng, 
-  onLocationChange, 
+export default function ClientLeafletMap({
+  address,
+  lat,
+  lng,
+  onLocationChange,
   draggable = true,
-  className = '',
-  height = '400px'
+  className = "",
+  height = "400px",
 }: MapViewProps) {
   const [position, setPosition] = useState<[number, number] | null>(null);
   const [currentAddress, setCurrentAddress] = useState(address);
@@ -100,53 +101,69 @@ export default function ClientLeafletMap({
   const [error, setError] = useState<string | null>(null);
   const [geocodingAttempted, setGeocodingAttempted] = useState(false);
 
-  const geocodeAddress = useCallback(async (addressToGeocode: string) => {
-    if (!addressToGeocode.trim()) return;
-    setLoading(true);
-    setError(null);
-    try {
-      const result = await geocodingService.geocodeColombianAddress(addressToGeocode);
-      if (result) {
-        const newPosition: [number, number] = [result.lat, result.lng];
-        setPosition(newPosition);
-        setCurrentAddress(result.address);
-        onLocationChange?.(result.lat, result.lng, result.address);
-      } else {
-        setError('No se pudo encontrar la dirección. Verifica el formato e intenta nuevamente.');
-        const examples = geocodingService.getAddressFormatExamples();
-        console.log('Ejemplos de formato válido:', examples);
+  const geocodeAddress = useCallback(
+    async (addressToGeocode: string) => {
+      if (!addressToGeocode.trim()) return;
+      setLoading(true);
+      setError(null);
+      try {
+        const result = await geocodingService.geocodeColombianAddress(
+          addressToGeocode
+        );
+        if (result) {
+          const newPosition: [number, number] = [result.lat, result.lng];
+          setPosition(newPosition);
+          setCurrentAddress(result.address);
+          onLocationChange?.(result.lat, result.lng, result.address);
+        } else {
+          setError(
+            "No se pudo encontrar la dirección. Verifica el formato e intenta nuevamente."
+          );
+          const examples = geocodingService.getAddressFormatExamples();
+          console.log("Ejemplos de formato válido:", examples);
+        }
+      } catch (err) {
+        setError("Error al buscar la dirección. Intenta nuevamente.");
+        console.error("Error en geocodificación:", err);
+      } finally {
+        setLoading(false);
+        setGeocodingAttempted(true);
       }
-    } catch (err) {
-      setError('Error al buscar la dirección. Intenta nuevamente.');
-      console.error('Error en geocodificación:', err);
-    } finally {
-      setLoading(false);
-      setGeocodingAttempted(true);
-    }
-  }, [onLocationChange]);
+    },
+    [onLocationChange]
+  );
 
-  const reverseGeocode = useCallback(async (latitude: number, longitude: number) => {
-    setLoading(true);
-    try {
-      const result = await geocodingService.reverseGeocode(latitude, longitude);
-      if (result) {
-        setCurrentAddress(result.address);
-        onLocationChange?.(latitude, longitude, result.address);
+  const reverseGeocode = useCallback(
+    async (latitude: number, longitude: number) => {
+      setLoading(true);
+      try {
+        const result = await geocodingService.reverseGeocode(
+          latitude,
+          longitude
+        );
+        if (result) {
+          setCurrentAddress(result.address);
+          onLocationChange?.(latitude, longitude, result.address);
+        }
+      } catch (err) {
+        console.error("Error en reverse geocoding:", err);
+      } finally {
+        setLoading(false);
       }
-    } catch (err) {
-      console.error('Error en reverse geocoding:', err);
-    } finally {
-      setLoading(false);
-    }
-  }, [onLocationChange]);
+    },
+    [onLocationChange]
+  );
 
-  const handleMarkerPositionChange = useCallback((latitude: number, longitude: number) => {
-    const newPosition: [number, number] = [latitude, longitude];
-    setPosition(newPosition);
-    if (draggable) {
-      reverseGeocode(latitude, longitude);
-    }
-  }, [draggable, reverseGeocode]);
+  const handleMarkerPositionChange = useCallback(
+    (latitude: number, longitude: number) => {
+      const newPosition: [number, number] = [latitude, longitude];
+      setPosition(newPosition);
+      if (draggable) {
+        reverseGeocode(latitude, longitude);
+      }
+    },
+    [draggable, reverseGeocode]
+  );
 
   useEffect(() => {
     if (lat && lng) {
@@ -164,6 +181,15 @@ export default function ClientLeafletMap({
     geocodeAddress(address);
   };
 
+  const resetMap = () => {
+    setPosition(null);
+    setCurrentAddress("");
+    setError(null);
+    setLoading(false);
+    setGeocodingAttempted(false);
+    onLocationChange?.(0, 0, "");
+  };
+
   const defaultCenter: [number, number] = [6.2442, -75.5812];
   const mapCenter = position || defaultCenter;
 
@@ -172,7 +198,9 @@ export default function ClientLeafletMap({
       {loading && (
         <div className="flex items-center justify-center p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg mb-4">
           <RefreshCw className="w-5 h-5 animate-spin text-blue-600 mr-2" />
-          <span className="text-blue-700 dark:text-blue-300">Buscando ubicación...</span>
+          <span className="text-blue-700 dark:text-blue-300">
+            Buscando ubicación...
+          </span>
         </div>
       )}
 
@@ -189,7 +217,12 @@ export default function ClientLeafletMap({
                 <li>Avenida El Dorado #68-45</li>
               </ul>
             </div>
-            <Button onClick={retryGeocoding} size="sm" variant="outline" className="border-red-300 text-red-700 hover:bg-red-100">
+            <Button
+              onClick={retryGeocoding}
+              size="sm"
+              variant="outline"
+              className="border-red-300 text-red-700 hover:bg-red-100"
+            >
               <Navigation className="w-4 h-4 mr-1" />
               Intentar nuevamente
             </Button>
@@ -199,24 +232,42 @@ export default function ClientLeafletMap({
 
       {position && currentAddress && (
         <div className="bg-gray-50 dark:bg-gray-800 p-3 rounded-lg mb-4">
-          <div className="flex items-start space-x-2">
-            <MapPin className="w-5 h-5 text-amber-600 mt-0.5 flex-shrink-0" />
-            <div>
-              <div className="text-sm font-medium text-gray-900 dark:text-gray-100">{currentAddress}</div>
-              <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                {position[0].toFixed(6)}, {position[1].toFixed(6)}
+          <div className="flex items-start justify-between">
+            <div className="flex items-start space-x-2 flex-1">
+              <MapPin className="w-5 h-5 text-amber-600 mt-0.5 flex-shrink-0" />
+              <div className="flex-1">
+                <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                  {currentAddress}
+                </div>
+                <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                  {position[0].toFixed(6)}, {position[1].toFixed(6)}
+                </div>
               </div>
             </div>
+            {draggable && (
+              <Button
+                onClick={resetMap}
+                size="sm"
+                variant="outline"
+                className="ml-2 border-gray-300 text-gray-600 hover:bg-gray-100 dark:border-gray-600 dark:text-gray-400 dark:hover:bg-gray-700"
+                title="Reiniciar mapa"
+              >
+                <RotateCcw className="w-4 h-4" />
+              </Button>
+            )}
           </div>
         </div>
       )}
 
-      <div className={`map-container ${!draggable ? 'readonly' : ''}`} style={{ height }}>
+      <div
+        className={`map-container ${!draggable ? "readonly" : ""}`}
+        style={{ height }}
+      >
         {position ? (
           <MapContainer
             center={mapCenter}
             zoom={16}
-            style={{ height: '100%', width: '100%' }}
+            style={{ height: "100%", width: "100%" }}
             scrollWheelZoom={draggable}
             dragging={draggable}
             touchZoom={draggable}
@@ -241,7 +292,9 @@ export default function ClientLeafletMap({
             <div className="text-center">
               <MapPin className="w-12 h-12 text-gray-400 mx-auto mb-2" />
               <div className="text-gray-600 dark:text-gray-400">
-                {geocodingAttempted ? 'Ubicación no encontrada' : 'Ingresa una dirección para mostrar el mapa'}
+                {geocodingAttempted
+                  ? "Ubicación no encontrada"
+                  : "Ingresa una dirección para mostrar el mapa"}
               </div>
             </div>
           </div>
@@ -257,5 +310,5 @@ export default function ClientLeafletMap({
   );
 }
 
-
-
+// Exportación explícita para compatibilidad con importación dinámica
+export { ClientLeafletMap };

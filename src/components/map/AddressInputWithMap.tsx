@@ -1,14 +1,22 @@
-'use client';
+"use client";
 
-import React, { useRef, useEffect, useState } from 'react';
-import { MapPin, Search, Loader2, AlertCircle, Navigation, X } from 'lucide-react';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Button } from '@/components/ui/button';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import MapView from './MapView';
-import { useAddressSearch } from '../../hooks/useGeocodingHooks';
-import { Feature } from '../../services/geocoding';
+import React, { useRef, useEffect, useState } from "react";
+import {
+  MapPin,
+  Search,
+  Loader2,
+  AlertCircle,
+  Navigation,
+  X,
+  RotateCcw,
+} from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import MapView from "./OptimizedMap";
+import { useAddressSearch } from "../../hooks/useGeocodingHooks";
+import { Feature } from "../../services/geocoding";
 
 /**
  * Props del componente AddressInputWithMap
@@ -38,7 +46,7 @@ interface AddressInputWithMapProps {
 
 /**
  * Componente de input con autocompletado de direcciones y mapa interactivo
- * 
+ *
  * Características:
  * - Autocompletado con debounce de 300ms
  * - Dropdown navegable por teclado
@@ -47,21 +55,21 @@ interface AddressInputWithMapProps {
  * - Manejo de estados de carga y error
  */
 export default function AddressInputWithMap({
-  label = 'Dirección',
-  placeholder = 'Escribe una dirección...',
-  initialAddress = '',
+  label = "Dirección",
+  placeholder = "Escribe una dirección...",
+  initialAddress = "",
   initialCoordinates,
   onLocationChange,
   required = false,
-  className = '',
-  mapHeight = '300px',
+  className = "",
+  mapHeight = "300px",
   draggable = true,
-  name = 'address',
+  name = "address",
 }: AddressInputWithMapProps) {
   // Referencias DOM
   const inputRef = useRef<HTMLInputElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  
+
   // Estados locales
   const [focusedIndex, setFocusedIndex] = useState(-1);
   const [inputFocused, setInputFocused] = useState(false);
@@ -86,6 +94,7 @@ export default function AddressInputWithMap({
     openSuggestions,
     hasResults,
     isSearching,
+    clearSearch,
   } = useAddressSearch(initialAddress, initialCoordinates);
 
   /**
@@ -114,28 +123,28 @@ export default function AddressInputWithMap({
     if (!showSuggestions || suggestions.length === 0) return;
 
     switch (e.key) {
-      case 'ArrowDown':
+      case "ArrowDown":
         e.preventDefault();
-        setFocusedIndex(prev => 
+        setFocusedIndex((prev) =>
           prev < suggestions.length - 1 ? prev + 1 : 0
         );
         break;
-      
-      case 'ArrowUp':
+
+      case "ArrowUp":
         e.preventDefault();
-        setFocusedIndex(prev => 
+        setFocusedIndex((prev) =>
           prev > 0 ? prev - 1 : suggestions.length - 1
         );
         break;
-      
-      case 'Enter':
+
+      case "Enter":
         e.preventDefault();
         if (focusedIndex >= 0) {
           handleSuggestionSelect(suggestions[focusedIndex]);
         }
         break;
-      
-      case 'Escape':
+
+      case "Escape":
         closeSuggestions();
         inputRef.current?.blur();
         break;
@@ -145,7 +154,11 @@ export default function AddressInputWithMap({
   /**
    * Manejar cambios de ubicación desde el mapa (drag & drop)
    */
-  const handleMapLocationChange = (lat: number, lng: number, address: string) => {
+  const handleMapLocationChange = (
+    lat: number,
+    lng: number,
+    address: string
+  ) => {
     updateCoordinates(lat, lng);
     onLocationChange?.(address, lat, lng);
   };
@@ -174,9 +187,19 @@ export default function AddressInputWithMap({
    * Limpiar búsqueda
    */
   const handleClear = () => {
-    updateQuery('');
+    updateQuery("");
     closeSuggestions();
     setFocusedIndex(-1);
+    inputRef.current?.focus();
+  };
+
+  /**
+   * Reiniciar completamente el mapa y la búsqueda
+   */
+  const handleReset = () => {
+    clearSearch();
+    setFocusedIndex(-1);
+    onLocationChange?.("", 0, 0);
     inputRef.current?.focus();
   };
 
@@ -193,14 +216,17 @@ export default function AddressInputWithMap({
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [closeSuggestions]);
 
   return (
     <div className={`space-y-4 ${className}`}>
       {/* Label */}
-      <Label htmlFor={name} className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+      <Label
+        htmlFor={name}
+        className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
+      >
         {label} {required && <span className="text-red-500">*</span>}
       </Label>
 
@@ -208,7 +234,7 @@ export default function AddressInputWithMap({
       <div className="relative">
         <div className="relative">
           <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-zinc-400" />
-          
+
           <Input
             ref={inputRef}
             id={name}
@@ -266,23 +292,30 @@ export default function AddressInputWithMap({
               <div className="p-4">
                 <div className="flex items-center text-red-600 dark:text-red-400">
                   <AlertCircle className="w-4 h-4 mr-2" />
-                  <span className="text-sm">Error de red. Intenta nuevamente.</span>
+                  <span className="text-sm">
+                    Error de red. Intenta nuevamente.
+                  </span>
                 </div>
               </div>
             )}
 
             {/* No results */}
-            {!isLoadingSuggestions && !geocodingError && !hasResults && query.length >= 3 && (
-              <div className="p-4">
-                <div className="flex items-center text-zinc-500 dark:text-zinc-400">
-                  <Search className="w-4 h-4 mr-2" />
-                  <span className="text-sm">No se encontraron resultados</span>
+            {!isLoadingSuggestions &&
+              !geocodingError &&
+              !hasResults &&
+              query.length >= 3 && (
+                <div className="p-4">
+                  <div className="flex items-center text-zinc-500 dark:text-zinc-400">
+                    <Search className="w-4 h-4 mr-2" />
+                    <span className="text-sm">
+                      No se encontraron resultados
+                    </span>
+                  </div>
+                  <div className="text-xs text-zinc-400 mt-1">
+                    Intenta con &quot;Carrera 80 #45-23, Medellín&quot;
+                  </div>
                 </div>
-                <div className="text-xs text-zinc-400 mt-1">
-                  Intenta con &quot;Carrera 80 #45-23, Medellín&quot;
-                </div>
-              </div>
-            )}
+              )}
 
             {/* Sugerencias */}
             {hasResults &&
@@ -291,8 +324,8 @@ export default function AddressInputWithMap({
                   key={suggestion.id}
                   className={`px-4 py-3 cursor-pointer transition-colors ${
                     index === focusedIndex
-                      ? 'bg-amber-50 dark:bg-amber-900/20'
-                      : 'hover:bg-gray-50 dark:hover:bg-zinc-800'
+                      ? "bg-amber-50 dark:bg-amber-900/20"
+                      : "hover:bg-gray-50 dark:hover:bg-zinc-800"
                   }`}
                   onClick={() => handleSuggestionSelect(suggestion)}
                   onMouseEnter={() => setFocusedIndex(index)}
@@ -319,12 +352,16 @@ export default function AddressInputWithMap({
         <Alert className="border-red-200 bg-red-50 dark:bg-red-900/20">
           <AlertCircle className="h-4 w-4 text-red-600" />
           <AlertDescription className="text-red-700 dark:text-red-300">
-            {geocodingError ? 'Error al buscar direcciones.' : 'Error al obtener la ubicación.'}
+            {geocodingError
+              ? "Error al buscar direcciones."
+              : "Error al obtener la ubicación."}
             <Button
               variant="link"
               size="sm"
               className="p-0 h-auto ml-2 text-red-600 hover:text-red-800"
-              onClick={() => { if (typeof window !== 'undefined') window.location.reload(); }}
+              onClick={() => {
+                if (typeof window !== "undefined") window.location.reload();
+              }}
             >
               Reintentar
             </Button>
@@ -354,13 +391,32 @@ export default function AddressInputWithMap({
         </div>
       )}
 
-      {/* Instrucciones */}
-      <div className="text-xs text-zinc-500 dark:text-zinc-400 space-y-1">
-        <div>💡 Escribe al menos 3 caracteres para ver sugerencias</div>
-        {draggable && coordinates && (
-          <div>🎯 Arrastra el marcador en el mapa para ajustar la ubicación</div>
+      {/* Instrucciones y acciones */}
+      <div className="flex items-start justify-between">
+        <div className="text-xs text-zinc-500 dark:text-zinc-400 space-y-1 flex-1">
+          <div>💡 Escribe al menos 3 caracteres para ver sugerencias</div>
+          {draggable && coordinates && (
+            <div>
+              🎯 Arrastra el marcador en el mapa para ajustar la ubicación
+            </div>
+          )}
+        </div>
+
+        {/* Botón de reinicio */}
+        {(coordinates || query) && (
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={handleReset}
+            className="ml-4 text-xs border-gray-300 text-gray-600 hover:bg-gray-100 dark:border-gray-600 dark:text-gray-400 dark:hover:bg-gray-700"
+            title="Reiniciar búsqueda y mapa"
+          >
+            <RotateCcw className="w-3 h-3 mr-1" />
+            Reiniciar
+          </Button>
         )}
       </div>
     </div>
   );
-} 
+}

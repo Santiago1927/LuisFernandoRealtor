@@ -3,7 +3,6 @@ import { Inter } from "next/font/google";
 import "./styles/globals.css";
 import "leaflet/dist/leaflet.css";
 import HeaderClient from "../components/layout/HeaderClient";
-import Sidebar from "../components/layout/Sidebar";
 import { ThemeProvider } from "../components/theme/ThemeContext";
 import { AuthProvider } from "../components/auth/AuthContext";
 import Footer from "../components/layout/Footer";
@@ -43,11 +42,8 @@ export default function RootLayout({
             {/* Proveedor de alertas y notificaciones */}
             <AlertProvider>
               <body
-                className={`${inter.className} bg-gray-50 dark:bg-black text-black dark:text-white`}
+                className={`${inter.className} bg-gray-50 dark:bg-black text-black dark:text-white m-0 p-0`}
               >
-                {/* Sidebar para usuarios autenticados - se renderiza globalmente */}
-                <Sidebar />
-
                 {/* Wrapper que ajusta el contenido según el sidebar */}
                 <ContentWithSidebar>
                   {/* Header condicional que se muestra según la ruta y autenticación */}

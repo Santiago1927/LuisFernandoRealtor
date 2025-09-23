@@ -6,13 +6,19 @@ import { Building2, Menu, Plus, LogOut } from "lucide-react";
 import ThemeToggleButton from "../theme/ThemeToggleButton";
 import { Button } from "@/components/ui/button";
 import { useHeaderLogic } from "../../hooks/useHeaderLogic";
-import PropertyForm from "@/components/admin/PropertyForm";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
+import dynamic from "next/dynamic";
+
+// Importación dinámica del PropertyForm para evitar problemas de chunk loading
+const PropertyForm = dynamic(() => import("@/components/admin/PropertyForm"), {
+  ssr: false,
+  loading: () => null,
+});
 
 // Configuración de enlaces de navegación del sidebar
 const navigationLinks = [
-  { href: "/propiedades", text: "Propiedades", icon: Building2 },
+  { href: "/admin/propiedades", text: "Propiedades", icon: Building2 },
 ];
 
 /**
@@ -28,6 +34,19 @@ export default function Sidebar() {
   // Estados locales del componente
   const [collapsed, setCollapsed] = useState(false); // Estado de colapso del sidebar
   const [showNewProperty, setShowNewProperty] = useState(false); // Control del modal de nueva propiedad
+  const [isMobile, setIsMobile] = useState(false); // Estado para detectar móvil
+
+  // Effect para detectar dispositivos móviles
+  useEffect(() => {
+    const checkMobile = () => {
+      const width = typeof window !== "undefined" ? window.innerWidth : 0;
+      setIsMobile(width < 1024);
+    };
+
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   // Effect para cargar el estado de colapso desde localStorage al montar el componente
   useEffect(() => {
@@ -56,27 +75,39 @@ export default function Sidebar() {
   // Solo renderiza el sidebar cuando el usuario está autenticado Y está en páginas administrativas
   if (!isAuthenticated) return null;
 
-  // Lista de rutas donde el sidebar debe aparecer
-  const adminRoutes = ["/admin", "/propiedades", "/debug"];
+  // Lista de rutas donde el sidebar debe aparecer (solo rutas administrativas)
+  const adminRoutes = ["/admin", "/debug"];
   const shouldShowSidebar = adminRoutes.some((route) =>
     pathname.startsWith(route)
   );
 
-  // No mostrar sidebar en el home u otras páginas públicas
+  // No mostrar sidebar en el home, páginas públicas de propiedades u otras páginas públicas
   if (!shouldShowSidebar) return null;
 
-  // Clases CSS dinámicas basadas en el estado de colapso
-  const containerClass = collapsed
-    ? "hidden lg:flex lg:flex-col lg:w-20 lg:h-screen lg:fixed lg:top-0 lg:left-0 bg-amber-50 dark:bg-zinc-900 border-r border-amber-200 dark:border-zinc-800 shadow-md p-3 lg:z-50"
-    : "hidden lg:flex lg:flex-col lg:w-64 lg:h-screen lg:fixed lg:top-0 lg:left-0 bg-amber-50 dark:bg-zinc-900 border-r border-amber-200 dark:border-zinc-800 shadow-md p-6 lg:z-40";
+  // Clases CSS dinámicas basadas en el estado de colapso y dispositivo
+  const baseClasses =
+    "flex flex-col bg-amber-50 dark:bg-zinc-900 border-r border-amber-200 dark:border-zinc-800 shadow-md transition-all duration-300 ease-in-out";
+
+  // En móvil: fixed position (overlay)
+  // En desktop: altura mínima completa que se desplaza con el scroll
+  const positionClasses = isMobile
+    ? "fixed top-0 left-0 h-screen z-30 overflow-y-auto"
+    : "min-h-screen";
+
+  const widthClasses = collapsed ? "w-20" : "w-64";
+  const paddingClasses = collapsed ? "p-3" : "p-6";
+
+  const containerClass = `${baseClasses} ${positionClasses} ${widthClasses} ${paddingClasses}`;
 
   // Clase para mostrar/ocultar texto según el estado de colapso
-  const linkTextClass = collapsed ? "hidden" : "inline";
+  const linkTextClass = collapsed
+    ? "opacity-0 scale-0"
+    : "opacity-100 scale-100";
 
   return (
     <aside className={containerClass} data-sidebar="main">
-      {/* Botón para colapsar/expandir el sidebar - solo visible en desktop */}
-      <div className="hidden lg:flex justify-end mb-4">
+      {/* Botón para colapsar/expandir el sidebar - visible en móvil y desktop */}
+      <div className="flex justify-end mb-4">
         <button
           aria-label={collapsed ? "Expandir menú" : "Colapsar menú"}
           onClick={() => setCollapsed((s) => !s)}
@@ -136,7 +167,7 @@ export default function Sidebar() {
           </div>
           {/* Información del usuario - se oculta cuando está colapsado */}
           {!collapsed && (
-            <div className="flex-1">
+            <div className="flex-1 transition-opacity duration-300 ease-in-out">
               <div className="text-sm font-medium text-zinc-700 dark:text-zinc-200">
                 {user?.displayName ?? "Administrador"}
               </div>
@@ -171,7 +202,9 @@ export default function Sidebar() {
                   }`}
                 >
                   <Icon className="h-4 w-4" />
-                  <span className={`text-sm font-medium ${linkTextClass}`}>
+                  <span
+                    className={`text-sm font-medium transition-all duration-300 ease-in-out ${linkTextClass}`}
+                  >
                     {link.text}
                   </span>
                 </Link>

@@ -24,6 +24,9 @@ export default function HeaderClient() {
   const showReturnHomeButton =
     cleanPath === "/contacto" || cleanPath.startsWith("/propiedades");
 
+  // Detecta si estamos en una página de detalle de propiedad
+  const isPropertyDetailPage = /^\/propiedades\/[^\/]+$/.test(cleanPath);
+
   // Estado para detectar si estamos en desktop (pantalla grande)
   const [isDesktop, setIsDesktop] = useState(false);
 
@@ -51,8 +54,14 @@ export default function HeaderClient() {
   const showHeaderOnDesktop =
     cleanPath === "/" || (!hasSidebar && !isAdminRoute && showReturnHomeButton);
 
-  // Decisión final: mostrar header en móvil siempre, en desktop según lógica anterior
-  const shouldRenderHeader = !isDesktop || (isDesktop && showHeaderOnDesktop);
+  // Decisión final:
+  // - SIEMPRE mostrar en el home (tanto móvil como desktop)
+  // - En móvil: mostrar siempre excepto en rutas de admin Y páginas de detalle
+  // - En desktop: según lógica anterior Y no en páginas de detalle
+  const shouldRenderHeader =
+    cleanPath === "/" || // SIEMPRE en home
+    (!isDesktop && !isAdminRoute && !isPropertyDetailPage) || // Móvil no-admin no-detalle
+    (isDesktop && showHeaderOnDesktop && !isPropertyDetailPage); // Desktop según lógica y no-detalle
 
   // Si no debe renderizarse, retorna null
   if (!shouldRenderHeader) return null;
