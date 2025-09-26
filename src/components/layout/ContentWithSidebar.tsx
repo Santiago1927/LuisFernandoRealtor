@@ -5,8 +5,13 @@ import { useAuthContext } from "../auth/AuthContext";
 import { usePathname } from "next/navigation";
 import dynamic from "next/dynamic";
 
-// Importación dinámica del Sidebar para evitar problemas de chunk loading
+// Importaciones dinámicas para evitar problemas de chunk loading
 const Sidebar = dynamic(() => import("./Sidebar"), {
+  ssr: false,
+  loading: () => null,
+});
+
+const MobileSidebarToggle = dynamic(() => import("./MobileSidebarToggle"), {
   ssr: false,
   loading: () => null,
 });
@@ -57,6 +62,8 @@ export default function ContentWithSidebar({
       <div className="w-full">
         {/* En móvil o páginas públicas, sidebar overlay si existe */}
         {shouldShowSidebar && <Sidebar />}
+        {/* Botón flotante para abrir sidebar en móvil */}
+        <MobileSidebarToggle />
         {children}
       </div>
     );
@@ -71,6 +78,8 @@ export default function ContentWithSidebar({
       </div>
       {/* Contenido principal que se adapta automáticamente */}
       <div className="flex-1 transition-all duration-300 ease-in-out min-h-screen">
+        {/* Botón flotante para desktop (aunque no debería mostrarse) */}
+        <MobileSidebarToggle />
         {children}
       </div>
     </div>

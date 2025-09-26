@@ -187,7 +187,11 @@ export default function DetallePropiedadPage() {
                       {images.length > 0 ? (
                         <>
                           <Image
-                            src={images[activeImage]}
+                            src={
+                              images[activeImage] ||
+                              images[0] ||
+                              "/placeholder-property.svg"
+                            }
                             alt={property.title}
                             fill
                             className="object-cover"
