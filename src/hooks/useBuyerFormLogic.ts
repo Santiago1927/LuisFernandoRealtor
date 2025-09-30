@@ -8,7 +8,10 @@ interface UseBuyerFormLogicProps {
   loading: boolean;
 }
 
-export const useBuyerFormLogic = ({ formSubmit, loading }: UseBuyerFormLogicProps) => {
+export const useBuyerFormLogic = ({
+  formSubmit,
+  loading,
+}: UseBuyerFormLogicProps) => {
   const {
     register,
     handleSubmit,
@@ -20,6 +23,14 @@ export const useBuyerFormLogic = ({ formSubmit, loading }: UseBuyerFormLogicProp
     defaultValues: {
       ciudad: City.Medellin,
       tipoPropiedad: PropertyType.Casa,
+      deposito: false,
+      area: undefined,
+      habitaciones: undefined,
+      baños: undefined,
+      parqueaderos: undefined,
+      formaDePago: undefined,
+      presupuesto: "",
+      comentariosAdicionales: "",
     },
   });
 
@@ -40,4 +51,4 @@ export const useBuyerFormLogic = ({ formSubmit, loading }: UseBuyerFormLogicProp
     setValue,
     watch,
   };
-}; 
+};

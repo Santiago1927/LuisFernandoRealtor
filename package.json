@@ -8,7 +8,10 @@
     "start": "next start",
     "lint": "next lint",
     "email": "email dev --dir src/components/emails",
-    "populate": "ts-node scripts/populateFirestore.ts"
+    "populate": "ts-node scripts/populateFirestore.ts",
+    "test:forms": "tsx scripts/testFormsDataStorage.ts",
+    "forms:status": "tsx scripts/manageFormsData.ts --status",
+    "forms:cleanup": "tsx scripts/manageFormsData.ts --cleanup"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
