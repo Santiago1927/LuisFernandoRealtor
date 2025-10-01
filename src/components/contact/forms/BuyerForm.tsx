@@ -5,10 +5,22 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Home, AlertCircle } from "lucide-react";
-import { PERSONAL_DATA, CITY_OPTIONS, PROPERTY_TYPE_OPTIONS, PROPERTY_INFO_BUYER, INPUT_INFO } from "@/constants/constants";
+import {
+  PERSONAL_DATA,
+  CITY_OPTIONS,
+  PROPERTY_TYPE_OPTIONS,
+  PROPERTY_INFO_BUYER,
+  INPUT_INFO,
+} from "@/constants/constants";
 
 interface BuyerFormProps {
   formSubmit: (data: any) => void;
@@ -28,18 +40,24 @@ const BuyerForm: React.FC<BuyerFormProps> = ({ formSubmit, loading }) => {
   } = useBuyerFormLogic({ formSubmit, loading });
 
   const renderField = (fieldKey: string, field: any) => {
-    const booleanFields = ['deposito'];
-    
+    const booleanFields = ["deposito"];
+
     if (booleanFields.includes(fieldKey)) {
       return (
         <div key={fieldKey} className="space-y-2">
           <div className="flex items-center space-x-2">
             <Checkbox
               id={fieldKey}
-              {...register(fieldKey)}
-              className={errors[fieldKey] ? 'border-red-500 dark:border-red-400' : ''}
+              checked={watch(fieldKey) || false}
+              onCheckedChange={(checked) => setValue(fieldKey as any, checked)}
+              className={
+                errors[fieldKey] ? "border-red-500 dark:border-red-400" : ""
+              }
             />
-            <Label htmlFor={fieldKey} className="text-sm font-medium text-zinc-900 dark:text-zinc-100 cursor-pointer">
+            <Label
+              htmlFor={fieldKey}
+              className="text-sm font-medium text-zinc-900 dark:text-zinc-100 cursor-pointer"
+            >
               {field.label}
             </Label>
           </div>
@@ -53,10 +71,13 @@ const BuyerForm: React.FC<BuyerFormProps> = ({ formSubmit, loading }) => {
       );
     }
 
-    if (fieldKey === 'formaDePago') {
+    if (fieldKey === "formaDePago") {
       return (
         <div key={fieldKey} className="space-y-2">
-          <Label htmlFor={fieldKey} className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+          <Label
+            htmlFor={fieldKey}
+            className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
+          >
             {field.label} *
           </Label>
           {errors[fieldKey] && (
@@ -65,7 +86,11 @@ const BuyerForm: React.FC<BuyerFormProps> = ({ formSubmit, loading }) => {
               <span>{String(errors[fieldKey]?.message)}</span>
             </div>
           )}
-          <Select onValueChange={(value) => setValue(fieldKey as any, value as any)} value={watch(fieldKey as any)} {...register(fieldKey)}>
+          <Select
+            onValueChange={(value) => setValue(fieldKey as any, value as any)}
+            value={watch(fieldKey as any)}
+            {...register(fieldKey)}
+          >
             <SelectTrigger className="w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400">
               <SelectValue placeholder="Selecciona forma de pago" />
             </SelectTrigger>
@@ -83,7 +108,10 @@ const BuyerForm: React.FC<BuyerFormProps> = ({ formSubmit, loading }) => {
 
     return (
       <div key={fieldKey} className="space-y-2">
-        <Label htmlFor={fieldKey} className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+        <Label
+          htmlFor={fieldKey}
+          className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
+        >
           {field.label} *
         </Label>
         {errors[fieldKey] && (
@@ -97,7 +125,7 @@ const BuyerForm: React.FC<BuyerFormProps> = ({ formSubmit, loading }) => {
           type={field.type}
           {...register(fieldKey)}
           className={`w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400 ${
-            errors[fieldKey] ? 'border-red-500 dark:border-red-400' : ''
+            errors[fieldKey] ? "border-red-500 dark:border-red-400" : ""
           }`}
           placeholder={`Ingresa ${field.label.toLowerCase()}`}
         />
@@ -113,16 +141,19 @@ const BuyerForm: React.FC<BuyerFormProps> = ({ formSubmit, loading }) => {
           <span>Solicitud de Compra</span>
         </CardTitle>
         <p className="text-zinc-600 dark:text-zinc-400">
-          Cuéntanos sobre la propiedad que estás buscando y te ayudaremos a encontrarla.
+          Cuéntanos sobre la propiedad que estás buscando y te ayudaremos a
+          encontrarla.
         </p>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          
           <div className="grid md:grid-cols-2 gap-6">
             {Object.entries(PERSONAL_DATA).map(([key, field]) => (
               <div key={key} className="space-y-2">
-                <Label htmlFor={key} className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+                <Label
+                  htmlFor={key}
+                  className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
+                >
                   {field.label} *
                 </Label>
                 {errors[key] && (
@@ -136,7 +167,7 @@ const BuyerForm: React.FC<BuyerFormProps> = ({ formSubmit, loading }) => {
                   type={field.type}
                   {...register(key)}
                   className={`w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400 ${
-                    errors[key] ? 'border-red-500 dark:border-red-400' : ''
+                    errors[key] ? "border-red-500 dark:border-red-400" : ""
                   }`}
                   placeholder={`Ingresa ${field.label.toLowerCase()}`}
                 />
@@ -146,7 +177,10 @@ const BuyerForm: React.FC<BuyerFormProps> = ({ formSubmit, loading }) => {
 
           <div className="grid md:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <Label htmlFor="ciudad" className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+              <Label
+                htmlFor="ciudad"
+                className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
+              >
                 Ciudad *
               </Label>
               {errors.ciudad && (
@@ -155,7 +189,11 @@ const BuyerForm: React.FC<BuyerFormProps> = ({ formSubmit, loading }) => {
                   <span>{String(errors.ciudad?.message)}</span>
                 </div>
               )}
-              <Select onValueChange={(value) => setValue("ciudad", value as any)} value={watch("ciudad")} {...register("ciudad")}>
+              <Select
+                onValueChange={(value) => setValue("ciudad", value as any)}
+                value={watch("ciudad")}
+                {...register("ciudad")}
+              >
                 <SelectTrigger className="w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400">
                   <SelectValue placeholder="Selecciona una ciudad" />
                 </SelectTrigger>
@@ -170,7 +208,10 @@ const BuyerForm: React.FC<BuyerFormProps> = ({ formSubmit, loading }) => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="tipoPropiedad" className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+              <Label
+                htmlFor="tipoPropiedad"
+                className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
+              >
                 Tipo de Propiedad *
               </Label>
               {errors.tipoPropiedad && (
@@ -179,7 +220,13 @@ const BuyerForm: React.FC<BuyerFormProps> = ({ formSubmit, loading }) => {
                   <span>{String(errors.tipoPropiedad?.message)}</span>
                 </div>
               )}
-              <Select onValueChange={(value) => setValue("tipoPropiedad", value as any)} value={watch("tipoPropiedad")} {...register("tipoPropiedad")}>
+              <Select
+                onValueChange={(value) =>
+                  setValue("tipoPropiedad", value as any)
+                }
+                value={watch("tipoPropiedad")}
+                {...register("tipoPropiedad")}
+              >
                 <SelectTrigger className="w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400">
                   <SelectValue placeholder="Selecciona tipo de propiedad" />
                 </SelectTrigger>
@@ -205,7 +252,10 @@ const BuyerForm: React.FC<BuyerFormProps> = ({ formSubmit, loading }) => {
           )}
 
           <div className="space-y-2">
-            <Label htmlFor="comentariosAdicionales" className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+            <Label
+              htmlFor="comentariosAdicionales"
+              className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
+            >
               Comentarios Adicionales
             </Label>
             <textarea
@@ -215,7 +265,7 @@ const BuyerForm: React.FC<BuyerFormProps> = ({ formSubmit, loading }) => {
               placeholder="Comentarios adicionales sobre tu búsqueda..."
             />
           </div>
-          
+
           {!isValid && (
             <Alert variant="destructive">
               <AlertCircle className="h-4 w-4" />
@@ -224,7 +274,7 @@ const BuyerForm: React.FC<BuyerFormProps> = ({ formSubmit, loading }) => {
               </AlertDescription>
             </Alert>
           )}
-          
+
           <Button
             disabled={loading}
             type="submit"

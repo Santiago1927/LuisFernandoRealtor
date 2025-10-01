@@ -205,10 +205,10 @@ export default function Sidebar() {
           {!collapsed && (
             <div className="flex flex-col">
               <span className="text-2xl font-bold tracking-tight text-amber-900 dark:text-white">
-                LuisFernando
+                Real
               </span>
               <span className="text-sm font-semibold text-amber-400 tracking-wider uppercase">
-                Realtor
+                House
               </span>
             </div>
           )}

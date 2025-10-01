@@ -100,7 +100,7 @@ const PUBLICATION_STATUS: PublicationStatus[] = [
 ];
 
 // Tipos de negocio disponibles
-const BUSINESS_TYPES: BusinessType[] = ["Vender", "Alquilar", "Permutar"];
+const BUSINESS_TYPES: BusinessType[] = ["Vender", "Permutar"];
 
 // Tipos de moneda disponibles
 const CURRENCY_TYPES: CurrencyType[] = [
