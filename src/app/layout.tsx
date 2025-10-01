@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Cinzel } from "next/font/google";
 import "./styles/globals.css";
 import "leaflet/dist/leaflet.css";
 import HeaderClient from "../components/layout/HeaderClient";
@@ -11,8 +11,13 @@ import ReactQueryProvider from "../providers/ReactQueryProvider";
 import WhatsAppButton from "@/components/whatasapp/WhatsAppButton";
 import ContentWithSidebar from "../components/layout/ContentWithSidebar";
 
-// Configuración de la fuente Inter para toda la aplicación
+// Configuración de las fuentes
 const inter = Inter({ subsets: ["latin"] });
+const cinzel = Cinzel({
+  subsets: ["latin"],
+  variable: "--font-cinzel",
+  display: "swap",
+});
 
 // Metadatos SEO de la aplicación
 export const metadata: Metadata = {
@@ -42,7 +47,7 @@ export default function RootLayout({
             {/* Proveedor de alertas y notificaciones */}
             <AlertProvider>
               <body
-                className={`${inter.className} bg-gray-50 dark:bg-black text-black dark:text-white m-0 p-0`}
+                className={`${inter.className} ${cinzel.variable} bg-gray-50 dark:bg-black text-black dark:text-white m-0 p-0`}
               >
                 {/* Wrapper que ajusta el contenido según el sidebar */}
                 <ContentWithSidebar>

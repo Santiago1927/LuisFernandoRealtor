@@ -204,11 +204,14 @@ export default function Sidebar() {
           {/* Texto del branding - se oculta cuando está colapsado */}
           {!collapsed && (
             <div className="flex flex-col">
-              <span className="text-2xl font-bold tracking-tight text-amber-900 dark:text-white">
-                Real
-              </span>
-              <span className="text-sm font-semibold text-amber-400 tracking-wider uppercase">
-                House
+              <span
+                className="text-2xl font-ultra-thin tracking-wide text-white font-cinzel"
+                style={{
+                  textShadow: "1px 1px 3px rgba(0,0,0,0.5)",
+                  letterSpacing: "0.1em",
+                }}
+              >
+                REALHAUS
               </span>
             </div>
           )}

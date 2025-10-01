@@ -58,15 +58,17 @@ export default function Header() {
                 priority
               />
             </div>
-            {/* Texto de la marca - dividido en dos líneas para mejor legibilidad */}
+            {/* Texto de la marca - una sola palabra */}
             <div className="flex flex-col">
               {/* Nombre principal del agente inmobiliario */}
-              <span className="text-4xl font-bold tracking-tight text-white">
-                Real
-              </span>
-              {/* Subtítulo profesional con color distintivo amber */}
-              <span className="text-3xl font-semibold text-amber-400 tracking-wider uppercase">
-                House
+              <span
+                className="text-4xl font-ultra-thin tracking-wide text-white font-cinzel"
+                style={{
+                  textShadow: "1px 1px 3px rgba(0,0,0,0.5)",
+                  letterSpacing: "0.1em",
+                }}
+              >
+                REALHAUS
               </span>
             </div>
           </Link>
