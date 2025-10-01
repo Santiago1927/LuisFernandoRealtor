@@ -452,7 +452,7 @@ export const BuyerEmailTemplate: React.FC<BuyerEmailTemplateProps> = ({
               fontStyle: "italic",
             }}
           >
-            "{comentariosAdicionales}"
+            &ldquo;{comentariosAdicionales}&rdquo;
           </Text>
         </div>
       )}

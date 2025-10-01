@@ -790,7 +790,7 @@ export const OwnerEmailTemplate: React.FC<OwnerEmailTemplateProps> = ({
               fontStyle: "italic",
             }}
           >
-            "{comentariosAdicionales}"
+            &ldquo;{comentariosAdicionales}&rdquo;
           </Text>
         </div>
       )}
