@@ -58,21 +58,24 @@ export default function Header() {
                 priority
               />
             </div>
-            {/* Texto de la marca */}
+            {/* Texto de la marca - dividido en dos líneas para mejor legibilidad */}
             <div className="flex flex-col">
-              <span className="text-2xl font-bold tracking-tight text-white">
-                LuisFernando
+              {/* Nombre principal del agente inmobiliario */}
+              <span className="text-4xl font-bold tracking-tight text-white">
+                Real
               </span>
-              <span className="text-sm font-semibold text-amber-400 tracking-wider uppercase">
-                Realtor
+              {/* Subtítulo profesional con color distintivo amber */}
+              <span className="text-3xl font-semibold text-amber-400 tracking-wider uppercase">
+                House
               </span>
             </div>
           </Link>
 
-          {/* Navegación principal - visible en desktop y móvil en home */}
+          {/* Navegación principal - responsive, se adapta a diferentes tamaños de pantalla */}
           <div className="flex items-center space-x-6">
-            {/* Enlaces de navegación generados dinámicamente */}
+            {/* Enlaces de navegación generados dinámicamente desde el array navigationLinks */}
             {navigationLinks.map((link) => {
+              // Extraemos el componente de icono de Lucide React
               const Icon = link.icon;
               return (
                 <Link
@@ -80,7 +83,9 @@ export default function Header() {
                   href={link.href}
                   className="flex items-center space-x-2 text-white hover:text-amber-400 transition-colors font-medium text-sm lg:text-base"
                 >
+                  {/* Icono del enlace - siempre visible */}
                   <Icon className="h-4 w-4" />
+                  {/* Texto del enlace - se oculta en pantallas muy pequeñas para ahorrar espacio */}
                   <span className="hidden sm:inline lg:inline">
                     {link.text}
                   </span>

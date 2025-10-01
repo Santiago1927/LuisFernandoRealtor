@@ -8,6 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "email": "email dev --dir src/components/emails",
+    "email:export": "email export --dir src/components/emails",
+    "test:emails": "tsx scripts/testEmailTemplates.ts",
     "populate": "ts-node scripts/populateFirestore.ts",
     "test:forms": "tsx scripts/testFormsDataStorage.ts",
     "forms:status": "tsx scripts/manageFormsData.ts --status",
