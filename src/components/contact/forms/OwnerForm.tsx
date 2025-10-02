@@ -6,10 +6,23 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Building2, User, Home, AlertCircle } from "lucide-react";
-import { PERSONAL_DATA, CITY_OPTIONS, PROPERTY_TYPE_OPTIONS, PROPERTY_INFO_OWNER, INPUT_INFO, QUESTIONS } from "@/constants/constants";
+import {
+  PERSONAL_DATA,
+  CITY_OPTIONS,
+  PROPERTY_TYPE_OPTIONS,
+  PROPERTY_INFO_OWNER,
+  INPUT_INFO,
+  QUESTIONS,
+} from "@/constants/constants";
 
 interface OwnerFormProps {
   formSubmit: (data: any) => void;
@@ -30,9 +43,18 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
   } = useOwnerFormLogic({ formSubmit, loading });
 
   const renderField = (fieldKey: string, field: any) => {
-    const booleanFields = ['estudio', 'deposito', 'balcon', 'vigilancia', 'piscina'];
-    const radioFields = ['firstQuestion', 'secondQuestion'];
-    
+    const booleanFields = [
+      "estudio",
+      "deposito",
+      "balcon",
+      "vigilancia",
+      "piscina",
+      "tieneParqueadero",
+      "tieneTerraza",
+      "tienePatio",
+    ];
+    const radioFields = ["firstQuestion", "secondQuestion"];
+
     if (booleanFields.includes(fieldKey)) {
       return (
         <div key={fieldKey} className="space-y-2">
@@ -46,11 +68,16 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
                   id={fieldKey}
                   checked={controllerField.value}
                   onCheckedChange={controllerField.onChange}
-                  className={errors[fieldKey] ? 'border-red-500 dark:border-red-400' : ''}
+                  className={
+                    errors[fieldKey] ? "border-red-500 dark:border-red-400" : ""
+                  }
                 />
               )}
             />
-            <Label htmlFor={fieldKey} className="text-sm font-medium text-zinc-900 dark:text-zinc-100 cursor-pointer">
+            <Label
+              htmlFor={fieldKey}
+              className="text-sm font-medium text-zinc-900 dark:text-zinc-100 cursor-pointer"
+            >
               {field.label}
             </Label>
           </div>
@@ -86,8 +113,8 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
                   {...register(fieldKey)}
                   className="w-4 h-4 text-amber-600 bg-white border-zinc-300 focus:ring-amber-500 dark:focus:ring-amber-600 dark:ring-offset-zinc-800 focus:ring-2 dark:bg-zinc-700 dark:border-zinc-600"
                 />
-                <Label 
-                  htmlFor={`${fieldKey}_${option.value}`} 
+                <Label
+                  htmlFor={`${fieldKey}_${option.value}`}
                   className="text-sm font-medium text-zinc-900 dark:text-zinc-100 cursor-pointer"
                 >
                   {option.label}
@@ -101,7 +128,10 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
 
     return (
       <div key={fieldKey} className="space-y-2">
-        <Label htmlFor={fieldKey} className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+        <Label
+          htmlFor={fieldKey}
+          className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
+        >
           {field.label} *
         </Label>
         {errors[fieldKey] && (
@@ -115,7 +145,7 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
           type={field.type}
           {...register(fieldKey)}
           className={`w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400 ${
-            errors[fieldKey] ? 'border-red-500 dark:border-red-400' : ''
+            errors[fieldKey] ? "border-red-500 dark:border-red-400" : ""
           }`}
           placeholder={`Ingresa ${field.label.toLowerCase()}`}
         />
@@ -131,12 +161,12 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
           <span>Solicitud de Venta</span>
         </CardTitle>
         <p className="text-zinc-600 dark:text-zinc-400">
-          Cuéntanos sobre tu propiedad y te ayudaremos a venderla al mejor precio.
+          Cuéntanos sobre tu propiedad y te ayudaremos a venderla al mejor
+          precio.
         </p>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
-          
           <div className="space-y-6">
             <div className="flex items-center space-x-2 pb-2 border-b border-zinc-200 dark:border-zinc-700">
               <AlertCircle className="w-5 h-5 text-amber-600" />
@@ -145,7 +175,7 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
               </h3>
             </div>
             <div className="space-y-6">
-              {Object.entries(QUESTIONS).map(([fieldKey, field]) => 
+              {Object.entries(QUESTIONS).map(([fieldKey, field]) =>
                 renderField(fieldKey, field)
               )}
             </div>
@@ -161,7 +191,10 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
             <div className="grid md:grid-cols-2 gap-6">
               {Object.entries(PERSONAL_DATA).map(([fieldKey, field]) => (
                 <div key={fieldKey} className="space-y-2">
-                  <Label htmlFor={fieldKey} className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+                  <Label
+                    htmlFor={fieldKey}
+                    className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
+                  >
                     {field.label} *
                   </Label>
                   {errors[fieldKey] && (
@@ -175,7 +208,9 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
                     type={field.type}
                     {...register(fieldKey)}
                     className={`w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400 ${
-                      errors[fieldKey] ? 'border-red-500 dark:border-red-400' : ''
+                      errors[fieldKey]
+                        ? "border-red-500 dark:border-red-400"
+                        : ""
                     }`}
                     placeholder={`Ingresa ${field.label.toLowerCase()}`}
                   />
@@ -193,7 +228,10 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
             </div>
             <div className="grid md:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <Label htmlFor="ciudad" className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+                <Label
+                  htmlFor="ciudad"
+                  className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
+                >
                   Ciudad *
                 </Label>
                 {errors.ciudad && (
@@ -202,7 +240,11 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
                     <span>{String(errors.ciudad?.message)}</span>
                   </div>
                 )}
-                <Select onValueChange={(value) => setValue("ciudad", value as any)} value={watch("ciudad")} {...register("ciudad")}>
+                <Select
+                  onValueChange={(value) => setValue("ciudad", value as any)}
+                  value={watch("ciudad")}
+                  {...register("ciudad")}
+                >
                   <SelectTrigger className="w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400">
                     <SelectValue placeholder="Selecciona una ciudad" />
                   </SelectTrigger>
@@ -217,7 +259,10 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="tipoPropiedad" className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+                <Label
+                  htmlFor="tipoPropiedad"
+                  className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
+                >
                   Tipo de Propiedad *
                 </Label>
                 {errors.tipoPropiedad && (
@@ -226,7 +271,13 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
                     <span>{String(errors.tipoPropiedad?.message)}</span>
                   </div>
                 )}
-                <Select onValueChange={(value) => setValue("tipoPropiedad", value as any)} value={watch("tipoPropiedad")} {...register("tipoPropiedad")}>
+                <Select
+                  onValueChange={(value) =>
+                    setValue("tipoPropiedad", value as any)
+                  }
+                  value={watch("tipoPropiedad")}
+                  {...register("tipoPropiedad")}
+                >
                   <SelectTrigger className="w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400">
                     <SelectValue placeholder="Selecciona tipo de propiedad" />
                   </SelectTrigger>
@@ -241,8 +292,6 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
               </div>
             </div>
 
-
-
             {tipoPropiedad && PROPERTY_INFO_OWNER[tipoPropiedad] && (
               <div className="grid md:grid-cols-2 gap-6">
                 {PROPERTY_INFO_OWNER[tipoPropiedad].map((fieldKey) => {
@@ -250,6 +299,89 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
                   if (!field) return null;
                   return renderField(fieldKey, field);
                 })}
+              </div>
+            )}
+
+            {/* Campos condicionales de área */}
+            {watch("tieneParqueadero") === true && (
+              <div className="space-y-2">
+                <Label
+                  htmlFor="areaParqueadero"
+                  className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
+                >
+                  Área del Parqueadero (m²) *
+                </Label>
+                {errors.areaParqueadero && (
+                  <div className="flex items-center space-x-2 text-red-600 dark:text-red-400 text-sm">
+                    <AlertCircle className="w-4 h-4" />
+                    <span>{String(errors.areaParqueadero?.message)}</span>
+                  </div>
+                )}
+                <Input
+                  id="areaParqueadero"
+                  type="number"
+                  {...register("areaParqueadero")}
+                  className={`w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400 ${
+                    errors.areaParqueadero
+                      ? "border-red-500 dark:border-red-400"
+                      : ""
+                  }`}
+                  placeholder="Ingresa el área del parqueadero"
+                />
+              </div>
+            )}
+
+            {watch("tieneTerraza") === true && (
+              <div className="space-y-2">
+                <Label
+                  htmlFor="areaTerraza"
+                  className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
+                >
+                  Área de la Terraza (m²) *
+                </Label>
+                {errors.areaTerraza && (
+                  <div className="flex items-center space-x-2 text-red-600 dark:text-red-400 text-sm">
+                    <AlertCircle className="w-4 h-4" />
+                    <span>{String(errors.areaTerraza?.message)}</span>
+                  </div>
+                )}
+                <Input
+                  id="areaTerraza"
+                  type="number"
+                  {...register("areaTerraza")}
+                  className={`w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400 ${
+                    errors.areaTerraza
+                      ? "border-red-500 dark:border-red-400"
+                      : ""
+                  }`}
+                  placeholder="Ingresa el área de la terraza"
+                />
+              </div>
+            )}
+
+            {watch("tienePatio") === true && (
+              <div className="space-y-2">
+                <Label
+                  htmlFor="areaPatio"
+                  className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
+                >
+                  Área del Patio (m²) *
+                </Label>
+                {errors.areaPatio && (
+                  <div className="flex items-center space-x-2 text-red-600 dark:text-red-400 text-sm">
+                    <AlertCircle className="w-4 h-4" />
+                    <span>{String(errors.areaPatio?.message)}</span>
+                  </div>
+                )}
+                <Input
+                  id="areaPatio"
+                  type="number"
+                  {...register("areaPatio")}
+                  className={`w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400 ${
+                    errors.areaPatio ? "border-red-500 dark:border-red-400" : ""
+                  }`}
+                  placeholder="Ingresa el área del patio"
+                />
               </div>
             )}
           </div>
@@ -262,7 +394,10 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
               </h3>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="comentariosAdicionales" className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+              <Label
+                htmlFor="comentariosAdicionales"
+                className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
+              >
                 Comentarios Adicionales
               </Label>
               <textarea
@@ -273,7 +408,7 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
               />
             </div>
           </div>
-          
+
           <Button
             disabled={loading}
             type="submit"

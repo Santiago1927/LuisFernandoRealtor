@@ -109,7 +109,7 @@ export default function MainSection() {
                 </div>
                 <div className="flex items-center space-x-2 text-zinc-600 dark:text-zinc-400">
                   <MapPin className="w-4 h-4" />
-                  <span className="text-sm">Medellín, Colombia</span>
+                  <span className="text-sm">Pasto, Colombia</span>
                 </div>
               </div>
             </div>
@@ -127,30 +127,12 @@ export default function MainSection() {
 
                 <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent"></div>
               </div>
-
-              <Card className="absolute -bottom-8 -left-8 bg-white/95 dark:bg-zinc-900/95 backdrop-blur border-0 shadow-2xl">
-                <CardContent className="p-6">
-                  <div className="flex items-center space-x-4">
-                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-amber-500 to-yellow-600 flex items-center justify-center">
-                      <Shield className="w-8 h-8 text-white" />
-                    </div>
-                    <div>
-                      <div className="font-bold text-lg text-zinc-900 dark:text-zinc-100">
-                        Garantía de Calidad
-                      </div>
-                      <div className="text-sm text-zinc-600 dark:text-zinc-400">
-                        Propiedades verificadas
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
             </div>
           </div>
         </section>
 
         <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20">
-          <div className="grid md:grid-cols-3 gap-8 lg:gap-12">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
             <Card className="border-0 shadow-xl bg-white/90 dark:bg-zinc-900/90 backdrop-blur hover:shadow-2xl transition-all duration-300">
               <CardContent className="p-8 text-center">
                 <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-amber-500 to-yellow-600 flex items-center justify-center">
@@ -189,6 +171,20 @@ export default function MainSection() {
                 </h3>
                 <p className="text-zinc-600 dark:text-zinc-400 text-lg">
                   Procesos claros y honestos en cada transacción
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="border-0 shadow-xl bg-white/90 dark:bg-zinc-900/90 backdrop-blur hover:shadow-2xl transition-all duration-300">
+              <CardContent className="p-8 text-center">
+                <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-amber-500 to-yellow-600 flex items-center justify-center">
+                  <Shield className="w-10 h-10 text-white" />
+                </div>
+                <h3 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 mb-4">
+                  Garantía de Calidad
+                </h3>
+                <p className="text-zinc-600 dark:text-zinc-400 text-lg">
+                  Propiedades verificadas y de alta calidad
                 </p>
               </CardContent>
             </Card>

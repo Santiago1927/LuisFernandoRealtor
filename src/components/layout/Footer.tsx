@@ -9,6 +9,7 @@ import {
   Mail,
   MapPin,
   Instagram,
+  Facebook,
   ExternalLink,
   Heart,
 } from "lucide-react";
@@ -99,7 +100,7 @@ export default function Footer() {
               </div>
               <div className="flex items-center space-x-3 text-zinc-300">
                 <MapPin className="w-4 h-4 text-amber-500" />
-                <span>Medellín, Colombia</span>
+                <span>Pasto, Colombia</span>
               </div>
             </div>
           </div>
@@ -111,7 +112,7 @@ export default function Footer() {
             </h4>
             <div className="space-y-4">
               <a
-                href="https://www.instagram.com/luisfernandorealtor/"
+                href="https://www.instagram.com/realhaus.luxury?igsh=c3NjOWF4aDJzMTY1&utm_source=qr"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center space-x-3 text-zinc-300 hover:text-amber-400 transition-colors group"
@@ -123,7 +124,7 @@ export default function Footer() {
                 <ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
               </a>
               <a
-                href="https://www.tiktok.com/@luisfernandorealtor"
+                href="https://www.tiktok.com/@realhaus.luxury?_t=ZS-90CAWBa7TWu&_r=1"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center space-x-3 text-zinc-300 hover:text-amber-400 transition-colors group"
@@ -138,6 +139,18 @@ export default function Footer() {
                   </svg>
                 </div>
                 <span className="hover:underline">TikTok</span>
+                <ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+              </a>
+              <a
+                href="https://www.facebook.com/share/1N6jBeX4og/?mibextid=wwXIfr"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center space-x-3 text-zinc-300 hover:text-amber-400 transition-colors group"
+              >
+                <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <Facebook className="w-4 h-4 text-white" />
+                </div>
+                <span className="hover:underline">Facebook</span>
                 <ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
               </a>
             </div>
