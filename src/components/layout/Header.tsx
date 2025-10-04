@@ -89,8 +89,8 @@ export default function Header() {
         <div className="flex h-20 items-center justify-between">
           {/* Logo y nombre de la marca - enlace al inicio */}
           <Link href="/" className="flex items-center space-x-4 group">
-            {/* Contenedor del logo con efectos hover */}
-            <div className="relative h-14 w-14 overflow-hidden rounded-xl bg-gradient-to-br from-amber-500 to-yellow-600 p-2 shadow-xl transition-transform duration-300 group-hover:scale-110">
+            {/* Contenedor del logo sin fondo */}
+            <div className="relative h-14 w-14 p-2 transition-transform duration-300 group-hover:scale-110">
               <Image
                 src="/logo.svg"
                 alt="LuisFernandoRealtor"

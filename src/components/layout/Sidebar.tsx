@@ -191,8 +191,8 @@ export default function Sidebar() {
             collapsed ? "justify-center" : "space-x-3"
           } mb-6`}
         >
-          {/* Contenedor del logo */}
-          <div className="relative h-12 w-12 overflow-hidden rounded-xl bg-gradient-to-br from-amber-500 to-yellow-600 p-2 shadow-xl">
+          {/* Contenedor del logo sin fondo */}
+          <div className="relative h-12 w-12 p-2">
             <Image
               src="/logo.svg"
               alt="logo"
