@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import Image from 'next/image';
+import SmartImage from "@/components/ui/SmartImage";
 import { Property } from '../../types/property';
 import Link from 'next/link';
 import { usePropertyCardLogic } from '../../hooks/usePropertyCardLogic';
@@ -60,7 +60,7 @@ function PropertyCard({ property, onEdit, onDelete }: any) {
           <div className="relative aspect-[4/3] overflow-hidden">
             {images.length > 0 ? (
               <>
-                <Image
+                <SmartImage
                   src={images[activeImage]}
                   alt={property.title}
                   fill

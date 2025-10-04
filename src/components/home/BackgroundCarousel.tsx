@@ -1,37 +1,37 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Image from "next/image";
+import SmartImage from "@/components/ui/SmartImage";
 import { motion, AnimatePresence } from "framer-motion";
 
 const backgroundImages = [
   {
     id: 1,
-    src: "/images/carousel/Foto-1.jpg",
+    src: "/images/carousel/Foto-1.JPG",
     alt: "",
     title: "",
   },
   {
     id: 2,
-    src: "/images/carousel/Foto-2.jpg",
+    src: "/images/carousel/Foto-2.JPG",
     alt: "",
     title: "",
   },
   {
     id: 3,
-    src: "/images/carousel/Foto-3.jpg",
+    src: "/images/carousel/Foto-3.JPG",
     alt: "",
     title: "",
   },
   {
     id: 4,
-    src: "/images/carousel/Foto-4.jpg",
+    src: "/images/carousel/Foto-4.JPG",
     alt: "",
     title: "",
   },
   {
     id: 5,
-    src: "/images/carousel/Foto-5.jpg",
+    src: "/images/carousel/Foto-5.JPG",
     alt: "",
     title: "",
   },
@@ -77,7 +77,7 @@ export default function BackgroundCarousel({
             }}
             className="absolute inset-0 w-full h-full"
           >
-            <Image
+            <SmartImage
               src={backgroundImages[currentImageIndex].src}
               alt={backgroundImages[currentImageIndex].alt}
               fill

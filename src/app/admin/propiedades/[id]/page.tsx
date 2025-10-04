@@ -2,7 +2,7 @@
 
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
+import SmartImage from "@/components/ui/SmartImage";
 import { usePropertyDetailPageLogic } from "../../../../hooks/usePropertyDetailPageLogic";
 import { useAdminAuthGuard } from "../../../../hooks/useAdminAuthGuard";
 import dynamic from "next/dynamic";
@@ -191,7 +191,7 @@ export default function AdminPropertyDetailPage() {
                     <div className="relative aspect-[21/9] bg-zinc-100 dark:bg-zinc-800">
                       {images.length > 0 ? (
                         <>
-                          <Image
+                          <SmartImage
                             src={
                               images[activeImage] ||
                               images[0] ||

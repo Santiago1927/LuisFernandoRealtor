@@ -2,7 +2,7 @@
 
 import { useParams } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
+import SmartImage from "@/components/ui/SmartImage";
 import { usePropertyDetailPageLogic } from "../../../hooks/usePropertyDetailPageLogic";
 import { useAuthContext } from "../../../components/auth/AuthContext";
 import dynamic from "next/dynamic";
@@ -186,7 +186,7 @@ export default function DetallePropiedadPage() {
                     <div className="relative aspect-[21/9] bg-zinc-100 dark:bg-zinc-800">
                       {images.length > 0 ? (
                         <>
-                          <Image
+                          <SmartImage
                             src={
                               images[activeImage] ||
                               images[0] ||
