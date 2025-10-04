@@ -1,14 +1,23 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ownerSchema } from "@/validations/ownerSchema";
-import { FormData, OwnerFormProps, PropertyType, City, LegalSituation } from "@/types/forms.d";
+import {
+  FormData,
+  OwnerFormProps,
+  PropertyType,
+  City,
+  LegalSituation,
+} from "@/types/forms.d";
 
 interface UseOwnerFormLogicProps {
   formSubmit: (data: FormData) => void;
   loading: boolean;
 }
 
-export const useOwnerFormLogic = ({ formSubmit, loading }: UseOwnerFormLogicProps) => {
+export const useOwnerFormLogic = ({
+  formSubmit,
+  loading,
+}: UseOwnerFormLogicProps) => {
   const {
     register,
     handleSubmit,
@@ -19,8 +28,10 @@ export const useOwnerFormLogic = ({ formSubmit, loading }: UseOwnerFormLogicProp
   } = useForm<FormData>({
     resolver: zodResolver(ownerSchema),
     defaultValues: {
-      ciudad: City.Medellin,
-      tipoPropiedad: PropertyType.Casa,
+      firstQuestion: undefined,
+      secondQuestion: undefined,
+      ciudad: undefined,
+      tipoPropiedad: undefined,
       situacionJuridica: LegalSituation.ListaParaEscriturar,
     },
   });
@@ -45,4 +56,4 @@ export const useOwnerFormLogic = ({ formSubmit, loading }: UseOwnerFormLogicProp
     watch,
     control,
   };
-}; 
+};

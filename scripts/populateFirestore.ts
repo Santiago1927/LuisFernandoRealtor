@@ -1,5 +1,10 @@
-import { propertyService, buyerService, ownerService, contactService } from '../firebase/firestoreService';
-import { Amenity, PaymentMethod, ExchangeType } from '../src/types/property';
+import {
+  propertyService,
+  buyerService,
+  ownerService,
+  contactService,
+} from "../firebase/firestoreService";
+import { Amenity, PaymentMethod, ExchangeType } from "../src/types/property";
 
 // Datos de ejemplo para propiedades
 const sampleProperties = [
@@ -8,10 +13,11 @@ const sampleProperties = [
     address: "Calle 123 #45-67, Medellín",
     city: "Medellin",
     price: 850000000,
-    description: "Casa moderna con excelente ubicación, 3 habitaciones, 2 baños, garaje para 2 carros.",
+    description:
+      "Casa moderna con excelente ubicación, 3 habitaciones, 2 baños, garaje para 2 carros.",
     images: [
       "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800",
-      "https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=800"
+      "https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=800",
     ],
     videos: [],
     bedrooms: 3,
@@ -24,9 +30,18 @@ const sampleProperties = [
     // Nuevos campos
     conjunto_cerrado: true,
     valor_administracion: 150000,
-    zonas_comunes: ["piscina", "gym", "zona BBQ", "juegos infantiles", "portería"] as Amenity[],
+    zonas_comunes: [
+      "piscina",
+      "gym",
+      "zona BBQ",
+      "juegos infantiles",
+      "portería",
+    ] as Amenity[],
     numero_pisos: 2,
-    formas_de_pago: ["Crédito hipotecario", "Recursos propios"] as PaymentMethod[],
+    formas_de_pago: [
+      "Crédito hipotecario",
+      "Recursos propios",
+    ] as PaymentMethod[],
     edad_propiedad: "5 años",
   },
   {
@@ -34,10 +49,11 @@ const sampleProperties = [
     address: "Carrera 15 #93-47, Bogotá",
     city: "Bogota",
     price: 1200000000,
-    description: "Apartamento de lujo en zona exclusiva, acabados premium, vista panorámica.",
+    description:
+      "Apartamento de lujo en zona exclusiva, acabados premium, vista panorámica.",
     images: [
       "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800",
-      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800"
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800",
     ],
     videos: [],
     bedrooms: 4,
@@ -45,13 +61,26 @@ const sampleProperties = [
     area: 220,
     type: "Apartamento" as const,
     status: "available" as const,
-    lat: 4.7110,
+    lat: 4.711,
     lng: -74.0721,
     // Nuevos campos
     conjunto_cerrado: true,
     valor_administracion: 280000,
-    zonas_comunes: ["piscina", "gym", "sauna", "turco", "terraza", "lobby", "portería", "parqueadero para visitantes"] as Amenity[],
-    formas_de_pago: ["Crédito hipotecario", "Leasing", "Recursos propios"] as PaymentMethod[],
+    zonas_comunes: [
+      "piscina",
+      "gym",
+      "sauna",
+      "turco",
+      "terraza",
+      "lobby",
+      "portería",
+      "parqueadero para visitantes",
+    ] as Amenity[],
+    formas_de_pago: [
+      "Crédito hipotecario",
+      "Leasing",
+      "Recursos propios",
+    ] as PaymentMethod[],
     edad_propiedad: "Nueva",
   },
   {
@@ -61,14 +90,14 @@ const sampleProperties = [
     price: 450000000,
     description: "Local comercial en zona de alto tráfico, ideal para negocio.",
     images: [
-      "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800"
+      "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800",
     ],
     videos: [],
     area: 150,
     type: "Local" as const,
     status: "available" as const,
     lat: 3.4516,
-    lng: -76.5320,
+    lng: -76.532,
     // Nuevos campos
     conjunto_cerrado: false,
     valor_administracion: 80000,
@@ -81,11 +110,12 @@ const sampleProperties = [
   {
     title: "Lote en zona residencial",
     address: "Carrera 50 #80-120, Medellín",
-    city: "Medellin", 
+    city: "Medellin",
     price: 320000000,
-    description: "Lote plano en zona residencial consolidada, ideal para construir.",
+    description:
+      "Lote plano en zona residencial consolidada, ideal para construir.",
     images: [
-      "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800"
+      "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800",
     ],
     videos: [],
     area: 400,
@@ -97,9 +127,12 @@ const sampleProperties = [
     conjunto_cerrado: false,
     lote_frente: 16,
     lote_fondo: 25,
-    formas_de_pago: ["Recursos propios", "Crédito hipotecario"] as PaymentMethod[],
+    formas_de_pago: [
+      "Recursos propios",
+      "Crédito hipotecario",
+    ] as PaymentMethod[],
     edad_propiedad: "Terreno disponible",
-  }
+  },
 ];
 
 // Datos de ejemplo para compradores
@@ -131,7 +164,7 @@ const sampleBuyers = [
     formaDePago: "RECURSOS",
     presupuesto: 600000000,
     userType: "buyer",
-  }
+  },
 ];
 
 // Datos de ejemplo para propietarios
@@ -153,14 +186,14 @@ const sampleOwners = [
     estudio: true,
     deposito: true,
     balcon: true,
-    vigilancia: true,
+
     piscina: false,
     valorAdministracion: 150000,
     valorAproximado: 900000000,
     situacionJuridica: "LISTA_PARA_ESCRITURAR",
     comentariosAdicionales: "Casa en excelente estado, lista para vender.",
     userType: "owner",
-  }
+  },
 ];
 
 // Datos de ejemplo para contactos
@@ -170,9 +203,10 @@ const sampleContacts = [
     correo: "ana.lopez@email.com",
     telefono: "3201111111",
     asunto: "Consulta sobre servicios inmobiliarios",
-    mensaje: "Hola, me gustaría obtener más información sobre sus servicios de asesoría inmobiliaria. ¿Podrían contactarme?",
+    mensaje:
+      "Hola, me gustaría obtener más información sobre sus servicios de asesoría inmobiliaria. ¿Podrían contactarme?",
     userType: "contact",
-  }
+  },
 ];
 
 export async function populateFirestore() {
@@ -221,4 +255,4 @@ export async function populateFirestore() {
 // Ejecutar si se llama directamente
 if (require.main === module) {
   populateFirestore();
-} 
+}

@@ -117,7 +117,6 @@ export const testData = {
     estudio: true,
     deposito: true,
     balcon: false,
-    vigilancia: true,
     piscina: true,
     valorAdministracion: "350000",
     valorAproximado: "450000000",

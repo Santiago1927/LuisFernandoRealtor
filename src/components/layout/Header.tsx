@@ -4,7 +4,14 @@ import React from "react";
 import ThemeToggleButton from "../theme/ThemeToggleButton";
 import Link from "next/link";
 import Image from "next/image";
-import { Building2, Phone, Star, Instagram, Facebook } from "lucide-react";
+import {
+  Building2,
+  Phone,
+  Star,
+  Instagram,
+  Facebook,
+  DollarSign,
+} from "lucide-react";
 
 // Componente personalizado para el ícono de TikTok
 const TikTokIcon = ({ className }: { className?: string }) => (
@@ -20,6 +27,7 @@ const TikTokIcon = ({ className }: { className?: string }) => (
 
 // Configuración de los enlaces de navegación del header
 const navigationLinks = [
+  { href: "/contacto", text: "Vender", icon: DollarSign },
   { href: "/propiedades", text: "Propiedades", icon: Building2 },
   { href: "/contacto", text: "Contacto", icon: Phone },
 ];

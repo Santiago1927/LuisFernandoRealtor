@@ -74,7 +74,7 @@ async function testOwnerFormData() {
     estudio: false,
     deposito: true,
     balcon: true,
-    vigilancia: true,
+
     piscina: false,
     valorAdministracion: 350000,
     valorAproximado: 650000000,

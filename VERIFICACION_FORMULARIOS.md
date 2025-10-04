@@ -47,7 +47,7 @@
   - ✅ Tipo de propiedad
   - ✅ Características físicas (edad, área construida, terraza, patio)
   - ✅ Detalles habitacionales (habitaciones, baños, parqueaderos, piso)
-  - ✅ Amenidades (estudio, depósito, balcón, vigilancia, piscina)
+  - ✅ Amenidades (estudio, depósito, balcón, piscina)
   - ✅ Información financiera (valor administración, valor aproximado)
   - ✅ Situación jurídica
   - ✅ Comentarios adicionales
@@ -143,7 +143,7 @@
   "estudio": false,
   "deposito": true,
   "balcon": true,
-  "vigilancia": true,
+
   "piscina": false,
   "valorAdministracion": 350000,
   "valorAproximado": 650000000,

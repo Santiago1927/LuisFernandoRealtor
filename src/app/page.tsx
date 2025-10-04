@@ -2,6 +2,7 @@
 
 import CarouselSection from "@/components/home/CarouselSection";
 import MainSection from "../components/home/MainSection";
+import HomeFilters from "@/components/home/HomeFilters";
 import PropertyList from "../components/admin/PropertyList";
 import { useFeaturedProperties } from "../hooks/useFeaturedProperties";
 import { Badge } from "@/components/ui/badge";
@@ -19,6 +20,9 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-zinc-50 via-white to-amber-50/30 dark:from-zinc-900 dark:via-black dark:to-amber-900/10">
+      {/* Sección de filtros de búsqueda */}
+      <HomeFilters />
+
       {/* Sección principal con información de la empresa */}
       <MainSection />
 

@@ -146,7 +146,7 @@ React.createElement(BuyerEmailTemplate, formData);
 - Información básica: `tipoPropiedad`, `direccion`, `edadPropiedad`
 - Medidas: `areaConstruida`, `area`
 - Características: `habitaciones`, `baños`, `parqueaderos`
-- Amenidades: `piscina`, `vigilancia`, `balcon`, `estudio`
+- Amenidades: `piscina`, `balcon`, `estudio`
 - Financiero: `valorAproximado`, `valorAdministracion`
 - Legal: `situacionJuridica`, `detalleSituacionJuridica`
 

@@ -1,55 +1,75 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { usePaginatedProperties } from '../../hooks/usePaginatedProperties';
-import PropertyList from '../../components/admin/PropertyList';
+import { useState, useEffect, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
+import { usePaginatedProperties } from "../../hooks/usePaginatedProperties";
+import PropertyList from "../../components/admin/PropertyList";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { 
-  Search, 
-  DollarSign, 
-  Building2, 
-  Home, 
-  MapPin, 
-  ChevronLeft, 
+import {
+  Search,
+  DollarSign,
+  Building2,
+  Home,
+  MapPin,
+  ChevronLeft,
   ChevronRight,
-  Loader2
+  Loader2,
 } from "lucide-react";
 
 const tipos = [
-  { value: 'Casa', label: 'Casa', icon: Home },
-  { value: 'Apartamento', label: 'Apartamento', icon: Building2 },
-  { value: 'Casa Campestre', label: 'Casa Campestre', icon: Home },
-  { value: 'Penthouse', label: 'Penthouse', icon: Building2 },
-  { value: 'Lote', label: 'Lote', icon: MapPin },
-  { value: 'Oficina', label: 'Oficina', icon: Building2 },
-  { value: 'Local', label: 'Local', icon: Building2 },
-  { value: 'Bodega', label: 'Bodega', icon: Building2 },
+  { value: "Casa", label: "Casa", icon: Home },
+  { value: "Apartamento", label: "Apartamento", icon: Building2 },
+  { value: "Casa Campestre", label: "Casa Campestre", icon: Home },
+  { value: "Penthouse", label: "Penthouse", icon: Building2 },
+  { value: "Lote", label: "Lote", icon: MapPin },
+  { value: "Oficina", label: "Oficina", icon: Building2 },
+  { value: "Local", label: "Local", icon: Building2 },
+  { value: "Bodega", label: "Bodega", icon: Building2 },
 ];
 
-const ciudades = ['Medellín', 'Bogotá', 'Cali', 'Pasto'];
+const ciudades = ["Medellín", "Bogotá", "Cali", "Pasto"];
 
-export default function PropiedadesPage() {
+// Componente que usa useSearchParams
+function PropiedadesContent() {
+  const searchParams = useSearchParams();
   const [currentPage, setCurrentPage] = useState(1);
-  const [search, setSearch] = useState('');
-  const [city, setCity] = useState('');
-  const [type, setType] = useState('');
-  const [minPrice, setMinPrice] = useState('');
-  const [maxPrice, setMaxPrice] = useState('');
+  const [search, setSearch] = useState("");
+  const [city, setCity] = useState("");
+  const [type, setType] = useState("");
+  const [minPrice, setMinPrice] = useState("");
+  const [maxPrice, setMaxPrice] = useState("");
 
-  const { data, isLoading, error } = usePaginatedProperties({ 
-    page: currentPage, 
+  // Inicializar filtros desde los parámetros de la URL
+  useEffect(() => {
+    if (searchParams) {
+      setSearch(searchParams.get("search") || "");
+      setCity(searchParams.get("city") || "");
+      setType(searchParams.get("type") || "");
+      setMinPrice(searchParams.get("minPrice") || "");
+      setMaxPrice(searchParams.get("maxPrice") || "");
+    }
+  }, [searchParams]);
+
+  const { data, isLoading, error } = usePaginatedProperties({
+    page: currentPage,
     pageSize: 12,
     filters: {
       search,
       city,
       type,
       minPrice,
-      maxPrice
-    }
+      maxPrice,
+    },
   });
 
   const properties = data?.properties || [];
@@ -58,8 +78,8 @@ export default function PropiedadesPage() {
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
-    if (typeof window !== 'undefined') {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (typeof window !== "undefined") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
 
@@ -80,6 +100,9 @@ export default function PropiedadesPage() {
     );
   }
 
+  // Verificar si hay filtros aplicados desde el home
+  const hasFiltersFromHome = search || city || type || minPrice || maxPrice;
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-zinc-50 via-white to-amber-50/30 dark:from-zinc-900 dark:via-black dark:to-amber-900/10">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -88,8 +111,58 @@ export default function PropiedadesPage() {
             Propiedades Disponibles
           </h1>
           <p className="text-lg text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto">
-            Descubre nuestra exclusiva selección de propiedades de lujo en las mejores ubicaciones
+            Descubre nuestra exclusiva selección de propiedades de lujo en las
+            mejores ubicaciones
           </p>
+
+          {/* Mostrar filtros activos si vienen del home */}
+          {hasFiltersFromHome && (
+            <div className="mt-6 flex flex-wrap justify-center gap-2">
+              <span className="text-sm text-zinc-600 dark:text-zinc-400 mr-2">
+                Filtros aplicados:
+              </span>
+              {search && (
+                <Badge
+                  variant="secondary"
+                  className="bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300"
+                >
+                  Búsqueda: {search}
+                </Badge>
+              )}
+              {city && (
+                <Badge
+                  variant="secondary"
+                  className="bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300"
+                >
+                  Ciudad: {city}
+                </Badge>
+              )}
+              {type && (
+                <Badge
+                  variant="secondary"
+                  className="bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300"
+                >
+                  Tipo: {type}
+                </Badge>
+              )}
+              {minPrice && (
+                <Badge
+                  variant="secondary"
+                  className="bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300"
+                >
+                  Desde: ${parseInt(minPrice).toLocaleString()}
+                </Badge>
+              )}
+              {maxPrice && (
+                <Badge
+                  variant="secondary"
+                  className="bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300"
+                >
+                  Hasta: ${parseInt(maxPrice).toLocaleString()}
+                </Badge>
+              )}
+            </div>
+          )}
         </div>
 
         <Card className="mb-8 border-0 shadow-xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur">
@@ -165,11 +238,11 @@ export default function PropiedadesPage() {
               <Button
                 variant="outline"
                 onClick={() => {
-                  setSearch('');
-                  setCity('');
-                  setType('');
-                  setMinPrice('');
-                  setMaxPrice('');
+                  setSearch("");
+                  setCity("");
+                  setType("");
+                  setMinPrice("");
+                  setMaxPrice("");
                 }}
                 className="border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800"
               >
@@ -183,7 +256,9 @@ export default function PropiedadesPage() {
           <div className="flex items-center justify-center py-16">
             <div className="text-center">
               <Loader2 className="h-8 w-8 animate-spin text-amber-600 dark:text-amber-400 mx-auto mb-4" />
-              <p className="text-zinc-600 dark:text-zinc-400">Cargando propiedades...</p>
+              <p className="text-zinc-600 dark:text-zinc-400">
+                Cargando propiedades...
+              </p>
             </div>
           </div>
         ) : (
@@ -191,7 +266,15 @@ export default function PropiedadesPage() {
             {total > 0 && (
               <div className="mb-8 text-center">
                 <p className="text-lg text-zinc-600 dark:text-zinc-400">
-                  Mostrando <span className="font-semibold text-amber-600 dark:text-amber-400">{properties.length}</span> de <span className="font-semibold text-amber-600 dark:text-amber-400">{total}</span> propiedades
+                  Mostrando{" "}
+                  <span className="font-semibold text-amber-600 dark:text-amber-400">
+                    {properties.length}
+                  </span>{" "}
+                  de{" "}
+                  <span className="font-semibold text-amber-600 dark:text-amber-400">
+                    {total}
+                  </span>{" "}
+                  propiedades
                 </p>
               </div>
             )}
@@ -211,19 +294,22 @@ export default function PropiedadesPage() {
                 </Button>
 
                 <div className="flex items-center space-x-2">
-                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                    <Button
-                      key={page}
-                      variant={currentPage === page ? "default" : "outline"}
-                      onClick={() => handlePageChange(page)}
-                      className={currentPage === page 
-                        ? "bg-amber-600 hover:bg-amber-700 text-white" 
-                        : "border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800"
-                      }
-                    >
-                      {page}
-                    </Button>
-                  ))}
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                    (page) => (
+                      <Button
+                        key={page}
+                        variant={currentPage === page ? "default" : "outline"}
+                        onClick={() => handlePageChange(page)}
+                        className={
+                          currentPage === page
+                            ? "bg-amber-600 hover:bg-amber-700 text-white"
+                            : "border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800"
+                        }
+                      >
+                        {page}
+                      </Button>
+                    )
+                  )}
                 </div>
 
                 <Button
@@ -246,15 +332,16 @@ export default function PropiedadesPage() {
                     No se encontraron propiedades
                   </h3>
                   <p className="text-zinc-600 dark:text-zinc-400 mb-4">
-                    Intenta ajustar los filtros de búsqueda o contacta con nosotros para más información.
+                    Intenta ajustar los filtros de búsqueda o contacta con
+                    nosotros para más información.
                   </p>
                   <Button
                     onClick={() => {
-                      setSearch('');
-                      setCity('');
-                      setType('');
-                      setMinPrice('');
-                      setMaxPrice('');
+                      setSearch("");
+                      setCity("");
+                      setType("");
+                      setMinPrice("");
+                      setMaxPrice("");
                     }}
                     className="bg-amber-600 hover:bg-amber-700 text-white"
                   >
@@ -268,4 +355,26 @@ export default function PropiedadesPage() {
       </div>
     </div>
   );
-} 
+}
+
+// Componente principal con Suspense
+export default function PropiedadesPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-gradient-to-br from-zinc-50 via-white to-amber-50/30 dark:from-zinc-900 dark:via-black dark:to-amber-900/10">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div className="flex items-center justify-center">
+              <Loader2 className="h-8 w-8 animate-spin text-amber-600" />
+              <span className="ml-2 text-lg text-zinc-600 dark:text-zinc-400">
+                Cargando propiedades...
+              </span>
+            </div>
+          </div>
+        </div>
+      }
+    >
+      <PropiedadesContent />
+    </Suspense>
+  );
+}

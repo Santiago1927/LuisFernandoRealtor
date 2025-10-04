@@ -28,7 +28,6 @@ interface OwnerEmailTemplateProps {
   estudio?: boolean;
   deposito?: boolean;
   balcon?: boolean;
-  vigilancia?: boolean;
   piscina?: boolean;
 
   // Información financiera
@@ -65,7 +64,6 @@ export const OwnerEmailTemplate: React.FC<OwnerEmailTemplateProps> = ({
   estudio,
   deposito,
   balcon,
-  vigilancia,
   piscina,
   valorAdministracion,
   valorAproximado,
@@ -549,19 +547,6 @@ export const OwnerEmailTemplate: React.FC<OwnerEmailTemplateProps> = ({
               }}
             >
               🌅 Balcón
-            </span>
-          )}
-          {vigilancia && (
-            <span
-              style={{
-                backgroundColor: "#dbeafe",
-                color: "#1e40af",
-                padding: "4px 8px",
-                borderRadius: "4px",
-                fontSize: "12px",
-              }}
-            >
-              🛡️ Vigilancia
             </span>
           )}
           {piscina && (

@@ -7,15 +7,21 @@ const propertyTypeValues = PROPERTY_TYPE_OPTIONS.map(({ value }) => value);
 export const ownerSchema = z
   .object({
     firstQuestion: z
-      .string({ message: "Este campo es obligatorio" })
-      .refine((val) => val === "true", {
+      .boolean({
+        required_error: "Este campo es obligatorio",
+        invalid_type_error: "Este campo es obligatorio",
+      })
+      .refine((val) => val === true, {
         message:
           "Lo siento, si no quieres vender tu propiedad rápidamente no te puedo ayudar",
       }),
 
     secondQuestion: z
-      .string({ message: "Este campo es obligatorio" })
-      .refine((val) => val === "true", {
+      .boolean({
+        required_error: "Este campo es obligatorio",
+        invalid_type_error: "Este campo es obligatorio",
+      })
+      .refine((val) => val === true, {
         message:
           "Lo siento, si no quieres vender tu propiedad a un precio acorde al mercado no te puedo ayudar",
       }),
@@ -76,6 +82,7 @@ export const ownerSchema = z
 
     // Campos para áreas específicas
     areaParqueadero: z.coerce.number().min(1).optional(),
+    numeroParqueaderos: z.coerce.number().min(1).max(10).optional(),
     areaTerraza: z.coerce.number().min(1).optional(),
     areaPatio: z.coerce.number().min(1).optional(),
 
@@ -83,6 +90,7 @@ export const ownerSchema = z
     tieneParqueadero: z.boolean().optional(),
     tieneTerraza: z.boolean().optional(),
     tienePatio: z.boolean().optional(),
+    tieneAdministracion: z.boolean().optional(),
     tieneAreaPrivada: z.boolean().optional(),
     tieneAreaConstruida: z.boolean().optional(),
     tieneAreaTotal: z.boolean().optional(),
@@ -96,7 +104,6 @@ export const ownerSchema = z
     estudio: z.boolean().optional(),
     deposito: z.boolean().optional(),
     balcon: z.boolean().optional(),
-    vigilancia: z.boolean().optional(),
     piscina: z.boolean().optional(),
     valorAdministracion: z.coerce.number().min(0).optional(),
     valorAproximado: z.coerce
@@ -124,6 +131,23 @@ export const ownerSchema = z
       message:
         "El área del parqueadero es obligatoria cuando se selecciona 'Sí'",
       path: ["areaParqueadero"],
+    }
+  )
+  .refine(
+    (data) => {
+      // Si tiene parqueadero, el número debe ser obligatorio
+      if (
+        data.tieneParqueadero === true &&
+        (!data.numeroParqueaderos || data.numeroParqueaderos <= 0)
+      ) {
+        return false;
+      }
+      return true;
+    },
+    {
+      message:
+        "El número de parqueaderos es obligatorio cuando se selecciona 'Sí'",
+      path: ["numeroParqueaderos"],
     }
   )
   .refine(
@@ -156,5 +180,22 @@ export const ownerSchema = z
     {
       message: "El área del patio es obligatoria cuando se selecciona 'Sí'",
       path: ["areaPatio"],
+    }
+  )
+  .refine(
+    (data) => {
+      // Si tiene administración, el valor debe ser obligatorio
+      if (
+        data.tieneAdministracion === true &&
+        (!data.valorAdministracion || data.valorAdministracion <= 0)
+      ) {
+        return false;
+      }
+      return true;
+    },
+    {
+      message:
+        "El valor de administración es obligatorio cuando se selecciona 'Sí'",
+      path: ["valorAdministracion"],
     }
   );

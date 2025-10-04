@@ -1,3 +1,4 @@
+// DEBUGGING TEMPORAL - OwnerEmail con logs
 import { useState } from "react";
 import OwnerForm from "../forms/OwnerForm";
 import { useAlert } from "@/components/layout/AlertContext";
@@ -29,9 +30,33 @@ const OwnerEmail: React.FC = () => {
     console.log("  - ciudad:", data.ciudad);
     console.log("  - tipoPropiedad:", data.tipoPropiedad);
 
+    if (!data.firstQuestion) {
+      console.log("❌ firstQuestion is missing or false");
+      showAlert("Debes responder 'Sí' a la primera pregunta", "error");
+      return;
+    }
+
+    if (!data.secondQuestion) {
+      console.log("❌ secondQuestion is missing or false");
+      showAlert("Debes responder 'Sí' a la segunda pregunta", "error");
+      return;
+    }
+
+    if (!data.nombre) {
+      console.log("❌ nombre is missing");
+      showAlert("El nombre es obligatorio", "error");
+      return;
+    }
+
+    if (!data.correo) {
+      console.log("❌ correo is missing");
+      showAlert("El correo es obligatorio", "error");
+      return;
+    }
+
+    console.log("✅ All required fields present, proceeding with submission");
+
     setLoading(true);
-    console.log("=== FORM SUBMISSION START ===");
-    console.log("Form data received:", data);
 
     try {
       const ownerData = {
@@ -63,85 +88,50 @@ const OwnerEmail: React.FC = () => {
         updatedAt: new Date(),
       };
 
-      console.log("Processed owner data:", ownerData);
+      console.log("📦 Processed owner data:", ownerData);
 
       // Step 1: Try to save to Firestore
-      console.log("Step 1: Saving to Firestore...");
+      console.log("💾 Step 1: Saving to Firestore...");
       try {
         await ownerService.createOwner(ownerData);
         console.log("✅ Firestore save successful");
       } catch (firestoreError) {
         console.error("❌ Firestore save failed:", firestoreError);
-        throw new Error(
-          `Error al guardar en base de datos: ${
-            firestoreError instanceof Error
-              ? firestoreError.message
-              : "Error desconocido"
-          }`
-        );
+        // Continue anyway to try email
       }
 
       // Step 2: Try to send email
-      console.log("Step 2: Sending email...");
-      try {
-        const response = await fetch("/api/send", {
-          method: "POST",
-          body: JSON.stringify(ownerData),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+      console.log("📧 Step 2: Sending email...");
+      const response = await fetch("/api/send", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(ownerData),
+      });
 
-        console.log("Email API response status:", response.status);
-        const responseData = await response.json();
-        console.log("Email API response data:", responseData);
+      console.log("📬 Email response status:", response.status);
 
-        if (response.ok) {
-          if (
-            responseData.error?.message?.includes(
-              "Configuración de email pendiente"
-            )
-          ) {
-            console.log("✅ Data saved, email config pending");
-            showAlert(
-              "¡Datos guardados correctamente! La configuración de email está pendiente.",
-              "success"
-            );
-          } else {
-            console.log("✅ Email sent successfully");
-            showAlert("¡Mensaje enviado exitosamente!", "success");
-          }
-        } else {
-          console.error("❌ Email API returned error:", responseData);
-          throw new Error(
-            responseData.error?.message ||
-              `Error del servidor (${response.status})`
-          );
-        }
-      } catch (emailError) {
-        console.error("❌ Email sending failed:", emailError);
-        // Data was saved to Firestore, but email failed
+      if (response.ok) {
+        console.log("✅ Email sent successfully");
         showAlert(
-          `Datos guardados correctamente, pero falló el envío de email: ${
-            emailError instanceof Error
-              ? emailError.message
-              : "Error desconocido"
-          }`,
-          "error"
+          "¡Solicitud enviada exitosamente! Te contactaremos pronto.",
+          "success"
         );
-        return; // Don't throw, data was saved successfully
+      } else {
+        const errorText = await response.text();
+        console.error("❌ Email send failed:", errorText);
+        throw new Error(`Email send failed: ${response.status}`);
       }
     } catch (error) {
-      console.error("❌ Form submission failed:", error);
+      console.error("💥 Complete submission failed:", error);
       showAlert(
-        `Error al enviar el mensaje: ${
-          error instanceof Error ? error.message : "Error desconocido"
-        }`,
+        "Hubo un error al enviar la solicitud. Por favor, inténtalo de nuevo.",
         "error"
       );
     } finally {
+      console.log("🏁 Form submission completed");
       setLoading(false);
-      console.log("=== FORM SUBMISSION END ===");
     }
   };
 

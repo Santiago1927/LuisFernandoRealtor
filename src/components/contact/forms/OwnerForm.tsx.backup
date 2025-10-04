@@ -63,7 +63,7 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
               defaultValue={false}
               render={({ field: controllerField }) => (
                 <Checkbox
-                  id={`boolean-${fieldKey}`}
+                  id={fieldKey}
                   checked={controllerField.value}
                   onCheckedChange={controllerField.onChange}
                   className={
@@ -73,7 +73,7 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
               )}
             />
             <Label
-              htmlFor={`boolean-${fieldKey}`}
+              htmlFor={fieldKey}
               className="text-sm font-medium text-zinc-900 dark:text-zinc-100 cursor-pointer"
             >
               {field.label}
@@ -101,39 +101,34 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
               <span>{String(errors[fieldKey]?.message)}</span>
             </div>
           )}
-          <div className="space-y-2">
-            {field.options?.map((option: any) => (
-              <div
-                key={`radio-${fieldKey}-${option.value}`}
-                className="flex items-center space-x-2"
+          {field.options?.map((option: any) => (
+            <div key={option.value} className="flex items-center space-x-2">
+              <Controller
+                name={fieldKey}
+                control={control}
+                render={({ field: controllerField }) => (
+                  <Checkbox
+                    id={`${fieldKey}-${option.value}`}
+                    checked={controllerField.value === option.value}
+                    onCheckedChange={(checked) => {
+                      if (checked) {
+                        controllerField.onChange(option.value);
+                      }
+                    }}
+                    className={
+                      errors[fieldKey] ? "border-red-500 dark:border-red-400" : ""
+                    }
+                  />
+                )}
+              />
+              <Label
+                htmlFor={`${fieldKey}-${option.value}`}
+                className="text-sm font-medium text-zinc-900 dark:text-zinc-100 cursor-pointer"
               >
-                <Controller
-                  name={fieldKey}
-                  control={control}
-                  defaultValue={undefined}
-                  render={({ field: controllerField }) => (
-                    <input
-                      type="radio"
-                      id={`radio-${fieldKey}-${option.value}`}
-                      checked={controllerField.value === option.value}
-                      onChange={() => controllerField.onChange(option.value)}
-                      className={`w-4 h-4 text-amber-600 bg-gray-100 border-gray-300 focus:ring-amber-500 dark:focus:ring-amber-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 ${
-                        errors[fieldKey]
-                          ? "border-red-500 dark:border-red-400"
-                          : ""
-                      }`}
-                    />
-                  )}
-                />
-                <Label
-                  htmlFor={`radio-${fieldKey}-${option.value}`}
-                  className="text-sm font-medium text-zinc-900 dark:text-zinc-100 cursor-pointer"
-                >
-                  {option.label}
-                </Label>
-              </div>
-            ))}
-          </div>
+                {option.label}
+              </Label>
+            </div>
+          ))}
         </div>
       );
     }
@@ -148,7 +143,7 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
               defaultValue={false}
               render={({ field: controllerField }) => (
                 <Checkbox
-                  id={`check-${fieldKey}`}
+                  id={fieldKey}
                   checked={controllerField.value}
                   onCheckedChange={controllerField.onChange}
                   className={
@@ -158,7 +153,7 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
               )}
             />
             <Label
-              htmlFor={`check-${fieldKey}`}
+              htmlFor={fieldKey}
               className="text-sm font-medium text-zinc-900 dark:text-zinc-100 cursor-pointer"
             >
               {field.label}
@@ -176,6 +171,149 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
 
     return (
       <div className="space-y-2">
+        <Label
+          htmlFor={fieldKey}
+          className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
+        >
+          {field.label} *
+        </Label>
+        {errors[fieldKey] && (
+          <div className="flex items-center space-x-2 text-red-600 dark:text-red-400 text-sm">
+            <AlertCircle className="w-4 h-4" />
+            <span>{String(errors[fieldKey]?.message)}</span>
+          </div>
+        )}
+        <Input
+          id={fieldKey}
+          type={field.type}
+          {...register(fieldKey)}
+          className={`w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400 ${
+            errors[fieldKey]
+              ? "border-red-500 dark:border-red-400"
+              : ""
+          }`}
+          placeholder={`Ingresa ${field.label.toLowerCase()}`}
+        />
+      </div>
+    );
+  };
+    const checkboxFields = [
+      "tieneParqueadero",
+      "tieneTerraza",
+      "tienePatio",
+      "balcon",
+      "tieneAdministracion",
+    ];
+
+    if (booleanFields.includes(fieldKey)) {
+      return (
+        <div key={fieldKey} className="space-y-2">
+          <div className="flex items-center space-x-2">
+            <Controller
+              name={fieldKey}
+              control={control}
+              defaultValue={false}
+              render={({ field: controllerField }) => (
+                <Checkbox
+                  id={fieldKey}
+                  checked={controllerField.value}
+                  onCheckedChange={controllerField.onChange}
+                  className={
+                    errors[fieldKey] ? "border-red-500 dark:border-red-400" : ""
+                  }
+                />
+              )}
+            />
+            <Label
+              htmlFor={fieldKey}
+              className="text-sm font-medium text-zinc-900 dark:text-zinc-100 cursor-pointer"
+            >
+              {field.label}
+            </Label>
+          </div>
+          {errors[fieldKey] && (
+            <div className="flex items-center space-x-2 text-red-600 dark:text-red-400 text-sm">
+              <AlertCircle className="w-4 h-4" />
+              <span>{String(errors[fieldKey]?.message)}</span>
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    if (radioFields.includes(fieldKey)) {
+      return (
+        <div key={fieldKey} className="space-y-3">
+          <Label className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+            {field.label} *
+          </Label>
+          {errors[fieldKey] && (
+            <div className="flex items-center space-x-2 text-red-600 dark:text-red-400 text-sm">
+              <AlertCircle className="w-4 h-4" />
+              <span>{String(errors[fieldKey]?.message)}</span>
+            </div>
+          )}
+          <div className="flex space-x-6">
+            {field.options?.map((option: any) => (
+              <div key={option.value} className="flex items-center space-x-2">
+                <input
+                  type="radio"
+                  id={`${fieldKey}_${option.value}`}
+                  value={String(option.value)}
+                  {...register(fieldKey)}
+                  className="w-4 h-4 text-amber-600 bg-white border-zinc-300 focus:ring-amber-500 dark:focus:ring-amber-600 dark:ring-offset-zinc-800 focus:ring-2 dark:bg-zinc-700 dark:border-zinc-600"
+                />
+                <Label
+                  htmlFor={`${fieldKey}_${option.value}`}
+                  className="text-sm font-medium text-zinc-900 dark:text-zinc-100 cursor-pointer"
+                >
+                  {option.label}
+                </Label>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    if (checkboxFields.includes(fieldKey)) {
+      return (
+        <div key={fieldKey} className="space-y-2">
+          <div className="flex items-center space-x-2">
+            <Controller
+              name={fieldKey}
+              control={control}
+              defaultValue={false}
+              render={({ field: controllerField }) => (
+                <Checkbox
+                  id={fieldKey}
+                  checked={controllerField.value}
+                  onCheckedChange={controllerField.onChange}
+                  className={
+                    errors[fieldKey] ? "border-red-500 dark:border-red-400" : ""
+                  }
+                />
+              )}
+            />
+            <Label
+              htmlFor={fieldKey}
+              className="text-sm font-medium text-zinc-900 dark:text-zinc-100 cursor-pointer"
+            >
+              {field.label}
+            </Label>
+          </div>
+          {errors[fieldKey] && (
+            <div className="flex items-center space-x-2 text-red-600 dark:text-red-400 text-sm">
+              <AlertCircle className="w-4 h-4" />
+              <span>{String(errors[fieldKey]?.message)}</span>
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    return (
+      <div key={fieldKey} className="space-y-2">
         <Label
           htmlFor={fieldKey}
           className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
@@ -223,11 +361,9 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
               </h3>
             </div>
             <div className="space-y-6">
-              {Object.entries(QUESTIONS).map(([fieldKey, field]) => (
-                <div key={`question-${fieldKey}`}>
-                  {renderField(fieldKey, field)}
-                </div>
-              ))}
+              {Object.entries(QUESTIONS).map(([fieldKey, field]) =>
+                renderField(fieldKey, field)
+              )}
             </div>
           </div>
 
@@ -240,9 +376,9 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
             </div>
             <div className="grid md:grid-cols-2 gap-6">
               {Object.entries(PERSONAL_DATA).map(([fieldKey, field]) => (
-                <div key={`personal-${fieldKey}`} className="space-y-2">
+                <div key={fieldKey} className="space-y-2">
                   <Label
-                    htmlFor={`personal-input-${fieldKey}`}
+                    htmlFor={fieldKey}
                     className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
                   >
                     {field.label} *
@@ -254,7 +390,7 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
                     </div>
                   )}
                   <Input
-                    id={`personal-input-${fieldKey}`}
+                    id={fieldKey}
                     type={field.type}
                     {...register(fieldKey)}
                     className={`w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400 ${
@@ -279,7 +415,7 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
             <div className="grid md:grid-cols-2 gap-6">
               <div className="space-y-2">
                 <Label
-                  htmlFor="ciudad-select"
+                  htmlFor="ciudad"
                   className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
                 >
                   Ciudad *
@@ -295,18 +431,12 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
                   value={watch("ciudad")}
                   {...register("ciudad")}
                 >
-                  <SelectTrigger
-                    id="ciudad-select"
-                    className="w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
-                  >
+                  <SelectTrigger className="w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400">
                     <SelectValue placeholder="Selecciona una ciudad" />
                   </SelectTrigger>
                   <SelectContent>
                     {CITY_OPTIONS.map((option) => (
-                      <SelectItem
-                        key={`city-${option.value}`}
-                        value={option.value}
-                      >
+                      <SelectItem key={option.value} value={option.value}>
                         {option.label}
                       </SelectItem>
                     ))}
@@ -316,7 +446,7 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
 
               <div className="space-y-2">
                 <Label
-                  htmlFor="tipo-propiedad-select"
+                  htmlFor="tipoPropiedad"
                   className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
                 >
                   Tipo de Propiedad *
@@ -334,18 +464,12 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
                   value={watch("tipoPropiedad")}
                   {...register("tipoPropiedad")}
                 >
-                  <SelectTrigger
-                    id="tipo-propiedad-select"
-                    className="w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
-                  >
+                  <SelectTrigger className="w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400">
                     <SelectValue placeholder="Selecciona tipo de propiedad" />
                   </SelectTrigger>
                   <SelectContent>
                     {PROPERTY_TYPE_OPTIONS.map((option) => (
-                      <SelectItem
-                        key={`property-type-${option.value}`}
-                        value={option.value}
-                      >
+                      <SelectItem key={option.value} value={option.value}>
                         {option.label}
                       </SelectItem>
                     ))}
@@ -356,18 +480,15 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
 
             {tipoPropiedad && PROPERTY_INFO_OWNER[tipoPropiedad] && (
               <div className="grid md:grid-cols-2 gap-6">
-                {PROPERTY_INFO_OWNER[tipoPropiedad].map((fieldKey, index) => {
+                {PROPERTY_INFO_OWNER[tipoPropiedad].map((fieldKey) => {
                   const field = INPUT_INFO[fieldKey];
                   if (!field) return null;
-                  return (
-                    <div key={`property-field-${fieldKey}-${index}`}>
-                      {renderField(fieldKey, field)}
-                    </div>
-                  );
+                  return renderField(fieldKey, field);
                 })}
               </div>
             )}
 
+            {/* Campos condicionales de área */}
             {watch("tieneParqueadero") === true && (
               <div className="space-y-4">
                 <div className="grid md:grid-cols-2 gap-4">
