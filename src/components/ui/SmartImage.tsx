@@ -4,6 +4,7 @@ import NextImage from "next/image";
 import { useState, useCallback, useEffect } from "react";
 import { ImageIcon, RefreshCw } from "lucide-react";
 import { ImageUtils } from "@/lib/imageUtils";
+import { imageUrlInterceptor } from "@/lib/imageUrlInterceptor";
 
 interface SmartImageProps {
   src: string | undefined | null;
@@ -61,15 +62,18 @@ export default function SmartImage({
       return "/placeholder-property.svg";
     }
 
-    // Validar y limpiar URL usando utilidades
-    if (src) {
-      const cleanSrc = ImageUtils.cleanFirebaseUrl(src);
+    // PASO 1: Interceptar y corregir URLs problemáticas
+    const interceptedSrc = imageUrlInterceptor.interceptUrl(src);
+    
+    // PASO 2: Validar y limpiar URL usando utilidades
+    if (interceptedSrc && interceptedSrc !== "/placeholder-property.svg") {
+      const cleanSrc = ImageUtils.cleanFirebaseUrl(interceptedSrc);
       if (cleanSrc && ImageUtils.isValidImageUrl(cleanSrc)) {
         return cleanSrc;
       }
     }
 
-    return src || "/placeholder-property.svg";
+    return interceptedSrc || "/placeholder-property.svg";
   });
 
   const [hasError, setHasError] = useState(false);
@@ -79,16 +83,26 @@ export default function SmartImage({
   // Reset states when src changes
   useEffect(() => {
     if (src && src !== currentSrc && !failedUrls.has(src)) {
-      // Limpiar URL usando utilidades
-      const cleanSrc = ImageUtils.cleanFirebaseUrl(src);
+      // PASO 1: Interceptar URLs problemáticas
+      const interceptedSrc = imageUrlInterceptor.interceptUrl(src);
+      
+      // PASO 2: Limpiar URL usando utilidades
+      if (interceptedSrc && interceptedSrc !== "/placeholder-property.svg") {
+        const cleanSrc = ImageUtils.cleanFirebaseUrl(interceptedSrc);
 
-      if (cleanSrc && ImageUtils.isValidImageUrl(cleanSrc)) {
-        setCurrentSrc(cleanSrc);
-        setHasError(false);
-        setRetryCount(0);
-        setIsLoading(true);
+        if (cleanSrc && ImageUtils.isValidImageUrl(cleanSrc)) {
+          setCurrentSrc(cleanSrc);
+          setHasError(false);
+          setRetryCount(0);
+          setIsLoading(true);
+        } else {
+          // URL inválida, usar placeholder
+          setCurrentSrc("/placeholder-property.svg");
+          setHasError(true);
+          setIsLoading(false);
+        }
       } else {
-        // URL inválida, usar placeholder
+        // Interceptor devolvió placeholder
         setCurrentSrc("/placeholder-property.svg");
         setHasError(true);
         setIsLoading(false);
@@ -108,6 +122,9 @@ export default function SmartImage({
     (event?: any) => {
       console.warn(`Image load failed: ${currentSrc}`);
       setIsLoading(false);
+
+      // Reportar URL problemática al interceptor
+      imageUrlInterceptor.reportProblematicUrl(currentSrc, event);
 
       // Log adicional para debugging en desarrollo
       if (process.env.NODE_ENV === "development" && event && event.target) {
