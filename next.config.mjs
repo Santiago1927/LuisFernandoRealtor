@@ -48,8 +48,8 @@ const nextConfig = {
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     unoptimized: false,
     // Loader personalizado para interceptar URLs problemáticas
-    loader: 'custom',
-    loaderFile: './src/lib/customImageLoader.js',
+    loader: "custom",
+    loaderFile: "./src/lib/customImageLoader.js",
   },
   experimental: {
     optimizePackageImports: ["@/components/ui"],

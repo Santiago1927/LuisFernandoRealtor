@@ -12,54 +12,56 @@ const BLOCKED_PATTERNS = [
 ];
 
 const BLOCKED_FIREBASE_URLS = [
-  '1753389229074_dinero.png',
-  '1753389282759_WhatsApp',
-  '1753417841583_th.outside926x816'
+  "1753389229074_dinero.png",
+  "1753389282759_WhatsApp",
+  "1753417841583_th.outside926x816",
 ];
 
 export default function customImageLoader({ src, width, quality }) {
-  console.log('🔍 Custom loader processing:', src);
+  console.log("🔍 Custom loader processing:", src);
 
   // Si es placeholder, retornar directamente
-  if (src.startsWith('/placeholder')) {
+  if (src.startsWith("/placeholder")) {
     return src;
   }
 
   // Verificar patrones problemáticos
-  const isProblematic = BLOCKED_PATTERNS.some(pattern => pattern.test(src));
-  const isBlockedFirebase = BLOCKED_FIREBASE_URLS.some(blocked => src.includes(blocked));
+  const isProblematic = BLOCKED_PATTERNS.some((pattern) => pattern.test(src));
+  const isBlockedFirebase = BLOCKED_FIREBASE_URLS.some((blocked) =>
+    src.includes(blocked)
+  );
 
   if (isProblematic || isBlockedFirebase) {
-    console.warn('🚨 Custom loader BLOCKED URL:', src);
-    return '/placeholder-property.svg';
+    console.warn("🚨 Custom loader BLOCKED URL:", src);
+    return "/placeholder-property.svg";
   }
 
   // Si la URL está mal codificada, intentar corregirla
-  if (src.includes('%2F')) {
+  if (src.includes("%2F")) {
     try {
       const decoded = decodeURIComponent(src);
-      console.log('🔧 Custom loader decoded URL:', decoded);
+      console.log("🔧 Custom loader decoded URL:", decoded);
       src = decoded;
     } catch (error) {
-      console.warn('❌ Custom loader could not decode, using placeholder');
-      return '/placeholder-property.svg';
+      console.warn("❌ Custom loader could not decode, using placeholder");
+      return "/placeholder-property.svg";
     }
   }
 
   // Para URLs locales, retornar directamente
-  if (src.startsWith('/')) {
+  if (src.startsWith("/")) {
     return src;
   }
 
   // Para URLs externas válidas, usar optimización estándar
   const params = new URLSearchParams();
-  params.set('url', src);
-  params.set('w', width.toString());
-  
+  params.set("url", src);
+  params.set("w", width.toString());
+
   if (quality) {
-    params.set('q', quality.toString());
+    params.set("q", quality.toString());
   }
-  
-  console.log('✅ Custom loader passing through:', src);
+
+  console.log("✅ Custom loader passing through:", src);
   return `/_next/image?${params.toString()}`;
 }

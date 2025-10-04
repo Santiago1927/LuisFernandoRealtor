@@ -24,7 +24,7 @@ const SAFE_IMAGE_PATTERNS = [
   /^\/images\/home\.webp$/,
   /^\/placeholder-property\.svg$/,
   /^\/logo\.(svg|png)$/,
-  /^\/favicon\.ico$/
+  /^\/favicon\.ico$/,
 ];
 
 // Lista negra de patrones que causan errores 400
@@ -33,7 +33,7 @@ const BLOCKED_PATTERNS = [
   /images%2Fcarousel%2F/gi,
   /%2Fimages%2F/gi,
   /properties%2Fimages%2F/gi,
-  /image\?url=%2F/gi
+  /image\?url=%2F/gi,
 ];
 
 /**
@@ -58,33 +58,36 @@ export default function UltraSafeImage({
   // Función para determinar si una URL es segura
   const isSafeUrl = useCallback((url: string): boolean => {
     // URLs locales en la lista blanca
-    if (url.startsWith('/')) {
-      return SAFE_IMAGE_PATTERNS.some(pattern => pattern.test(url));
+    if (url.startsWith("/")) {
+      return SAFE_IMAGE_PATTERNS.some((pattern) => pattern.test(url));
     }
-    
+
     // URLs de Unsplash (sabemos que funcionan)
-    if (url.includes('images.unsplash.com')) {
+    if (url.includes("images.unsplash.com")) {
       return true;
     }
-    
+
     // Bloquear Firebase Storage (todas las URLs están rotas)
-    if (url.includes('firebasestorage.googleapis.com')) {
-      console.warn('🚨 UltraSafeImage: Blocked Firebase Storage URL');
+    if (url.includes("firebasestorage.googleapis.com")) {
+      console.warn("🚨 UltraSafeImage: Blocked Firebase Storage URL");
       return false;
     }
-    
+
     // Verificar patrones bloqueados
-    const isBlocked = BLOCKED_PATTERNS.some(pattern => pattern.test(url));
+    const isBlocked = BLOCKED_PATTERNS.some((pattern) => pattern.test(url));
     if (isBlocked) {
-      console.warn('🚨 UltraSafeImage: Blocked dangerous pattern in URL:', url.substring(0, 50));
+      console.warn(
+        "🚨 UltraSafeImage: Blocked dangerous pattern in URL:",
+        url.substring(0, 50)
+      );
       return false;
     }
-    
+
     return true;
   }, []);
 
   const handleError = useCallback(() => {
-    console.warn('🚨 UltraSafeImage: Image failed to load:', src);
+    console.warn("🚨 UltraSafeImage: Image failed to load:", src);
     setHasError(true);
   }, [src]);
 
@@ -99,7 +102,11 @@ export default function UltraSafeImage({
         <div className="text-center text-zinc-400 dark:text-zinc-500">
           <ImageIcon className="h-8 w-8 mx-auto mb-1" />
           <span className="text-xs">
-            {hasError ? 'Error de imagen' : src ? 'Imagen bloqueada' : 'Sin imagen'}
+            {hasError
+              ? "Error de imagen"
+              : src
+              ? "Imagen bloqueada"
+              : "Sin imagen"}
           </span>
         </div>
       </div>
@@ -129,6 +136,6 @@ export default function UltraSafeImage({
   // Propiedades opcionales
   if (quality !== undefined) imageProps.quality = quality;
 
-  console.log('✅ UltraSafeImage: Rendering safe image:', src);
+  console.log("✅ UltraSafeImage: Rendering safe image:", src);
   return <NextImage {...imageProps} />;
 }
