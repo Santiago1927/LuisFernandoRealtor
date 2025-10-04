@@ -67,14 +67,20 @@ export default function ImageWrapper(props: ImageWrapperProps) {
       return;
     }
 
-    console.log("🔍 ImageWrapper processing URL:", props.src.substring(0, 50) + "...");
+    console.log(
+      "🔍 ImageWrapper processing URL:",
+      props.src.substring(0, 50) + "..."
+    );
 
     // PASO 2: Verificar patrones problemáticos usando RegExp
-    const hasProblematicPattern = PROBLEMATIC_URL_PATTERNS.some(pattern => {
+    const hasProblematicPattern = PROBLEMATIC_URL_PATTERNS.some((pattern) => {
       if (pattern instanceof RegExp) {
         const matches = pattern.test(props.src!);
         if (matches) {
-          console.warn(`🚨 Pattern match found: ${pattern.source} in URL:`, props.src!.substring(0, 50) + "...");
+          console.warn(
+            `🚨 Pattern match found: ${pattern.source} in URL:`,
+            props.src!.substring(0, 50) + "..."
+          );
         }
         return matches;
       }
@@ -84,42 +90,55 @@ export default function ImageWrapper(props: ImageWrapperProps) {
     // PASO 3: Verificar URLs excesivamente largas (más de 500 caracteres)
     const isTooLong = props.src.length > 500;
     if (isTooLong) {
-      console.warn("🚨 URL too long (>500 chars):", props.src.substring(0, 50) + "...");
+      console.warn(
+        "🚨 URL too long (>500 chars):",
+        props.src.substring(0, 50) + "..."
+      );
     }
 
     if (hasProblematicPattern || isTooLong) {
-      console.warn("🚨 Intercepted problematic pattern in URL:", props.src.substring(0, 50) + "...");
-      
+      console.warn(
+        "🚨 Intercepted problematic pattern in URL:",
+        props.src.substring(0, 50) + "..."
+      );
+
       // Intentar corregir la URL
       try {
         let corrected = props.src;
-        
+
         // Decodificar URL si está mal codificada
-        if (props.src.includes('%2F')) {
+        if (props.src.includes("%2F")) {
           corrected = decodeURIComponent(props.src);
-          console.log("🔧 Attempted to decode URL:", corrected.substring(0, 50) + "...");
+          console.log(
+            "🔧 Attempted to decode URL:",
+            corrected.substring(0, 50) + "..."
+          );
         }
-        
+
         // Verificar si la corrección es válida para Firebase Storage
-        if (corrected.includes("firebasestorage.googleapis.com") && 
-            corrected.includes("alt=media") && 
-            corrected.includes("token=")) {
+        if (
+          corrected.includes("firebasestorage.googleapis.com") &&
+          corrected.includes("alt=media") &&
+          corrected.includes("token=")
+        ) {
           console.log("✅ Corrected URL successfully");
           setCorrectedSrc(corrected);
           return;
         }
-        
+
         // Para URLs locales (carousel), verificar si existe el archivo
         if (corrected.startsWith("/images/")) {
-          console.log("✅ Local image URL detected, passing through:", corrected);
+          console.log(
+            "✅ Local image URL detected, passing through:",
+            corrected
+          );
           setCorrectedSrc(corrected);
           return;
         }
-        
       } catch (error) {
         console.warn("❌ Could not decode URL:", error);
       }
-      
+
       // Si no se puede corregir, usar placeholder
       console.warn("❌ Using placeholder for uncorrectable URL");
       setCorrectedSrc("/placeholder-property.svg");
