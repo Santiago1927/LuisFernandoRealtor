@@ -77,7 +77,7 @@ export default function HomeFilters() {
       {/* Botón Comprar prominente */}
       <div className="text-center mb-8">
         <div className="relative inline-block">
-          <div className="absolute -inset-1 bg-gradient-to-r from-amber-600 to-yellow-600 rounded-3xl blur opacity-30 animate-pulse"></div>
+          <div className="absolute -inset-1 bg-gradient-to-r from-amber-600 to-yellow-600 rounded-3xl blur opacity-40 animate-pulse"></div>
           <Link href="/propiedades">
             <Button
               size="lg"
@@ -88,13 +88,13 @@ export default function HomeFilters() {
             </Button>
           </Link>
         </div>
-        <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-3">
+        <p className="text-sm text-white/90 dark:text-white/80 mt-3 font-medium drop-shadow-lg">
           Explora todas nuestras propiedades disponibles
         </p>
       </div>
 
       {/* Card con filtros de búsqueda */}
-      <Card className="border-0 shadow-2xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur">
+      <Card className="border-0 shadow-2xl bg-white/90 dark:bg-zinc-900/90 backdrop-blur-md">
         <CardContent className="p-6 lg:p-8">
           <div className="text-center mb-6">
             <h3 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 mb-2">
