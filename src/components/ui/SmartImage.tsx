@@ -64,7 +64,7 @@ export default function SmartImage({
 
     // PASO 1: Interceptar y corregir URLs problemáticas
     const interceptedSrc = imageUrlInterceptor.interceptUrl(src);
-    
+
     // PASO 2: Validar y limpiar URL usando utilidades
     if (interceptedSrc && interceptedSrc !== "/placeholder-property.svg") {
       const cleanSrc = ImageUtils.cleanFirebaseUrl(interceptedSrc);
@@ -85,7 +85,7 @@ export default function SmartImage({
     if (src && src !== currentSrc && !failedUrls.has(src)) {
       // PASO 1: Interceptar URLs problemáticas
       const interceptedSrc = imageUrlInterceptor.interceptUrl(src);
-      
+
       // PASO 2: Limpiar URL usando utilidades
       if (interceptedSrc && interceptedSrc !== "/placeholder-property.svg") {
         const cleanSrc = ImageUtils.cleanFirebaseUrl(interceptedSrc);

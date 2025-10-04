@@ -27,12 +27,12 @@ export class ImageUrlInterceptor {
       // URLs con doble codificación
       /%2F[^/]/gi,
       // URLs malformateadas de Firebase
-      /properties%2Fimages%2F/gi
+      /properties%2Fimages%2F/gi,
     ];
 
     // Registrar patrones problemáticos
-    problemPatterns.forEach(pattern => {
-      console.warn('Registered problem pattern:', pattern);
+    problemPatterns.forEach((pattern) => {
+      console.warn("Registered problem pattern:", pattern);
     });
   }
 
@@ -40,28 +40,31 @@ export class ImageUrlInterceptor {
    * Intercepta y corrige URLs problemáticas
    */
   interceptUrl(url: string | null | undefined): string {
-    if (!url || typeof url !== 'string') {
-      return '/placeholder-property.svg';
+    if (!url || typeof url !== "string") {
+      return "/placeholder-property.svg";
     }
 
     // Si ya es un placeholder, retornar tal como está
-    if (url.startsWith('/') && !url.includes('http')) {
+    if (url.startsWith("/") && !url.includes("http")) {
       return url;
     }
 
     // Verificar si la URL contiene patrones problemáticos
     if (this.hasProblematicPattern(url)) {
-      console.warn('🚨 Intercepted problematic URL:', url.substring(0, 80) + '...');
-      
+      console.warn(
+        "🚨 Intercepted problematic URL:",
+        url.substring(0, 80) + "..."
+      );
+
       // Intentar corregir la URL
       const correctedUrl = this.correctUrl(url);
-      
+
       if (correctedUrl && correctedUrl !== url) {
-        console.log('✅ Corrected URL:', correctedUrl.substring(0, 80) + '...');
+        console.log("✅ Corrected URL:", correctedUrl.substring(0, 80) + "...");
         return correctedUrl;
       } else {
-        console.warn('❌ Could not correct URL, using placeholder');
-        return '/placeholder-property.svg';
+        console.warn("❌ Could not correct URL, using placeholder");
+        return "/placeholder-property.svg";
       }
     }
 
@@ -70,16 +73,16 @@ export class ImageUrlInterceptor {
 
   private hasProblematicPattern(url: string): boolean {
     const problematicPatterns = [
-      'imagez1-3F7',
-      'properties%2Fimages%2F',
+      "imagez1-3F7",
+      "properties%2Fimages%2F",
       // Patrón de doble codificación
       /%2F.*%2F/g,
       // URLs excesivamente largas (más de 500 caracteres)
-      url.length > 500
+      url.length > 500,
     ];
 
-    return problematicPatterns.some(pattern => {
-      if (typeof pattern === 'string') {
+    return problematicPatterns.some((pattern) => {
+      if (typeof pattern === "string") {
         return url.includes(pattern);
       } else if (pattern instanceof RegExp) {
         return pattern.test(url);
@@ -93,19 +96,22 @@ export class ImageUrlInterceptor {
     try {
       // Intentar decodificar la URL
       let correctedUrl = url;
-      
+
       // Decodificar caracteres URL-encoded
       try {
         correctedUrl = decodeURIComponent(url);
       } catch (e) {
         // Si falla la decodificación, intentar decodificar solo ciertas partes
-        correctedUrl = url.replace(/%2F/g, '/');
+        correctedUrl = url.replace(/%2F/g, "/");
       }
 
       // Verificar que la URL corregida sea válida para Firebase Storage
-      if (correctedUrl.includes('firebasestorage.googleapis.com')) {
+      if (correctedUrl.includes("firebasestorage.googleapis.com")) {
         // Verificar componentes esenciales
-        if (correctedUrl.includes('alt=media') && correctedUrl.includes('token=')) {
+        if (
+          correctedUrl.includes("alt=media") &&
+          correctedUrl.includes("token=")
+        ) {
           return correctedUrl;
         }
       }
@@ -113,7 +119,7 @@ export class ImageUrlInterceptor {
       // Si no se puede corregir, retornar null
       return null;
     } catch (error) {
-      console.error('Error correcting URL:', error);
+      console.error("Error correcting URL:", error);
       return null;
     }
   }
@@ -122,10 +128,10 @@ export class ImageUrlInterceptor {
    * Registra una URL como problemática para logging
    */
   reportProblematicUrl(url: string, error?: any) {
-    console.warn('🚨 Problematic URL reported:', {
-      url: url.substring(0, 100) + '...',
-      error: error?.message || 'Unknown error',
-      timestamp: new Date().toISOString()
+    console.warn("🚨 Problematic URL reported:", {
+      url: url.substring(0, 100) + "...",
+      error: error?.message || "Unknown error",
+      timestamp: new Date().toISOString(),
     });
   }
 
@@ -135,7 +141,7 @@ export class ImageUrlInterceptor {
   getStats() {
     return {
       problemUrlsRegistered: this.problemUrls.size,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     };
   }
 }
