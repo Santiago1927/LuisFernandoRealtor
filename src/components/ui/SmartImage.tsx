@@ -1,8 +1,9 @@
 "use client";
 
 import NextImage from "next/image";
-import { useState, useCallback } from "react";
-import { ImageIcon } from "lucide-react";
+import { useState, useCallback, useEffect } from "react";
+import { ImageIcon, RefreshCw } from "lucide-react";
+import { ImageUtils } from "@/lib/imageUtils";
 
 interface SmartImageProps {
   src: string | undefined | null;
@@ -18,6 +19,7 @@ interface SmartImageProps {
   blurDataURL?: string;
   onError?: (event?: any) => void;
   showPlaceholder?: boolean;
+  showRetryButton?: boolean;
   style?: React.CSSProperties;
   onClick?: () => void;
 }
@@ -49,6 +51,7 @@ export default function SmartImage({
   blurDataURL,
   onError,
   showPlaceholder = true,
+  showRetryButton = false,
   style,
   onClick,
 }: SmartImageProps) {
@@ -57,22 +60,65 @@ export default function SmartImage({
     if (src && failedUrls.has(src)) {
       return "/placeholder-property.svg";
     }
+    
+    // Validar y limpiar URL usando utilidades
+    if (src) {
+      const cleanSrc = ImageUtils.cleanFirebaseUrl(src);
+      if (cleanSrc && ImageUtils.isValidImageUrl(cleanSrc)) {
+        return cleanSrc;
+      }
+    }
+    
     return src || "/placeholder-property.svg";
   });
 
   const [hasError, setHasError] = useState(false);
   const [retryCount, setRetryCount] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Reset states when src changes
+  useEffect(() => {
+    if (src && src !== currentSrc && !failedUrls.has(src)) {
+      // Limpiar URL usando utilidades
+      const cleanSrc = ImageUtils.cleanFirebaseUrl(src);
+      
+      if (cleanSrc && ImageUtils.isValidImageUrl(cleanSrc)) {
+        setCurrentSrc(cleanSrc);
+        setHasError(false);
+        setRetryCount(0);
+        setIsLoading(true);
+      } else {
+        // URL inválida, usar placeholder
+        setCurrentSrc("/placeholder-property.svg");
+        setHasError(true);
+        setIsLoading(false);
+      }
+    }
+  }, [src, currentSrc]);
 
   const isFirebaseStorage = useCallback((url: string) => {
     return url.includes("firebasestorage.googleapis.com");
   }, []);
 
   const isUnreliableDomain = useCallback((url: string) => {
-    return UNRELIABLE_DOMAINS.some((domain) => url.includes(domain));
+    return ImageUtils.isUnreliableDomain(url);
   }, []);
 
-  const handleImageError = useCallback(() => {
+  const handleImageError = useCallback((event?: any) => {
     console.warn(`Image load failed: ${currentSrc}`);
+    setIsLoading(false);
+    
+    // Log adicional para debugging en desarrollo
+    if (process.env.NODE_ENV === 'development' && event && event.target) {
+      const debugInfo = ImageUtils.getUrlDebugInfo(currentSrc);
+      console.warn(`Error details:`, {
+        src: event.target.src,
+        naturalWidth: event.target.naturalWidth,
+        naturalHeight: event.target.naturalHeight,
+        complete: event.target.complete,
+        debugInfo
+      });
+    }
 
     // Marcar URL como fallida
     if (currentSrc) {
@@ -82,7 +128,7 @@ export default function SmartImage({
     // Si ya estamos usando el placeholder y sigue fallando
     if (currentSrc === "/placeholder-property.svg") {
       setHasError(true);
-      onError?.();
+      onError?.(event);
       return;
     }
 
@@ -90,23 +136,26 @@ export default function SmartImage({
     if (src && isFirebaseStorage(src)) {
       console.warn(`Firebase Storage URL failed: ${src}`);
       setCurrentSrc("/placeholder-property.svg");
-      onError?.();
+      onError?.(event);
       return;
     }
 
     // Para otros dominios no confiables, intentar una vez más antes del placeholder
-    if (src && isUnreliableDomain(src) && retryCount < 1) {
+    if (src && isUnreliableDomain(src) && retryCount < 2) {
       setRetryCount((prev) => prev + 1);
       // Intentar recargar después de un breve delay
       setTimeout(() => {
-        setCurrentSrc(`${src}?retry=${retryCount + 1}`);
+        const retryUrl = ImageUtils.generateRetryUrl(src, retryCount + 1);
+        setCurrentSrc(retryUrl);
+        setIsLoading(true);
       }, 1000);
       return;
     }
 
     // Como último recurso, usar placeholder
     setCurrentSrc("/placeholder-property.svg");
-    onError?.();
+    setHasError(true);
+    onError?.(event);
   }, [
     currentSrc,
     src,
@@ -115,6 +164,25 @@ export default function SmartImage({
     retryCount,
     onError,
   ]);
+
+  const handleImageLoad = useCallback(() => {
+    setIsLoading(false);
+    setHasError(false);
+  }, []);
+
+  const handleRetry = useCallback(() => {
+    if (src && src !== "/placeholder-property.svg") {
+      setRetryCount(0);
+      setHasError(false);
+      setIsLoading(true);
+      failedUrls.delete(src); // Remove from failed cache
+      
+      // Limpiar URL antes del retry
+      const cleanSrc = ImageUtils.cleanFirebaseUrl(src);
+      const retryUrl = ImageUtils.generateRetryUrl(cleanSrc || src, 0);
+      setCurrentSrc(retryUrl);
+    }
+  }, [src]);
 
   // Si no hay src inicial, mostrar placeholder
   if (!src) {
@@ -143,13 +211,25 @@ export default function SmartImage({
   if (hasError) {
     return (
       <div
-        className={`flex items-center justify-center bg-zinc-100 dark:bg-zinc-800 ${className}`}
+        className={`flex flex-col items-center justify-center bg-zinc-100 dark:bg-zinc-800 ${className}`}
         style={style}
         onClick={onClick}
       >
         <div className="text-center text-zinc-400 dark:text-zinc-500">
           <ImageIcon className="h-8 w-8 mx-auto mb-1" />
           <span className="text-xs">Error de imagen</span>
+          {showRetryButton && src && src !== "/placeholder-property.svg" && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                handleRetry();
+              }}
+              className="mt-2 flex items-center gap-1 text-xs text-blue-500 hover:text-blue-600 transition-colors"
+            >
+              <RefreshCw className="h-3 w-3" />
+              Reintentar
+            </button>
+          )}
         </div>
       </div>
     );
@@ -159,10 +239,11 @@ export default function SmartImage({
   const imageProps: any = {
     src: currentSrc,
     alt,
-    className,
+    className: `${className} ${isLoading ? 'opacity-50' : 'opacity-100'} transition-opacity duration-200`,
     sizes,
     priority,
     onError: handleImageError,
+    onLoad: handleImageLoad,
     style,
     onClick,
   };

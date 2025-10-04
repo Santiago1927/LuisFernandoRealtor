@@ -1,22 +1,23 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export function middleware(request: NextRequest) {
-  // Log de todas las requests de imágenes para debug
-  if (
-    request.nextUrl.pathname.startsWith("/images/") ||
-    request.nextUrl.pathname.includes("image") ||
-    request.nextUrl.pathname.startsWith("/_next/image")
-  ) {
-    console.log(
-      "Image request:",
-      request.nextUrl.pathname,
-      request.nextUrl.search
-    );
+  // Reducir logs de imagen para evitar spam en producción
+  if (process.env.NODE_ENV === 'development') {
+    if (
+      request.nextUrl.pathname.startsWith("/images/") ||
+      request.nextUrl.pathname.includes("image") ||
+      request.nextUrl.pathname.startsWith("/_next/image")
+    ) {
+      console.log(
+        "Image request:",
+        request.nextUrl.pathname,
+        request.nextUrl.search
+      );
+    }
   }
 
   // Manejar rutas de imágenes que no existen
   if (request.nextUrl.pathname.startsWith("/images/")) {
-    // Si es una imagen que no existe, redirigir al placeholder
     const response = NextResponse.next();
     response.headers.set(
       "Cache-Control",
@@ -25,14 +26,26 @@ export function middleware(request: NextRequest) {
     return response;
   }
 
-  // Agregar headers de seguridad
-  const response = NextResponse.next();
-
-  // Headers de seguridad para imágenes
+  // Mejorar el manejo de errores para _next/image
   if (request.nextUrl.pathname.startsWith("/_next/image")) {
+    const response = NextResponse.next();
     response.headers.set("Cache-Control", "public, max-age=86400");
     response.headers.set("X-Content-Type-Options", "nosniff");
+    
+    // Agregar header para permitir CORS en imágenes
+    response.headers.set("Access-Control-Allow-Origin", "*");
+    response.headers.set("Access-Control-Allow-Methods", "GET, HEAD, OPTIONS");
+    
+    return response;
   }
+
+  // Agregar headers de seguridad generales
+  const response = NextResponse.next();
+  
+  // Headers de seguridad globales
+  response.headers.set("X-Frame-Options", "DENY");
+  response.headers.set("X-Content-Type-Options", "nosniff");
+  response.headers.set("Referrer-Policy", "origin-when-cross-origin");
 
   return response;
 }
