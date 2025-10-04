@@ -60,7 +60,7 @@ export default function SmartImage({
     if (src && failedUrls.has(src)) {
       return "/placeholder-property.svg";
     }
-    
+
     // Validar y limpiar URL usando utilidades
     if (src) {
       const cleanSrc = ImageUtils.cleanFirebaseUrl(src);
@@ -68,7 +68,7 @@ export default function SmartImage({
         return cleanSrc;
       }
     }
-    
+
     return src || "/placeholder-property.svg";
   });
 
@@ -81,7 +81,7 @@ export default function SmartImage({
     if (src && src !== currentSrc && !failedUrls.has(src)) {
       // Limpiar URL usando utilidades
       const cleanSrc = ImageUtils.cleanFirebaseUrl(src);
-      
+
       if (cleanSrc && ImageUtils.isValidImageUrl(cleanSrc)) {
         setCurrentSrc(cleanSrc);
         setHasError(false);
@@ -104,66 +104,69 @@ export default function SmartImage({
     return ImageUtils.isUnreliableDomain(url);
   }, []);
 
-  const handleImageError = useCallback((event?: any) => {
-    console.warn(`Image load failed: ${currentSrc}`);
-    setIsLoading(false);
-    
-    // Log adicional para debugging en desarrollo
-    if (process.env.NODE_ENV === 'development' && event && event.target) {
-      const debugInfo = ImageUtils.getUrlDebugInfo(currentSrc);
-      console.warn(`Error details:`, {
-        src: event.target.src,
-        naturalWidth: event.target.naturalWidth,
-        naturalHeight: event.target.naturalHeight,
-        complete: event.target.complete,
-        debugInfo
-      });
-    }
+  const handleImageError = useCallback(
+    (event?: any) => {
+      console.warn(`Image load failed: ${currentSrc}`);
+      setIsLoading(false);
 
-    // Marcar URL como fallida
-    if (currentSrc) {
-      failedUrls.add(currentSrc);
-    }
+      // Log adicional para debugging en desarrollo
+      if (process.env.NODE_ENV === "development" && event && event.target) {
+        const debugInfo = ImageUtils.getUrlDebugInfo(currentSrc);
+        console.warn(`Error details:`, {
+          src: event.target.src,
+          naturalWidth: event.target.naturalWidth,
+          naturalHeight: event.target.naturalHeight,
+          complete: event.target.complete,
+          debugInfo,
+        });
+      }
 
-    // Si ya estamos usando el placeholder y sigue fallando
-    if (currentSrc === "/placeholder-property.svg") {
+      // Marcar URL como fallida
+      if (currentSrc) {
+        failedUrls.add(currentSrc);
+      }
+
+      // Si ya estamos usando el placeholder y sigue fallando
+      if (currentSrc === "/placeholder-property.svg") {
+        setHasError(true);
+        onError?.(event);
+        return;
+      }
+
+      // Para URLs de Firebase Storage rotas, ir directo al placeholder
+      if (src && isFirebaseStorage(src)) {
+        console.warn(`Firebase Storage URL failed: ${src}`);
+        setCurrentSrc("/placeholder-property.svg");
+        onError?.(event);
+        return;
+      }
+
+      // Para otros dominios no confiables, intentar una vez más antes del placeholder
+      if (src && isUnreliableDomain(src) && retryCount < 2) {
+        setRetryCount((prev) => prev + 1);
+        // Intentar recargar después de un breve delay
+        setTimeout(() => {
+          const retryUrl = ImageUtils.generateRetryUrl(src, retryCount + 1);
+          setCurrentSrc(retryUrl);
+          setIsLoading(true);
+        }, 1000);
+        return;
+      }
+
+      // Como último recurso, usar placeholder
+      setCurrentSrc("/placeholder-property.svg");
       setHasError(true);
       onError?.(event);
-      return;
-    }
-
-    // Para URLs de Firebase Storage rotas, ir directo al placeholder
-    if (src && isFirebaseStorage(src)) {
-      console.warn(`Firebase Storage URL failed: ${src}`);
-      setCurrentSrc("/placeholder-property.svg");
-      onError?.(event);
-      return;
-    }
-
-    // Para otros dominios no confiables, intentar una vez más antes del placeholder
-    if (src && isUnreliableDomain(src) && retryCount < 2) {
-      setRetryCount((prev) => prev + 1);
-      // Intentar recargar después de un breve delay
-      setTimeout(() => {
-        const retryUrl = ImageUtils.generateRetryUrl(src, retryCount + 1);
-        setCurrentSrc(retryUrl);
-        setIsLoading(true);
-      }, 1000);
-      return;
-    }
-
-    // Como último recurso, usar placeholder
-    setCurrentSrc("/placeholder-property.svg");
-    setHasError(true);
-    onError?.(event);
-  }, [
-    currentSrc,
-    src,
-    isFirebaseStorage,
-    isUnreliableDomain,
-    retryCount,
-    onError,
-  ]);
+    },
+    [
+      currentSrc,
+      src,
+      isFirebaseStorage,
+      isUnreliableDomain,
+      retryCount,
+      onError,
+    ]
+  );
 
   const handleImageLoad = useCallback(() => {
     setIsLoading(false);
@@ -176,7 +179,7 @@ export default function SmartImage({
       setHasError(false);
       setIsLoading(true);
       failedUrls.delete(src); // Remove from failed cache
-      
+
       // Limpiar URL antes del retry
       const cleanSrc = ImageUtils.cleanFirebaseUrl(src);
       const retryUrl = ImageUtils.generateRetryUrl(cleanSrc || src, 0);
@@ -239,7 +242,9 @@ export default function SmartImage({
   const imageProps: any = {
     src: currentSrc,
     alt,
-    className: `${className} ${isLoading ? 'opacity-50' : 'opacity-100'} transition-opacity duration-200`,
+    className: `${className} ${
+      isLoading ? "opacity-50" : "opacity-100"
+    } transition-opacity duration-200`,
     sizes,
     priority,
     onError: handleImageError,

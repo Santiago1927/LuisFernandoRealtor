@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export function middleware(request: NextRequest) {
   // Reducir logs de imagen para evitar spam en producción
-  if (process.env.NODE_ENV === 'development') {
+  if (process.env.NODE_ENV === "development") {
     if (
       request.nextUrl.pathname.startsWith("/images/") ||
       request.nextUrl.pathname.includes("image") ||
@@ -31,17 +31,17 @@ export function middleware(request: NextRequest) {
     const response = NextResponse.next();
     response.headers.set("Cache-Control", "public, max-age=86400");
     response.headers.set("X-Content-Type-Options", "nosniff");
-    
+
     // Agregar header para permitir CORS en imágenes
     response.headers.set("Access-Control-Allow-Origin", "*");
     response.headers.set("Access-Control-Allow-Methods", "GET, HEAD, OPTIONS");
-    
+
     return response;
   }
 
   // Agregar headers de seguridad generales
   const response = NextResponse.next();
-  
+
   // Headers de seguridad globales
   response.headers.set("X-Frame-Options", "DENY");
   response.headers.set("X-Content-Type-Options", "nosniff");

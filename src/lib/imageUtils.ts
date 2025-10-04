@@ -7,14 +7,14 @@ export const ImageUtils = {
    * Valida si una URL de imagen es válida
    */
   isValidImageUrl(url: string | null | undefined): boolean {
-    if (!url || typeof url !== 'string') return false;
-    
+    if (!url || typeof url !== "string") return false;
+
     // URLs locales son válidas
-    if (url.startsWith('/')) return true;
-    
+    if (url.startsWith("/")) return true;
+
     // Verificar protocolo válido
-    if (!url.startsWith('http://') && !url.startsWith('https://')) return false;
-    
+    if (!url.startsWith("http://") && !url.startsWith("https://")) return false;
+
     return true;
   },
 
@@ -22,23 +22,23 @@ export const ImageUtils = {
    * Limpia y decodifica URLs de Firebase Storage problemáticas
    */
   cleanFirebaseUrl(url: string | null | undefined): string | null {
-    if (!url || typeof url !== 'string') return null;
-    
+    if (!url || typeof url !== "string") return null;
+
     // Si no es URL de Firebase, retornar tal como está
-    if (!url.includes('firebasestorage.googleapis.com')) return url;
-    
+    if (!url.includes("firebasestorage.googleapis.com")) return url;
+
     try {
       // Decodificar URL si está sobre-codificada
       let cleanUrl = decodeURIComponent(url);
-      
+
       // Verificar que tenga los componentes esenciales
-      if (cleanUrl.includes('alt=media') && cleanUrl.includes('token=')) {
+      if (cleanUrl.includes("alt=media") && cleanUrl.includes("token=")) {
         return cleanUrl;
       }
-      
+
       return null; // URL malformateada
     } catch (error) {
-      console.warn('Error cleaning Firebase URL:', error);
+      console.warn("Error cleaning Firebase URL:", error);
       return null;
     }
   },
@@ -47,7 +47,7 @@ export const ImageUtils = {
    * Genera un cache key único para una URL
    */
   getCacheKey(url: string): string {
-    return btoa(encodeURIComponent(url)).replace(/[+/=]/g, '');
+    return btoa(encodeURIComponent(url)).replace(/[+/=]/g, "");
   },
 
   /**
@@ -55,18 +55,18 @@ export const ImageUtils = {
    */
   isUnreliableDomain(url: string): boolean {
     const unreliableDomains = [
-      'firebasestorage.googleapis.com',
-      'images.unsplash.com'
+      "firebasestorage.googleapis.com",
+      "images.unsplash.com",
     ];
-    
-    return unreliableDomains.some(domain => url.includes(domain));
+
+    return unreliableDomains.some((domain) => url.includes(domain));
   },
 
   /**
    * Genera URLs de reintento con timestamp
    */
   generateRetryUrl(originalUrl: string, retryCount: number): string {
-    const separator = originalUrl.includes('?') ? '&' : '?';
+    const separator = originalUrl.includes("?") ? "&" : "?";
     const timestamp = Date.now();
     return `${originalUrl}${separator}retry=${retryCount}&t=${timestamp}`;
   },
@@ -84,14 +84,14 @@ export const ImageUtils = {
   } {
     try {
       const urlObj = new URL(url);
-      
+
       return {
-        isFirebase: url.includes('firebasestorage.googleapis.com'),
-        isEncoded: url.includes('%'),
-        hasToken: url.includes('token='),
-        hasAltMedia: url.includes('alt=media'),
+        isFirebase: url.includes("firebasestorage.googleapis.com"),
+        isEncoded: url.includes("%"),
+        hasToken: url.includes("token="),
+        hasAltMedia: url.includes("alt=media"),
         length: url.length,
-        domain: urlObj.hostname
+        domain: urlObj.hostname,
       };
     } catch (error) {
       return {
@@ -100,8 +100,8 @@ export const ImageUtils = {
         hasToken: false,
         hasAltMedia: false,
         length: url.length,
-        domain: null
+        domain: null,
       };
     }
-  }
+  },
 };

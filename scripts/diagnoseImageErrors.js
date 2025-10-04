@@ -1,9 +1,5 @@
 const { initializeApp } = require("firebase/app");
-const { 
-  getFirestore, 
-  collection, 
-  getDocs 
-} = require("firebase/firestore");
+const { getFirestore, collection, getDocs } = require("firebase/firestore");
 
 // Configuración de Firebase
 const firebaseConfig = {
@@ -28,7 +24,7 @@ async function diagnoseImageErrors() {
     // Obtener todas las propiedades
     const propertiesCollection = collection(db, "properties");
     const snapshot = await getDocs(propertiesCollection);
-    
+
     let totalProperties = 0;
     let propertiesWithImages = 0;
     let suspiciousUrls = [];
@@ -40,70 +36,82 @@ async function diagnoseImageErrors() {
       totalProperties++;
       const property = docSnapshot.data();
       const propertyId = docSnapshot.id;
-      
-      if (property.images && Array.isArray(property.images) && property.images.length > 0) {
+
+      if (
+        property.images &&
+        Array.isArray(property.images) &&
+        property.images.length > 0
+      ) {
         propertiesWithImages++;
-        
+
         for (let i = 0; i < property.images.length; i++) {
           const imageUrl = property.images[i];
-          
+
           // Buscar URLs problemáticas
-          if (imageUrl && typeof imageUrl === 'string') {
-            
+          if (imageUrl && typeof imageUrl === "string") {
             // Verificar si contiene caracteres raros como en el error
-            if (imageUrl.includes('%2F') || imageUrl.includes('imagez1') || imageUrl.includes('3F7')) {
+            if (
+              imageUrl.includes("%2F") ||
+              imageUrl.includes("imagez1") ||
+              imageUrl.includes("3F7")
+            ) {
               suspiciousUrls.push({
                 propertyId,
-                propertyTitle: property.title || 'Sin título',
+                propertyTitle: property.title || "Sin título",
                 imageIndex: i,
                 url: imageUrl,
-                issue: 'URL codificada o malformada'
+                issue: "URL codificada o malformada",
               });
             }
-            
+
             // Verificar URLs de Firebase Storage con tokens expirados
-            if (imageUrl.includes('firebasestorage.googleapis.com')) {
+            if (imageUrl.includes("firebasestorage.googleapis.com")) {
               // Verificar si la URL tiene formato correcto
-              const hasToken = imageUrl.includes('token=');
-              const hasAltMedia = imageUrl.includes('alt=media');
-              
+              const hasToken = imageUrl.includes("token=");
+              const hasAltMedia = imageUrl.includes("alt=media");
+
               if (!hasToken || !hasAltMedia) {
                 suspiciousUrls.push({
                   propertyId,
-                  propertyTitle: property.title || 'Sin título',
+                  propertyTitle: property.title || "Sin título",
                   imageIndex: i,
                   url: imageUrl,
-                  issue: 'URL de Firebase Storage mal formateada'
+                  issue: "URL de Firebase Storage mal formateada",
                 });
               }
             }
-            
+
             // Verificar URLs muy largas o con codificación extraña
-            if (imageUrl.length > 500 || /[%][0-9A-Fa-f][0-9A-Fa-f][%][0-9A-Fa-f][0-9A-Fa-f]/.test(imageUrl)) {
+            if (
+              imageUrl.length > 500 ||
+              /[%][0-9A-Fa-f][0-9A-Fa-f][%][0-9A-Fa-f][0-9A-Fa-f]/.test(
+                imageUrl
+              )
+            ) {
               suspiciousUrls.push({
                 propertyId,
-                propertyTitle: property.title || 'Sin título',
+                propertyTitle: property.title || "Sin título",
                 imageIndex: i,
                 url: imageUrl,
-                issue: 'URL excesivamente codificada'
+                issue: "URL excesivamente codificada",
               });
             }
           } else {
             suspiciousUrls.push({
               propertyId,
-              propertyTitle: property.title || 'Sin título',
+              propertyTitle: property.title || "Sin título",
               imageIndex: i,
               url: imageUrl,
-              issue: 'URL no válida (null, undefined o no string)'
+              issue: "URL no válida (null, undefined o no string)",
             });
           }
         }
-        
-        if (suspiciousUrls.some(u => u.propertyId === propertyId)) {
+
+        if (suspiciousUrls.some((u) => u.propertyId === propertyId)) {
           problematicProperties.push({
             id: propertyId,
-            title: property.title || 'Sin título',
-            imageCount: property.images.length
+            title: property.title || "Sin título",
+            imageCount: property.images.length,
           });
         }
       }
@@ -114,18 +122,24 @@ async function diagnoseImageErrors() {
     console.log(`📁 Total propiedades: ${totalProperties}`);
     console.log(`📸 Propiedades con imágenes: ${propertiesWithImages}`);
     console.log(`⚠️  URLs sospechosas encontradas: ${suspiciousUrls.length}`);
-    console.log(`🏠 Propiedades problemáticas: ${problematicProperties.length}\n`);
+    console.log(
+      `🏠 Propiedades problemáticas: ${problematicProperties.length}\n`
+    );
 
     if (suspiciousUrls.length > 0) {
       console.log("🚨 URLS PROBLEMÁTICAS DETECTADAS:");
       console.log("=".repeat(60));
-      
+
       suspiciousUrls.forEach((item, index) => {
         console.log(`${index + 1}. Propiedad: ${item.propertyTitle}`);
         console.log(`   ID: ${item.propertyId}`);
         console.log(`   Imagen: ${item.imageIndex + 1}`);
         console.log(`   Problema: ${item.issue}`);
-        console.log(`   URL: ${item.url.substring(0, 100)}${item.url.length > 100 ? '...' : ''}`);
+        console.log(
+          `   URL: ${item.url.substring(0, 100)}${
+            item.url.length > 100 ? "..." : ""
+          }`
+        );
         console.log("");
       });
 
@@ -144,11 +158,12 @@ async function diagnoseImageErrors() {
     if (problematicProperties.length > 0) {
       console.log("\n🔧 PROPIEDADES QUE NECESITAN LIMPIEZA:");
       console.log("=".repeat(60));
-      problematicProperties.forEach(prop => {
-        console.log(`- ${prop.title} (ID: ${prop.id}) - ${prop.imageCount} imágenes`);
+      problematicProperties.forEach((prop) => {
+        console.log(
+          `- ${prop.title} (ID: ${prop.id}) - ${prop.imageCount} imágenes`
+        );
       });
     }
-
   } catch (error) {
     console.error("❌ Error durante el diagnóstico:", error);
     throw error;
