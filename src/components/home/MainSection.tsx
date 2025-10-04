@@ -1,4 +1,4 @@
-import SmartImage from "@/components/ui/SmartImage";
+import ImageWrapper from "@/components/ui/ImageWrapper";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -116,7 +116,7 @@ export default function MainSection() {
 
             <div className="relative">
               <div className="relative rounded-3xl overflow-hidden shadow-2xl">
-                <SmartImage
+                <ImageWrapper
                   src="/images/home.webp"
                   alt="Propiedad de lujo exclusiva"
                   width={800}

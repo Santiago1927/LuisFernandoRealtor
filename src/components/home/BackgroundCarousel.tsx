@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import SmartImage from "@/components/ui/SmartImage";
+import ImageWrapper from "@/components/ui/ImageWrapper";
 import { motion, AnimatePresence } from "framer-motion";
 
 const backgroundImages = [
@@ -77,7 +77,7 @@ export default function BackgroundCarousel({
             }}
             className="absolute inset-0 w-full h-full"
           >
-            <SmartImage
+            <ImageWrapper
               src={backgroundImages[currentImageIndex].src}
               alt={backgroundImages[currentImageIndex].alt}
               fill
