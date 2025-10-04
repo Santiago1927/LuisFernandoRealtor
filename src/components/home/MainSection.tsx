@@ -1,4 +1,4 @@
-import ImageWrapper from "@/components/ui/ImageWrapper";
+import UltraSafeImage from "@/components/ui/UltraSafeImage";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -116,7 +116,7 @@ export default function MainSection() {
 
             <div className="relative">
               <div className="relative rounded-3xl overflow-hidden shadow-2xl">
-                <ImageWrapper
+                <UltraSafeImage
                   src="/images/home.webp"
                   alt="Propiedad de lujo exclusiva"
                   width={800}

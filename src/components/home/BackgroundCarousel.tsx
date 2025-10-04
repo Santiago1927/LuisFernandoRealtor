@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import ImageWrapper from "@/components/ui/ImageWrapper";
+import UltraSafeImage from "@/components/ui/UltraSafeImage";
 import { motion, AnimatePresence } from "framer-motion";
 
 const backgroundImages = [
@@ -77,7 +77,7 @@ export default function BackgroundCarousel({
             }}
             className="absolute inset-0 w-full h-full"
           >
-            <ImageWrapper
+            <UltraSafeImage
               src={backgroundImages[currentImageIndex].src}
               alt={backgroundImages[currentImageIndex].alt}
               fill

@@ -57,20 +57,32 @@ export default function ImageWrapper(props: ImageWrapperProps) {
       return;
     }
 
-    // Verificar si es una URL conocida como problemática
+    console.log("🔍 ImageWrapper processing URL:", props.src.substring(0, 50) + "...");
+
+    // PASO 0: Bloqueo inmediato de URLs que sabemos que causan 400
+    const immediateBlocks = [
+      'imagez1-3F7',
+      'images%2Fcarousel%2F',
+      '/_next/image?url=%2F',
+      'image?url=%2Fimages%2Fcarousel%2F'
+    ];
+
+    const shouldBlock = immediateBlocks.some(block => props.src!.includes(block));
+    if (shouldBlock) {
+      console.warn("🚨 IMMEDIATE BLOCK - Known 400 pattern:", props.src.substring(0, 50) + "...");
+      setCorrectedSrc("/placeholder-property.svg");
+      return;
+    }
+
+    // PASO 1: Verificar si es una URL conocida como problemática
     if (KNOWN_BROKEN_URLS.has(props.src)) {
       console.warn(
-        "🚨 Intercepted known broken URL:",
+        "� Intercepted known broken URL:",
         props.src.substring(0, 50) + "..."
       );
       setCorrectedSrc("/placeholder-property.svg");
       return;
     }
-
-    console.log(
-      "🔍 ImageWrapper processing URL:",
-      props.src.substring(0, 50) + "..."
-    );
 
     // PASO 2: Verificar patrones problemáticos usando RegExp
     const hasProblematicPattern = PROBLEMATIC_URL_PATTERNS.some((pattern) => {

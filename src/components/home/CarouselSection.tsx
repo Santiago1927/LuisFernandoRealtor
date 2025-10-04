@@ -1,6 +1,6 @@
 "use client";
 
-import ImageWrapper from "@/components/ui/ImageWrapper";
+import UltraSafeImage from "@/components/ui/UltraSafeImage";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -165,7 +165,7 @@ export default function CarouselSection() {
         <div className="relative max-w-6xl mx-auto">
           <div className="relative aspect-[16/10] lg:aspect-[21/9] rounded-2xl overflow-hidden shadow-2xl">
             {currentProperty.images && currentProperty.images.length > 0 ? (
-              <ImageWrapper
+              <UltraSafeImage
                 fill
                 src={currentProperty.images[0]}
                 alt={currentProperty.title}

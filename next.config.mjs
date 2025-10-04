@@ -47,10 +47,9 @@ const nextConfig = {
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     unoptimized: false,
-    // Configuraciones adicionales para mejorar el manejo de errores
-    domains: [], // Deprecated but keeping for compatibility
-    dangerouslyAllowSVG: true,
-    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+    // Loader personalizado para interceptar URLs problemáticas
+    loader: 'custom',
+    loaderFile: './src/lib/customImageLoader.js',
   },
   experimental: {
     optimizePackageImports: ["@/components/ui"],
