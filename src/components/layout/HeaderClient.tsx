@@ -1,6 +1,7 @@
 "use client";
 
 import Header from "./Header";
+import MobileHeader from "./MobileHeader";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useAuthContext } from "../auth/AuthContext";
@@ -73,6 +74,6 @@ export default function HeaderClient() {
   // Si no debe renderizarse, retorna null
   if (!shouldRenderHeader) return null;
 
-  // Renderiza el componente Header
-  return <Header />;
+  // Renderiza el componente Header apropiado
+  return <MobileHeader />;
 }

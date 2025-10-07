@@ -1,0 +1,130 @@
+/*
+  ARCHIVO DE REGLAS DE SEGURIDAD DE FIRESTORE
+  ===========================================
+  
+  ¿QUÉ ES ESTE ARCHIVO?
+  ---------------------
+  Este archivo define las reglas de seguridad para la base de datos Firestore de Firebase.
+  Controla quién puede leer, escribir, actualizar o eliminar datos en cada colección.
+  
+  ¿PARA QUÉ SIRVE?
+  ---------------
+  1. Proteger datos sensibles de usuarios no autorizados
+  2. Controlar el acceso a diferentes colecciones según el tipo de usuario
+  3. Prevenir acceso malicioso o no autorizado a la base de datos
+  4. Definir permisos granulares para cada operación (lectura/escritura)
+  
+  ¿CÓMO FUNCIONA?
+  --------------
+  - Las reglas se evalúan en tiempo real para cada solicitud
+  - Si una regla devuelve 'true', se permite la operación
+  - Si una regla devuelve 'false', se deniega la operación
+  - Las reglas se aplican antes de que los datos lleguen a la aplicación
+  
+  ESTRUCTURA:
+  ----------
+  - rules_version: Versión de las reglas de Firestore
+  - service cloud.firestore: Define que estas reglas son para Firestore
+  - match /databases/{database}/documents: Aplica a todos los documentos
+  - match /{collection}/{documentId}: Reglas específicas por colección
+*/
+
+rules_version = '2'; // Versión actual de las reglas de Firestore
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // ========================================
+    // COLECCIÓN: properties (Propiedades)
+    // ========================================
+    // Propósito: Almacena información de propiedades inmobiliarias
+    // Acceso: Lectura pública (cualquiera puede ver), escritura solo autenticados
+    match /properties/{propertyId} {
+      allow read: if true; // ✅ Cualquier persona puede leer propiedades (para mostrar en el sitio web)
+      allow write: if request.auth != null; // ✅ Solo usuarios autenticados pueden crear/editar/eliminar
+    }
+    
+    // ========================================
+    // COLECCIÓN: buyers (Compradores)
+    // ========================================
+    // Propósito: Almacena datos de personas interesadas en comprar
+    // Acceso: Lectura solo autenticados, escritura pública (para formularios)
+    match /buyers/{buyerId} {
+      allow read: if request.auth != null; // ✅ Solo usuarios autenticados pueden leer
+      allow create: if true; // ✅ Cualquiera puede crear (enviar formulario)
+      allow update, delete: if request.auth != null; // ✅ Solo usuarios autenticados pueden modificar/eliminar
+    }
+    
+    // ========================================
+    // COLECCIÓN: owners (Propietarios)
+    // ========================================
+    // Propósito: Almacena datos de propietarios que quieren vender
+    // Acceso: Lectura solo autenticados, escritura pública (para formularios)
+    match /owners/{ownerId} {
+      allow read: if request.auth != null; // ✅ Solo usuarios autenticados pueden leer
+      allow create: if true; // ✅ Cualquiera puede crear (enviar formulario)
+      allow update, delete: if request.auth != null; // ✅ Solo usuarios autenticados pueden modificar/eliminar
+    }
+    
+    // ========================================
+    // COLECCIÓN: contacts (Contactos Generales)
+    // ========================================
+    // Propósito: Almacena consultas generales de contacto
+    // Acceso: Lectura solo autenticados, escritura pública (para formularios)
+    match /contacts/{contactId} {
+      allow read: if request.auth != null; // ✅ Solo usuarios autenticados pueden leer
+      allow create: if true; // ✅ Cualquiera puede crear (enviar formulario)
+      allow update, delete: if request.auth != null; // ✅ Solo usuarios autenticados pueden modificar/eliminar
+    }
+  }
+}
+
+/*
+  EXPLICACIÓN DETALLADA DE LAS REGLAS:
+  ====================================
+  
+  1. PROPERTIES (Propiedades):
+     - read: if true → Cualquier persona puede ver las propiedades
+       * Esto permite que el sitio web muestre las propiedades sin necesidad de login
+       * Es necesario para que los visitantes puedan ver las propiedades en venta
+     - write: if request.auth != null → Solo usuarios autenticados pueden modificar
+       * Protege contra modificaciones no autorizadas
+       * Solo administradores pueden crear/editar/eliminar propiedades
+  
+  2. BUYERS, OWNERS, CONTACTS:
+     - read: if request.auth != null → Solo usuarios autenticados pueden leer
+       * Los administradores pueden ver todos los datos enviados
+     - create: if true → Cualquier persona puede enviar formularios
+       * Permite que visitantes del sitio web envíen formularios de contacto
+     - update, delete: if request.auth != null → Solo usuarios autenticados pueden modificar
+       * Solo administradores pueden editar o eliminar datos existentes
+  
+  VARIABLES UTILIZADAS:
+  ====================
+  - {database}: ID de la base de datos (automático)
+  - {propertyId}, {buyerId}, {ownerId}, {contactId}: IDs de documentos (automáticos)
+  - request.auth: Información del usuario autenticado
+  - request.auth != null: Verifica si el usuario está autenticado
+  
+  SEGURIDAD IMPLEMENTADA:
+  ======================
+  ✅ Datos públicos (propiedades) → Lectura libre, escritura protegida
+  ✅ Datos privados (usuarios) → Acceso completo solo para autenticados
+  ✅ Prevención de acceso no autorizado
+  ✅ Protección de información personal
+  ✅ Control granular por colección
+  
+  CÓMO APLICAR ESTAS REGLAS:
+  =========================
+  1. Subir este archivo a Firebase Console
+  2. Ir a Firestore Database → Rules
+  3. Copiar y pegar el contenido
+  4. Publicar las reglas
+  
+  NOTAS IMPORTANTES:
+  =================
+  - Las reglas se aplican inmediatamente después de publicarlas
+  - Siempre prueba las reglas antes de poner en producción
+  - Las reglas son la primera línea de defensa de seguridad
+  - Nunca confíes solo en la validación del cliente
+*/ 
