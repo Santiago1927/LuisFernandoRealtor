@@ -67,7 +67,6 @@ export default function Footer() {
               />
               <div>
                 <h3 className="text-2xl font-bold text-white">REALHAUS</h3>
-                <p className="text-amber-400 font-medium">PREMIUM PROPERTIES</p>
               </div>
             </div>
             <p className="text-zinc-300 leading-relaxed max-w-md">
@@ -86,7 +85,7 @@ export default function Footer() {
               <div className="flex items-center space-x-3 text-zinc-300 hover:text-amber-400 transition-colors">
                 <Phone className="w-4 h-4 text-amber-500" />
                 <a href="tel:+573214223931" className="hover:underline">
-                  +57 321 422 3931
+                  +57 321 422 3931 - +57 317 777 2601
                 </a>
               </div>
               <div className="flex items-center space-x-3 text-zinc-300 hover:text-amber-400 transition-colors">
