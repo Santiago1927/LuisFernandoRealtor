@@ -9,6 +9,8 @@ const BLOCKED_IMAGE_PATTERNS = [
   /properties%2Fimages%2F/i,
   // URLs con doble codificación
   /%2F.*%2F.*%2F/i,
+  // URL específica que causa errores 400 masivos
+  /1759776573091_casa-lujo\.jpg/i,
 ];
 
 // URLs de Firebase Storage conocidas como rotas
@@ -16,6 +18,7 @@ const BLOCKED_FIREBASE_URLS = [
   "1753389229074_dinero.png",
   "1753389282759_WhatsApp",
   "1753417841583_th.outside926x816",
+  "1759776573091_casa-lujo.jpg",
 ];
 
 export function middleware(request: NextRequest) {
@@ -25,8 +28,27 @@ export function middleware(request: NextRequest) {
   if (url.pathname.startsWith("/_next/image")) {
     const imageUrl = url.searchParams.get("url");
 
+    // BLOQUEO INMEDIATO para imagen problemática específica
+    if (imageUrl && imageUrl.includes("1759776573091_casa-lujo.jpg")) {
+      url.pathname = "/placeholder-property.svg";
+      url.search = "";
+      return NextResponse.redirect(url);
+    }
+
     if (imageUrl) {
-      console.log("🔍 Intercepting Next.js image optimization:", imageUrl);
+      // Logging disabled to prevent console spam
+
+      // Detectar URLs malformadas específicas
+      if (
+        imageUrl.includes("http%3Dcrop") ||
+        imageUrl.includes("%3Dcrop") ||
+        imageUrl.match(/http%3D.*crop.*w=\d+/)
+      ) {
+        // URL malformada detectada, redirigir a placeholder
+        url.pathname = "/placeholder-property.svg";
+        url.search = "";
+        return NextResponse.redirect(url);
+      }
 
       // Verificar patrones problemáticos
       const isProblematic = BLOCKED_IMAGE_PATTERNS.some(
@@ -39,7 +61,7 @@ export function middleware(request: NextRequest) {
       );
 
       if (isProblematic || isBlockedFirebase) {
-        console.warn("🚨 BLOCKED problematic image URL:", imageUrl);
+        // Warning logging disabled to prevent console spam
 
         // Redirigir a placeholder
         url.pathname = "/placeholder-property.svg";
@@ -51,13 +73,13 @@ export function middleware(request: NextRequest) {
       if (imageUrl.includes("%2F")) {
         try {
           const decodedUrl = decodeURIComponent(imageUrl);
-          console.log("🔧 Decoded image URL:", decodedUrl);
+          // Logging disabled to prevent console spam
 
           // Actualizar la URL decodificada
           url.searchParams.set("url", decodedUrl);
           return NextResponse.rewrite(url);
         } catch (error) {
-          console.warn("❌ Could not decode URL, using placeholder");
+          // Warning logging disabled to prevent console spam
           url.pathname = "/placeholder-property.svg";
           url.search = "";
           return NextResponse.redirect(url);
@@ -90,17 +112,13 @@ export function middleware(request: NextRequest) {
     return response;
   }
 
-  // Log de debugging para desarrollo
+  // Debug logging disabled to prevent console spam
   if (process.env.NODE_ENV === "development") {
     if (
       request.nextUrl.pathname.includes("image") ||
       request.nextUrl.search.includes("image")
     ) {
-      console.log(
-        "🔍 Image request:",
-        request.nextUrl.pathname,
-        request.nextUrl.search
-      );
+      // Image request logging disabled
     }
   }
 

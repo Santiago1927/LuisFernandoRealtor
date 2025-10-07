@@ -6,7 +6,7 @@ import HeaderClient from "../components/layout/HeaderClient";
 import { ThemeProvider } from "../components/theme/ThemeContext";
 import { AuthProvider } from "../components/auth/AuthContext";
 import Footer from "../components/layout/Footer";
-import { AlertProvider } from "@/components/layout/AlertContext";
+import { AlertProvider } from "../components/layout/AlertContext";
 import ReactQueryProvider from "../providers/ReactQueryProvider";
 import WhatsAppButton from "@/components/whatasapp/WhatsAppButton";
 import ContentWithSidebar from "../components/layout/ContentWithSidebar";
@@ -38,17 +38,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      {/* Proveedor de React Query para manejo de estado del servidor */}
-      <ReactQueryProvider>
-        {/* Proveedor de tema (modo claro/oscuro) */}
-        <ThemeProvider>
-          {/* Proveedor de contexto de autenticación */}
-          <AuthProvider>
-            {/* Proveedor de alertas y notificaciones */}
-            <AlertProvider>
-              <body
-                className={`${inter.className} ${cinzel.variable} bg-gray-50 dark:bg-black text-black dark:text-white m-0 p-0`}
-              >
+      <body
+        className={`${inter.className} ${cinzel.variable} bg-gray-50 dark:bg-black text-black dark:text-white m-0 p-0`}
+      >
+        {/* Proveedor de React Query para manejo de estado del servidor */}
+        <ReactQueryProvider>
+          {/* Proveedor de tema (modo claro/oscuro) */}
+          <ThemeProvider>
+            {/* Proveedor de contexto de autenticación */}
+            <AuthProvider>
+              {/* Proveedor de alertas y notificaciones */}
+              <AlertProvider>
                 {/* Wrapper que ajusta el contenido según el sidebar */}
                 <ContentWithSidebar>
                   {/* Header condicional que se muestra según la ruta y autenticación */}
@@ -63,11 +63,11 @@ export default function RootLayout({
 
                 {/* Footer global de la aplicación */}
                 <Footer />
-              </body>
-            </AlertProvider>
-          </AuthProvider>
-        </ThemeProvider>
-      </ReactQueryProvider>
+              </AlertProvider>
+            </AuthProvider>
+          </ThemeProvider>
+        </ReactQueryProvider>
+      </body>
     </html>
   );
 }

@@ -206,7 +206,7 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
       <CardHeader>
         <CardTitle className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 flex items-center space-x-2">
           <Building2 className="w-6 h-6 text-amber-600" />
-          <span>Solicitud de Venta</span>
+          <span>Solicitud de venta</span>
         </CardTitle>
         <p className="text-zinc-600 dark:text-zinc-400">
           Cuéntanos sobre tu propiedad y te ayudaremos a venderla al mejor
@@ -219,7 +219,7 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
             <div className="flex items-center space-x-2 pb-2 border-b border-zinc-200 dark:border-zinc-700">
               <AlertCircle className="w-5 h-5 text-amber-600" />
               <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">
-                Preguntas Iniciales
+                Preguntas iniciales
               </h3>
             </div>
             <div className="space-y-6">
@@ -235,7 +235,7 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
             <div className="flex items-center space-x-2 pb-2 border-b border-zinc-200 dark:border-zinc-700">
               <User className="w-5 h-5 text-amber-600" />
               <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">
-                Información Personal
+                Información personal
               </h3>
             </div>
             <div className="grid md:grid-cols-2 gap-6">
@@ -273,7 +273,7 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
             <div className="flex items-center space-x-2 pb-2 border-b border-zinc-200 dark:border-zinc-700">
               <Home className="w-5 h-5 text-amber-600" />
               <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">
-                Información de la Propiedad
+                Información de la propiedad
               </h3>
             </div>
             <div className="grid md:grid-cols-2 gap-6">
@@ -282,7 +282,7 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
                   htmlFor="ciudad-select"
                   className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
                 >
-                  Ciudad *
+                  Ciudad
                 </Label>
                 {errors.ciudad && (
                   <div className="flex items-center space-x-2 text-red-600 dark:text-red-400 text-sm">
@@ -319,7 +319,7 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
                   htmlFor="tipo-propiedad-select"
                   className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
                 >
-                  Tipo de Propiedad *
+                  Tipo de propiedad
                 </Label>
                 {errors.tipoPropiedad && (
                   <div className="flex items-center space-x-2 text-red-600 dark:text-red-400 text-sm">
@@ -376,7 +376,7 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
                       htmlFor="numeroParqueaderos"
                       className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
                     >
-                      Número de Parqueaderos *
+                      Número de parqueaderos
                     </Label>
                     {errors.numeroParqueaderos && (
                       <div className="flex items-center space-x-2 text-red-600 dark:text-red-400 text-sm">
@@ -404,7 +404,7 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
                       htmlFor="areaParqueadero"
                       className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
                     >
-                      Área del Parqueadero (m²) *
+                      Área del Parqueadero (m²)
                     </Label>
                     {errors.areaParqueadero && (
                       <div className="flex items-center space-x-2 text-red-600 dark:text-red-400 text-sm">
@@ -434,7 +434,7 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
                   htmlFor="areaTerraza"
                   className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
                 >
-                  Área de la Terraza (m²) *
+                  Área de la terraza (m²)
                 </Label>
                 {errors.areaTerraza && (
                   <div className="flex items-center space-x-2 text-red-600 dark:text-red-400 text-sm">
@@ -462,7 +462,7 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
                   htmlFor="areaPatio"
                   className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
                 >
-                  Área del Patio (m²) *
+                  Área del patio (m²)
                 </Label>
                 {errors.areaPatio && (
                   <div className="flex items-center space-x-2 text-red-600 dark:text-red-400 text-sm">
@@ -488,7 +488,7 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
                   htmlFor="valorAdministracion"
                   className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
                 >
-                  Valor Administración (COP) *
+                  Valor administración (COP)
                 </Label>
                 {errors.valorAdministracion && (
                   <div className="flex items-center space-x-2 text-red-600 dark:text-red-400 text-sm">
@@ -515,7 +515,7 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
             <div className="flex items-center space-x-2 pb-2 border-b border-zinc-200 dark:border-zinc-700">
               <AlertCircle className="w-5 h-5 text-amber-600" />
               <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">
-                Preguntas Adicionales
+                Preguntas adicionales
               </h3>
             </div>
             <div className="space-y-2">
@@ -523,7 +523,7 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
                 htmlFor="comentariosAdicionales"
                 className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
               >
-                Comentarios Adicionales
+                Comentarios adicionales
               </Label>
               <textarea
                 id="comentariosAdicionales"
@@ -544,7 +544,7 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
             ) : (
               <Building2 className="w-4 h-4 mr-2" />
             )}
-            {loading ? "Enviando..." : "Enviar Solicitud"}
+            {loading ? "Enviando..." : "Enviar solicitud"}
           </Button>
         </form>
       </CardContent>

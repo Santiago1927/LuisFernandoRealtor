@@ -88,12 +88,12 @@ export default function CarouselSection() {
               variant="secondary"
               className="mb-4 bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300 border-amber-200 dark:border-amber-800"
             >
-              Propiedades Destacadas
+              Propiedades destacadas
             </Badge>
             <h2 className="text-3xl lg:text-5xl font-bold text-zinc-900 dark:text-zinc-100 mb-4">
               Propiedades de
               <span className="block bg-gradient-to-r from-amber-600 to-yellow-600 bg-clip-text text-transparent">
-                Lujo Exclusivo
+                lujo exclusivo
               </span>
             </h2>
           </div>
@@ -119,12 +119,12 @@ export default function CarouselSection() {
               variant="secondary"
               className="mb-4 bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300 border-amber-200 dark:border-amber-800"
             >
-              Propiedades Destacadas
+              Propiedades destacadas
             </Badge>
             <h2 className="text-3xl lg:text-5xl font-bold text-zinc-900 dark:text-zinc-100 mb-4">
               Propiedades de
               <span className="block bg-gradient-to-r from-amber-600 to-yellow-600 bg-clip-text text-transparent">
-                Lujo Exclusivo
+                lujo exclusivo
               </span>
             </h2>
           </div>
@@ -148,12 +148,12 @@ export default function CarouselSection() {
             variant="secondary"
             className="mb-4 bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300 border-amber-200 dark:border-amber-800"
           >
-            Propiedades Destacadas
+            Propiedades destacadas
           </Badge>
           <h2 className="text-3xl lg:text-5xl font-bold text-zinc-900 dark:text-zinc-100 mb-4">
             Propiedades de
             <span className="block bg-gradient-to-r from-amber-600 to-yellow-600 bg-clip-text text-transparent">
-              Lujo Exclusivo
+              lujo exclusivo
             </span>
           </h2>
           <p className="text-lg text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto">
@@ -290,7 +290,7 @@ export default function CarouselSection() {
           <div className="flex justify-center space-x-2 mt-6">
             {properties.map((_, index) => (
               <button
-                key={index}
+                key={`carousel-indicator-${index}`}
                 onClick={() => setActiveIndex(index)}
                 className={`w-3 h-3 rounded-full transition-all duration-300 ${
                   index === activeIndex

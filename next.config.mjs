@@ -12,7 +12,13 @@ const nextConfig = {
         protocol: "https",
         hostname: "firebasestorage.googleapis.com",
         port: "",
-        pathname: "/**",
+        pathname: "/v0/b/inmapp-842fa.appspot.com/o/**",
+      },
+      {
+        protocol: "https",
+        hostname: "firebasestorage.googleapis.com",
+        port: "",
+        pathname: "/v0/b/inmapp-842fa.firebasestorage.app/o/**",
       },
       {
         protocol: "https",
@@ -39,6 +45,7 @@ const nextConfig = {
         pathname: "/**",
       },
     ],
+    domains: ["firebasestorage.googleapis.com"],
     formats: ["image/avif", "image/webp"],
     dangerouslyAllowSVG: true,
     contentDispositionType: "attachment",
@@ -47,7 +54,6 @@ const nextConfig = {
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     unoptimized: false,
-    // Loader personalizado para interceptar URLs problemáticas
     loader: "custom",
     loaderFile: "./src/lib/customImageLoader.js",
   },

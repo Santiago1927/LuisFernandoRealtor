@@ -5,63 +5,40 @@
 
 // URLs problemáticas específicas que causan errores 400
 const BLOCKED_PATTERNS = [
-  /images%2Fcarousel%2F/gi,
-  /imagez1-3F7/gi,
-  /%2Fimages%2F/gi,
-  /properties%2Fimages%2F/gi,
+  /imagez1-3F7/gi, // Solo el patrón más problemático
 ];
 
 const BLOCKED_FIREBASE_URLS = [
-  "1753389229074_dinero.png",
-  "1753389282759_WhatsApp",
-  "1753417841583_th.outside926x816",
+  // Solo URLs que realmente causan errores 400 consistentes
+  "1753389282759_WhatsApp", // URL malformada
 ];
 
-export default function customImageLoader({ src, width, quality }) {
-  console.log("🔍 Custom loader processing:", src);
-
-  // Si es placeholder, retornar directamente
-  if (src.startsWith("/placeholder")) {
+export default function customImageLoader({ src, width = 800, quality = 75 }) {
+  // Si es placeholder o SVG, retornar directamente
+  if (src.startsWith("/placeholder") || src.endsWith(".svg")) {
     return src;
   }
 
-  // Verificar patrones problemáticos
-  const isProblematic = BLOCKED_PATTERNS.some((pattern) => pattern.test(src));
-  const isBlockedFirebase = BLOCKED_FIREBASE_URLS.some((blocked) =>
-    src.includes(blocked)
-  );
-
-  if (isProblematic || isBlockedFirebase) {
-    console.warn("🚨 Custom loader BLOCKED URL:", src);
-    return "/placeholder-property.svg";
+  // Si es una imagen local, retornar con parámetros básicos
+  if (src.startsWith("/") && !src.startsWith("//")) {
+    return `${src}?w=${width}&q=${quality}`;
   }
 
-  // Si la URL está mal codificada, intentar corregirla
-  if (src.includes("%2F")) {
-    try {
-      const decoded = decodeURIComponent(src);
-      console.log("🔧 Custom loader decoded URL:", decoded);
-      src = decoded;
-    } catch (error) {
-      console.warn("❌ Custom loader could not decode, using placeholder");
+  // Para URLs de Firebase Storage, verificar que sean válidas y retornarlas directamente
+  if (src.includes("firebasestorage.googleapis.com")) {
+    // Verificar que tenga los componentes esenciales
+    if (src.includes("alt=media") && src.includes("token=")) {
+      return src; // Retornar URL de Firebase sin procesamiento adicional
+    } else {
       return "/placeholder-property.svg";
     }
   }
 
-  // Para URLs locales, retornar directamente
-  if (src.startsWith("/")) {
-    return src;
+  // Para otras URLs externas válidas, retornarlas directamente
+  try {
+    new URL(src); // Validar que es una URL válida
+    return src; // Retornar URL externa sin procesamiento adicional
+  } catch (error) {
+    return "/placeholder-property.svg";
   }
-
-  // Para URLs externas válidas, usar optimización estándar
-  const params = new URLSearchParams();
-  params.set("url", src);
-  params.set("w", width.toString());
-
-  if (quality) {
-    params.set("q", quality.toString());
-  }
-
-  console.log("✅ Custom loader passing through:", src);
-  return `/_next/image?${params.toString()}`;
 }

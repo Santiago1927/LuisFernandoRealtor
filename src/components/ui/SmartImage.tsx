@@ -57,23 +57,11 @@ export default function SmartImage({
   onClick,
 }: SmartImageProps) {
   const [currentSrc, setCurrentSrc] = useState<string>(() => {
-    // Si la URL ya falló antes, usar placeholder inmediatamente
-    if (src && failedUrls.has(src)) {
-      return "/placeholder-property.svg";
+    // Usar la URL directamente sin procesarla
+    if (src && src.trim()) {
+      return src;
     }
-
-    // PASO 1: Interceptar y corregir URLs problemáticas
-    const interceptedSrc = imageUrlInterceptor.interceptUrl(src);
-
-    // PASO 2: Validar y limpiar URL usando utilidades
-    if (interceptedSrc && interceptedSrc !== "/placeholder-property.svg") {
-      const cleanSrc = ImageUtils.cleanFirebaseUrl(interceptedSrc);
-      if (cleanSrc && ImageUtils.isValidImageUrl(cleanSrc)) {
-        return cleanSrc;
-      }
-    }
-
-    return interceptedSrc || "/placeholder-property.svg";
+    return "/placeholder-property.svg";
   });
 
   const [hasError, setHasError] = useState(false);
@@ -82,107 +70,27 @@ export default function SmartImage({
 
   // Reset states when src changes
   useEffect(() => {
-    if (src && src !== currentSrc && !failedUrls.has(src)) {
-      // PASO 1: Interceptar URLs problemáticas
-      const interceptedSrc = imageUrlInterceptor.interceptUrl(src);
-
-      // PASO 2: Limpiar URL usando utilidades
-      if (interceptedSrc && interceptedSrc !== "/placeholder-property.svg") {
-        const cleanSrc = ImageUtils.cleanFirebaseUrl(interceptedSrc);
-
-        if (cleanSrc && ImageUtils.isValidImageUrl(cleanSrc)) {
-          setCurrentSrc(cleanSrc);
-          setHasError(false);
-          setRetryCount(0);
-          setIsLoading(true);
-        } else {
-          // URL inválida, usar placeholder
-          setCurrentSrc("/placeholder-property.svg");
-          setHasError(true);
-          setIsLoading(false);
-        }
-      } else {
-        // Interceptor devolvió placeholder
-        setCurrentSrc("/placeholder-property.svg");
-        setHasError(true);
-        setIsLoading(false);
-      }
+    if (src && src !== currentSrc) {
+      setCurrentSrc(src);
+      setHasError(false);
+      setRetryCount(0);
+      setIsLoading(true);
     }
   }, [src, currentSrc]);
 
-  const isFirebaseStorage = useCallback((url: string) => {
-    return url.includes("firebasestorage.googleapis.com");
-  }, []);
-
-  const isUnreliableDomain = useCallback((url: string) => {
-    return ImageUtils.isUnreliableDomain(url);
-  }, []);
-
   const handleImageError = useCallback(
     (event?: any) => {
-      console.warn(`Image load failed: ${currentSrc}`);
       setIsLoading(false);
-
-      // Reportar URL problemática al interceptor
-      imageUrlInterceptor.reportProblematicUrl(currentSrc, event);
-
-      // Log adicional para debugging en desarrollo
-      if (process.env.NODE_ENV === "development" && event && event.target) {
-        const debugInfo = ImageUtils.getUrlDebugInfo(currentSrc);
-        console.warn(`Error details:`, {
-          src: event.target.src,
-          naturalWidth: event.target.naturalWidth,
-          naturalHeight: event.target.naturalHeight,
-          complete: event.target.complete,
-          debugInfo,
-        });
-      }
-
-      // Marcar URL como fallida
-      if (currentSrc) {
-        failedUrls.add(currentSrc);
-      }
-
-      // Si ya estamos usando el placeholder y sigue fallando
-      if (currentSrc === "/placeholder-property.svg") {
-        setHasError(true);
-        onError?.(event);
-        return;
-      }
-
-      // Para URLs de Firebase Storage rotas, ir directo al placeholder
-      if (src && isFirebaseStorage(src)) {
-        console.warn(`Firebase Storage URL failed: ${src}`);
-        setCurrentSrc("/placeholder-property.svg");
-        onError?.(event);
-        return;
-      }
-
-      // Para otros dominios no confiables, intentar una vez más antes del placeholder
-      if (src && isUnreliableDomain(src) && retryCount < 2) {
-        setRetryCount((prev) => prev + 1);
-        // Intentar recargar después de un breve delay
-        setTimeout(() => {
-          const retryUrl = ImageUtils.generateRetryUrl(src, retryCount + 1);
-          setCurrentSrc(retryUrl);
-          setIsLoading(true);
-        }, 1000);
-        return;
-      }
-
-      // Como último recurso, usar placeholder
-      setCurrentSrc("/placeholder-property.svg");
       setHasError(true);
+
+      // Si no es ya un placeholder, cambiar al placeholder
+      if (currentSrc !== "/placeholder-property.svg") {
+        setCurrentSrc("/placeholder-property.svg");
+      }
+
       onError?.(event);
     },
-    [
-      currentSrc,
-      src,
-      isFirebaseStorage,
-      isUnreliableDomain,
-      retryCount,
-      onError,
-    ]
+    [currentSrc, onError]
   );
 
   const handleImageLoad = useCallback(() => {
@@ -195,12 +103,7 @@ export default function SmartImage({
       setRetryCount(0);
       setHasError(false);
       setIsLoading(true);
-      failedUrls.delete(src); // Remove from failed cache
-
-      // Limpiar URL antes del retry
-      const cleanSrc = ImageUtils.cleanFirebaseUrl(src);
-      const retryUrl = ImageUtils.generateRetryUrl(cleanSrc || src, 0);
-      setCurrentSrc(retryUrl);
+      setCurrentSrc(src);
     }
   }, [src]);
 
@@ -255,6 +158,19 @@ export default function SmartImage({
     );
   }
 
+  // Auto-detectar si la imagen debería tener prioridad para LCP
+  const shouldHavePriority =
+    priority ||
+    // Imágenes grandes que probablemente sean LCP
+    (width && width >= 600) ||
+    (height && height >= 400) ||
+    // Imágenes que ocupan toda la altura/ancho (hero images)
+    fill ||
+    // Imágenes en páginas de propiedades (por el alt text)
+    alt.toLowerCase().includes("casa") ||
+    alt.toLowerCase().includes("property") ||
+    alt.toLowerCase().includes("propiedad");
+
   // Configurar propiedades de la imagen
   const imageProps: any = {
     src: currentSrc,
@@ -263,7 +179,7 @@ export default function SmartImage({
       isLoading ? "opacity-50" : "opacity-100"
     } transition-opacity duration-200`,
     sizes,
-    priority,
+    priority: shouldHavePriority,
     onError: handleImageError,
     onLoad: handleImageLoad,
     style,
@@ -282,6 +198,33 @@ export default function SmartImage({
   if (quality !== undefined) imageProps.quality = quality;
   if (placeholder) imageProps.placeholder = placeholder;
   if (blurDataURL) imageProps.blurDataURL = blurDataURL;
+
+  // Para SVGs, usar img regular para evitar warnings del loader personalizado
+  if (currentSrc.endsWith(".svg")) {
+    const svgProps = {
+      src: currentSrc,
+      alt,
+      className: imageProps.className,
+      style: {
+        ...style,
+        ...(fill
+          ? {
+              width: "100%",
+              height: "100%",
+              objectFit: "cover" as const,
+            }
+          : {
+              width: width ? `${width}px` : undefined,
+              height: height ? `${height}px` : undefined,
+            }),
+      },
+      onError: handleImageError,
+      onLoad: handleImageLoad,
+      onClick,
+    };
+
+    return <img {...svgProps} />;
+  }
 
   return <NextImage {...imageProps} />;
 }

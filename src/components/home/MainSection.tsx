@@ -12,15 +12,15 @@ export default function MainSection() {
 
       <div className="relative z-10 w-full">
         <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-16">
-          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 xl:gap-16 items-center min-h-[80vh]">
+          <div className="max-w-4xl mx-auto text-center">
             <div className="space-y-6 lg:space-y-8">
-              <div className="flex items-center space-x-3">
+              <div className="flex items-center justify-center space-x-3">
                 <Badge
                   variant="secondary"
                   className="bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300 border-amber-200 dark:border-amber-800 px-3 py-1"
                 >
                   <Award className="w-4 h-4 mr-1" />
-                  Agente Certificado
+                  Agente certificado
                 </Badge>
                 <Badge
                   variant="outline"
@@ -35,7 +35,7 @@ export default function MainSection() {
                 <h1 className="text-5xl lg:text-7xl xl:text-8xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 leading-tight">
                   Propiedades de
                   <span className="block bg-gradient-to-r from-amber-600 to-yellow-600 bg-clip-text text-transparent">
-                    Lujo Exclusivo
+                    lujo exclusivo
                   </span>
                 </h1>
                 <p className="text-xl lg:text-3xl xl:text-4xl text-zinc-600 dark:text-zinc-400 font-light leading-relaxed">
@@ -44,13 +44,13 @@ export default function MainSection() {
                 </p>
               </div>
 
-              <p className="text-lg lg:text-xl text-zinc-700 dark:text-zinc-300 leading-relaxed max-w-2xl">
+              <p className="text-lg lg:text-xl text-zinc-700 dark:text-zinc-300 leading-relaxed">
                 Aplicamos estrategias de marketing digital avanzadas para
                 ayudarte a vender o comprar propiedades premium que superen tus
                 expectativas.
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-4 lg:gap-6">
+              <div className="flex flex-col sm:flex-row gap-4 lg:gap-6 justify-center">
                 <Button
                   asChild
                   size="lg"
@@ -71,17 +71,17 @@ export default function MainSection() {
                   size="lg"
                   className="border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-lg px-8 py-6"
                 >
-                  <Link href="/propiedades">Ver Propiedades</Link>
+                  <Link href="/propiedades">Ver propiedades</Link>
                 </Button>
               </div>
 
-              <div className="grid grid-cols-3 gap-4 lg:gap-8 pt-6 lg:pt-8 border-t border-zinc-200 dark:border-zinc-800">
+              <div className="grid grid-cols-3 gap-4 lg:gap-8 pt-6 lg:pt-8 border-t border-zinc-200 dark:border-zinc-800 max-w-2xl mx-auto">
                 <div className="text-center">
                   <div className="text-3xl lg:text-4xl font-bold text-amber-600 dark:text-amber-400">
                     500+
                   </div>
                   <div className="text-sm lg:text-base text-zinc-600 dark:text-zinc-400">
-                    Propiedades Vendidas
+                    Propiedades vendidas
                   </div>
                 </div>
                 <div className="text-center">
@@ -94,38 +94,24 @@ export default function MainSection() {
                 </div>
                 <div className="text-center">
                   <div className="text-3xl lg:text-4xl font-bold text-amber-600 dark:text-amber-400">
-                    15+
+                    5+
                   </div>
                   <div className="text-sm lg:text-base text-zinc-600 dark:text-zinc-400">
-                    Años de Experiencia
+                    Años de experiencia
                   </div>
                 </div>
               </div>
 
-              <div className="flex items-center space-x-6 pt-4">
+              <div className="flex flex-col sm:flex-row items-center justify-center space-y-2 sm:space-y-0 sm:space-x-6 pt-4">
                 <div className="flex items-center space-x-2 text-zinc-600 dark:text-zinc-400">
                   <Phone className="w-4 h-4" />
                   <span className="text-sm">+57 321 422 3931</span>
+                  <span className="text-sm">+57 317 777 2601</span>
                 </div>
                 <div className="flex items-center space-x-2 text-zinc-600 dark:text-zinc-400">
                   <MapPin className="w-4 h-4" />
                   <span className="text-sm">Pasto, Colombia</span>
                 </div>
-              </div>
-            </div>
-
-            <div className="relative">
-              <div className="relative rounded-3xl overflow-hidden shadow-2xl">
-                <UltraSafeImage
-                  src="/images/home.webp"
-                  alt="Propiedad de lujo exclusiva"
-                  width={800}
-                  height={900}
-                  className="w-full h-auto object-cover"
-                  priority
-                />
-
-                <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent"></div>
               </div>
             </div>
           </div>
@@ -139,10 +125,10 @@ export default function MainSection() {
                   <Award className="w-10 h-10 text-white" />
                 </div>
                 <h3 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 mb-4">
-                  Experiencia Premium
+                  Experiencia premium
                 </h3>
                 <p className="text-zinc-600 dark:text-zinc-400 text-lg">
-                  Más de 15 años en el mercado de bienes raíces de lujo
+                  Más de 5 años en el mercado de bienes raíces de lujo
                 </p>
               </CardContent>
             </Card>
@@ -153,7 +139,7 @@ export default function MainSection() {
                   <Star className="w-10 h-10 text-white" />
                 </div>
                 <h3 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 mb-4">
-                  Atención Personalizada
+                  Atención personalizada
                 </h3>
                 <p className="text-zinc-600 dark:text-zinc-400 text-lg">
                   Servicio exclusivo y dedicado para cada cliente
@@ -167,7 +153,7 @@ export default function MainSection() {
                   <Shield className="w-10 h-10 text-white" />
                 </div>
                 <h3 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 mb-4">
-                  Transparencia Total
+                  Transparencia total
                 </h3>
                 <p className="text-zinc-600 dark:text-zinc-400 text-lg">
                   Procesos claros y honestos en cada transacción
@@ -181,7 +167,7 @@ export default function MainSection() {
                   <Shield className="w-10 h-10 text-white" />
                 </div>
                 <h3 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 mb-4">
-                  Garantía de Calidad
+                  Garantía de calidad
                 </h3>
                 <p className="text-zinc-600 dark:text-zinc-400 text-lg">
                   Propiedades verificadas y de alta calidad

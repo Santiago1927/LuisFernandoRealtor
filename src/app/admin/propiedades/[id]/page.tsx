@@ -230,7 +230,7 @@ export default function AdminPropertyDetailPage() {
                               <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
                                 {images.map((_, index) => (
                                   <button
-                                    key={index}
+                                    key={`admin-image-indicator-${index}`}
                                     onClick={() => {}}
                                     className={`w-2 h-2 rounded-full transition-all duration-200 ${
                                       index === activeImage
@@ -362,9 +362,9 @@ export default function AdminPropertyDetailPage() {
                           Zonas Comunes
                         </h3>
                         <div className="flex flex-wrap gap-2">
-                          {property.zonas_comunes.map((amenity) => (
+                          {property.zonas_comunes.map((amenity, index) => (
                             <Badge
-                              key={amenity}
+                              key={`admin-amenity-${index}-${amenity}`}
                               variant="secondary"
                               className="bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-300"
                             >

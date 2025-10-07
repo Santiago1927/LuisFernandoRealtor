@@ -468,9 +468,9 @@ export default function DetallePropiedadPage() {
                   </CardHeader>
                   <CardContent>
                     <div className="flex flex-wrap gap-2">
-                      {property.zonas_comunes.map((zona) => (
+                      {property.zonas_comunes.map((zona, index) => (
                         <Badge
-                          key={zona}
+                          key={`zona-${index}-${zona}`}
                           variant="secondary"
                           className="bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300 border-green-200 dark:border-green-800"
                         >
@@ -496,9 +496,9 @@ export default function DetallePropiedadPage() {
                     </CardHeader>
                     <CardContent>
                       <div className="flex flex-wrap gap-2">
-                        {property.area_construida.map((area) => (
+                        {property.area_construida.map((area, index) => (
                           <Badge
-                            key={area}
+                            key={`area-${index}-${area}`}
                             variant="secondary"
                             className="bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300 border-blue-200 dark:border-blue-800"
                           >
@@ -522,9 +522,9 @@ export default function DetallePropiedadPage() {
                     </CardHeader>
                     <CardContent>
                       <div className="flex flex-wrap gap-2">
-                        {property.formas_de_pago.map((forma) => (
+                        {property.formas_de_pago.map((forma, index) => (
                           <Badge
-                            key={forma}
+                            key={`forma-pago-${index}-${forma}`}
                             variant="outline"
                             className="border-amber-300 text-amber-700 dark:border-amber-600 dark:text-amber-300"
                           >
@@ -875,7 +875,7 @@ export default function DetallePropiedadPage() {
                             <div className="flex flex-wrap gap-1 mt-1">
                               {property.zonas_comunes.map((amenidad, index) => (
                                 <Badge
-                                  key={index}
+                                  key={`amenidad-${index}-${amenidad}`}
                                   variant="secondary"
                                   className="text-xs"
                                 >
@@ -892,7 +892,7 @@ export default function DetallePropiedadPage() {
                         <CheckCircle className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
                         <div className="min-w-0 flex-1">
                           <div className="text-xs text-gray-500 dark:text-gray-400">
-                            Edad de la propiedad
+                            Estado de la propiedad
                           </div>
                           <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
                             {property.edad_propiedad}

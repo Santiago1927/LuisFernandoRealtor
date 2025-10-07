@@ -43,7 +43,7 @@ export const useImageErrorHandler = (
 
   const handleError = useCallback(
     (event?: any) => {
-      console.warn(`Image load failed: ${src}`, event);
+      // Warning logging disabled to prevent console spam
 
       setIsLoading(false);
 

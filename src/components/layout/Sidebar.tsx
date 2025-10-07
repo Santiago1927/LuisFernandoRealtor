@@ -194,11 +194,11 @@ export default function Sidebar() {
           {/* Contenedor del logo sin fondo */}
           <div className="relative h-12 w-12 p-2">
             <Image
-              src="/logo.svg"
-              alt="logo"
-              width={40}
-              height={40}
-              className="object-contain"
+              src="/logo.png"
+              width={48}
+              height={48}
+              alt="REALHAUS"
+              className="h-full w-full object-contain"
             />
           </div>
           {/* Texto del branding - se oculta cuando está colapsado */}

@@ -278,7 +278,7 @@ export const ContactEmailTemplate: React.FC<ContactEmailTemplateProps> = ({
         >
           {mensaje.split("\n").map((paragraph, index) => (
             <Text
-              key={index}
+              key={`message-paragraph-${index}`}
               style={{
                 margin: index === 0 ? "0 0 12px 0" : "12px 0",
                 fontSize: "14px",

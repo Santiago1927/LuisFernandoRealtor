@@ -98,7 +98,7 @@ export default function HomeFilters() {
         <CardContent className="p-6 lg:p-8">
           <div className="text-center mb-6">
             <h3 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 mb-2">
-              Encuentra tu Propiedad Ideal
+              Encuentra tu propiedad ideal
             </h3>
             <p className="text-zinc-600 dark:text-zinc-400">
               Utiliza nuestros filtros para encontrar exactamente lo que buscas
@@ -182,7 +182,7 @@ export default function HomeFilters() {
               className="bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-700 hover:to-yellow-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 px-8 py-3"
             >
               <Search className="w-5 h-5 mr-2" />
-              Buscar Propiedades
+              Buscar propiedades
             </Button>
 
             <Button
@@ -191,7 +191,7 @@ export default function HomeFilters() {
               size="lg"
               className="border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 px-8 py-3"
             >
-              Limpiar Filtros
+              Limpiar filtros
             </Button>
           </div>
         </CardContent>

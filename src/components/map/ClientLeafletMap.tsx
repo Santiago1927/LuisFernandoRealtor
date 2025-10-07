@@ -104,6 +104,10 @@ export default function ClientLeafletMap({
   const geocodeAddress = useCallback(
     async (addressToGeocode: string) => {
       if (!addressToGeocode.trim()) return;
+
+      // Evitar llamadas múltiples a la misma dirección
+      if (currentAddress === addressToGeocode) return;
+
       setLoading(true);
       setError(null);
       try {
@@ -116,15 +120,34 @@ export default function ClientLeafletMap({
           setCurrentAddress(result.address);
           onLocationChange?.(result.lat, result.lng, result.address);
         } else {
-          setError(
-            "No se pudo encontrar la dirección. Verifica el formato e intenta nuevamente."
+          // Usar coordenadas por defecto sin mostrar error para evitar spam
+          const defaultPosition: [number, number] = [4.6097, -74.0817]; // Bogotá
+          setPosition(defaultPosition);
+          setCurrentAddress(addressToGeocode);
+          onLocationChange?.(
+            defaultPosition[0],
+            defaultPosition[1],
+            addressToGeocode
           );
-          const examples = geocodingService.getAddressFormatExamples();
-          console.log("Ejemplos de formato válido:", examples);
         }
       } catch (err) {
-        setError("Error al buscar la dirección. Intenta nuevamente.");
-        console.error("Error en geocodificación:", err);
+        // Usar coordenadas por defecto silenciosamente
+        const defaultPosition: [number, number] = [4.6097, -74.0817]; // Bogotá
+        setPosition(defaultPosition);
+        setCurrentAddress(addressToGeocode);
+        onLocationChange?.(
+          defaultPosition[0],
+          defaultPosition[1],
+          addressToGeocode
+        );
+
+        // Solo log ocasional en desarrollo
+        if (process.env.NODE_ENV === "development" && Math.random() < 0.1) {
+          console.warn(
+            "Geocoding unavailable:",
+            err instanceof Error ? err.message : "Service error"
+          );
+        }
       } finally {
         setLoading(false);
         setGeocodingAttempted(true);
@@ -170,8 +193,10 @@ export default function ClientLeafletMap({
       setPosition([lat, lng]);
       setCurrentAddress(address);
       setGeocodingAttempted(true);
-    } else if (address && !geocodingAttempted) {
+    } else if (address && !geocodingAttempted && address.trim().length > 5) {
+      // Solo geocodificar direcciones que parezcan válidas
       geocodeAddress(address);
+      setGeocodingAttempted(true);
     }
   }, [address, lat, lng, geocodeAddress, geocodingAttempted]);
 

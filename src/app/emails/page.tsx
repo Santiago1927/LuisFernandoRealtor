@@ -41,7 +41,11 @@ export default function EmailTemplatesIndex() {
 
         <div className="grid md:grid-cols-3 gap-6 mb-12">
           {templates.map((template, index) => (
-            <Link key={index} href={template.href} className="block group">
+            <Link
+              key={`email-template-${index}-${template.name}`}
+              href={template.href}
+              className="block group"
+            >
               <div className="bg-white rounded-lg shadow-lg overflow-hidden transform transition-all duration-200 group-hover:scale-105 group-hover:shadow-xl">
                 <div
                   className={`${template.color} h-32 flex items-center justify-center`}

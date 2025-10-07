@@ -59,15 +59,15 @@ export default function Footer() {
           <div className="lg:col-span-2">
             <div className="flex items-center mb-6">
               <Image
-                src="/logo.svg"
-                className="mr-3 h-10 w-10"
-                alt="Luis Fernando Realtor"
+                src="/logo.png"
                 width={40}
                 height={40}
+                className="mr-3 h-10 w-10 object-contain"
+                alt="REALHAUS"
               />
               <div>
-                <h3 className="text-2xl font-bold text-white">Luis Fernando</h3>
-                <p className="text-amber-400 font-medium">REALTOR</p>
+                <h3 className="text-2xl font-bold text-white">REALHAUS</h3>
+                <p className="text-amber-400 font-medium">PREMIUM PROPERTIES</p>
               </div>
             </div>
             <p className="text-zinc-300 leading-relaxed max-w-md">

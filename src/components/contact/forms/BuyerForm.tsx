@@ -138,7 +138,7 @@ const BuyerForm: React.FC<BuyerFormProps> = ({ formSubmit, loading }) => {
       <CardHeader>
         <CardTitle className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 flex items-center space-x-2">
           <Home className="w-6 h-6 text-amber-600" />
-          <span>Solicitud de Compra</span>
+          <span>Solicitud de compra</span>
         </CardTitle>
         <p className="text-zinc-600 dark:text-zinc-400">
           Cuéntanos sobre la propiedad que estás buscando y te ayudaremos a
@@ -181,7 +181,7 @@ const BuyerForm: React.FC<BuyerFormProps> = ({ formSubmit, loading }) => {
                 htmlFor="ciudad"
                 className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
               >
-                Ciudad *
+                Ciudad
               </Label>
               {errors.ciudad && (
                 <div className="flex items-center space-x-2 text-red-600 dark:text-red-400 text-sm">
@@ -212,7 +212,7 @@ const BuyerForm: React.FC<BuyerFormProps> = ({ formSubmit, loading }) => {
                 htmlFor="tipoPropiedad"
                 className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
               >
-                Tipo de Propiedad *
+                Tipo de propiedad
               </Label>
               {errors.tipoPropiedad && (
                 <div className="flex items-center space-x-2 text-red-600 dark:text-red-400 text-sm">
@@ -256,7 +256,7 @@ const BuyerForm: React.FC<BuyerFormProps> = ({ formSubmit, loading }) => {
               htmlFor="comentariosAdicionales"
               className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
             >
-              Comentarios Adicionales
+              Comentarios adicionales
             </Label>
             <textarea
               id="comentariosAdicionales"

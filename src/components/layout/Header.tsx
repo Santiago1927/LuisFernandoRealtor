@@ -27,7 +27,7 @@ const TikTokIcon = ({ className }: { className?: string }) => (
 
 // Configuración de los enlaces de navegación del header
 const navigationLinks = [
-  { href: "/contacto", text: "Vender", icon: DollarSign },
+  { href: "/contacto#vender", text: "Vender", icon: DollarSign },
   { href: "/propiedades", text: "Propiedades", icon: Building2 },
   { href: "/contacto", text: "Contacto", icon: Phone },
 ];
@@ -71,6 +71,7 @@ export default function Header() {
               <span className="flex items-center space-x-1">
                 <Phone className="w-3 h-3" />
                 <span>+57 321 422 3931</span>
+                <span>+57 317 777 2601</span>
               </span>
               <span className="hidden sm:inline">•</span>
               <span className="hidden sm:inline">Agente Certificado</span>
@@ -92,12 +93,11 @@ export default function Header() {
             {/* Contenedor del logo sin fondo */}
             <div className="relative h-14 w-14 p-2 transition-transform duration-300 group-hover:scale-110">
               <Image
-                src="/logo.svg"
-                alt="LuisFernandoRealtor"
-                width={40}
-                height={40}
+                src="/logo.png"
+                width={56}
+                height={56}
+                alt="REALHAUS"
                 className="h-full w-full object-contain"
-                priority
               />
             </div>
             {/* Texto de la marca - una sola palabra */}
@@ -118,12 +118,12 @@ export default function Header() {
           {/* Navegación principal - responsive, se adapta a diferentes tamaños de pantalla */}
           <div className="flex items-center space-x-6">
             {/* Enlaces de navegación generados dinámicamente desde el array navigationLinks */}
-            {navigationLinks.map((link) => {
+            {navigationLinks.map((link, index) => {
               // Extraemos el componente de icono de Lucide React
               const Icon = link.icon;
               return (
                 <Link
-                  key={link.href}
+                  key={`nav-link-${index}-${link.text}`}
                   href={link.href}
                   className="flex items-center space-x-2 text-white hover:text-amber-400 transition-colors font-medium text-sm lg:text-base"
                 >

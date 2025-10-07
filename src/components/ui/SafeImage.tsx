@@ -69,7 +69,7 @@ export default function SafeImage({
   if (error && !fallbackError) {
     const imageProps = {
       src: fallbackSrc,
-      alt: `${alt} (imagen de respaldo)`,
+      alt: `${alt || "Imagen"} (imagen de respaldo)`,
       className,
       sizes,
       priority,
@@ -83,7 +83,7 @@ export default function SafeImage({
   // Imagen principal
   const imageProps = {
     src,
-    alt,
+    alt: alt || "",
     className,
     sizes,
     priority,

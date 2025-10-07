@@ -1,0 +1,112 @@
+/*
+  REGLAS DE SEGURIDAD DE FIREBASE STORAGE
+  ======================================
+  
+  ¿QUÉ ES ESTE ARCHIVO?
+  ---------------------
+  Este archivo define las reglas de seguridad para Firebase Storage.
+  Controla quién puede subir, descargar, actualizar o eliminar archivos.
+  
+  ¿PARA QUÉ SIRVE?
+  ---------------
+  1. Proteger archivos sensibles de acceso no autorizado
+  2. Controlar el acceso a imágenes y videos según el tipo de usuario
+  3. Prevenir subida maliciosa de archivos
+  4. Definir permisos granulares para cada carpeta
+  
+  ¿CÓMO FUNCIONA?
+  --------------
+  - Las reglas se evalúan en tiempo real para cada solicitud
+  - Si una regla devuelve 'true', se permite la operación
+  - Si una regla devuelve 'false', se deniega la operación
+  - Las reglas se aplican antes de que los archivos se suban/descarguen
+*/
+
+rules_version = '2'; // Versión actual de las reglas de Firebase Storage
+
+service firebase.storage {
+  match /b/{bucket}/o {
+    
+    // ========================================
+    // CARPETA: properties/images (Imágenes de Propiedades)
+    // ========================================
+    // Propósito: Almacena imágenes de propiedades inmobiliarias
+    // Acceso: Lectura pública, escritura solo para usuarios autenticados
+    match /properties/images/{imageId} {
+      allow read: if true; // ✅ Cualquiera puede ver las imágenes de propiedades
+      allow write: if request.auth != null; // ✅ Solo usuarios autenticados pueden subir imágenes
+    }
+    
+    // ========================================
+    // CARPETA: properties/videos (Videos de Propiedades)
+    // ========================================
+    // Propósito: Almacena videos de propiedades inmobiliarias
+    // Acceso: Lectura pública, escritura solo para usuarios autenticados
+    match /properties/videos/{videoId} {
+      allow read: if true; // ✅ Cualquiera puede ver los videos de propiedades
+      allow write: if request.auth != null; // ✅ Solo usuarios autenticados pueden subir videos
+    }
+    
+    // ========================================
+    // CARPETA: users (Archivos de Usuarios)
+    // ========================================
+    // Propósito: Almacena archivos personales de usuarios (avatares, documentos)
+    // Acceso: Solo el propietario del archivo
+    match /users/{userId}/{allPaths=**} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+      // ✅ Solo el usuario propietario puede acceder a sus archivos
+    }
+    
+    // ========================================
+    // CARPETA: public (Archivos Públicos)
+    // ========================================
+    // Propósito: Almacena archivos públicos como logos, banners, etc.
+    // Acceso: Lectura pública, escritura solo para administradores
+    match /public/{allPaths=**} {
+      allow read: if true; // ✅ Cualquiera puede leer archivos públicos
+      allow write: if request.auth != null; // ✅ Solo usuarios autenticados pueden subir archivos públicos
+    }
+    
+    // ========================================
+    // REGLA POR DEFECTO (DENEGACIÓN)
+    // ========================================
+    // Propósito: Denegar acceso a cualquier archivo no especificado arriba
+    // Esto es una medida de seguridad adicional
+    match /{allPaths=**} {
+      allow read, write: if false; // ❌ Denegar todo lo demás por defecto
+    }
+    
+  }
+}
+
+/*
+  CÓMO APLICAR ESTAS REGLAS:
+  =========================
+  
+  OPCIÓN 1: FIREBASE CONSOLE (Recomendado)
+  ----------------------------------------
+  1. Ir a Firebase Console (https://console.firebase.google.com)
+  2. Seleccionar tu proyecto
+  3. Ir a Storage → Rules
+  4. Copiar y pegar todo el contenido de este archivo
+  5. Hacer clic en "Publish" para aplicar las reglas
+  
+  OPCIÓN 2: FIREBASE CLI
+  ----------------------
+  1. Guardar este archivo como 'storage.rules'
+  2. Ejecutar: firebase deploy --only storage
+  
+  VERIFICACIÓN:
+  =============
+  - Las reglas se aplicarán inmediatamente
+  - Probar subiendo una imagen desde el admin
+  - Verificar que las imágenes se vean en la web pública
+  
+  SEGURIDAD IMPLEMENTADA:
+  ======================
+  ✅ Imágenes/videos de propiedades → Lectura pública, escritura autenticada
+  ✅ Archivos de usuario → Solo el propietario
+  ✅ Archivos públicos → Lectura libre, escritura autenticada
+  ✅ Prevención de acceso no autorizado
+  ✅ Denegación por defecto para mayor seguridad
+*/

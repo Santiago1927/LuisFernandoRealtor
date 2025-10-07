@@ -49,19 +49,26 @@ export default function HeaderClient() {
 
   // Lógica para determinar cuándo mostrar el header en desktop:
   // - SIEMPRE en el home (independientemente del estado de autenticación)
+  // - SIEMPRE en páginas públicas como /contacto y /propiedades
   // - Usuario autenticado pero NO en desktop (sin sidebar), O
   // - Rutas que necesitan botón de regreso (pero NO cuando hay sidebar visible)
   const showHeaderOnDesktop =
-    cleanPath === "/" || (!hasSidebar && !isAdminRoute && showReturnHomeButton);
+    cleanPath === "/" ||
+    cleanPath === "/contacto" ||
+    cleanPath === "/propiedades" ||
+    (!hasSidebar && !isAdminRoute && showReturnHomeButton);
 
   // Decisión final:
   // - SIEMPRE mostrar en el home (tanto móvil como desktop)
-  // - En móvil: mostrar siempre excepto en rutas de admin Y páginas de detalle
-  // - En desktop: según lógica anterior Y no en páginas de detalle
+  // - SIEMPRE mostrar en páginas públicas (/contacto, /propiedades)
+  // - En móvil: mostrar siempre excepto en rutas de admin
+  // - En desktop: según lógica anterior
   const shouldRenderHeader =
     cleanPath === "/" || // SIEMPRE en home
-    (!isDesktop && !isAdminRoute && !isPropertyDetailPage) || // Móvil no-admin no-detalle
-    (isDesktop && showHeaderOnDesktop && !isPropertyDetailPage); // Desktop según lógica y no-detalle
+    cleanPath === "/contacto" || // SIEMPRE en contacto
+    cleanPath === "/propiedades" || // SIEMPRE en propiedades
+    (!isDesktop && !isAdminRoute) || // Móvil no-admin
+    (isDesktop && showHeaderOnDesktop); // Desktop según lógica
 
   // Si no debe renderizarse, retorna null
   if (!shouldRenderHeader) return null;

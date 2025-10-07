@@ -103,7 +103,7 @@ export default function BackgroundCarousel({
         <div className="flex space-x-2">
           {backgroundImages.map((_, index) => (
             <button
-              key={index}
+              key={`bg-carousel-${index}`}
               onClick={() => setCurrentImageIndex(index)}
               className={`w-2 h-2 rounded-full transition-all duration-300 ${
                 index === currentImageIndex

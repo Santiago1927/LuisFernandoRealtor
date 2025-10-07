@@ -30,10 +30,7 @@ export class ImageUrlInterceptor {
       /properties%2Fimages%2F/gi,
     ];
 
-    // Registrar patrones problemáticos
-    problemPatterns.forEach((pattern) => {
-      console.warn("Registered problem pattern:", pattern);
-    });
+    // Pattern registration logging disabled to prevent console spam
   }
 
   /**
@@ -44,51 +41,36 @@ export class ImageUrlInterceptor {
       return "/placeholder-property.svg";
     }
 
-    // Si ya es un placeholder, retornar tal como está
+    // Si ya es un placeholder o imagen local, retornar tal como está
     if (url.startsWith("/") && !url.includes("http")) {
       return url;
     }
 
-    // Verificar si la URL contiene patrones problemáticos
-    if (this.hasProblematicPattern(url)) {
-      console.warn(
-        "🚨 Intercepted problematic URL:",
-        url.substring(0, 80) + "..."
-      );
-
-      // Intentar corregir la URL
-      const correctedUrl = this.correctUrl(url);
-
-      if (correctedUrl && correctedUrl !== url) {
-        console.log("✅ Corrected URL:", correctedUrl.substring(0, 80) + "...");
-        return correctedUrl;
-      } else {
-        console.warn("❌ Could not correct URL, using placeholder");
-        return "/placeholder-property.svg";
+    // Para URLs de Firebase Storage válidas, retornar directamente
+    if (url.includes("firebasestorage.googleapis.com")) {
+      if (url.includes("alt=media") && url.includes("token=")) {
+        return url; // URL válida de Firebase
       }
     }
 
-    return url;
+    // Para otras URLs válidas, verificar que sean URLs válidas
+    try {
+      new URL(url);
+      return url; // URL válida
+    } catch {
+      return "/placeholder-property.svg"; // URL inválida
+    }
   }
 
   private hasProblematicPattern(url: string): boolean {
+    // Solo marcar como problemáticas URLs con patrones muy específicos que causan errores 400
     const problematicPatterns = [
-      "imagez1-3F7",
-      "properties%2Fimages%2F",
-      // Patrón de doble codificación
-      /%2F.*%2F/g,
-      // URLs excesivamente largas (más de 500 caracteres)
-      url.length > 500,
+      "imagez1-3F7", // Patrón específico malformado
+      // Removimos archivos específicos que pueden ser válidos
     ];
 
     return problematicPatterns.some((pattern) => {
-      if (typeof pattern === "string") {
-        return url.includes(pattern);
-      } else if (pattern instanceof RegExp) {
-        return pattern.test(url);
-      } else {
-        return pattern; // boolean case
-      }
+      return url.includes(pattern);
     });
   }
 
@@ -119,7 +101,7 @@ export class ImageUrlInterceptor {
       // Si no se puede corregir, retornar null
       return null;
     } catch (error) {
-      console.error("Error correcting URL:", error);
+      // Error logging disabled to prevent console spam
       return null;
     }
   }
@@ -128,11 +110,7 @@ export class ImageUrlInterceptor {
    * Registra una URL como problemática para logging
    */
   reportProblematicUrl(url: string, error?: any) {
-    console.warn("🚨 Problematic URL reported:", {
-      url: url.substring(0, 100) + "...",
-      error: error?.message || "Unknown error",
-      timestamp: new Date().toISOString(),
-    });
+    // Problem URL reporting logging disabled to prevent console spam
   }
 
   /**

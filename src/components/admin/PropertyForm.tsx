@@ -17,6 +17,7 @@ import {
   ParkingType,
 } from "../../types/property";
 import { usePropertyFormLogic } from "../../hooks/usePropertyFormLogic";
+import { useAuthContext } from "../auth/AuthContext";
 import AddressInputWithMap from "../map/AddressInputWithMap";
 import { MultiSelect } from "../ui/multi-select";
 import { Switch } from "../ui/switch";
@@ -200,6 +201,9 @@ export default function PropertyForm({
   onSave,
   onClose,
 }: PropertyFormProps) {
+  // Verificar estado de autenticación
+  const { isAuthenticated, user } = useAuthContext();
+
   // Hook personalizado que maneja toda la lógica del formulario
   const {
     formData, // Datos del formulario
@@ -240,6 +244,36 @@ export default function PropertyForm({
   // Estado para controlar la visualización de todos los datos del formulario
   const [showFormData, setShowFormData] = useState(false);
 
+  // Verificar autenticación antes de mostrar el formulario
+  if (!isAuthenticated || !user) {
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+        <Card className="w-full max-w-md bg-white dark:bg-zinc-900 shadow-2xl">
+          <CardHeader>
+            <CardTitle className="text-xl font-bold text-red-600 flex items-center">
+              <Shield className="w-5 h-5 mr-2" />
+              Acceso Restringido
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-zinc-700 dark:text-zinc-300 mb-4">
+              Debes estar autenticado para crear o editar propiedades.
+            </p>
+            <div className="flex justify-end space-x-2">
+              <Button
+                onClick={onClose}
+                variant="outline"
+                className="border-zinc-300 text-zinc-600 hover:bg-zinc-100"
+              >
+                Cerrar
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
       <Card className="w-full max-w-4xl max-h-[90vh] overflow-y-auto border-0 shadow-2xl bg-white/95 dark:bg-zinc-900/95">
@@ -258,6 +292,14 @@ export default function PropertyForm({
                     ? "Modifica los datos de la propiedad"
                     : "Crea una nueva propiedad"}
                 </p>
+                <div className="mt-2 p-3 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg">
+                  <p className="text-xs text-amber-800 dark:text-amber-200">
+                    ℹ️ Los campos marcados con{" "}
+                    <span className="text-red-500 font-bold">*</span> son
+                    obligatorios. Usuario:{" "}
+                    <span className="font-semibold">{user?.email}</span>
+                  </p>
+                </div>
               </div>
             </div>
             <div className="flex items-center space-x-2">
@@ -298,7 +340,7 @@ export default function PropertyForm({
             <div className="p-6">
               <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100 mb-4 flex items-center">
                 <Eye className="w-5 h-5 mr-2 text-blue-600" />
-                Datos del Formulario
+                Datos del formulario
               </h3>
 
               <div className="bg-white dark:bg-zinc-900 rounded-lg p-4 border border-zinc-200 dark:border-zinc-700">
@@ -405,7 +447,7 @@ export default function PropertyForm({
                         htmlFor="title"
                         className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
                       >
-                        Título inmueble
+                        Título inmueble <span className="text-red-500">*</span>
                       </Label>
                       <Input
                         id="title"
@@ -414,7 +456,7 @@ export default function PropertyForm({
                         onChange={handleInputChange}
                         required
                         className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
-                        placeholder="Nombre corto para identificar el inmueble"
+                        placeholder="Nombre corto para identificar el inmueble (obligatorio)"
                       />
                     </div>
 
@@ -486,7 +528,7 @@ export default function PropertyForm({
                         htmlFor="price"
                         className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
                       >
-                        Precio de venta
+                        Precio de venta <span className="text-red-500">*</span>
                       </Label>
                       <Input
                         id="price"
@@ -495,8 +537,9 @@ export default function PropertyForm({
                         value={formData.price}
                         onChange={handleInputChange}
                         min="0"
+                        required
                         className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
-                        placeholder="Solo números"
+                        placeholder="Solo números (obligatorio)"
                       />
                     </div>
 
@@ -655,7 +698,7 @@ export default function PropertyForm({
                         htmlFor="virtual_tour"
                         className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
                       >
-                        Tour Virtual (Ver soportados)
+                        Tour virtual (Ver soportados)
                       </Label>
                       <Input
                         id="virtual_tour"
@@ -789,7 +832,7 @@ export default function PropertyForm({
                         htmlFor="matricula_inmobiliaria"
                         className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
                       >
-                        Matrícula Inmobiliaria
+                        Matrícula inmobiliaria
                       </Label>
                       <Input
                         id="matricula_inmobiliaria"
@@ -826,57 +869,6 @@ export default function PropertyForm({
                           {BUSINESS_TYPES.map((type) => (
                             <SelectItem key={type} value={type}>
                               {type}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    {/* Precio de alquiler */}
-                    <div>
-                      <Label
-                        htmlFor="rental_price"
-                        className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
-                      >
-                        Precio de alquiler
-                      </Label>
-                      <Input
-                        id="rental_price"
-                        type="number"
-                        name="rental_price"
-                        value={formData.rental_price || ""}
-                        onChange={handleInputChange}
-                        min="0"
-                        className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
-                        placeholder="Solo números"
-                      />
-                    </div>
-
-                    {/* Tiempo */}
-                    <div>
-                      <Label
-                        htmlFor="rental_time"
-                        className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
-                      >
-                        Tiempo
-                      </Label>
-                      <Select
-                        name="rental_time"
-                        value={formData.rental_time || ""}
-                        onValueChange={(value) =>
-                          handleSpecialFieldChange(
-                            "rental_time",
-                            value as RentalTime
-                          )
-                        }
-                      >
-                        <SelectTrigger className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400">
-                          <SelectValue placeholder="Mensual" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {RENTAL_TIMES.map((time) => (
-                            <SelectItem key={time} value={time}>
-                              {time}
                             </SelectItem>
                           ))}
                         </SelectContent>
@@ -1285,7 +1277,7 @@ export default function PropertyForm({
                   <div className="mt-6 border-t pt-6">
                     <h4 className="text-md font-semibold text-zinc-900 dark:text-zinc-100 mb-4 flex items-center">
                       <Home className="w-4 h-4 mr-2 text-amber-600" />
-                      Detalles de la Casa
+                      Detalles de la casa
                     </h4>
                     <div className="w-full">
                       <Label
@@ -1322,7 +1314,7 @@ export default function PropertyForm({
                 <div className="mt-6 border-t pt-6">
                   <h4 className="text-md font-semibold text-zinc-900 dark:text-zinc-100 mb-4 flex items-center">
                     <CreditCard className="w-4 h-4 mr-2 text-amber-600" />
-                    Formas de Pago
+                    Formas de pago
                   </h4>
                   <MultiSelect
                     options={PAYMENT_METHODS.map((method) => ({
@@ -1344,7 +1336,7 @@ export default function PropertyForm({
                   {hasPermutas && (
                     <div className="mt-4 p-4 bg-amber-50 dark:bg-amber-900/20 rounded-lg border border-amber-200 dark:border-amber-800">
                       <h5 className="text-sm font-semibold text-amber-800 dark:text-amber-200 mb-3">
-                        Detalles de la Permuta
+                        Detalles de la permuta
                       </h5>
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div>
@@ -1493,7 +1485,7 @@ export default function PropertyForm({
                             Cundinamarca
                           </SelectItem>
                           <SelectItem value="Valle del Cauca">
-                            Valle del Cauca
+                            Valle del cauca
                           </SelectItem>
                         </SelectContent>
                       </Select>
@@ -1534,7 +1526,7 @@ export default function PropertyForm({
                         htmlFor="zone_neighborhood"
                         className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
                       >
-                        Zona / barrio (Agregar zona / barrio)
+                        Zona / barrio <span className="text-red-500">*</span>
                       </Label>
                       <Select
                         name="zone_neighborhood"
@@ -1581,7 +1573,8 @@ export default function PropertyForm({
                         htmlFor="address"
                         className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
                       >
-                        Dirección (Información privada)
+                        Dirección (Información privada){" "}
+                        <span className="text-red-500">*</span>
                       </Label>
                       <Textarea
                         id="address"
@@ -1589,8 +1582,9 @@ export default function PropertyForm({
                         value={formData.address}
                         onChange={handleInputChange}
                         rows={3}
+                        required
                         className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
-                        placeholder="Dirección del inmueble, solo es visible por el administrador"
+                        placeholder="Dirección del inmueble, solo es visible por el administrador (obligatorio)"
                       />
                     </div>
                   </div>
@@ -1605,7 +1599,7 @@ export default function PropertyForm({
                         label=""
                         placeholder="Seleccionar ubicación del inmueble"
                         name="map_location"
-                        initialAddress={formData.address}
+                        initialAddress={mapAddress}
                         initialCoordinates={lat && lng ? [lat, lng] : undefined}
                         onLocationChange={(address, lat, lng) =>
                           handleLocationChange(lat, lng, address)
@@ -1640,7 +1634,7 @@ export default function PropertyForm({
                     onChange={handleInputChange}
                     rows={4}
                     className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
-                    placeholder="Describe las características y beneficios de la propiedad..."
+                    placeholder="Describe las características y beneficios de la propiedad... (opcional)"
                   />
                 </div>
               </div>
@@ -1651,7 +1645,7 @@ export default function PropertyForm({
               <div className="border-t pt-6">
                 <h4 className="text-md font-semibold text-zinc-900 dark:text-zinc-100 mb-4 flex items-center">
                   <Square className="w-4 h-4 mr-2 text-amber-600" />
-                  Dimensiones del Lote
+                  Dimensiones del lote
                 </h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>

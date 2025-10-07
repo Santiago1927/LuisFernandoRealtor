@@ -24,6 +24,7 @@ const SAFE_IMAGE_PATTERNS = [
   /^\/images\/home\.webp$/,
   /^\/placeholder-property\.svg$/,
   /^\/logo\.(svg|png)$/,
+  /^\/realhaus-logo\.svg$/,
   /^\/favicon\.ico$/,
 ];
 
@@ -69,17 +70,14 @@ export default function UltraSafeImage({
 
     // Bloquear Firebase Storage (todas las URLs están rotas)
     if (url.includes("firebasestorage.googleapis.com")) {
-      console.warn("🚨 UltraSafeImage: Blocked Firebase Storage URL");
+      // Warning logging disabled to prevent console spam
       return false;
     }
 
     // Verificar patrones bloqueados
     const isBlocked = BLOCKED_PATTERNS.some((pattern) => pattern.test(url));
     if (isBlocked) {
-      console.warn(
-        "🚨 UltraSafeImage: Blocked dangerous pattern in URL:",
-        url.substring(0, 50)
-      );
+      // Warning logging disabled to prevent console spam
       return false;
     }
 
@@ -87,7 +85,7 @@ export default function UltraSafeImage({
   }, []);
 
   const handleError = useCallback(() => {
-    console.warn("🚨 UltraSafeImage: Image failed to load:", src);
+    // Warning logging disabled to prevent console spam
     setHasError(true);
   }, [src]);
 
@@ -136,6 +134,6 @@ export default function UltraSafeImage({
   // Propiedades opcionales
   if (quality !== undefined) imageProps.quality = quality;
 
-  console.log("✅ UltraSafeImage: Rendering safe image:", src);
+  // Logging disabled to prevent console spam
   return <NextImage {...imageProps} />;
 }

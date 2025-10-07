@@ -152,7 +152,7 @@ export default function FirebaseSafeImage({
   // Propiedades de la imagen
   const imageProps = {
     src: currentSrc,
-    alt,
+    alt: alt || "",
     className,
     sizes,
     priority,

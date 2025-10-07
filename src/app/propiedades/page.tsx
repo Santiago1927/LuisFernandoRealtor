@@ -108,7 +108,7 @@ function PropiedadesContent() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-zinc-900 dark:text-zinc-100 mb-4">
-            Propiedades Disponibles
+            Propiedades disponibles
           </h1>
           <p className="text-lg text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto">
             Descubre nuestra exclusiva selección de propiedades de lujo en las
@@ -168,7 +168,7 @@ function PropiedadesContent() {
         <Card className="mb-8 border-0 shadow-xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur">
           <CardHeader>
             <CardTitle className="text-xl font-bold text-zinc-900 dark:text-zinc-100">
-              Filtros de Búsqueda
+              Filtros de búsqueda
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -246,7 +246,7 @@ function PropiedadesContent() {
                 }}
                 className="border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800"
               >
-                Limpiar Filtros
+                Limpiar filtros
               </Button>
             </div>
           </CardContent>
@@ -345,7 +345,7 @@ function PropiedadesContent() {
                     }}
                     className="bg-amber-600 hover:bg-amber-700 text-white"
                   >
-                    Limpiar Filtros
+                    Limpiar filtros
                   </Button>
                 </div>
               </div>

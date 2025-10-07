@@ -1,5 +1,5 @@
-// Importa los hooks useState, useEffect y useCallback de React para manejar el estado y los efectos secundarios
-import { useState, useEffect, useCallback } from "react";
+// Importa los hooks useState, useEffect, useCallback y useRef de React para manejar el estado y los efectos secundarios
+import { useState, useEffect, useCallback, useRef } from "react";
 // Importa los tipos Property y PropertyFormData para tipar los datos de la propiedad y el formulario
 import {
   Property,
@@ -140,6 +140,11 @@ export function usePropertyFormLogic({
   // Estado para la longitud de la propiedad
   const [lng, setLng] = useState(property?.lng || null);
 
+  // Ref para el timer de debounce de sincronización de dirección
+  const addressSyncTimerRef = useRef<ReturnType<typeof setTimeout> | null>(
+    null
+  );
+
   // Mutaciones de React Query
   const createPropertyMutation = useCreateProperty();
   const updatePropertyMutation = useUpdateProperty();
@@ -209,6 +214,15 @@ export function usePropertyFormLogic({
     formData.permuta_monto_max,
   ]);
 
+  // Efecto de limpieza para el timer de debounce al desmontar el componente
+  useEffect(() => {
+    return () => {
+      if (addressSyncTimerRef.current) {
+        clearTimeout(addressSyncTimerRef.current);
+      }
+    };
+  }, []);
+
   // Maneja los cambios en los campos del formulario (inputs, selects, textareas)
   const handleInputChange = (
     e: React.ChangeEvent<
@@ -274,6 +288,21 @@ export function usePropertyFormLogic({
 
       return newData;
     });
+
+    // Si se está editando el campo de dirección, sincronizar con el mapa usando debounce
+    if (name === "address") {
+      // Limpiar el timer anterior si existe
+      if (addressSyncTimerRef.current) {
+        clearTimeout(addressSyncTimerRef.current);
+      }
+
+      // Crear un nuevo timer de debounce para sincronizar después de 500ms
+      addressSyncTimerRef.current = setTimeout(() => {
+        if (value && value.trim().length > 0) {
+          setMapAddress(value.trim());
+        }
+      }, 500);
+    }
   };
 
   // Maneja cambios en campos especiales (multi-select, switches, etc.)
@@ -339,7 +368,7 @@ export function usePropertyFormLogic({
     // Verificar autenticación ANTES de proceder
     if (!isAuthenticated || !user) {
       showAlert(
-        "Debes estar autenticado para crear o editar propiedades. Por favor, inicia sesión.",
+        "⚠️ Sesión expirada o no autenticado. Por favor, cierra sesión e inicia sesión nuevamente.",
         "error"
       );
       return;
@@ -348,7 +377,16 @@ export function usePropertyFormLogic({
     // Validación básica antes del envío
     if (!formData.title || !formData.address || !formData.price) {
       showAlert(
-        "Por favor completa los campos obligatorios: título, dirección y precio.",
+        "📝 Por favor completa los campos obligatorios: título, dirección y precio.",
+        "error"
+      );
+      return;
+    }
+
+    // Validación adicional de campos críticos
+    if (!formData.zone_neighborhood) {
+      showAlert(
+        "📍 Por favor selecciona una zona o barrio para la propiedad.",
         "error"
       );
       return;
@@ -360,20 +398,46 @@ export function usePropertyFormLogic({
       let newImageUrls = [...imageUrls]; // Copia URLs existentes
       let newVideoUrls = [...videoUrls]; // Copia URLs existentes
 
+      // Intentar subir imágenes solo si hay archivos seleccionados
       if (images.length > 0) {
-        const uploadedImageUrls = await uploadFiles(
-          images,
-          "properties/images"
-        ); // Sube imágenes
-        newImageUrls = [...newImageUrls, ...uploadedImageUrls]; // Agrega nuevas URLs
+        try {
+          const uploadedImageUrls = await uploadFiles(
+            images,
+            "properties/images"
+          ); // Sube imágenes
+          newImageUrls = [...newImageUrls, ...uploadedImageUrls]; // Agrega nuevas URLs
+        } catch (storageError) {
+          console.warn(
+            "Error subiendo imágenes, continuando sin ellas:",
+            storageError
+          );
+          showAlert(
+            "⚠️ No se pudieron subir las imágenes debido a permisos de Storage. La propiedad se creará sin imágenes. Contacta al administrador para configurar los permisos de Firebase Storage.",
+            "info"
+          );
+          // Continuar sin imágenes
+        }
       }
 
+      // Intentar subir videos solo si hay archivos seleccionados
       if (videos.length > 0) {
-        const uploadedVideoUrls = await uploadFiles(
-          videos,
-          "properties/videos"
-        ); // Sube videos
-        newVideoUrls = [...newVideoUrls, ...uploadedVideoUrls]; // Agrega nuevas URLs
+        try {
+          const uploadedVideoUrls = await uploadFiles(
+            videos,
+            "properties/videos"
+          ); // Sube videos
+          newVideoUrls = [...newVideoUrls, ...uploadedVideoUrls]; // Agrega nuevas URLs
+        } catch (storageError) {
+          console.warn(
+            "Error subiendo videos, continuando sin ellos:",
+            storageError
+          );
+          showAlert(
+            "⚠️ No se pudieron subir los videos debido a permisos de Storage. La propiedad se creará sin videos.",
+            "info"
+          );
+          // Continuar sin videos
+        }
       }
 
       // Limpiar datos del formulario eliminando valores undefined, null, y strings vacíos
@@ -440,6 +504,7 @@ export function usePropertyFormLogic({
 
       // Manejo específico de errores de Firebase
       let errorMessage = "Error desconocido";
+      let isAuthError = false;
 
       if (error instanceof Error) {
         errorMessage = error.message;
@@ -447,20 +512,49 @@ export function usePropertyFormLogic({
         // Errores específicos de Firebase
         if (
           errorMessage.includes("permission-denied") ||
-          errorMessage.includes("insufficient permissions")
+          errorMessage.includes("insufficient permissions") ||
+          errorMessage.includes("PERMISSION_DENIED")
         ) {
           errorMessage =
-            "No tienes permisos para realizar esta acción. Verifica que estés autenticado correctamente.";
-        } else if (errorMessage.includes("network")) {
+            "🔐 Sesión expirada o permisos insuficientes. Cierra sesión e inicia sesión nuevamente.";
+          isAuthError = true;
+        } else if (
+          errorMessage.includes("network") ||
+          errorMessage.includes("failed to fetch")
+        ) {
           errorMessage =
-            "Error de conexión. Verifica tu conexión a internet e intenta de nuevo.";
-        } else if (errorMessage.includes("auth")) {
+            "🌐 Error de conexión. Verifica tu conexión a internet e intenta de nuevo.";
+        } else if (
+          errorMessage.includes("auth") ||
+          errorMessage.includes("unauthorized")
+        ) {
           errorMessage =
-            "Error de autenticación. Por favor, cierra sesión e inicia sesión de nuevo.";
+            "🔑 Error de autenticación. Por favor, cierra sesión e inicia sesión de nuevo.";
+          isAuthError = true;
+        } else if (
+          errorMessage.includes("quota") ||
+          errorMessage.includes("limit")
+        ) {
+          errorMessage =
+            "💾 Límite de almacenamiento alcanzado. Contacta al administrador.";
+        } else if (errorMessage.includes("timeout")) {
+          errorMessage =
+            "⏱️ Tiempo de espera agotado. Intenta de nuevo en unos momentos.";
         }
       }
 
-      showAlert(`Error al procesar la propiedad: ${errorMessage}`, "error");
+      // Si es un error de autenticación, mostrar instrucciones específicas
+      if (isAuthError) {
+        showAlert(
+          `${errorMessage}\n\n💡 Pasos para solucionarlo:\n1. Cerrar sesión completamente\n2. Iniciar sesión nuevamente\n3. Completar todos los campos obligatorios\n4. Intentar guardar de nuevo`,
+          "error"
+        );
+      } else {
+        showAlert(
+          `❌ Error al procesar la propiedad: ${errorMessage}`,
+          "error"
+        );
+      }
     } finally {
       setUploading(false); // Finaliza la subida
     }
