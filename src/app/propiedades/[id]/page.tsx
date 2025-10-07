@@ -101,6 +101,48 @@ export default function DetallePropiedadPage() {
     return cleanCity;
   };
 
+  // Función ULTRA SEGURA para renderizar número de baños
+  const renderSafeBathrooms = (bathroomsValue: any) => {
+    // Si no existe, retorna 0
+    if (!bathroomsValue && bathroomsValue !== 0) return 0;
+
+    let cleanValue = bathroomsValue;
+
+    // Si es string, intentar convertir a número
+    if (typeof bathroomsValue === "string") {
+      cleanValue = bathroomsValue.trim();
+
+      // Si es string vacío, retorna 0
+      if (cleanValue === "") return 0;
+
+      // Convertir a número
+      cleanValue = parseInt(cleanValue, 10);
+
+      // Si no es un número válido, retorna 0
+      if (isNaN(cleanValue)) return 0;
+    }
+
+    // Si ya es número
+    if (typeof cleanValue === "number") {
+      // Si es NaN, retorna 0
+      if (isNaN(cleanValue)) return 0;
+
+      // Si es mayor a 20, probablemente es un error (como 30 en lugar de 3)
+      // Dividir por 10 si es mayor a 20
+      if (cleanValue > 20) {
+        cleanValue = Math.floor(cleanValue / 10);
+      }
+
+      // Asegurar que esté en rango razonable (0-20)
+      cleanValue = Math.max(0, Math.min(20, cleanValue));
+
+      return cleanValue;
+    }
+
+    // Si llegamos aquí, retorna 0
+    return 0;
+  };
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-zinc-50 via-white to-amber-50/30 dark:from-zinc-900 dark:via-black dark:to-amber-900/10 flex items-center justify-center">
@@ -300,7 +342,7 @@ export default function DetallePropiedadPage() {
                       <div className="text-center p-4 bg-zinc-50 dark:bg-zinc-800 rounded-lg">
                         <Bath className="w-6 h-6 text-amber-600 dark:text-amber-400 mx-auto mb-2" />
                         <div className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">
-                          {property.bathrooms || 0}
+                          {renderSafeBathrooms(property.bathrooms)}
                         </div>
                         <div className="text-sm text-zinc-600 dark:text-zinc-400">
                           Baños
