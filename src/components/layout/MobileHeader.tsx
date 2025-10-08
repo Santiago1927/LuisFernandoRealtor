@@ -133,8 +133,11 @@ export default function MobileHeader() {
               <div className="flex items-center space-x-6">
                 <span className="flex items-center space-x-1">
                   <Phone className="w-3 h-3" />
-                  <span>+57 321 422 3931</span>
-                  <span>+57 317 777 2601</span>
+                  <span>321 422 3931</span>
+                </span>
+                <span className="flex items-center space-x-1">
+                  <Phone className="w-3 h-3" />
+                  <span>317 777 2601</span>
                 </span>
                 <span>•</span>
                 <span>Agente Certificado</span>
@@ -283,14 +286,14 @@ export default function MobileHeader() {
               className="flex items-center space-x-2 text-sm font-medium hover:underline transition-all"
             >
               <Phone className="w-4 h-4" />
-              <span>+57 321 422 3931</span>
+              <span>321 422 3931</span>
             </a>
             <a
               href="tel:+573177772601"
               className="flex items-center space-x-2 text-sm font-medium hover:underline transition-all"
             >
               <Phone className="w-4 h-4" />
-              <span>+57 317 777 2601</span>
+              <span>317 777 2601</span>
             </a>
             <div className="flex items-center space-x-2 text-sm font-medium pt-2 border-t border-black/20">
               <Star className="w-4 h-4 fill-current" />

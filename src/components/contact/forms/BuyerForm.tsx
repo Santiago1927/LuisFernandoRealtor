@@ -21,6 +21,7 @@ import {
   PROPERTY_INFO_BUYER,
   INPUT_INFO,
 } from "@/constants/constants";
+import { formatCurrencyInput, parseCurrency } from "@/utils/currency";
 
 interface BuyerFormProps {
   formSubmit: (data: any) => void;
@@ -41,6 +42,7 @@ const BuyerForm: React.FC<BuyerFormProps> = ({ formSubmit, loading }) => {
 
   const renderField = (fieldKey: string, field: any) => {
     const booleanFields = ["deposito"];
+    const currencyFields = ["presupuesto"];
 
     if (booleanFields.includes(fieldKey)) {
       return (
@@ -102,6 +104,45 @@ const BuyerForm: React.FC<BuyerFormProps> = ({ formSubmit, loading }) => {
               ))}
             </SelectContent>
           </Select>
+        </div>
+      );
+    }
+
+    if (currencyFields.includes(fieldKey)) {
+      return (
+        <div key={fieldKey} className="space-y-2">
+          <Label
+            htmlFor={fieldKey}
+            className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
+          >
+            {field.label} *
+          </Label>
+          {errors[fieldKey] && (
+            <div className="flex items-center space-x-2 text-red-600 dark:text-red-400 text-sm">
+              <AlertCircle className="w-4 h-4" />
+              <span>{String(errors[fieldKey]?.message)}</span>
+            </div>
+          )}
+          <Input
+            id={fieldKey}
+            type="text"
+            value={
+              watch(fieldKey)
+                ? formatCurrencyInput(watch(fieldKey).toString())
+                : ""
+            }
+            onChange={(e) => {
+              const numericValue = parseCurrency(e.target.value);
+              setValue(
+                fieldKey as any,
+                numericValue ? parseInt(numericValue) : 0
+              );
+            }}
+            className={`w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400 ${
+              errors[fieldKey] ? "border-red-500 dark:border-red-400" : ""
+            }`}
+            placeholder={`Ingresa ${field.label.toLowerCase()}`}
+          />
         </div>
       );
     }

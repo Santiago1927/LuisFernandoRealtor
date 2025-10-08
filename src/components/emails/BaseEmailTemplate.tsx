@@ -295,7 +295,7 @@ export const BaseEmailTemplate: React.FC<BaseEmailTemplateProps> = ({
                 textAlign: "center",
               }}
             >
-              © 2025 Luis Fernando Realtor. Todos los derechos reservados.
+              © 2025 REALHAUS. Todos los derechos reservados.
             </Text>
             <Text
               style={{

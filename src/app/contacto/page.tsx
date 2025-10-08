@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useEffect } from "react";
 import ContactSection from "../../components/contact/ContactSection";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -16,6 +17,54 @@ import {
 } from "lucide-react";
 
 export default function ContactoPage() {
+  // Función para probar la accesibilidad del video - comentado temporalmente
+  /*
+  useEffect(() => {
+    const testVideoUrl = async () => {
+      const videoUrl =
+        "https://firebasestorage.googleapis.com/v0/b/inmapp-842fa.firebasestorage.app/o/video%2FWhatsApp%20Video%202025-10-07%20at%2011.05.51%20PM.mp4?alt=media&token=d47d27a2-54bb-4bc5-82f1-1b593dd0a3ef";
+
+      try {
+        console.log("🔍 Testing video URL:", videoUrl);
+        const response = await fetch(videoUrl, { method: "HEAD" });
+        
+        const headers: Record<string, string> = {};
+        try {
+          // Safely extract headers
+          if (response.headers && typeof response.headers.forEach === 'function') {
+            response.headers.forEach((value, key) => {
+              headers[key] = value;
+            });
+          }
+        } catch (headerError) {
+          console.warn("Could not extract headers:", headerError);
+        }
+
+        console.log("📊 Video URL response:", {
+          status: response.status,
+          headers,
+          ok: response.ok,
+        });
+
+        if (response.ok) {
+          console.log("✅ Video URL is accessible");
+        } else {
+          console.error("❌ Video URL not accessible:", response.status);
+        }
+      } catch (error) {
+        console.error("❌ Error testing video URL:", error);
+      }
+    };
+
+    // Wrap in try-catch to prevent any unhandled errors
+    try {
+      testVideoUrl();
+    } catch (error) {
+      console.error("❌ Error in testVideoUrl setup:", error);
+    }
+  }, []);
+  */
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-zinc-50 via-white to-amber-50/30 dark:from-zinc-900 dark:via-black dark:to-amber-900/10">
       <ContactSection />
@@ -86,13 +135,21 @@ export default function ContactoPage() {
                 <p className="text-zinc-600 dark:text-zinc-300 mb-4">
                   Atención inmediata y personalizada
                 </p>
-                <a
-                  href="tel:+573214223931"
-                  className="text-amber-600 dark:text-amber-400 font-medium hover:text-amber-700 dark:hover:text-amber-300 transition-colors inline-flex items-center"
-                >
-                  +57 321 422 3931 +57 317 777 2601
-                  <Phone className="w-4 h-4 ml-2" />
-                </a>
+                <div className="space-y-3">
+                  <a
+                    href="tel:+573214223931"
+                    className="text-amber-600 dark:text-amber-400 font-medium hover:text-amber-700 dark:hover:text-amber-300 transition-colors inline-flex items-center block"
+                  >
+                    <Phone className="w-4 h-4 ml-2" /> 321 422 3931
+                  </a>
+                  <a
+                    href="tel:+573177772601"
+                    className="text-amber-600 dark:text-amber-400 font-medium hover:text-amber-700 dark:hover:text-amber-300 transition-colors inline-flex items-center block"
+                  >
+                    <Phone className="w-4 h-4 ml-2" />
+                    317 777 2601
+                  </a>
+                </div>
               </CardContent>
             </Card>
 
@@ -211,26 +268,62 @@ export default function ContactoPage() {
             </Card>
 
             <div className="relative">
-              <div className="relative z-10 flex flex-col items-center justify-center h-full min-h-[400px]">
-                <div className="w-32 h-32 mb-6">
-                  <Image
-                    src="/logo.png"
-                    alt="Luis Fernando Realtor"
-                    width={128}
-                    height={128}
-                    className="w-full h-full"
+              <div className="relative z-10 h-full min-h-[400px] rounded-2xl overflow-hidden bg-black">
+                <video
+                  className="w-full h-full object-cover"
+                  controls
+                  preload="auto"
+                  poster="/logo.png"
+                  playsInline
+                  muted={false}
+                  crossOrigin="anonymous"
+                  onError={(e) => {
+                    console.error("Video playback error occurred");
+                    // Simplified error handling to prevent stack issues
+                  }}
+                  onLoadStart={() => console.log("✅ Video loading started")}
+                  onCanPlay={() => console.log("✅ Video can play")}
+                  onLoadedData={() => console.log("✅ Video data loaded")}
+                  onLoadedMetadata={() =>
+                    console.log("✅ Video metadata loaded")
+                  }
+                  onProgress={() => console.log("📈 Video loading progress")}
+                  onSuspend={() => console.log("⏸️ Video loading suspended")}
+                  onAbort={() => console.log("❌ Video loading aborted")}
+                  onEmptied={() => console.log("🔄 Video emptied")}
+                  onStalled={() => console.log("⚠️ Video stalled")}
+                >
+                  {/* URL correcta con token válido */}
+                  <source
+                    src="https://firebasestorage.googleapis.com/v0/b/inmapp-842fa.firebasestorage.app/o/video%2FWhatsApp%20Video%202025-10-07%20at%2011.05.51%20PM.mp4?alt=media&token=d47d27a2-54bb-4bc5-82f1-1b593dd0a3ef"
+                    type="video/mp4"
                   />
-                </div>
-                <div className="text-center">
-                  <h3 className="text-3xl font-bold text-zinc-900 dark:text-zinc-100 mb-2">
-                    REALHOUSE
-                  </h3>
-                  <p className="text-zinc-600 dark:text-zinc-400 mt-4 text-sm">
-                    Especialistas en bienes raíces de lujo
-                  </p>
-                </div>
+
+                  {/* Fallback message */}
+                  <div className="flex flex-col items-center justify-center h-full text-white p-8">
+                    <div className="w-24 h-24 mb-4">
+                      <Image
+                        src="/logo.png"
+                        alt="REALHAUS"
+                        width={96}
+                        height={96}
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
+                    <h3 className="text-2xl font-bold mb-2 font-cinzel tracking-wide">
+                      REALHAUS
+                    </h3>
+                    <p className="text-zinc-300 text-sm text-center mb-4">
+                      Especialistas en bienes raíces de lujo
+                    </p>
+                    <p className="text-red-400 text-sm text-center">
+                      Error al cargar el video. Verifica la consola para más
+                      detalles.
+                    </p>
+                  </div>
+                </video>
               </div>
-              <div className="absolute -inset-4 bg-black rounded-2xl"></div>
+              <div className="absolute -inset-4 bg-gradient-to-br from-amber-500/10 to-yellow-600/10 rounded-2xl blur-sm"></div>
             </div>
           </div>
         </div>

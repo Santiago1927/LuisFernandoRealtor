@@ -38,8 +38,9 @@ export enum PaymentMethod {
 
 export enum LegalSituation {
   ListaParaEscriturar = "LISTA_PARA_ESCRITURAR",
-  CreditoHipotecarioLeasing = "CREDITO_HIPOTECARIO_LEASING",
-  CreditoPersonaNatural = "CREDITO_PERSONA_NATURAL",
+  CreditoHipotecario = "CREDITO_HIPOTECARIO",
+  LeasingHabitacional = "LEASING_HABITACIONAL",
+  AfectacionViviendaFamiliar = "AFECTACION_VIVIENDA_FAMILIAR",
   PatrimonioDeFamilia = "PATRIMONIO_DE_FAMILIA",
   Sucesion = "SUCESION",
   Otra = "OTRA",

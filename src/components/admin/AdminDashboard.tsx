@@ -9,8 +9,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Building2,
   Plus,
-  LogOut,
-  Globe,
   Loader2,
   ChevronLeft,
   ChevronRight,
@@ -53,8 +51,6 @@ export default function AdminDashboard() {
                 </p>
               </div>
             </div>
-
-            {/* Top-right buttons removed: 'Ver Sitio Web' and 'Cerrar Sesión' are handled in the sidebar */}
           </div>
         </div>
       </div>
@@ -172,6 +168,19 @@ export default function AdminDashboard() {
             onSave={handlePropertySave}
             onClose={handleFormClose}
           />
+        )}
+
+        {/* Floating Action Button for New Property */}
+        {!showForm && (
+          <div className="fixed bottom-8 right-8 z-50">
+            <Button
+              onClick={handleCreateProperty}
+              size="lg"
+              className="h-14 w-14 rounded-full bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-700 hover:to-yellow-700 text-white shadow-2xl hover:shadow-xl transition-all duration-300 hover:scale-105"
+            >
+              <Plus className="w-6 h-6" />
+            </Button>
+          </div>
         )}
       </div>
     </div>

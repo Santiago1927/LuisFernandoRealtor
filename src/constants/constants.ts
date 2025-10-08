@@ -71,15 +71,13 @@ export const PROJECT_TYPE_OPTIONS = [
 
 export const LEGAL_SITUATION_OPTIONS = [
   { value: LegalSituation.ListaParaEscriturar, label: "Lista para escriturar" },
+  { value: LegalSituation.CreditoHipotecario, label: "Crédito hipotecario" },
+  { value: LegalSituation.LeasingHabitacional, label: "Leasing habitacional" },
   {
-    value: LegalSituation.CreditoHipotecarioLeasing,
-    label: "Credito Hipotecario Leasing",
+    value: LegalSituation.AfectacionViviendaFamiliar,
+    label: "Afectación a vivienda familiar",
   },
-  {
-    value: LegalSituation.CreditoPersonaNatural,
-    label: "Credito Persona Natural",
-  },
-  { value: LegalSituation.PatrimonioDeFamilia, label: "Patrimonio de Familia" },
+  { value: LegalSituation.PatrimonioDeFamilia, label: "Patrimonio de familia" },
   { value: LegalSituation.Sucesion, label: "Sucesión" },
   { value: LegalSituation.Otra, label: "Otra" },
 ];
@@ -121,6 +119,7 @@ const livingInfoOwner = [
   "tieneAdministracion",
   "valorAproximado",
   "situacionJuridica",
+  "situacionJuridicaEspecifica",
 ];
 
 export const PROPERTY_INFO_OWNER: Record<PropertyType | "default", string[]> = {
@@ -355,16 +354,20 @@ export const INPUT_INFO: Record<string, Field> = {
         label: "Lista para escriturar",
       },
       {
-        value: LegalSituation.CreditoHipotecarioLeasing,
-        label: "Credito Hipotecario Leasing",
+        value: LegalSituation.CreditoHipotecario,
+        label: "Crédito hipotecario",
       },
       {
-        value: LegalSituation.CreditoPersonaNatural,
-        label: "Credito Persona Natural",
+        value: LegalSituation.LeasingHabitacional,
+        label: "Leasing habitacional",
+      },
+      {
+        value: LegalSituation.AfectacionViviendaFamiliar,
+        label: "Afectación a vivienda familiar",
       },
       {
         value: LegalSituation.PatrimonioDeFamilia,
-        label: "Patrimonio de Familia",
+        label: "Patrimonio de familia",
       },
       { value: LegalSituation.Sucesion, label: "Sucesión" },
       { value: LegalSituation.Otra, label: "Otra" },
@@ -383,6 +386,12 @@ export const INPUT_INFO: Record<string, Field> = {
       { value: ProjectType.Conjunto, label: "Conjunto" },
     ],
     label: "Tipo de proyecto",
+  },
+
+  situacionJuridicaEspecifica: {
+    id: "situacionJuridicaEspecifica",
+    type: "text",
+    label: "¿Cuál?",
   },
 
   comentariosAdicionales: {

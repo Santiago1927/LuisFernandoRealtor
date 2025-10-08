@@ -23,6 +23,7 @@ import {
   INPUT_INFO,
   QUESTIONS,
 } from "@/constants/constants";
+import { formatCurrencyInput, parseCurrency } from "@/utils/currency";
 
 interface OwnerFormProps {
   formSubmit: (data: any) => void;
@@ -52,6 +53,15 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
       "balcon",
       "tieneAdministracion",
     ];
+    const currencyFields = ["valorAproximado"];
+
+    // Campo condicional: solo mostrar si se seleccionó "Otra" en situación jurídica
+    if (fieldKey === "situacionJuridicaEspecifica") {
+      const situacionJuridica = watch("situacionJuridica");
+      if (situacionJuridica !== "OTRA") {
+        return null; // No mostrar el campo si no se seleccionó "Otra"
+      }
+    }
 
     if (booleanFields.includes(fieldKey)) {
       return (
@@ -174,6 +184,98 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
       );
     }
 
+    if (currencyFields.includes(fieldKey)) {
+      return (
+        <div className="space-y-2">
+          <Label
+            htmlFor={fieldKey}
+            className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
+          >
+            {field.label} *
+          </Label>
+          {errors[fieldKey] && (
+            <div className="flex items-center space-x-2 text-red-600 dark:text-red-400 text-sm">
+              <AlertCircle className="w-4 h-4" />
+              <span>{String(errors[fieldKey]?.message)}</span>
+            </div>
+          )}
+          <Controller
+            name={fieldKey}
+            control={control}
+            render={({ field: controllerField }) => (
+              <Input
+                id={fieldKey}
+                type="text"
+                value={
+                  controllerField.value
+                    ? formatCurrencyInput(controllerField.value.toString())
+                    : ""
+                }
+                onChange={(e) => {
+                  const numericValue = parseCurrency(e.target.value);
+                  controllerField.onChange(
+                    numericValue ? parseInt(numericValue) : 0
+                  );
+                }}
+                className={`w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400 ${
+                  errors[fieldKey] ? "border-red-500 dark:border-red-400" : ""
+                }`}
+                placeholder={`Ingresa ${field.label.toLowerCase()}`}
+              />
+            )}
+          />
+        </div>
+      );
+    }
+
+    // Campos de tipo select
+    if (field.type === "select") {
+      return (
+        <div className="space-y-2">
+          <Label
+            htmlFor={fieldKey}
+            className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
+          >
+            {field.label} *
+          </Label>
+          {errors[fieldKey] && (
+            <div className="flex items-center space-x-2 text-red-600 dark:text-red-400 text-sm">
+              <AlertCircle className="w-4 h-4" />
+              <span>{String(errors[fieldKey]?.message)}</span>
+            </div>
+          )}
+          <Controller
+            name={fieldKey}
+            control={control}
+            render={({ field: controllerField }) => (
+              <Select
+                onValueChange={controllerField.onChange}
+                value={controllerField.value}
+              >
+                <SelectTrigger
+                  id={fieldKey}
+                  className={`w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400 ${
+                    errors[fieldKey] ? "border-red-500 dark:border-red-400" : ""
+                  }`}
+                >
+                  <SelectValue
+                    placeholder={`Selecciona ${field.label.toLowerCase()}`}
+                  />
+                </SelectTrigger>
+                <SelectContent>
+                  {field.options?.map((option: any) => (
+                    <SelectItem key={option.value} value={option.value}>
+                      {option.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            )}
+          />
+        </div>
+      );
+    }
+
     return (
       <div className="space-y-2">
         <Label
@@ -290,28 +392,30 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
                     <span>{String(errors.ciudad?.message)}</span>
                   </div>
                 )}
-                <Select
-                  onValueChange={(value) => setValue("ciudad", value as any)}
-                  value={watch("ciudad")}
-                  {...register("ciudad")}
-                >
-                  <SelectTrigger
-                    id="ciudad-select"
-                    className="w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
-                  >
-                    <SelectValue placeholder="Selecciona una ciudad" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {CITY_OPTIONS.map((option) => (
-                      <SelectItem
-                        key={`city-${option.value}`}
-                        value={option.value}
+                <Controller
+                  name="ciudad"
+                  control={control}
+                  render={({ field }) => (
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <SelectTrigger
+                        id="ciudad-select"
+                        className="w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
                       >
-                        {option.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                        <SelectValue placeholder="Selecciona una ciudad" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {CITY_OPTIONS.map((option) => (
+                          <SelectItem
+                            key={`city-${option.value}`}
+                            value={option.value}
+                          >
+                            {option.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  )}
+                />
               </div>
 
               <div className="space-y-2">
@@ -327,30 +431,30 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
                     <span>{String(errors.tipoPropiedad?.message)}</span>
                   </div>
                 )}
-                <Select
-                  onValueChange={(value) =>
-                    setValue("tipoPropiedad", value as any)
-                  }
-                  value={watch("tipoPropiedad")}
-                  {...register("tipoPropiedad")}
-                >
-                  <SelectTrigger
-                    id="tipo-propiedad-select"
-                    className="w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
-                  >
-                    <SelectValue placeholder="Selecciona tipo de propiedad" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {PROPERTY_TYPE_OPTIONS.map((option) => (
-                      <SelectItem
-                        key={`property-type-${option.value}`}
-                        value={option.value}
+                <Controller
+                  name="tipoPropiedad"
+                  control={control}
+                  render={({ field }) => (
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <SelectTrigger
+                        id="tipo-propiedad-select"
+                        className="w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
                       >
-                        {option.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                        <SelectValue placeholder="Selecciona tipo de propiedad" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {PROPERTY_TYPE_OPTIONS.map((option) => (
+                          <SelectItem
+                            key={`property-type-${option.value}`}
+                            value={option.value}
+                          >
+                            {option.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  )}
+                />
               </div>
             </div>
 
@@ -496,16 +600,32 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
                     <span>{String(errors.valorAdministracion?.message)}</span>
                   </div>
                 )}
-                <Input
-                  id="valorAdministracion"
-                  type="number"
-                  {...register("valorAdministracion")}
-                  className={`w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400 ${
-                    errors.valorAdministracion
-                      ? "border-red-500 dark:border-red-400"
-                      : ""
-                  }`}
-                  placeholder="Ingresa el valor de administración"
+                <Controller
+                  name="valorAdministracion"
+                  control={control}
+                  render={({ field }) => (
+                    <Input
+                      id="valorAdministracion"
+                      type="text"
+                      value={
+                        field.value
+                          ? formatCurrencyInput(field.value.toString())
+                          : ""
+                      }
+                      onChange={(e) => {
+                        const numericValue = parseCurrency(e.target.value);
+                        field.onChange(
+                          numericValue ? parseInt(numericValue) : 0
+                        );
+                      }}
+                      className={`w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400 ${
+                        errors.valorAdministracion
+                          ? "border-red-500 dark:border-red-400"
+                          : ""
+                      }`}
+                      placeholder="Ingresa el valor de administración"
+                    />
+                  )}
                 />
               </div>
             )}

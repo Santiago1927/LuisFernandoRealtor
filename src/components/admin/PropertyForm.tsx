@@ -25,6 +25,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { formatCurrencyInput, parseCurrency } from "@/utils/currency";
 import {
   Select,
   SelectContent,
@@ -532,14 +533,25 @@ export default function PropertyForm({
                       </Label>
                       <Input
                         id="price"
-                        type="number"
+                        type="text"
                         name="price"
-                        value={formData.price}
-                        onChange={handleInputChange}
-                        min="0"
+                        value={
+                          formData.price
+                            ? formatCurrencyInput(formData.price.toString())
+                            : ""
+                        }
+                        onChange={(e) => {
+                          const numericValue = parseCurrency(e.target.value);
+                          handleInputChange({
+                            target: {
+                              name: "price",
+                              value: numericValue ? parseInt(numericValue) : 0,
+                            },
+                          } as any);
+                        }}
                         required
                         className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
-                        placeholder="Solo números (obligatorio)"
+                        placeholder="Ingresa el precio de venta"
                       />
                     </div>
 
@@ -553,13 +565,26 @@ export default function PropertyForm({
                       </Label>
                       <Input
                         id="valor_administracion"
-                        type="number"
+                        type="text"
                         name="valor_administracion"
-                        value={formData.valor_administracion || ""}
-                        onChange={handleInputChange}
-                        min="0"
+                        value={
+                          formData.valor_administracion
+                            ? formatCurrencyInput(
+                                formData.valor_administracion.toString()
+                              )
+                            : ""
+                        }
+                        onChange={(e) => {
+                          const numericValue = parseCurrency(e.target.value);
+                          handleInputChange({
+                            target: {
+                              name: "valor_administracion",
+                              value: numericValue ? parseInt(numericValue) : 0,
+                            },
+                          } as any);
+                        }}
                         className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
-                        placeholder="Solo números"
+                        placeholder="Ingresa el valor de administración"
                       />
                     </div>
 

@@ -11,6 +11,7 @@ import {
   Tailwind,
 } from "@react-email/components";
 import * as React from "react";
+import { formatCurrency } from "@/utils/currency";
 
 interface ContactEmailProps {
   correo: string;
@@ -223,7 +224,7 @@ export const ContactEmail: React.FC<ContactEmailProps> = ({
                             Presupuesto:
                           </span>
                           <span className="ml-2 text-green-700 font-semibold">
-                            {presupuesto || "N/A"}
+                            {presupuesto ? formatCurrency(presupuesto) : "N/A"}
                           </span>
                         </Text>
                       </div>
@@ -437,7 +438,9 @@ export const ContactEmail: React.FC<ContactEmailProps> = ({
                             Valor Administración:
                           </span>
                           <span className="ml-2 text-green-700 font-semibold">
-                            {valorAdministracion || "N/A"}
+                            {valorAdministracion
+                              ? formatCurrency(valorAdministracion)
+                              : "N/A"}
                           </span>
                         </Text>
                         <Text className="text-base">
@@ -445,7 +448,9 @@ export const ContactEmail: React.FC<ContactEmailProps> = ({
                             Valor Aproximado:
                           </span>
                           <span className="ml-2 text-green-700 font-semibold">
-                            {valorAproximado || "N/A"}
+                            {valorAproximado
+                              ? formatCurrency(valorAproximado)
+                              : "N/A"}
                           </span>
                         </Text>
                         <Text className="text-base">
@@ -550,8 +555,7 @@ export const ContactEmail: React.FC<ContactEmailProps> = ({
             </Section>
 
             <Text className="text-center text-sm text-zinc-500 py-6 border-t border-zinc-200">
-              © 2024 | Luis Fernando Realtor | Colombia |
-              www.luisfernandorealtor.com
+              © 2024 | REALHAUS | Colombia | www.luisfernandorealtor.com
             </Text>
           </Container>
         </Body>
