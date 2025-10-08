@@ -12,12 +12,12 @@ export default function LoginPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-zinc-50 via-white to-amber-50/30 dark:from-zinc-900 dark:via-black dark:to-amber-900/10 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-zinc-50 via-white to-custom-50/30 dark:from-zinc-900 dark:via-black dark:to-custom-900/10 flex items-center justify-center">
         <div className="text-center">
-          <div className="w-16 h-16 bg-gradient-to-br from-amber-500 to-yellow-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+          <div className="w-16 h-16 bg-gradient-to-br from-custom-500 to-custom-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
             <Shield className="w-8 h-8 text-white" />
           </div>
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-amber-600 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-custom-600 mx-auto mb-4"></div>
           <p className="text-lg text-zinc-600 dark:text-zinc-400">
             Verificando autenticación...
           </p>
@@ -31,7 +31,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-zinc-50 via-white to-amber-50/30 dark:from-zinc-900 dark:via-black dark:to-amber-900/10">
+    <div className="min-h-screen bg-gradient-to-br from-zinc-50 via-white to-custom-50/30 dark:from-zinc-900 dark:via-black dark:to-custom-900/10">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-16">
         {/* Botón de inicio */}
         <div className="flex justify-start mb-8">
@@ -39,7 +39,7 @@ export default function LoginPage() {
             onClick={() => router.push("/")}
             variant="outline"
             size="lg"
-            className="border-amber-300 dark:border-amber-600 text-amber-700 dark:text-amber-300 hover:bg-amber-50 dark:hover:bg-amber-900/20 flex items-center space-x-2"
+            className="border-custom-300 dark:border-custom-600 text-custom-700 dark:text-custom-300 hover:bg-custom-50 dark:hover:bg-custom-900/20 flex items-center space-x-2"
           >
             <Home className="w-5 h-5" />
             <span>Inicio</span>
@@ -48,7 +48,7 @@ export default function LoginPage() {
 
         <div className="flex flex-col items-center justify-center min-h-[70vh]">
           <div className="text-center mb-12">
-            <div className="w-20 h-20 bg-gradient-to-br from-amber-500 to-yellow-600 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-2xl">
+            <div className="w-20 h-20 bg-gradient-to-br from-custom-500 to-custom-600 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-2xl">
               <Shield className="w-10 h-10 text-white" />
             </div>
             <h1 className="text-4xl lg:text-5xl font-bold text-zinc-900 dark:text-zinc-100 mb-4">

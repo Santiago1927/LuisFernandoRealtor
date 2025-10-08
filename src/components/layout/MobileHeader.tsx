@@ -125,9 +125,9 @@ export default function MobileHeader() {
       onTouchEnd={handleTouchEnd}
       className="relative"
     >
-      <header className="sticky top-0 z-50 w-full bg-gradient-to-r from-zinc-900 via-black to-zinc-900 dark:from-black dark:via-zinc-900 dark:to-black border-b border-amber-500/20 shadow-2xl">
+      <header className="sticky top-0 z-50 w-full bg-gradient-to-r from-zinc-900 via-black to-zinc-900 dark:from-black dark:via-zinc-900 dark:to-black border-b border-custom-500/20 shadow-2xl">
         {/* Barra superior con información de contacto - solo visible en desktop */}
-        <div className="hidden md:block bg-gradient-to-r from-amber-600 to-yellow-600 text-black py-2">
+        <div className="hidden md:block bg-gradient-to-r from-custom-600 to-custom-600 text-black py-2">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between text-sm font-medium">
               <div className="flex items-center space-x-6">
@@ -188,7 +188,7 @@ export default function MobileHeader() {
                   <Link
                     key={`desktop-nav-${index}`}
                     href={link.href}
-                    className="flex items-center space-x-2 text-white hover:text-amber-400 transition-colors font-medium text-sm lg:text-base"
+                    className="flex items-center space-x-2 text-white hover:text-custom-400 transition-colors font-medium text-sm lg:text-base"
                   >
                     <Icon className="h-4 w-4" />
                     <span>{link.text}</span>
@@ -196,7 +196,7 @@ export default function MobileHeader() {
                 );
               })}
 
-              <div className="h-6 w-px bg-amber-500/30"></div>
+              <div className="h-6 w-px bg-custom-500/30"></div>
 
               <div className="flex items-center space-x-3">
                 {socialLinks.map((social) => {
@@ -208,7 +208,7 @@ export default function MobileHeader() {
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label={social.ariaLabel}
-                      className="text-white hover:text-amber-400 transition-colors duration-200 hover:scale-110 transform"
+                      className="text-white hover:text-custom-400 transition-colors duration-200 hover:scale-110 transform"
                     >
                       <Icon className="h-5 w-5" />
                     </a>
@@ -226,7 +226,7 @@ export default function MobileHeader() {
                 variant="ghost"
                 size="icon"
                 onClick={openSidebar}
-                className="text-white hover:text-amber-400 hover:bg-amber-400/10 touch-manipulation"
+                className="text-white hover:text-custom-400 hover:bg-custom-400/10 touch-manipulation"
                 aria-label="Abrir menú"
               >
                 <Menu className="h-6 w-6" />
@@ -251,7 +251,7 @@ export default function MobileHeader() {
         }`}
       >
         {/* Header del sidebar */}
-        <div className="flex items-center justify-between p-6 border-b border-amber-500/20">
+        <div className="flex items-center justify-between p-6 border-b border-custom-500/20">
           <div className="flex items-center space-x-3">
             <div className="relative h-10 w-10">
               <Image
@@ -270,7 +270,7 @@ export default function MobileHeader() {
             variant="ghost"
             size="icon"
             onClick={() => setIsSidebarOpen(false)}
-            className="text-white hover:text-amber-400 hover:bg-amber-400/10"
+            className="text-white hover:text-custom-400 hover:bg-custom-400/10"
             aria-label="Cerrar menú"
           >
             <X className="h-6 w-6" />
@@ -278,7 +278,7 @@ export default function MobileHeader() {
         </div>
 
         {/* Información de contacto en sidebar */}
-        <div className="bg-gradient-to-r from-amber-600 to-yellow-600 text-black p-4 m-4 rounded-lg shadow-lg">
+        <div className="bg-gradient-to-r from-custom-600 to-custom-600 text-black p-4 m-4 rounded-lg shadow-lg">
           <h3 className="font-bold text-base mb-3">Contacto Directo</h3>
           <div className="space-y-2">
             <a
@@ -311,7 +311,7 @@ export default function MobileHeader() {
                 key={`sidebar-link-${index}`}
                 href={link.href}
                 onClick={handleLinkClick}
-                className="flex items-center space-x-4 text-white hover:text-amber-400 hover:bg-amber-400/10 active:bg-amber-400/20 transition-all duration-200 p-4 rounded-lg mb-2 group touch-manipulation"
+                className="flex items-center space-x-4 text-white hover:text-custom-400 hover:bg-custom-400/10 active:bg-custom-400/20 transition-all duration-200 p-4 rounded-lg mb-2 group touch-manipulation"
               >
                 <Icon className="h-6 w-6 group-hover:scale-110 transition-transform flex-shrink-0" />
                 <span className="text-lg font-medium">{link.text}</span>
@@ -321,7 +321,7 @@ export default function MobileHeader() {
         </nav>
 
         {/* Redes sociales en sidebar */}
-        <div className="mt-auto p-4 border-t border-amber-500/20">
+        <div className="mt-auto p-4 border-t border-custom-500/20">
           <p className="text-white/80 text-sm mb-4 text-center">
             Síguenos en redes sociales
           </p>
@@ -335,7 +335,7 @@ export default function MobileHeader() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={social.ariaLabel}
-                  className="text-white hover:text-amber-400 transition-all duration-200 hover:scale-125 transform p-2 hover:bg-amber-400/10 rounded-lg touch-manipulation"
+                  className="text-white hover:text-custom-400 transition-all duration-200 hover:scale-125 transform p-2 hover:bg-custom-400/10 rounded-lg touch-manipulation"
                 >
                   <Icon className="h-6 w-6" />
                 </a>
@@ -347,7 +347,7 @@ export default function MobileHeader() {
 
       {/* Indicador de swipe en el borde derecho - solo móvil */}
       {!isSidebarOpen && (
-        <div className="fixed right-0 top-1/2 -translate-y-1/2 w-1 h-16 bg-amber-500/50 rounded-l-lg md:hidden z-40 animate-pulse" />
+        <div className="fixed right-0 top-1/2 -translate-y-1/2 w-1 h-16 bg-custom-500/50 rounded-l-lg md:hidden z-40 animate-pulse" />
       )}
     </div>
   );

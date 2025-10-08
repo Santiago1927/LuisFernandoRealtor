@@ -73,7 +73,7 @@ export function MultiSelect({
                 <Badge
                   key={value}
                   variant="secondary"
-                  className="text-xs bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300"
+                  className="text-xs bg-custom-100 text-custom-800 dark:bg-custom-900/30 dark:text-custom-300"
                 >
                   {getOptionLabel(value)}
                   <button

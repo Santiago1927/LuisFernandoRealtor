@@ -85,7 +85,7 @@ function PropiedadesContent() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-zinc-50 via-white to-amber-50/30 dark:from-zinc-900 dark:via-black dark:to-amber-900/10">
+      <div className="min-h-screen bg-gradient-to-br from-zinc-50 via-white to-custom-50/30 dark:from-zinc-900 dark:via-black dark:to-custom-900/10">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="text-center">
             <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 mb-4">
@@ -104,7 +104,7 @@ function PropiedadesContent() {
   const hasFiltersFromHome = search || city || type || minPrice || maxPrice;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-zinc-50 via-white to-amber-50/30 dark:from-zinc-900 dark:via-black dark:to-amber-900/10">
+    <div className="min-h-screen bg-gradient-to-br from-zinc-50 via-white to-custom-50/30 dark:from-zinc-900 dark:via-black dark:to-custom-900/10">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-zinc-900 dark:text-zinc-100 mb-4">
@@ -124,7 +124,7 @@ function PropiedadesContent() {
               {search && (
                 <Badge
                   variant="secondary"
-                  className="bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300"
+                  className="bg-custom-100 text-custom-800 dark:bg-custom-900/30 dark:text-custom-300"
                 >
                   Búsqueda: {search}
                 </Badge>
@@ -180,12 +180,12 @@ function PropiedadesContent() {
                   placeholder="Buscar propiedades..."
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  className="pl-10 border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 focus:border-amber-500 dark:focus:border-amber-400"
+                  className="pl-10 border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 focus:border-custom-500 dark:focus:border-custom-400"
                 />
               </div>
 
               <Select value={city} onValueChange={setCity}>
-                <SelectTrigger className="border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 focus:border-amber-500 dark:focus:border-amber-400">
+                <SelectTrigger className="border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 focus:border-custom-500 dark:focus:border-custom-400">
                   <SelectValue placeholder="Ciudad" />
                 </SelectTrigger>
                 <SelectContent>
@@ -198,7 +198,7 @@ function PropiedadesContent() {
               </Select>
 
               <Select value={type} onValueChange={setType}>
-                <SelectTrigger className="border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 focus:border-amber-500 dark:focus:border-amber-400">
+                <SelectTrigger className="border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 focus:border-custom-500 dark:focus:border-custom-400">
                   <SelectValue placeholder="Tipo" />
                 </SelectTrigger>
                 <SelectContent>
@@ -220,7 +220,7 @@ function PropiedadesContent() {
                   placeholder="Precio mínimo"
                   value={minPrice}
                   onChange={(e) => setMinPrice(e.target.value)}
-                  className="pl-10 border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 focus:border-amber-500 dark:focus:border-amber-400"
+                  className="pl-10 border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 focus:border-custom-500 dark:focus:border-custom-400"
                 />
               </div>
 
@@ -231,7 +231,7 @@ function PropiedadesContent() {
                   placeholder="Precio máximo"
                   value={maxPrice}
                   onChange={(e) => setMaxPrice(e.target.value)}
-                  className="pl-10 border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 focus:border-amber-500 dark:focus:border-amber-400"
+                  className="pl-10 border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 focus:border-custom-500 dark:focus:border-custom-400"
                 />
               </div>
 
@@ -255,7 +255,7 @@ function PropiedadesContent() {
         {isLoading ? (
           <div className="flex items-center justify-center py-16">
             <div className="text-center">
-              <Loader2 className="h-8 w-8 animate-spin text-amber-600 dark:text-amber-400 mx-auto mb-4" />
+              <Loader2 className="h-8 w-8 animate-spin text-custom-600 dark:text-custom-400 mx-auto mb-4" />
               <p className="text-zinc-600 dark:text-zinc-400">
                 Cargando propiedades...
               </p>
@@ -267,11 +267,11 @@ function PropiedadesContent() {
               <div className="mb-8 text-center">
                 <p className="text-lg text-zinc-600 dark:text-zinc-400">
                   Mostrando{" "}
-                  <span className="font-semibold text-amber-600 dark:text-amber-400">
+                  <span className="font-semibold text-custom-600 dark:text-custom-400">
                     {properties.length}
                   </span>{" "}
                   de{" "}
-                  <span className="font-semibold text-amber-600 dark:text-amber-400">
+                  <span className="font-semibold text-custom-600 dark:text-custom-400">
                     {total}
                   </span>{" "}
                   propiedades
@@ -302,7 +302,7 @@ function PropiedadesContent() {
                         onClick={() => handlePageChange(page)}
                         className={
                           currentPage === page
-                            ? "bg-amber-600 hover:bg-amber-700 text-white"
+                            ? "bg-custom-600 hover:bg-custom-700 text-white"
                             : "border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800"
                         }
                       >
@@ -343,7 +343,7 @@ function PropiedadesContent() {
                       setMinPrice("");
                       setMaxPrice("");
                     }}
-                    className="bg-amber-600 hover:bg-amber-700 text-white"
+                    className="bg-custom-600 hover:bg-custom-700 text-white"
                   >
                     Limpiar filtros
                   </Button>
@@ -362,10 +362,10 @@ export default function PropiedadesPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen bg-gradient-to-br from-zinc-50 via-white to-amber-50/30 dark:from-zinc-900 dark:via-black dark:to-amber-900/10">
+        <div className="min-h-screen bg-gradient-to-br from-zinc-50 via-white to-custom-50/30 dark:from-zinc-900 dark:via-black dark:to-custom-900/10">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <div className="flex items-center justify-center">
-              <Loader2 className="h-8 w-8 animate-spin text-amber-600" />
+              <Loader2 className="h-8 w-8 animate-spin text-custom-600" />
               <span className="ml-2 text-lg text-zinc-600 dark:text-zinc-400">
                 Cargando propiedades...
               </span>

@@ -156,7 +156,7 @@ export const AlertProvider: React.FC<AlertProviderProps> = ({ children }) => {
           <div className="w-full max-w-md bg-white dark:bg-gray-800 rounded-lg shadow-2xl border border-gray-200 dark:border-gray-700">
             <div className="p-6">
               <div className="flex items-start space-x-3 mb-6">
-                <AlertTriangle className="h-6 w-6 text-amber-500 flex-shrink-0 mt-0.5" />
+                <AlertTriangle className="h-6 w-6 text-custom-500 flex-shrink-0 mt-0.5" />
                 <div className="flex-1">
                   <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">
                     Confirmar Acción

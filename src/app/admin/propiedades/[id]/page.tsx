@@ -145,7 +145,7 @@ export default function AdminPropertyDetailPage() {
   if (authLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-custom-600"></div>
       </div>
     );
   }
@@ -159,7 +159,7 @@ export default function AdminPropertyDetailPage() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <Loader2 className="h-8 w-8 animate-spin text-amber-600 mx-auto mb-4" />
+          <Loader2 className="h-8 w-8 animate-spin text-custom-600 mx-auto mb-4" />
           <p className="text-gray-600 dark:text-gray-400">
             Cargando propiedad...
           </p>
@@ -226,14 +226,14 @@ export default function AdminPropertyDetailPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-zinc-50 via-white to-amber-50/30 dark:from-zinc-900 dark:via-black dark:to-amber-900/10">
+    <div className="min-h-screen bg-gradient-to-br from-zinc-50 via-white to-custom-50/30 dark:from-zinc-900 dark:via-black dark:to-custom-900/10">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
         {/* Header con navegación */}
         <div className="mb-6 flex items-center justify-between">
           <Button
             asChild
             variant="ghost"
-            className="text-zinc-600 dark:text-zinc-400 hover:text-amber-600 dark:hover:text-amber-400"
+            className="text-zinc-600 dark:text-zinc-400 hover:text-custom-600 dark:hover:text-custom-400"
           >
             <Link href="/admin/propiedades">
               <ChevronLeft className="w-4 h-4 mr-2" />
@@ -244,7 +244,7 @@ export default function AdminPropertyDetailPage() {
           <div className="flex gap-2">
             <Button
               onClick={handleEdit}
-              className="bg-amber-600 hover:bg-amber-700 text-white"
+              className="bg-custom-600 hover:bg-custom-700 text-white"
             >
               <Edit className="w-4 h-4 mr-2" />
               Editar Propiedad
@@ -372,7 +372,7 @@ export default function AdminPropertyDetailPage() {
                         </div>
                       </div>
                       <div className="text-right">
-                        <div className="text-3xl lg:text-4xl font-bold text-amber-600 dark:text-amber-400">
+                        <div className="text-3xl lg:text-4xl font-bold text-custom-600 dark:text-custom-400">
                           {formatCurrency(property.price)}
                         </div>
                         {property.business_type === "Alquilar" &&
@@ -387,7 +387,7 @@ export default function AdminPropertyDetailPage() {
                     {/* Características principales */}
                     <div className="grid grid-cols-3 gap-4">
                       <div className="text-center p-4 bg-zinc-50 dark:bg-zinc-800 rounded-lg">
-                        <Bed className="w-6 h-6 text-amber-600 dark:text-amber-400 mx-auto mb-2" />
+                        <Bed className="w-6 h-6 text-custom-600 dark:text-custom-400 mx-auto mb-2" />
                         <div className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">
                           {property.bedrooms || 0}
                         </div>
@@ -396,7 +396,7 @@ export default function AdminPropertyDetailPage() {
                         </div>
                       </div>
                       <div className="text-center p-4 bg-zinc-50 dark:bg-zinc-800 rounded-lg">
-                        <Bath className="w-6 h-6 text-amber-600 dark:text-amber-400 mx-auto mb-2" />
+                        <Bath className="w-6 h-6 text-custom-600 dark:text-custom-400 mx-auto mb-2" />
                         <div className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">
                           {renderSafeBathrooms(property.bathrooms)}
                         </div>
@@ -405,7 +405,7 @@ export default function AdminPropertyDetailPage() {
                         </div>
                       </div>
                       <div className="text-center p-4 bg-zinc-50 dark:bg-zinc-800 rounded-lg">
-                        <Square className="w-6 h-6 text-amber-600 dark:text-amber-400 mx-auto mb-2" />
+                        <Square className="w-6 h-6 text-custom-600 dark:text-custom-400 mx-auto mb-2" />
                         <div className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">
                           {property.total_area || property.area || 0}
                         </div>
@@ -438,7 +438,7 @@ export default function AdminPropertyDetailPage() {
                             <Badge
                               key={`admin-amenity-${index}-${amenity}`}
                               variant="secondary"
-                              className="bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-300"
+                              className="bg-custom-100 dark:bg-custom-900/30 text-custom-800 dark:text-custom-300"
                             >
                               {amenity}
                             </Badge>

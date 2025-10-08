@@ -68,7 +68,7 @@ export default function ContactoPage() {
   */
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-zinc-50 via-white to-amber-50/30 dark:from-zinc-900 dark:via-black dark:to-amber-900/10">
+    <div className="min-h-screen bg-gradient-to-br from-zinc-50 via-white to-custom-50/30 dark:from-zinc-900 dark:via-black dark:to-custom-900/10">
       <ContactSection />
 
       <section className="py-16 lg:py-24">
@@ -76,7 +76,7 @@ export default function ContactoPage() {
           <div className="text-center mb-16">
             <Badge
               variant="secondary"
-              className="bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300 border-amber-200 dark:border-amber-800 mb-4"
+              className="bg-custom-100 text-custom-800 dark:bg-custom-900/30 dark:text-custom-300 border-custom-200 dark:border-custom-800 mb-4"
             >
               Contacto directo
             </Badge>
@@ -94,7 +94,7 @@ export default function ContactoPage() {
             <Card className="border-0 shadow-xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur hover:shadow-2xl transition-all duration-300 group">
               <CardContent className="p-8">
                 <div className="flex items-center mb-6">
-                  <div className="w-12 h-12 bg-gradient-to-br from-amber-500 to-yellow-600 rounded-xl flex items-center justify-center mr-4 group-hover:scale-110 transition-transform">
+                  <div className="w-12 h-12 bg-gradient-to-br from-custom-500 to-custom-600 rounded-xl flex items-center justify-center mr-4 group-hover:scale-110 transition-transform">
                     <Mail className="w-6 h-6 text-white" />
                   </div>
                   <div>
@@ -111,7 +111,7 @@ export default function ContactoPage() {
                 </p>
                 <a
                   href="mailto:realtorluisfernando@gmail.com"
-                  className="text-amber-600 dark:text-amber-400 font-medium hover:text-amber-700 dark:hover:text-amber-300 transition-colors inline-flex items-center"
+                  className="text-custom-600 dark:text-custom-400 font-medium hover:text-custom-700 dark:hover:text-custom-300 transition-colors inline-flex items-center"
                 >
                   realtorluisfernando@gmail.com
                   <Mail className="w-4 h-4 ml-2" />
@@ -122,7 +122,7 @@ export default function ContactoPage() {
             <Card className="border-0 shadow-xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur hover:shadow-2xl transition-all duration-300 group">
               <CardContent className="p-8">
                 <div className="flex items-center mb-6">
-                  <div className="w-12 h-12 bg-gradient-to-br from-amber-500 to-yellow-600 rounded-xl flex items-center justify-center mr-4 group-hover:scale-110 transition-transform">
+                  <div className="w-12 h-12 bg-gradient-to-br from-custom-500 to-custom-600 rounded-xl flex items-center justify-center mr-4 group-hover:scale-110 transition-transform">
                     <Phone className="w-6 h-6 text-white" />
                   </div>
                   <div>
@@ -140,13 +140,13 @@ export default function ContactoPage() {
                 <div className="space-y-3">
                   <a
                     href="tel:+573214223931"
-                    className="text-amber-600 dark:text-amber-400 font-medium hover:text-amber-700 dark:hover:text-amber-300 transition-colors inline-flex items-center block"
+                    className="text-custom-600 dark:text-custom-400 font-medium hover:text-custom-700 dark:hover:text-custom-300 transition-colors inline-flex items-center block"
                   >
                     <Phone className="w-4 h-4 ml-2" /> 321 422 3931
                   </a>
                   <a
                     href="tel:+573177772601"
-                    className="text-amber-600 dark:text-amber-400 font-medium hover:text-amber-700 dark:hover:text-amber-300 transition-colors inline-flex items-center block"
+                    className="text-custom-600 dark:text-custom-400 font-medium hover:text-custom-700 dark:hover:text-custom-300 transition-colors inline-flex items-center block"
                   >
                     <Phone className="w-4 h-4 ml-2" />
                     317 777 2601
@@ -158,7 +158,7 @@ export default function ContactoPage() {
             <Card className="border-0 shadow-xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur hover:shadow-2xl transition-all duration-300 group">
               <CardContent className="p-8">
                 <div className="flex items-center mb-6">
-                  <div className="w-12 h-12 bg-gradient-to-br from-amber-500 to-yellow-600 rounded-xl flex items-center justify-center mr-4 group-hover:scale-110 transition-transform">
+                  <div className="w-12 h-12 bg-gradient-to-br from-custom-500 to-custom-600 rounded-xl flex items-center justify-center mr-4 group-hover:scale-110 transition-transform">
                     <MapPin className="w-6 h-6 text-white" />
                   </div>
                   <div>
@@ -173,7 +173,7 @@ export default function ContactoPage() {
                 <p className="text-zinc-600 dark:text-zinc-300 mb-4">
                   Reuniones y asesorías presenciales
                 </p>
-                <div className="text-amber-600 dark:text-amber-400 font-medium">
+                <div className="text-custom-600 dark:text-custom-400 font-medium">
                   <p>Pasto, Colombia</p>
                   <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1">
                     Cita previa
@@ -197,7 +197,7 @@ export default function ContactoPage() {
               <CardContent className="space-y-6">
                 <div className="grid gap-4">
                   <div className="flex items-start space-x-4">
-                    <div className="w-8 h-8 bg-gradient-to-br from-amber-500 to-yellow-600 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                    <div className="w-8 h-8 bg-gradient-to-br from-custom-500 to-custom-600 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
                       <Award className="w-4 h-4 text-white" />
                     </div>
                     <div>
@@ -211,7 +211,7 @@ export default function ContactoPage() {
                   </div>
 
                   <div className="flex items-start space-x-4">
-                    <div className="w-8 h-8 bg-gradient-to-br from-amber-500 to-yellow-600 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                    <div className="w-8 h-8 bg-gradient-to-br from-custom-500 to-custom-600 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
                       <Users className="w-4 h-4 text-white" />
                     </div>
                     <div>
@@ -225,7 +225,7 @@ export default function ContactoPage() {
                   </div>
 
                   <div className="flex items-start space-x-4">
-                    <div className="w-8 h-8 bg-gradient-to-br from-amber-500 to-yellow-600 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                    <div className="w-8 h-8 bg-gradient-to-br from-custom-500 to-custom-600 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
                       <Target className="w-4 h-4 text-white" />
                     </div>
                     <div>
@@ -239,7 +239,7 @@ export default function ContactoPage() {
                   </div>
 
                   <div className="flex items-start space-x-4">
-                    <div className="w-8 h-8 bg-gradient-to-br from-amber-500 to-yellow-600 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                    <div className="w-8 h-8 bg-gradient-to-br from-custom-500 to-custom-600 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
                       <CheckCircle className="w-4 h-4 text-white" />
                     </div>
                     <div>
@@ -258,7 +258,7 @@ export default function ContactoPage() {
                     {[...Array(5)].map((_, i) => (
                       <Star
                         key={`star-${i}`}
-                        className="w-5 h-5 text-amber-500 fill-current"
+                        className="w-5 h-5 text-custom-500 fill-current"
                       />
                     ))}
                   </div>
@@ -308,13 +308,13 @@ export default function ContactoPage() {
                     <p className="text-zinc-300 text-sm text-center mb-4">
                       Especialistas en bienes raíces de lujo
                     </p>
-                    <p className="text-amber-400 text-sm text-center">
+                    <p className="text-custom-400 text-sm text-center">
                       Video no disponible temporalmente
                     </p>
                   </div>
                 )}
               </div>
-              <div className="absolute -inset-4 bg-gradient-to-br from-amber-500/10 to-yellow-600/10 rounded-2xl blur-sm"></div>
+              <div className="absolute -inset-4 bg-gradient-to-br from-custom-500/10 to-custom-600/10 rounded-2xl blur-sm"></div>
             </div>
           </div>
         </div>

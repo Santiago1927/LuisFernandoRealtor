@@ -73,7 +73,7 @@ export default function AdminPropiedadesPage() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-custom-600"></div>
       </div>
     );
   }
@@ -164,7 +164,7 @@ export default function AdminPropiedadesPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-zinc-50 via-white to-amber-50/30 dark:from-zinc-900 dark:via-black dark:to-amber-900/10">
+    <div className="min-h-screen bg-gradient-to-br from-zinc-50 via-white to-custom-50/30 dark:from-zinc-900 dark:via-black dark:to-custom-900/10">
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-8 flex justify-between items-start">
@@ -181,7 +181,7 @@ export default function AdminPropiedadesPage() {
               setEditingProperty(null);
               setShowForm(true);
             }}
-            className="bg-amber-600 hover:bg-amber-700 text-white"
+            className="bg-custom-600 hover:bg-custom-700 text-white"
           >
             + Nueva Propiedad
           </Button>
@@ -304,7 +304,7 @@ export default function AdminPropiedadesPage() {
         {isLoading ? (
           <div className="flex items-center justify-center py-12">
             <div className="text-center">
-              <Loader2 className="h-8 w-8 animate-spin text-amber-600 mx-auto mb-4" />
+              <Loader2 className="h-8 w-8 animate-spin text-custom-600 mx-auto mb-4" />
               <p className="text-gray-600 dark:text-gray-400">
                 Cargando propiedades...
               </p>

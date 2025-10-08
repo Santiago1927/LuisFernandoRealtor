@@ -87,11 +87,11 @@ export default function HomeFilters() {
       {/* Botón Comprar prominente */}
       <div className="text-center mb-8">
         <div className="relative inline-block">
-          <div className="absolute -inset-1 bg-gradient-to-r from-amber-600 to-yellow-600 rounded-3xl blur opacity-40 animate-pulse"></div>
+          <div className="absolute -inset-1 bg-gradient-to-r from-custom-600 to-custom-600 rounded-3xl blur opacity-40 animate-pulse"></div>
           <Link href="/propiedades">
             <Button
               size="lg"
-              className="relative bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-700 hover:to-yellow-700 text-white font-bold shadow-xl hover:shadow-2xl transition-all duration-300 text-xl px-12 py-6 rounded-2xl transform hover:scale-105"
+              className="relative bg-gradient-to-r from-custom-600 to-custom-600 hover:from-custom-700 hover:to-custom-700 text-white font-bold shadow-xl hover:shadow-2xl transition-all duration-300 text-xl px-12 py-6 rounded-2xl transform hover:scale-105"
             >
               <ShoppingCart className="w-6 h-6 mr-3" />
               COMPRAR PROPIEDAD
@@ -118,7 +118,7 @@ export default function HomeFilters() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
             {/* Selector de tipo de propiedad - PRIMERO */}
             <Select value={type} onValueChange={setType}>
-              <SelectTrigger className="h-12 border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 focus:border-amber-500 dark:focus:border-amber-400">
+              <SelectTrigger className="h-12 border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 focus:border-custom-500 dark:focus:border-custom-400">
                 <SelectValue placeholder="Tipo" />
               </SelectTrigger>
               <SelectContent>
@@ -135,7 +135,7 @@ export default function HomeFilters() {
 
             {/* Selector de ciudad */}
             <Select value={city} onValueChange={setCity}>
-              <SelectTrigger className="h-12 border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 focus:border-amber-500 dark:focus:border-amber-400">
+              <SelectTrigger className="h-12 border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 focus:border-custom-500 dark:focus:border-custom-400">
                 <SelectValue placeholder="Ciudad" />
               </SelectTrigger>
               <SelectContent>
@@ -149,7 +149,7 @@ export default function HomeFilters() {
 
             {/* Selector de rango de precio */}
             <Select value={priceRange} onValueChange={setPriceRange}>
-              <SelectTrigger className="h-12 border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 focus:border-amber-500 dark:focus:border-amber-400">
+              <SelectTrigger className="h-12 border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 focus:border-custom-500 dark:focus:border-custom-400">
                 <SelectValue placeholder="Rango de precio" />
               </SelectTrigger>
               <SelectContent>
@@ -170,7 +170,7 @@ export default function HomeFilters() {
             <Button
               onClick={handleSearch}
               size="lg"
-              className="bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-700 hover:to-yellow-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 px-8 py-3"
+              className="bg-gradient-to-r from-custom-600 to-custom-600 hover:from-custom-700 hover:to-custom-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 px-8 py-3"
             >
               <Search className="w-5 h-5 mr-2" />
               Buscar propiedades

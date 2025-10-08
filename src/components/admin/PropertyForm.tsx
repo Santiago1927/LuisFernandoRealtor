@@ -281,7 +281,7 @@ export default function PropertyForm({
         <CardHeader className="border-b border-zinc-200 dark:border-zinc-700">
           <div className="flex justify-between items-center">
             <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-amber-500 to-yellow-600 rounded-xl flex items-center justify-center">
+              <div className="w-10 h-10 bg-gradient-to-br from-custom-500 to-custom-600 rounded-xl flex items-center justify-center">
                 <Building2 className="w-5 h-5 text-white" />
               </div>
               <div>
@@ -293,8 +293,8 @@ export default function PropertyForm({
                     ? "Modifica los datos de la propiedad"
                     : "Crea una nueva propiedad"}
                 </p>
-                <div className="mt-2 p-3 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg">
-                  <p className="text-xs text-amber-800 dark:text-amber-200">
+                <div className="mt-2 p-3 bg-custom-50 dark:bg-custom-900/20 border border-custom-200 dark:border-custom-800 rounded-lg">
+                  <p className="text-xs text-custom-800 dark:text-custom-200">
                     ℹ️ Los campos marcados con{" "}
                     <span className="text-red-500 font-bold">*</span> son
                     obligatorios. Usuario:{" "}
@@ -384,11 +384,11 @@ export default function PropertyForm({
                     </div>
                   </div>
 
-                  <div className="bg-amber-50 dark:bg-amber-900/20 p-2 rounded">
-                    <div className="font-semibold text-amber-700 dark:text-amber-300">
+                  <div className="bg-custom-50 dark:bg-custom-900/20 p-2 rounded">
+                    <div className="font-semibold text-custom-700 dark:text-custom-300">
                       Ubicación
                     </div>
-                    <div className="text-amber-600 dark:text-amber-400">
+                    <div className="text-custom-600 dark:text-custom-400">
                       Lat: {lat?.toFixed(6) || "N/A"}
                       <br />
                       Lng: {lng?.toFixed(6) || "N/A"}
@@ -437,7 +437,7 @@ export default function PropertyForm({
                         name="encargado_inmueble"
                         value={formData.encargado_inmueble || ""}
                         onChange={handleInputChange}
-                        className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
+                        className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400"
                         placeholder="Nombre del encargado del inmueble"
                       />
                     </div>
@@ -456,7 +456,7 @@ export default function PropertyForm({
                         value={formData.title}
                         onChange={handleInputChange}
                         required
-                        className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
+                        className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400"
                         placeholder="Nombre corto para identificar el inmueble (obligatorio)"
                       />
                     </div>
@@ -479,7 +479,7 @@ export default function PropertyForm({
                           )
                         }
                       >
-                        <SelectTrigger className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400">
+                        <SelectTrigger className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400">
                           <SelectValue placeholder="Destacado" />
                         </SelectTrigger>
                         <SelectContent>
@@ -510,7 +510,7 @@ export default function PropertyForm({
                           )
                         }
                       >
-                        <SelectTrigger className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400">
+                        <SelectTrigger className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400">
                           <SelectValue placeholder="Apartaestudio" />
                         </SelectTrigger>
                         <SelectContent className="max-h-60">
@@ -550,7 +550,7 @@ export default function PropertyForm({
                           } as any);
                         }}
                         required
-                        className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
+                        className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400"
                         placeholder="Ingresa el precio de venta"
                       />
                     </div>
@@ -583,7 +583,7 @@ export default function PropertyForm({
                             },
                           } as any);
                         }}
-                        className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
+                        className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400"
                         placeholder="Ingresa el valor de administración"
                       />
                     </div>
@@ -605,7 +605,7 @@ export default function PropertyForm({
                           } as any)
                         }
                       >
-                        <SelectTrigger className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400">
+                        <SelectTrigger className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400">
                           <SelectValue placeholder="Usado" />
                         </SelectTrigger>
                         <SelectContent>
@@ -641,7 +641,7 @@ export default function PropertyForm({
                           } as any)
                         }
                       >
-                        <SelectTrigger className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400">
+                        <SelectTrigger className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400">
                           <SelectValue placeholder="0" />
                         </SelectTrigger>
                         <SelectContent>
@@ -684,7 +684,7 @@ export default function PropertyForm({
                           onChange={handleInputChange}
                           min="0"
                           step="0.1"
-                          className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400 rounded-r-none"
+                          className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400 rounded-r-none"
                         />
                         <Select defaultValue="m²">
                           <SelectTrigger className="mt-1 w-20 rounded-l-none border-l-0">
@@ -712,7 +712,7 @@ export default function PropertyForm({
                         name="video_url"
                         value={formData.video_url || ""}
                         onChange={handleInputChange}
-                        className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
+                        className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400"
                         placeholder="Enlace de youtube.com, vimeo.com o archivo de video para navegador"
                       />
                     </div>
@@ -731,7 +731,7 @@ export default function PropertyForm({
                         name="virtual_tour"
                         value={formData.virtual_tour || ""}
                         onChange={handleInputChange}
-                        className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
+                        className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400"
                         placeholder="Enlace al Tour Virtual 360"
                       />
                     </div>
@@ -739,7 +739,7 @@ export default function PropertyForm({
                     {/* Áreas Disponibles */}
                     <div className="col-span-full border-t pt-4">
                       <h4 className="text-md font-semibold text-zinc-900 dark:text-zinc-100 mb-4 flex items-center">
-                        <Square className="w-4 h-4 mr-2 text-amber-600" />
+                        <Square className="w-4 h-4 mr-2 text-custom-600" />
                         Áreas con las que cuenta la propiedad
                       </h4>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -751,7 +751,7 @@ export default function PropertyForm({
                               name="has_total_area"
                               checked={formData.has_total_area || false}
                               onChange={handleInputChange}
-                              className="w-4 h-4 text-amber-600 bg-white dark:bg-zinc-900 border-zinc-300 dark:border-zinc-600 rounded focus:ring-amber-500 dark:focus:ring-amber-400"
+                              className="w-4 h-4 text-custom-600 bg-white dark:bg-zinc-900 border-zinc-300 dark:border-zinc-600 rounded focus:ring-custom-500 dark:focus:ring-custom-400"
                             />
                             <label
                               htmlFor="has_total_area"
@@ -767,7 +767,7 @@ export default function PropertyForm({
                               name="has_built_area"
                               checked={formData.has_built_area || false}
                               onChange={handleInputChange}
-                              className="w-4 h-4 text-amber-600 bg-white dark:bg-zinc-900 border-zinc-300 dark:border-zinc-600 rounded focus:ring-amber-500 dark:focus:ring-amber-400"
+                              className="w-4 h-4 text-custom-600 bg-white dark:bg-zinc-900 border-zinc-300 dark:border-zinc-600 rounded focus:ring-custom-500 dark:focus:ring-custom-400"
                             />
                             <label
                               htmlFor="has_built_area"
@@ -783,7 +783,7 @@ export default function PropertyForm({
                               name="has_private_area"
                               checked={formData.has_private_area || false}
                               onChange={handleInputChange}
-                              className="w-4 h-4 text-amber-600 bg-white dark:bg-zinc-900 border-zinc-300 dark:border-zinc-600 rounded focus:ring-amber-500 dark:focus:ring-amber-400"
+                              className="w-4 h-4 text-custom-600 bg-white dark:bg-zinc-900 border-zinc-300 dark:border-zinc-600 rounded focus:ring-custom-500 dark:focus:ring-custom-400"
                             />
                             <label
                               htmlFor="has_private_area"
@@ -801,7 +801,7 @@ export default function PropertyForm({
                               name="has_balcony_area"
                               checked={formData.has_balcony_area || false}
                               onChange={handleInputChange}
-                              className="w-4 h-4 text-amber-600 bg-white dark:bg-zinc-900 border-zinc-300 dark:border-zinc-600 rounded focus:ring-amber-500 dark:focus:ring-amber-400"
+                              className="w-4 h-4 text-custom-600 bg-white dark:bg-zinc-900 border-zinc-300 dark:border-zinc-600 rounded focus:ring-custom-500 dark:focus:ring-custom-400"
                             />
                             <label
                               htmlFor="has_balcony_area"
@@ -817,7 +817,7 @@ export default function PropertyForm({
                               name="has_terrace_area"
                               checked={formData.has_terrace_area || false}
                               onChange={handleInputChange}
-                              className="w-4 h-4 text-amber-600 bg-white dark:bg-zinc-900 border-zinc-300 dark:border-zinc-600 rounded focus:ring-amber-500 dark:focus:ring-amber-400"
+                              className="w-4 h-4 text-custom-600 bg-white dark:bg-zinc-900 border-zinc-300 dark:border-zinc-600 rounded focus:ring-custom-500 dark:focus:ring-custom-400"
                             />
                             <label
                               htmlFor="has_terrace_area"
@@ -833,7 +833,7 @@ export default function PropertyForm({
                               name="has_storage_area"
                               checked={formData.has_storage_area || false}
                               onChange={handleInputChange}
-                              className="w-4 h-4 text-amber-600 bg-white dark:bg-zinc-900 border-zinc-300 dark:border-zinc-600 rounded focus:ring-amber-500 dark:focus:ring-amber-400"
+                              className="w-4 h-4 text-custom-600 bg-white dark:bg-zinc-900 border-zinc-300 dark:border-zinc-600 rounded focus:ring-custom-500 dark:focus:ring-custom-400"
                             />
                             <label
                               htmlFor="has_storage_area"
@@ -864,7 +864,7 @@ export default function PropertyForm({
                         name="matricula_inmobiliaria"
                         value={formData.matricula_inmobiliaria || ""}
                         onChange={handleInputChange}
-                        className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
+                        className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400"
                         placeholder="Identificador oficial del inmueble"
                       />
                     </div>
@@ -887,7 +887,7 @@ export default function PropertyForm({
                           )
                         }
                       >
-                        <SelectTrigger className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400">
+                        <SelectTrigger className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400">
                           <SelectValue placeholder="Vender" />
                         </SelectTrigger>
                         <SelectContent>
@@ -918,7 +918,7 @@ export default function PropertyForm({
                           )
                         }
                       >
-                        <SelectTrigger className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400">
+                        <SelectTrigger className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400">
                           <SelectValue placeholder="Pesos colombianos" />
                         </SelectTrigger>
                         <SelectContent>
@@ -944,7 +944,7 @@ export default function PropertyForm({
                         name="construction_year"
                         value={formData.construction_year || ""}
                         onChange={handleInputChange}
-                        className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
+                        className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400"
                         placeholder="Ejemplo: 1980"
                       />
                     </div>
@@ -969,7 +969,7 @@ export default function PropertyForm({
                           } as any)
                         }
                       >
-                        <SelectTrigger className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400">
+                        <SelectTrigger className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400">
                           <SelectValue placeholder="0" />
                         </SelectTrigger>
                         <SelectContent>
@@ -1002,7 +1002,7 @@ export default function PropertyForm({
                           } as any)
                         }
                       >
-                        <SelectTrigger className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400">
+                        <SelectTrigger className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400">
                           <SelectValue placeholder="0 Vehículos" />
                         </SelectTrigger>
                         <SelectContent>
@@ -1044,7 +1044,7 @@ export default function PropertyForm({
                           )
                         }
                       >
-                        <SelectTrigger className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400">
+                        <SelectTrigger className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400">
                           <SelectValue placeholder="En línea" />
                         </SelectTrigger>
                         <SelectContent>
@@ -1071,7 +1071,7 @@ export default function PropertyForm({
                           handleSpecialFieldChange("stratum", value as Stratum)
                         }
                       >
-                        <SelectTrigger className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400">
+                        <SelectTrigger className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400">
                           <SelectValue placeholder="N/D" />
                         </SelectTrigger>
                         <SelectContent>
@@ -1102,7 +1102,7 @@ export default function PropertyForm({
                           )
                         }
                       >
-                        <SelectTrigger className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400">
+                        <SelectTrigger className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400">
                           <SelectValue placeholder="24" />
                         </SelectTrigger>
                         <SelectContent className="max-h-60">
@@ -1132,7 +1132,7 @@ export default function PropertyForm({
                           onChange={handleInputChange}
                           min="0"
                           step="0.1"
-                          className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400 rounded-r-none"
+                          className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400 rounded-r-none"
                         />
                         <Select defaultValue="m²">
                           <SelectTrigger className="mt-1 w-20 rounded-l-none border-l-0">
@@ -1163,7 +1163,7 @@ export default function PropertyForm({
                           onChange={handleInputChange}
                           min="0"
                           step="0.1"
-                          className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400 rounded-r-none"
+                          className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400 rounded-r-none"
                         />
                         <Select defaultValue="m²">
                           <SelectTrigger className="mt-1 w-20 rounded-l-none border-l-0">
@@ -1194,7 +1194,7 @@ export default function PropertyForm({
                           onChange={handleInputChange}
                           min="0"
                           step="0.1"
-                          className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400 rounded-r-none"
+                          className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400 rounded-r-none"
                         />
                         <Select defaultValue="m²">
                           <SelectTrigger className="mt-1 w-20 rounded-l-none border-l-0">
@@ -1225,7 +1225,7 @@ export default function PropertyForm({
                           onChange={handleInputChange}
                           min="0"
                           step="0.1"
-                          className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400 rounded-r-none"
+                          className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400 rounded-r-none"
                         />
                         <Select defaultValue="m²">
                           <SelectTrigger className="mt-1 w-20 rounded-l-none border-l-0">
@@ -1256,7 +1256,7 @@ export default function PropertyForm({
                           onChange={handleInputChange}
                           min="0"
                           step="0.1"
-                          className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400 rounded-r-none"
+                          className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400 rounded-r-none"
                         />
                         <Select defaultValue="m²">
                           <SelectTrigger className="mt-1 w-20 rounded-l-none border-l-0">
@@ -1290,7 +1290,7 @@ export default function PropertyForm({
                       )
                     }
                     placeholder="Selecciona las zonas comunes disponibles (opcional)..."
-                    className="bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
+                    className="bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400"
                   />
                   <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-1">
                     Selecciona todas las zonas comunes disponibles
@@ -1301,7 +1301,7 @@ export default function PropertyForm({
                 {isCasa && (
                   <div className="mt-6 border-t pt-6">
                     <h4 className="text-md font-semibold text-zinc-900 dark:text-zinc-100 mb-4 flex items-center">
-                      <Home className="w-4 h-4 mr-2 text-amber-600" />
+                      <Home className="w-4 h-4 mr-2 text-custom-600" />
                       Detalles de la casa
                     </h4>
                     <div className="w-full">
@@ -1320,7 +1320,7 @@ export default function PropertyForm({
                           )
                         }
                       >
-                        <SelectTrigger className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400">
+                        <SelectTrigger className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400">
                           <SelectValue placeholder="Seleccionar número de pisos" />
                         </SelectTrigger>
                         <SelectContent>
@@ -1338,7 +1338,7 @@ export default function PropertyForm({
                 {/* Formas de Pago */}
                 <div className="mt-6 border-t pt-6">
                   <h4 className="text-md font-semibold text-zinc-900 dark:text-zinc-100 mb-4 flex items-center">
-                    <CreditCard className="w-4 h-4 mr-2 text-amber-600" />
+                    <CreditCard className="w-4 h-4 mr-2 text-custom-600" />
                     Formas de pago
                   </h4>
                   <MultiSelect
@@ -1354,13 +1354,13 @@ export default function PropertyForm({
                       )
                     }
                     placeholder="Selecciona las formas de pago disponibles..."
-                    className="bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
+                    className="bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400"
                   />
 
                   {/* Campos condicionales para Permutas */}
                   {hasPermutas && (
-                    <div className="mt-4 p-4 bg-amber-50 dark:bg-amber-900/20 rounded-lg border border-amber-200 dark:border-amber-800">
-                      <h5 className="text-sm font-semibold text-amber-800 dark:text-amber-200 mb-3">
+                    <div className="mt-4 p-4 bg-custom-50 dark:bg-custom-900/20 rounded-lg border border-custom-200 dark:border-custom-800">
+                      <h5 className="text-sm font-semibold text-custom-800 dark:text-custom-200 mb-3">
                         Detalles de la permuta
                       </h5>
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -1380,7 +1380,7 @@ export default function PropertyForm({
                               )
                             }
                           >
-                            <SelectTrigger className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400">
+                            <SelectTrigger className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400">
                               <SelectValue placeholder="Selecciona tipo de permuta" />
                             </SelectTrigger>
                             <SelectContent>
@@ -1408,7 +1408,7 @@ export default function PropertyForm({
                             onChange={handleInputChange}
                             min="1"
                             max="100"
-                            className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
+                            className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400"
                             placeholder="Ej. 50"
                           />
                           <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-1">
@@ -1432,7 +1432,7 @@ export default function PropertyForm({
                               value={formData.permuta_monto_max || ""}
                               onChange={handleInputChange}
                               min="0"
-                              className="pl-10 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
+                              className="pl-10 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400"
                               placeholder="Ej. 50000000"
                             />
                           </div>
@@ -1469,7 +1469,7 @@ export default function PropertyForm({
                           } as any)
                         }
                       >
-                        <SelectTrigger className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400">
+                        <SelectTrigger className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400">
                           <SelectValue placeholder="Colombia" />
                         </SelectTrigger>
                         <SelectContent>
@@ -1500,7 +1500,7 @@ export default function PropertyForm({
                           } as any)
                         }
                       >
-                        <SelectTrigger className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400">
+                        <SelectTrigger className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400">
                           <SelectValue placeholder="Nariño" />
                         </SelectTrigger>
                         <SelectContent>
@@ -1533,7 +1533,7 @@ export default function PropertyForm({
                           } as any)
                         }
                       >
-                        <SelectTrigger className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400">
+                        <SelectTrigger className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400">
                           <SelectValue placeholder="Pasto" />
                         </SelectTrigger>
                         <SelectContent>
@@ -1562,7 +1562,7 @@ export default function PropertyForm({
                           } as any)
                         }
                       >
-                        <SelectTrigger className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400">
+                        <SelectTrigger className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400">
                           <SelectValue placeholder="Seleccionar" />
                         </SelectTrigger>
                         <SelectContent>
@@ -1588,7 +1588,7 @@ export default function PropertyForm({
                         name="postal_code"
                         value={formData.postal_code || ""}
                         onChange={handleInputChange}
-                        className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
+                        className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400"
                       />
                     </div>
 
@@ -1608,7 +1608,7 @@ export default function PropertyForm({
                         onChange={handleInputChange}
                         rows={3}
                         required
-                        className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
+                        className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400"
                         placeholder="Dirección del inmueble, solo es visible por el administrador (obligatorio)"
                       />
                     </div>
@@ -1658,7 +1658,7 @@ export default function PropertyForm({
                     value={formData.description}
                     onChange={handleInputChange}
                     rows={4}
-                    className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
+                    className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400"
                     placeholder="Describe las características y beneficios de la propiedad... (opcional)"
                   />
                 </div>
@@ -1669,7 +1669,7 @@ export default function PropertyForm({
             {isLote && (
               <div className="border-t pt-6">
                 <h4 className="text-md font-semibold text-zinc-900 dark:text-zinc-100 mb-4 flex items-center">
-                  <Square className="w-4 h-4 mr-2 text-amber-600" />
+                  <Square className="w-4 h-4 mr-2 text-custom-600" />
                   Dimensiones del lote
                 </h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -1688,7 +1688,7 @@ export default function PropertyForm({
                       onChange={handleInputChange}
                       min="0"
                       step="0.1"
-                      className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
+                      className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400"
                       placeholder="Ej. 12.5"
                     />
                   </div>
@@ -1707,7 +1707,7 @@ export default function PropertyForm({
                       onChange={handleInputChange}
                       min="0"
                       step="0.1"
-                      className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
+                      className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400"
                       placeholder="Ej. 30"
                     />
                   </div>
@@ -1730,12 +1730,12 @@ export default function PropertyForm({
                   accept="image/*"
                   multiple
                   onChange={handleImageChange}
-                  className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
+                  className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400"
                 />
                 {imageUrls.length > 0 && (
                   <Badge
                     variant="secondary"
-                    className="mt-2 bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300"
+                    className="mt-2 bg-custom-100 text-custom-800 dark:bg-custom-900/30 dark:text-custom-300"
                   >
                     {imageUrls.length} imagen
                     {imageUrls.length !== 1 ? "es" : ""} actual
@@ -1758,12 +1758,12 @@ export default function PropertyForm({
                   accept="video/*"
                   multiple
                   onChange={handleVideoChange}
-                  className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
+                  className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400"
                 />
                 {videoUrls.length > 0 && (
                   <Badge
                     variant="secondary"
-                    className="mt-2 bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300"
+                    className="mt-2 bg-custom-100 text-custom-800 dark:bg-custom-900/30 dark:text-custom-300"
                   >
                     {videoUrls.length} video{videoUrls.length !== 1 ? "s" : ""}{" "}
                     actual{videoUrls.length !== 1 ? "es" : ""}
@@ -1784,7 +1784,7 @@ export default function PropertyForm({
               <Button
                 type="submit"
                 disabled={uploading}
-                className="bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-700 hover:to-yellow-700 text-white font-semibold"
+                className="bg-gradient-to-r from-custom-600 to-custom-600 hover:from-custom-700 hover:to-custom-700 text-white font-semibold"
               >
                 {uploading ? (
                   <>

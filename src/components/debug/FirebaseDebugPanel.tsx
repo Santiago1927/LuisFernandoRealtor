@@ -72,10 +72,10 @@ export default function FirebaseDebugPanel() {
   }, []);
 
   return (
-    <Card className="mb-6 border-2 border-dashed border-amber-200 dark:border-amber-800 bg-amber-50/50 dark:bg-amber-900/20">
+    <Card className="mb-6 border-2 border-dashed border-custom-200 dark:border-custom-800 bg-custom-50/50 dark:bg-custom-900/20">
       <CardHeader>
         <div className="flex items-center justify-between">
-          <CardTitle className="flex items-center space-x-2 text-amber-800 dark:text-amber-200">
+          <CardTitle className="flex items-center space-x-2 text-custom-800 dark:text-custom-200">
             <Database className="w-5 h-5" />
             <span>Estado de Firebase - Debug</span>
           </CardTitle>

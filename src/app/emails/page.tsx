@@ -101,18 +101,18 @@ export default function EmailTemplatesIndex() {
             </div>
           </div>
 
-          <div className="bg-amber-50 border border-amber-200 rounded-lg p-6">
-            <h3 className="text-lg font-semibold text-amber-800 mb-2 flex items-center">
+          <div className="bg-custom-50 border border-custom-200 rounded-lg p-6">
+            <h3 className="text-lg font-semibold text-custom-800 mb-2 flex items-center">
               <span className="mr-2">⚙️</span>
               Configuración de Desarrollo
             </h3>
-            <p className="text-amber-700 text-sm mb-4">
+            <p className="text-custom-700 text-sm mb-4">
               Para usar React Email en desarrollo, ejecuta el siguiente comando:
             </p>
-            <code className="bg-amber-100 text-amber-800 px-3 py-1 rounded text-sm font-mono">
+            <code className="bg-custom-100 text-custom-800 px-3 py-1 rounded text-sm font-mono">
               npm run email
             </code>
-            <p className="text-amber-700 text-sm mt-2">
+            <p className="text-custom-700 text-sm mt-2">
               Esto abrirá el servidor de React Email en{" "}
               <code>localhost:3001</code>
             </p>
@@ -122,7 +122,7 @@ export default function EmailTemplatesIndex() {
         <div className="mt-8 text-center">
           <Link
             href="/"
-            className="inline-flex items-center px-6 py-3 bg-amber-500 text-white font-semibold rounded-lg hover:bg-amber-600 transition-colors"
+            className="inline-flex items-center px-6 py-3 bg-custom-500 text-white font-semibold rounded-lg hover:bg-custom-600 transition-colors"
           >
             ← Volver al sitio principal
           </Link>

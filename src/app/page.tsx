@@ -26,7 +26,7 @@ export default function Home() {
       </BackgroundCarousel>
 
       {/* Sección principal con información de la empresa */}
-      <div className="bg-gradient-to-br from-zinc-50 via-white to-amber-50/30 dark:from-zinc-900 dark:via-black dark:to-amber-900/10">
+      <div className="bg-gradient-to-br from-zinc-50 via-white to-custom-50/30 dark:from-zinc-900 dark:via-black dark:to-custom-900/10">
         <MainSection />
 
         {/* Sección de propiedades destacadas */}
@@ -35,13 +35,13 @@ export default function Home() {
           <div className="text-center mb-12 lg:mb-16">
             <Badge
               variant="secondary"
-              className="mb-4 bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300 border-amber-200 dark:border-amber-800"
+              className="mb-4 bg-custom-100 text-custom-800 dark:bg-custom-900/30 dark:text-custom-300 border-custom-200 dark:border-custom-800"
             >
               Catálogo Premium
             </Badge>
             <h2 className="text-3xl lg:text-5xl font-bold text-zinc-900 dark:text-zinc-100 mb-4">
               Propiedades
-              <span className="block bg-gradient-to-r from-amber-600 to-yellow-600 bg-clip-text text-transparent">
+              <span className="block bg-gradient-to-r from-custom-600 to-custom-600 bg-clip-text text-transparent">
                 Destacadas
               </span>
             </h2>
@@ -56,7 +56,7 @@ export default function Home() {
             // Mostrar indicador de carga mientras se obtienen las propiedades
             <div className="flex items-center justify-center py-16">
               <div className="text-center">
-                <Loader2 className="h-8 w-8 animate-spin text-amber-600 dark:text-amber-400 mx-auto mb-4" />
+                <Loader2 className="h-8 w-8 animate-spin text-custom-600 dark:text-custom-400 mx-auto mb-4" />
                 <p className="text-zinc-600 dark:text-zinc-400">
                   Cargando propiedades...
                 </p>
@@ -72,7 +72,7 @@ export default function Home() {
                 <Link href="/propiedades">
                   <Button
                     size="lg"
-                    className="bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-700 hover:to-yellow-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
+                    className="bg-gradient-to-r from-custom-600 to-custom-600 hover:from-custom-700 hover:to-custom-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
                   >
                     Ver Todas las Propiedades
                   </Button>

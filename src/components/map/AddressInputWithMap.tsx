@@ -247,14 +247,14 @@ export default function AddressInputWithMap({
             onBlur={handleInputBlur}
             placeholder={placeholder}
             required={required}
-            className="pl-10 pr-10 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
+            className="pl-10 pr-10 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400"
             autoComplete="off"
           />
 
           {/* Botón de limpiar / Indicador de carga */}
           <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
             {isLoading ? (
-              <Loader2 className="w-4 h-4 animate-spin text-amber-500" />
+              <Loader2 className="w-4 h-4 animate-spin text-custom-500" />
             ) : query ? (
               <Button
                 type="button"
@@ -280,7 +280,7 @@ export default function AddressInputWithMap({
             {/* Loading state */}
             {isLoadingSuggestions && (
               <div className="flex items-center justify-center p-4">
-                <Loader2 className="w-4 h-4 animate-spin text-amber-500 mr-2" />
+                <Loader2 className="w-4 h-4 animate-spin text-custom-500 mr-2" />
                 <span className="text-sm text-zinc-600 dark:text-zinc-400">
                   Buscando...
                 </span>
@@ -324,14 +324,14 @@ export default function AddressInputWithMap({
                   key={suggestion.id}
                   className={`px-4 py-3 cursor-pointer transition-colors ${
                     index === focusedIndex
-                      ? "bg-amber-50 dark:bg-amber-900/20"
+                      ? "bg-custom-50 dark:bg-custom-900/20"
                       : "hover:bg-gray-50 dark:hover:bg-zinc-800"
                   }`}
                   onClick={() => handleSuggestionSelect(suggestion)}
                   onMouseEnter={() => setFocusedIndex(index)}
                 >
                   <div className="flex items-start space-x-3">
-                    <MapPin className="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" />
+                    <MapPin className="w-4 h-4 text-custom-500 mt-0.5 flex-shrink-0" />
                     <div className="flex-1 min-w-0">
                       <div className="text-sm font-medium text-zinc-900 dark:text-zinc-100 truncate">
                         {suggestion.text}
@@ -371,7 +371,7 @@ export default function AddressInputWithMap({
 
       {/* Estado de carga para reverse geocoding */}
       {isLoadingAddress && (
-        <div className="flex items-center space-x-2 text-sm text-amber-600 dark:text-amber-400">
+        <div className="flex items-center space-x-2 text-sm text-custom-600 dark:text-custom-400">
           <Loader2 className="w-4 h-4 animate-spin" />
           <span>Obteniendo dirección...</span>
         </div>

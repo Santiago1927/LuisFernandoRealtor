@@ -56,7 +56,7 @@ export default function Footer() {
 
   return (
     <footer
-      className={`bg-gradient-to-br from-zinc-900 via-black to-amber-900/20 text-white ${lgPaddingClass}`}
+      className={`bg-gradient-to-br from-zinc-900 via-black to-custom-900/20 text-white ${lgPaddingClass}`}
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
         <div className="grid lg:grid-cols-4 gap-8 lg:gap-12 mb-12">
@@ -90,24 +90,24 @@ export default function Footer() {
 
           <div>
             <h4 className="text-lg font-semibold text-white mb-6 flex items-center">
-              <span className="w-8 h-0.5 bg-amber-500 mr-3"></span>
+              <span className="w-8 h-0.5 bg-custom-500 mr-3"></span>
               Contacto
             </h4>
             <div className="space-y-4">
-              <div className="flex items-center space-x-3 text-zinc-300 hover:text-amber-400 transition-colors">
-                <Phone className="w-4 h-4 text-amber-500" />
+              <div className="flex items-center space-x-3 text-zinc-300 hover:text-custom-400 transition-colors">
+                <Phone className="w-4 h-4 text-custom-500" />
                 <a href="tel:+573214223931" className="hover:underline">
                   +57 321 422 3931
                 </a>
               </div>
-              <div className="flex items-center space-x-3 text-zinc-300 hover:text-amber-400 transition-colors">
-                <Phone className="w-4 h-4 text-amber-500" />
+              <div className="flex items-center space-x-3 text-zinc-300 hover:text-custom-400 transition-colors">
+                <Phone className="w-4 h-4 text-custom-500" />
                 <a href="tel:+573177772601" className="hover:underline">
                   +57 317 777 2601
                 </a>
               </div>
-              <div className="flex items-center space-x-3 text-zinc-300 hover:text-amber-400 transition-colors">
-                <Mail className="w-4 h-4 text-amber-500" />
+              <div className="flex items-center space-x-3 text-zinc-300 hover:text-custom-400 transition-colors">
+                <Mail className="w-4 h-4 text-custom-500" />
                 <a
                   href="mailto:realtorluisfernando@gmail.com"
                   className="hover:underline"
@@ -116,7 +116,7 @@ export default function Footer() {
                 </a>
               </div>
               <div className="flex items-center space-x-3 text-zinc-300">
-                <MapPin className="w-4 h-4 text-amber-500" />
+                <MapPin className="w-4 h-4 text-custom-500" />
                 <span>Pasto, Colombia</span>
               </div>
             </div>
@@ -124,7 +124,7 @@ export default function Footer() {
 
           <div>
             <h4 className="text-lg font-semibold text-white mb-6 flex items-center">
-              <span className="w-8 h-0.5 bg-amber-500 mr-3"></span>
+              <span className="w-8 h-0.5 bg-custom-500 mr-3"></span>
               Síguenos
             </h4>
             <div className="flex items-center space-x-4">
@@ -133,7 +133,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Síguenos en Instagram"
-                className="text-zinc-300 hover:text-amber-400 transition-colors duration-200 hover:scale-110 transform"
+                className="text-zinc-300 hover:text-custom-400 transition-colors duration-200 hover:scale-110 transform"
               >
                 <Instagram className="h-5 w-5" />
               </a>
@@ -142,7 +142,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Síguenos en TikTok"
-                className="text-zinc-300 hover:text-amber-400 transition-colors duration-200 hover:scale-110 transform"
+                className="text-zinc-300 hover:text-custom-400 transition-colors duration-200 hover:scale-110 transform"
               >
                 <TikTokIcon className="h-5 w-5" />
               </a>
@@ -151,7 +151,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Síguenos en Facebook"
-                className="text-zinc-300 hover:text-amber-400 transition-colors duration-200 hover:scale-110 transform"
+                className="text-zinc-300 hover:text-custom-400 transition-colors duration-200 hover:scale-110 transform"
               >
                 <Facebook className="h-5 w-5" />
               </a>
@@ -163,7 +163,7 @@ export default function Footer() {
           <div className="text-center">
             <p className="text-zinc-400 text-sm">
               © 2024{" "}
-              <span className="text-amber-400 font-semibold">REALHAUS</span> ™ |
+              <span className="text-custom-400 font-semibold">REALHAUS</span> ™ |
               Todos los derechos reservados
             </p>
           </div>

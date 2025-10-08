@@ -139,7 +139,7 @@ export default function Sidebar() {
 
   // Clases CSS dinámicas basadas en el estado de colapso y dispositivo
   const baseClasses =
-    "flex flex-col bg-amber-50 dark:bg-zinc-900 border-r border-amber-200 dark:border-zinc-800 shadow-md transition-all duration-300 ease-in-out";
+    "flex flex-col bg-custom-50 dark:bg-zinc-900 border-r border-custom-200 dark:border-zinc-800 shadow-md transition-all duration-300 ease-in-out";
 
   // En móvil: fixed position (overlay)
   // En desktop: altura mínima completa que se desplaza con el scroll
@@ -179,9 +179,9 @@ export default function Sidebar() {
                 : "Colapsar menú"
             }
             onClick={handleToggleSidebar}
-            className="p-2 rounded-md bg-white dark:bg-zinc-800 hover:bg-amber-100 dark:hover:bg-zinc-700 shadow-sm border border-zinc-200 dark:border-zinc-700"
+            className="p-2 rounded-md bg-white dark:bg-zinc-800 hover:bg-custom-100 dark:hover:bg-zinc-700 shadow-sm border border-zinc-200 dark:border-zinc-700"
           >
-            <Menu className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+            <Menu className="h-4 w-4 text-custom-600 dark:text-custom-400" />
           </button>
         </div>
 
@@ -268,8 +268,8 @@ export default function Sidebar() {
                       collapsed ? "justify-center" : ""
                     } ${
                       isActive
-                        ? "bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400"
-                        : "text-zinc-700 dark:text-zinc-200 hover:bg-amber-100 dark:hover:bg-zinc-800 hover:text-amber-700"
+                        ? "bg-custom-100 dark:bg-custom-900/30 text-custom-700 dark:text-custom-400"
+                        : "text-zinc-700 dark:text-zinc-200 hover:bg-custom-100 dark:hover:bg-zinc-800 hover:text-custom-700"
                     }`}
                   >
                     <Icon className="h-4 w-4" />
@@ -295,7 +295,7 @@ export default function Sidebar() {
                 <Button
                   onClick={() => setShowNewProperty(true)}
                   variant="default"
-                  className="h-9 w-9 p-0 flex items-center justify-center rounded-md bg-amber-500 text-black hover:bg-amber-600"
+                  className="h-9 w-9 p-0 flex items-center justify-center rounded-md bg-custom-500 text-black hover:bg-custom-600"
                   aria-label="Nueva Propiedad"
                 >
                   <Plus className="h-4 w-4" />
@@ -329,7 +329,7 @@ export default function Sidebar() {
                 <Button
                   onClick={() => setShowNewProperty(true)}
                   variant="default"
-                  className="flex items-center w-full px-3 py-2 bg-amber-500 text-black hover:bg-amber-600"
+                  className="flex items-center w-full px-3 py-2 bg-custom-500 text-black hover:bg-custom-600"
                 >
                   <Plus className="h-4 w-4 mr-2" />
                   Nueva Propiedad

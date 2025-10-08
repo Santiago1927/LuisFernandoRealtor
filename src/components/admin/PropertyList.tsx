@@ -120,7 +120,7 @@ function PropertyCard({ property, onEdit, onDelete }: any) {
         return {
           label: "Alquilada",
           className:
-            "bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300 border-amber-200 dark:border-amber-800",
+            "bg-custom-100 text-custom-800 dark:bg-custom-900/30 dark:text-custom-300 border-custom-200 dark:border-custom-800",
         };
     }
   };
@@ -203,7 +203,7 @@ function PropertyCard({ property, onEdit, onDelete }: any) {
           </div>
 
           <div className="flex items-center justify-between">
-            <div className="text-2xl font-bold text-amber-600 dark:text-amber-400">
+            <div className="text-2xl font-bold text-custom-600 dark:text-custom-400">
               ${property.price.toLocaleString()}
             </div>
           </div>
@@ -243,7 +243,7 @@ function PropertyCard({ property, onEdit, onDelete }: any) {
                     e.preventDefault();
                     onEdit(property);
                   }}
-                  className="flex-1 border-amber-300 text-amber-700 hover:bg-amber-50 dark:border-amber-600 dark:text-amber-300 dark:hover:bg-amber-900/30"
+                  className="flex-1 border-custom-300 text-custom-700 hover:bg-custom-50 dark:border-custom-600 dark:text-custom-300 dark:hover:bg-custom-900/30"
                 >
                   <Edit className="w-4 h-4 mr-2" />
                   Editar

@@ -58,7 +58,7 @@ export default function PropertyFormDebugPanel() {
             <span>🧪 Panel de Pruebas - Formulario de Propiedades</span>
             <Button
               onClick={() => setShowForm(true)}
-              className="bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-700 hover:to-yellow-700"
+              className="bg-gradient-to-r from-custom-600 to-custom-600 hover:from-custom-700 hover:to-custom-700"
             >
               <Plus className="w-4 h-4 mr-2" />
               Nueva Propiedad
@@ -118,7 +118,7 @@ export default function PropertyFormDebugPanel() {
                   </CardHeader>
                   <CardContent className="pt-0 space-y-3">
                     {/* Precio principal */}
-                    <div className="text-lg font-bold text-amber-600">
+                    <div className="text-lg font-bold text-custom-600">
                       {formatCurrency(property.price)}
                     </div>
 
@@ -219,7 +219,7 @@ export default function PropertyFormDebugPanel() {
                               <Badge
                                 key={`debug-forma-${index}-${forma}`}
                                 variant="outline"
-                                className="text-xs border-amber-300 text-amber-700 dark:border-amber-600 dark:text-amber-300"
+                                className="text-xs border-custom-300 text-custom-700 dark:border-custom-600 dark:text-custom-300"
                               >
                                 {forma}
                               </Badge>
@@ -295,17 +295,17 @@ export default function PropertyFormDebugPanel() {
 
                     {/* Información de permutas */}
                     {property.tipo_permuta && (
-                      <div className="text-xs p-2 bg-amber-50 dark:bg-amber-900/20 rounded border border-amber-200 dark:border-amber-800">
-                        <div className="font-medium text-amber-800 dark:text-amber-200">
+                      <div className="text-xs p-2 bg-custom-50 dark:bg-custom-900/20 rounded border border-custom-200 dark:border-custom-800">
+                        <div className="font-medium text-custom-800 dark:text-custom-200">
                           🔄 Acepta permuta:
                         </div>
-                        <div className="text-amber-700 dark:text-amber-300">
+                        <div className="text-custom-700 dark:text-custom-300">
                           {property.tipo_permuta}
                           {property.permuta_porcentaje &&
                             ` - ${property.permuta_porcentaje}%`}
                         </div>
                         {property.permuta_monto_max && (
-                          <div className="text-amber-700 dark:text-amber-300">
+                          <div className="text-custom-700 dark:text-custom-300">
                             Hasta: {formatCurrency(property.permuta_monto_max)}
                           </div>
                         )}
@@ -422,7 +422,7 @@ export default function PropertyFormDebugPanel() {
                   <h3 className="font-semibold text-zinc-900 dark:text-zinc-100">
                     💰 Información Financiera
                   </h3>
-                  <div className="text-2xl font-bold text-amber-600">
+                  <div className="text-2xl font-bold text-custom-600">
                     {formatCurrency(selectedProperty.price)}
                   </div>
                   {selectedProperty.valor_administracion &&
@@ -626,7 +626,7 @@ export default function PropertyFormDebugPanel() {
                         <Badge
                           key={`selected-forma-${index}-${forma}`}
                           variant="outline"
-                          className="border-amber-300 text-amber-700 dark:border-amber-600 dark:text-amber-300"
+                          className="border-custom-300 text-custom-700 dark:border-custom-600 dark:text-custom-300"
                         >
                           {forma}
                         </Badge>
@@ -641,7 +641,7 @@ export default function PropertyFormDebugPanel() {
                   <h3 className="font-semibold text-zinc-900 dark:text-zinc-100 mb-3">
                     🔄 Acepta Permutas
                   </h3>
-                  <div className="p-4 bg-amber-50 dark:bg-amber-900/20 rounded border border-amber-200 dark:border-amber-800">
+                  <div className="p-4 bg-custom-50 dark:bg-custom-900/20 rounded border border-custom-200 dark:border-custom-800">
                     <div className="space-y-2 text-sm">
                       <div>
                         <strong>Tipo:</strong> {selectedProperty.tipo_permuta}

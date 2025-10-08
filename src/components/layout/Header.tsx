@@ -61,9 +61,12 @@ const socialLinks = [
  */
 export default function Header() {
   return (
-    <header className="sticky top-0 z-50 w-full bg-gradient-to-r from-zinc-900 via-black to-zinc-900 dark:from-black dark:via-zinc-900 dark:to-black border-b border-amber-500/20 shadow-2xl">
+    <header
+      className="sticky top-0 z-50 w-full bg-gradient-to-r from-zinc-900 via-black to-zinc-900 dark:from-black dark:via-zinc-900 dark:to-black shadow-2xl"
+      style={{ borderBottomColor: "#ffc107" + "33" }}
+    >
       {/* Barra superior con información de contacto y rating */}
-      <div className="bg-gradient-to-r from-amber-600 to-yellow-600 text-black py-2">
+      <div className="text-black py-2" style={{ backgroundColor: "#ffc107" }}>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between text-sm font-medium">
             {/* Información de contacto y certificación */}
@@ -128,7 +131,11 @@ export default function Header() {
                 <Link
                   key={`nav-link-${index}-${link.text}`}
                   href={link.href}
-                  className="flex items-center space-x-2 text-white hover:text-amber-400 transition-colors font-medium text-sm lg:text-base"
+                  className="flex items-center space-x-2 text-white transition-colors font-medium text-sm lg:text-base"
+                  onMouseEnter={(e) =>
+                    (e.currentTarget.style.color = "#ffc107")
+                  }
+                  onMouseLeave={(e) => (e.currentTarget.style.color = "white")}
                 >
                   {/* Icono del enlace - siempre visible */}
                   <Icon className="h-4 w-4" />
@@ -141,7 +148,10 @@ export default function Header() {
             })}
 
             {/* Separador visual entre navegación y redes sociales */}
-            <div className="hidden md:block h-6 w-px bg-amber-500/30"></div>
+            <div
+              className="hidden md:block h-6 w-px"
+              style={{ backgroundColor: "#ffc107" + "4d" }}
+            ></div>
 
             {/* Enlaces de redes sociales */}
             <div className="flex items-center space-x-3">
@@ -154,7 +164,13 @@ export default function Header() {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={social.ariaLabel}
-                    className="text-white hover:text-amber-400 transition-colors duration-200 hover:scale-110 transform"
+                    className="text-white transition-colors duration-200 hover:scale-110 transform"
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.color = "#ffc107")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.style.color = "white")
+                    }
                   >
                     <Icon className="h-5 w-5" />
                   </a>

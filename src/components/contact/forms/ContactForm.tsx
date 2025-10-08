@@ -26,7 +26,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ formSubmit, loading }) => {
     <Card className="border-0 shadow-xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur">
       <CardHeader>
         <CardTitle className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 flex items-center space-x-2">
-          <Send className="w-6 h-6 text-amber-600" />
+          <Send className="w-6 h-6 text-custom-600" />
           <span>Contacto General</span>
         </CardTitle>
         <p className="text-zinc-600 dark:text-zinc-400">
@@ -50,7 +50,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ formSubmit, loading }) => {
               id="nombre"
               type="text"
               {...register("nombre")}
-              className={`w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400 ${
+              className={`w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400 ${
                 errors.nombre ? 'border-red-500 dark:border-red-400' : ''
               }`}
               placeholder="Ingresa tu nombre completo"
@@ -71,7 +71,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ formSubmit, loading }) => {
               id="correo"
               type="email"
               {...register("correo")}
-              className={`w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400 ${
+              className={`w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400 ${
                 errors.correo ? 'border-red-500 dark:border-red-400' : ''
               }`}
               placeholder="tu@email.com"
@@ -92,7 +92,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ formSubmit, loading }) => {
               id="telefono"
               type="tel"
               {...register("telefono")}
-              className={`w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400 ${
+              className={`w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400 ${
                 errors.telefono ? 'border-red-500 dark:border-red-400' : ''
               }`}
               placeholder="+57 300 123 4567"
@@ -113,7 +113,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ formSubmit, loading }) => {
               id="asunto"
               type="text"
               {...register("asunto")}
-              className={`w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400 ${
+              className={`w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400 ${
                 errors.asunto ? 'border-red-500 dark:border-red-400' : ''
               }`}
               placeholder="Asunto de tu consulta"
@@ -133,7 +133,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ formSubmit, loading }) => {
             <Textarea
               id="mensaje"
               {...register("mensaje")}
-              className={`w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400 min-h-[120px] ${
+              className={`w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400 min-h-[120px] ${
                 errors.mensaje ? 'border-red-500 dark:border-red-400' : ''
               }`}
               placeholder="Cuéntanos en detalle tu consulta..."
@@ -152,7 +152,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ formSubmit, loading }) => {
           <Button
             disabled={loading}
             type="submit"
-            className="w-full bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-700 hover:to-yellow-700 text-white font-semibold py-3 h-auto"
+            className="w-full bg-gradient-to-r from-custom-600 to-custom-600 hover:from-custom-700 hover:to-custom-700 text-white font-semibold py-3 h-auto"
           >
             {loading ? (
               <div className="w-4 h-4 mr-2 animate-spin rounded-full border-2 border-white border-t-transparent" />

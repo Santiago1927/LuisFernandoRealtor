@@ -127,7 +127,7 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
                       id={`radio-${fieldKey}-${option.value}`}
                       checked={controllerField.value === option.value}
                       onChange={() => controllerField.onChange(option.value)}
-                      className={`w-4 h-4 text-amber-600 bg-gray-100 border-gray-300 focus:ring-amber-500 dark:focus:ring-amber-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 ${
+                      className={`w-4 h-4 text-custom-600 bg-gray-100 border-gray-300 focus:ring-custom-500 dark:focus:ring-custom-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 ${
                         errors[fieldKey]
                           ? "border-red-500 dark:border-red-400"
                           : ""
@@ -217,7 +217,7 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
                     numericValue ? parseInt(numericValue) : 0
                   );
                 }}
-                className={`w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400 ${
+                className={`w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400 ${
                   errors[fieldKey] ? "border-red-500 dark:border-red-400" : ""
                 }`}
                 placeholder={`Ingresa ${field.label.toLowerCase()}`}
@@ -254,7 +254,7 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
               >
                 <SelectTrigger
                   id={fieldKey}
-                  className={`w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400 ${
+                  className={`w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400 ${
                     errors[fieldKey] ? "border-red-500 dark:border-red-400" : ""
                   }`}
                 >
@@ -294,7 +294,7 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
           id={fieldKey}
           type={field.type}
           {...register(fieldKey)}
-          className={`w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400 ${
+          className={`w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400 ${
             errors[fieldKey] ? "border-red-500 dark:border-red-400" : ""
           }`}
           placeholder={`Ingresa ${field.label.toLowerCase()}`}
@@ -307,7 +307,7 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
     <Card className="border-0 shadow-xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur">
       <CardHeader>
         <CardTitle className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 flex items-center space-x-2">
-          <Building2 className="w-6 h-6 text-amber-600" />
+          <Building2 className="w-6 h-6 text-custom-600" />
           <span>Solicitud de venta</span>
         </CardTitle>
         <p className="text-zinc-600 dark:text-zinc-400">
@@ -319,7 +319,7 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
           <div className="space-y-6">
             <div className="flex items-center space-x-2 pb-2 border-b border-zinc-200 dark:border-zinc-700">
-              <AlertCircle className="w-5 h-5 text-amber-600" />
+              <AlertCircle className="w-5 h-5 text-custom-600" />
               <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">
                 Preguntas iniciales
               </h3>
@@ -335,7 +335,7 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
 
           <div className="space-y-6">
             <div className="flex items-center space-x-2 pb-2 border-b border-zinc-200 dark:border-zinc-700">
-              <User className="w-5 h-5 text-amber-600" />
+              <User className="w-5 h-5 text-custom-600" />
               <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">
                 Información personal
               </h3>
@@ -359,7 +359,7 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
                     id={`personal-input-${fieldKey}`}
                     type={field.type}
                     {...register(fieldKey)}
-                    className={`w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400 ${
+                    className={`w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400 ${
                       errors[fieldKey]
                         ? "border-red-500 dark:border-red-400"
                         : ""
@@ -373,7 +373,7 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
 
           <div className="space-y-6">
             <div className="flex items-center space-x-2 pb-2 border-b border-zinc-200 dark:border-zinc-700">
-              <Home className="w-5 h-5 text-amber-600" />
+              <Home className="w-5 h-5 text-custom-600" />
               <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">
                 Información de la propiedad
               </h3>
@@ -399,7 +399,7 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
                     <Select onValueChange={field.onChange} value={field.value}>
                       <SelectTrigger
                         id="ciudad-select"
-                        className="w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
+                        className="w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400"
                       >
                         <SelectValue placeholder="Selecciona una ciudad" />
                       </SelectTrigger>
@@ -438,7 +438,7 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
                     <Select onValueChange={field.onChange} value={field.value}>
                       <SelectTrigger
                         id="tipo-propiedad-select"
-                        className="w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400"
+                        className="w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400"
                       >
                         <SelectValue placeholder="Selecciona tipo de propiedad" />
                       </SelectTrigger>
@@ -495,7 +495,7 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
                       type="number"
                       min="1"
                       {...register("numeroParqueaderos")}
-                      className={`w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400 ${
+                      className={`w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400 ${
                         errors.numeroParqueaderos
                           ? "border-red-500 dark:border-red-400"
                           : ""
@@ -520,7 +520,7 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
                       id="areaParqueadero"
                       type="number"
                       {...register("areaParqueadero")}
-                      className={`w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400 ${
+                      className={`w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400 ${
                         errors.areaParqueadero
                           ? "border-red-500 dark:border-red-400"
                           : ""
@@ -550,7 +550,7 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
                   id="areaTerraza"
                   type="number"
                   {...register("areaTerraza")}
-                  className={`w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400 ${
+                  className={`w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400 ${
                     errors.areaTerraza
                       ? "border-red-500 dark:border-red-400"
                       : ""
@@ -578,7 +578,7 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
                   id="areaPatio"
                   type="number"
                   {...register("areaPatio")}
-                  className={`w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400 ${
+                  className={`w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400 ${
                     errors.areaPatio ? "border-red-500 dark:border-red-400" : ""
                   }`}
                   placeholder="Ingresa el área del patio"
@@ -618,7 +618,7 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
                           numericValue ? parseInt(numericValue) : 0
                         );
                       }}
-                      className={`w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400 ${
+                      className={`w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400 ${
                         errors.valorAdministracion
                           ? "border-red-500 dark:border-red-400"
                           : ""
@@ -633,7 +633,7 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
 
           <div className="space-y-6">
             <div className="flex items-center space-x-2 pb-2 border-b border-zinc-200 dark:border-zinc-700">
-              <AlertCircle className="w-5 h-5 text-amber-600" />
+              <AlertCircle className="w-5 h-5 text-custom-600" />
               <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">
                 Preguntas adicionales
               </h3>
@@ -648,7 +648,7 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
               <textarea
                 id="comentariosAdicionales"
                 {...register("comentariosAdicionales")}
-                className="w-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-md px-3 py-2 focus:border-amber-500 dark:focus:border-amber-400 min-h-[100px] resize-none"
+                className="w-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-md px-3 py-2 focus:border-custom-500 dark:focus:border-custom-400 min-h-[100px] resize-none"
                 placeholder="Comentarios adicionales sobre tu propiedad..."
               />
             </div>
@@ -657,7 +657,7 @@ const OwnerForm: React.FC<OwnerFormProps> = ({ formSubmit, loading }) => {
           <Button
             disabled={loading}
             type="submit"
-            className="w-full bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-700 hover:to-yellow-700 text-white font-semibold py-3 h-auto disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-gradient-to-r from-custom-600 to-custom-600 hover:from-custom-700 hover:to-custom-700 text-white font-semibold py-3 h-auto disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? (
               <div className="w-4 h-4 mr-2 animate-spin rounded-full border-2 border-white border-t-transparent" />

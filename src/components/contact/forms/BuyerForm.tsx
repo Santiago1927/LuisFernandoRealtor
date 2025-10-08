@@ -93,7 +93,7 @@ const BuyerForm: React.FC<BuyerFormProps> = ({ formSubmit, loading }) => {
             value={watch(fieldKey as any)}
             {...register(fieldKey)}
           >
-            <SelectTrigger className="w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400">
+            <SelectTrigger className="w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400">
               <SelectValue placeholder="Selecciona forma de pago" />
             </SelectTrigger>
             <SelectContent>
@@ -138,7 +138,7 @@ const BuyerForm: React.FC<BuyerFormProps> = ({ formSubmit, loading }) => {
                 numericValue ? parseInt(numericValue) : 0
               );
             }}
-            className={`w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400 ${
+            className={`w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400 ${
               errors[fieldKey] ? "border-red-500 dark:border-red-400" : ""
             }`}
             placeholder={`Ingresa ${field.label.toLowerCase()}`}
@@ -165,7 +165,7 @@ const BuyerForm: React.FC<BuyerFormProps> = ({ formSubmit, loading }) => {
           id={fieldKey}
           type={field.type}
           {...register(fieldKey)}
-          className={`w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400 ${
+          className={`w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400 ${
             errors[fieldKey] ? "border-red-500 dark:border-red-400" : ""
           }`}
           placeholder={`Ingresa ${field.label.toLowerCase()}`}
@@ -178,7 +178,7 @@ const BuyerForm: React.FC<BuyerFormProps> = ({ formSubmit, loading }) => {
     <Card className="border-0 shadow-xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur">
       <CardHeader>
         <CardTitle className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 flex items-center space-x-2">
-          <Home className="w-6 h-6 text-amber-600" />
+          <Home className="w-6 h-6 text-custom-600" />
           <span>Solicitud de compra</span>
         </CardTitle>
         <p className="text-zinc-600 dark:text-zinc-400">
@@ -207,7 +207,7 @@ const BuyerForm: React.FC<BuyerFormProps> = ({ formSubmit, loading }) => {
                   id={key}
                   type={field.type}
                   {...register(key)}
-                  className={`w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400 ${
+                  className={`w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400 ${
                     errors[key] ? "border-red-500 dark:border-red-400" : ""
                   }`}
                   placeholder={`Ingresa ${field.label.toLowerCase()}`}
@@ -235,7 +235,7 @@ const BuyerForm: React.FC<BuyerFormProps> = ({ formSubmit, loading }) => {
                 value={watch("ciudad")}
                 {...register("ciudad")}
               >
-                <SelectTrigger className="w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400">
+                <SelectTrigger className="w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400">
                   <SelectValue placeholder="Selecciona una ciudad" />
                 </SelectTrigger>
                 <SelectContent>
@@ -268,7 +268,7 @@ const BuyerForm: React.FC<BuyerFormProps> = ({ formSubmit, loading }) => {
                 value={watch("tipoPropiedad")}
                 {...register("tipoPropiedad")}
               >
-                <SelectTrigger className="w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-amber-500 dark:focus:border-amber-400">
+                <SelectTrigger className="w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400">
                   <SelectValue placeholder="Selecciona tipo de propiedad" />
                 </SelectTrigger>
                 <SelectContent>
@@ -302,7 +302,7 @@ const BuyerForm: React.FC<BuyerFormProps> = ({ formSubmit, loading }) => {
             <textarea
               id="comentariosAdicionales"
               {...register("comentariosAdicionales")}
-              className="w-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-md px-3 py-2 focus:border-amber-500 dark:focus:border-amber-400 min-h-[100px] resize-none"
+              className="w-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-md px-3 py-2 focus:border-custom-500 dark:focus:border-custom-400 min-h-[100px] resize-none"
               placeholder="Comentarios adicionales sobre tu búsqueda..."
             />
           </div>
@@ -319,7 +319,7 @@ const BuyerForm: React.FC<BuyerFormProps> = ({ formSubmit, loading }) => {
           <Button
             disabled={loading}
             type="submit"
-            className="w-full bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-700 hover:to-yellow-700 text-white font-semibold py-3 h-auto"
+            className="w-full bg-gradient-to-r from-custom-600 to-custom-600 hover:from-custom-700 hover:to-custom-700 text-white font-semibold py-3 h-auto"
           >
             {loading ? (
               <div className="w-4 h-4 mr-2 animate-spin rounded-full border-2 border-white border-t-transparent" />

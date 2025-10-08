@@ -66,7 +66,7 @@ export default function MobileSidebarToggle() {
   return (
     <Button
       onClick={handleOpenSidebar}
-      className="fixed top-4 left-4 z-40 h-12 w-12 p-0 rounded-full bg-amber-500 hover:bg-amber-600 text-black shadow-lg"
+      className="fixed top-4 left-4 z-40 h-12 w-12 p-0 rounded-full bg-custom-500 hover:bg-custom-600 text-black shadow-lg"
       aria-label="Abrir menú"
     >
       <Menu className="h-5 w-5" />

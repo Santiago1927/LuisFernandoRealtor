@@ -173,9 +173,9 @@ export default function DetallePropiedadPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-zinc-50 via-white to-amber-50/30 dark:from-zinc-900 dark:via-black dark:to-amber-900/10 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-zinc-50 via-white to-custom-50/30 dark:from-zinc-900 dark:via-black dark:to-custom-900/10 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-600 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-custom-600 mx-auto mb-4"></div>
           <p className="text-lg text-zinc-600 dark:text-zinc-400">
             Cargando propiedad...
           </p>
@@ -186,7 +186,7 @@ export default function DetallePropiedadPage() {
 
   if (error || !property) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-zinc-50 via-white to-amber-50/30 dark:from-zinc-900 dark:via-black dark:to-amber-900/10 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-zinc-50 via-white to-custom-50/30 dark:from-zinc-900 dark:via-black dark:to-custom-900/10 flex items-center justify-center">
         <div className="text-center">
           <p className="text-lg text-zinc-600 dark:text-zinc-400">
             Error al cargar la propiedad
@@ -214,7 +214,7 @@ export default function DetallePropiedadPage() {
         return {
           label: "Alquilada",
           className:
-            "bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300 border-amber-200 dark:border-amber-800",
+            "bg-custom-100 text-custom-800 dark:bg-custom-900/30 dark:text-custom-300 border-custom-200 dark:border-custom-800",
         };
     }
   };
@@ -230,13 +230,13 @@ export default function DetallePropiedadPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-zinc-50 via-white to-amber-50/30 dark:from-zinc-900 dark:via-black dark:to-amber-900/10">
+    <div className="min-h-screen bg-gradient-to-br from-zinc-50 via-white to-custom-50/30 dark:from-zinc-900 dark:via-black dark:to-custom-900/10">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
         <div className="mb-6">
           <Button
             asChild
             variant="ghost"
-            className="text-zinc-600 dark:text-zinc-400 hover:text-amber-600 dark:hover:text-amber-400"
+            className="text-zinc-600 dark:text-zinc-400 hover:text-custom-600 dark:hover:text-custom-400"
           >
             <Link
               href={isAuthenticated ? "/admin/propiedades" : "/propiedades"}
@@ -325,14 +325,14 @@ export default function DetallePropiedadPage() {
                         <Button
                           variant="ghost"
                           size="icon"
-                          className="text-zinc-600 dark:text-zinc-400 hover:text-amber-600 dark:hover:text-amber-400"
+                          className="text-zinc-600 dark:text-zinc-400 hover:text-custom-600 dark:hover:text-custom-400"
                         >
                           <Heart className="w-5 h-5" />
                         </Button>
                         <Button
                           variant="ghost"
                           size="icon"
-                          className="text-zinc-600 dark:text-zinc-400 hover:text-amber-600 dark:hover:text-amber-400"
+                          className="text-zinc-600 dark:text-zinc-400 hover:text-custom-600 dark:hover:text-custom-400"
                         >
                           <Share2 className="w-5 h-5" />
                         </Button>
@@ -359,7 +359,7 @@ export default function DetallePropiedadPage() {
 
                     <div className="grid grid-cols-3 gap-4">
                       <div className="text-center p-4 bg-zinc-50 dark:bg-zinc-800 rounded-lg">
-                        <Bed className="w-6 h-6 text-amber-600 dark:text-amber-400 mx-auto mb-2" />
+                        <Bed className="w-6 h-6 text-custom-600 dark:text-custom-400 mx-auto mb-2" />
                         <div className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">
                           {property.bedrooms || 0}
                         </div>
@@ -368,7 +368,7 @@ export default function DetallePropiedadPage() {
                         </div>
                       </div>
                       <div className="text-center p-4 bg-zinc-50 dark:bg-zinc-800 rounded-lg">
-                        <Bath className="w-6 h-6 text-amber-600 dark:text-amber-400 mx-auto mb-2" />
+                        <Bath className="w-6 h-6 text-custom-600 dark:text-custom-400 mx-auto mb-2" />
                         <div className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">
                           {renderSafeBathrooms(property.bathrooms)}
                         </div>
@@ -377,7 +377,7 @@ export default function DetallePropiedadPage() {
                         </div>
                       </div>
                       <div className="text-center p-4 bg-zinc-50 dark:bg-zinc-800 rounded-lg">
-                        <Square className="w-6 h-6 text-amber-600 dark:text-amber-400 mx-auto mb-2" />
+                        <Square className="w-6 h-6 text-custom-600 dark:text-custom-400 mx-auto mb-2" />
                         <div className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">
                           {property.total_area || property.area || 0}
                         </div>
@@ -405,7 +405,7 @@ export default function DetallePropiedadPage() {
 
                         return (
                           <div className="flex items-center space-x-3">
-                            <MapPin className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+                            <MapPin className="w-5 h-5 text-custom-600 dark:text-custom-400" />
                             <div>
                               <div className="font-medium text-zinc-900 dark:text-zinc-100">
                                 Ciudad
@@ -422,7 +422,7 @@ export default function DetallePropiedadPage() {
                       {property.valor_administracion &&
                         Number(property.valor_administracion) > 0 && (
                           <div className="flex items-center space-x-3">
-                            <DollarSign className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+                            <DollarSign className="w-5 h-5 text-custom-600 dark:text-custom-400" />
                             <div>
                               <div className="font-medium text-zinc-900 dark:text-zinc-100">
                                 Administración
@@ -438,7 +438,7 @@ export default function DetallePropiedadPage() {
                       {/* Conjunto cerrado */}
                       {property.conjunto_cerrado && (
                         <div className="flex items-center space-x-3">
-                          <Shield className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+                          <Shield className="w-5 h-5 text-custom-600 dark:text-custom-400" />
                           <div>
                             <div className="font-medium text-zinc-900 dark:text-zinc-100">
                               Conjunto Cerrado
@@ -453,7 +453,7 @@ export default function DetallePropiedadPage() {
                       {/* Número de pisos */}
                       {property.numero_pisos && property.numero_pisos > 0 && (
                         <div className="flex items-center space-x-3">
-                          <Home className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+                          <Home className="w-5 h-5 text-custom-600 dark:text-custom-400" />
                           <div>
                             <div className="font-medium text-zinc-900 dark:text-zinc-100">
                               Número de Pisos
@@ -469,7 +469,7 @@ export default function DetallePropiedadPage() {
                       {/* Edad de la propiedad */}
                       {property.edad_propiedad && (
                         <div className="flex items-center space-x-3">
-                          <Calendar className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+                          <Calendar className="w-5 h-5 text-custom-600 dark:text-custom-400" />
                           <div>
                             <div className="font-medium text-zinc-900 dark:text-zinc-100">
                               Edad de la Propiedad
@@ -494,7 +494,7 @@ export default function DetallePropiedadPage() {
                   <Card className="border-0 shadow-xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur">
                     <CardHeader>
                       <CardTitle className="flex items-center space-x-2 text-zinc-900 dark:text-zinc-100">
-                        <Square className="w-5 h-5 text-amber-600" />
+                        <Square className="w-5 h-5 text-custom-600" />
                         <span>Dimensiones del Lote</span>
                       </CardTitle>
                     </CardHeader>
@@ -530,7 +530,7 @@ export default function DetallePropiedadPage() {
                 <Card className="border-0 shadow-xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur">
                   <CardHeader>
                     <CardTitle className="flex items-center space-x-2 text-zinc-900 dark:text-zinc-100">
-                      <Building2 className="w-5 h-5 text-amber-600" />
+                      <Building2 className="w-5 h-5 text-custom-600" />
                       <span>
                         Zonas Comunes ({property.zonas_comunes.length})
                       </span>
@@ -558,7 +558,7 @@ export default function DetallePropiedadPage() {
                   <Card className="border-0 shadow-xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur">
                     <CardHeader>
                       <CardTitle className="flex items-center space-x-2 text-zinc-900 dark:text-zinc-100">
-                        <Hammer className="w-5 h-5 text-amber-600" />
+                        <Hammer className="w-5 h-5 text-custom-600" />
                         <span>
                           Área Construida ({property.area_construida.length})
                         </span>
@@ -586,7 +586,7 @@ export default function DetallePropiedadPage() {
                   <Card className="border-0 shadow-xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur">
                     <CardHeader>
                       <CardTitle className="flex items-center space-x-2 text-zinc-900 dark:text-zinc-100">
-                        <CreditCard className="w-5 h-5 text-amber-600" />
+                        <CreditCard className="w-5 h-5 text-custom-600" />
                         <span>Formas de Pago</span>
                       </CardTitle>
                     </CardHeader>
@@ -596,7 +596,7 @@ export default function DetallePropiedadPage() {
                           <Badge
                             key={`forma-pago-${index}-${forma}`}
                             variant="outline"
-                            className="border-amber-300 text-amber-700 dark:border-amber-600 dark:text-amber-300"
+                            className="border-custom-300 text-custom-700 dark:border-custom-600 dark:text-custom-300"
                           >
                             {forma}
                           </Badge>
@@ -611,7 +611,7 @@ export default function DetallePropiedadPage() {
                 <Card className="border-0 shadow-xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur">
                   <CardHeader>
                     <CardTitle className="flex items-center space-x-2 text-zinc-900 dark:text-zinc-100">
-                      <ArrowRightLeft className="w-5 h-5 text-amber-600" />
+                      <ArrowRightLeft className="w-5 h-5 text-custom-600" />
                       <span>Acepta Permutas</span>
                     </CardTitle>
                   </CardHeader>
@@ -655,7 +655,7 @@ export default function DetallePropiedadPage() {
             <Card className="border-0 shadow-xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur">
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2 text-zinc-900 dark:text-zinc-100">
-                  <Info className="w-5 h-5 text-amber-600" />
+                  <Info className="w-5 h-5 text-custom-600" />
                   <span>Información Detallada</span>
                 </CardTitle>
               </CardHeader>
@@ -1261,7 +1261,7 @@ export default function DetallePropiedadPage() {
             <Card className="border-0 shadow-xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur">
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2 text-zinc-900 dark:text-zinc-100">
-                  <MapPin className="w-5 h-5 text-amber-600" />
+                  <MapPin className="w-5 h-5 text-custom-600" />
                   <span>Ubicación</span>
                 </CardTitle>
               </CardHeader>
@@ -1279,13 +1279,13 @@ export default function DetallePropiedadPage() {
 
           <div className="xl:col-span-1 space-y-6">
             <div className="sticky top-6 space-y-6">
-              <Card className="border-0 shadow-xl bg-gradient-to-br from-amber-500 to-yellow-600 text-white">
+              <Card className="border-0 shadow-xl bg-gradient-to-br from-custom-500 to-custom-600 text-white">
                 <CardContent className="p-6">
                   <div className="text-center">
                     <div className="text-3xl lg:text-4xl font-bold mb-2">
                       {formatCurrency(property.price)}
                     </div>
-                    <div className="text-amber-100 text-sm">
+                    <div className="text-custom-100 text-sm">
                       Precio de venta
                     </div>
                   </div>
@@ -1301,7 +1301,7 @@ export default function DetallePropiedadPage() {
                 <CardContent className="space-y-4">
                   <Button
                     asChild
-                    className="w-full bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-700 hover:to-yellow-700 text-white font-semibold"
+                    className="w-full bg-gradient-to-r from-custom-600 to-custom-600 hover:from-custom-700 hover:to-custom-700 text-white font-semibold"
                   >
                     <a
                       href={

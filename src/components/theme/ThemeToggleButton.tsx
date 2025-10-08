@@ -23,7 +23,7 @@ const ThemeToggleButton = () => {
       {theme === "light" ? (
         <Moon className="h-4 w-4 text-zinc-700" /> // Ícono de luna para activar tema oscuro
       ) : (
-        <Sun className="h-4 w-4 text-amber-500" /> // Ícono de sol para activar tema claro
+        <Sun className="h-4 w-4 text-custom-500" /> // Ícono de sol para activar tema claro
       )}
       {/* Texto para lectores de pantalla */}
       <span className="sr-only">Alternar tema</span>
