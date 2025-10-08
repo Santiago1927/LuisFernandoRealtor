@@ -32,10 +32,9 @@ export default function MainSection() {
               </div>
 
               <div className="space-y-4 lg:space-y-6">
-                <h1 className="text-5xl lg:text-7xl xl:text-8xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 leading-tight">
-                  Propiedades de
+                <h1 className="text-5xl lg:text-7xl xl:text-8xl font-bold tracking-tight leading-tight">
                   <span className="block bg-gradient-to-r from-amber-600 to-yellow-600 bg-clip-text text-transparent">
-                    lujo exclusivo
+                    Propiedades de lujo
                   </span>
                 </h1>
                 <p className="text-xl lg:text-3xl xl:text-4xl text-zinc-600 dark:text-zinc-400 font-light leading-relaxed">
@@ -60,7 +59,7 @@ export default function MainSection() {
                     href="/contacto"
                     className="flex items-center space-x-2"
                   >
-                    <span>Hablar con un Agente</span>
+                    <span>Hablar con un agente</span>
                     <ArrowRight className="w-5 h-5" />
                   </Link>
                 </Button>

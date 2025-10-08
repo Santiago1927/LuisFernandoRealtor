@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import ContactSection from "../../components/contact/ContactSection";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -17,6 +17,8 @@ import {
 } from "lucide-react";
 
 export default function ContactoPage() {
+  const [videoError, setVideoError] = useState(false);
+
   // Función para probar la accesibilidad del video - comentado temporalmente
   /*
   useEffect(() => {
@@ -269,37 +271,27 @@ export default function ContactoPage() {
 
             <div className="relative">
               <div className="relative z-10 h-full min-h-[400px] rounded-2xl overflow-hidden bg-black">
-                <video
-                  className="w-full h-full object-cover"
-                  controls
-                  preload="auto"
-                  poster="/logo.png"
-                  playsInline
-                  muted={false}
-                  crossOrigin="anonymous"
-                  onError={(e) => {
-                    console.error("Video playback error occurred");
-                    // Simplified error handling to prevent stack issues
-                  }}
-                  onLoadStart={() => console.log("✅ Video loading started")}
-                  onCanPlay={() => console.log("✅ Video can play")}
-                  onLoadedData={() => console.log("✅ Video data loaded")}
-                  onLoadedMetadata={() =>
-                    console.log("✅ Video metadata loaded")
-                  }
-                  onProgress={() => console.log("📈 Video loading progress")}
-                  onSuspend={() => console.log("⏸️ Video loading suspended")}
-                  onAbort={() => console.log("❌ Video loading aborted")}
-                  onEmptied={() => console.log("🔄 Video emptied")}
-                  onStalled={() => console.log("⚠️ Video stalled")}
-                >
-                  {/* URL correcta con token válido */}
-                  <source
-                    src="https://firebasestorage.googleapis.com/v0/b/inmapp-842fa.firebasestorage.app/o/video%2FWhatsApp%20Video%202025-10-07%20at%2011.05.51%20PM.mp4?alt=media&token=d47d27a2-54bb-4bc5-82f1-1b593dd0a3ef"
-                    type="video/mp4"
-                  />
-
-                  {/* Fallback message */}
+                {!videoError ? (
+                  <video
+                    className="w-full h-full object-cover"
+                    controls
+                    preload="none"
+                    poster="/logo.png"
+                    playsInline
+                    muted
+                    onError={() => setVideoError(true)}
+                    onLoadStart={() => {
+                      // Video loading started successfully
+                    }}
+                  >
+                    <source
+                      src="https://firebasestorage.googleapis.com/v0/b/inmapp-842fa.firebasestorage.app/o/video%2FWhatsApp%20Video%202025-10-07%20at%2011.05.51%20PM.mp4?alt=media&token=d47d27a2-54bb-4bc5-82f1-1b593dd0a3ef"
+                      type="video/mp4"
+                    />
+                    {/* Browser fallback */}
+                    Tu navegador no soporta el elemento video.
+                  </video>
+                ) : (
                   <div className="flex flex-col items-center justify-center h-full text-white p-8">
                     <div className="w-24 h-24 mb-4">
                       <Image
@@ -316,12 +308,11 @@ export default function ContactoPage() {
                     <p className="text-zinc-300 text-sm text-center mb-4">
                       Especialistas en bienes raíces de lujo
                     </p>
-                    <p className="text-red-400 text-sm text-center">
-                      Error al cargar el video. Verifica la consola para más
-                      detalles.
+                    <p className="text-amber-400 text-sm text-center">
+                      Video no disponible temporalmente
                     </p>
                   </div>
-                </video>
+                )}
               </div>
               <div className="absolute -inset-4 bg-gradient-to-br from-amber-500/10 to-yellow-600/10 rounded-2xl blur-sm"></div>
             </div>
