@@ -94,10 +94,7 @@ export async function POST(request: Request) {
 
     const data = await resend.emails.send({
       from: `${fromName} <onboarding@resend.dev>`,
-      to: [
-        "davidandradesantacruz9.3@gmail.com",
-        "realtorluisfernando@gmail.com",
-      ],
+      to: ["realtorluisfernando@gmail.com"],
       subject: subject,
       text: `Nueva consulta de ${dataForm.nombre} (${dataForm.correo})`,
       react: React.createElement(EmailTemplate as any, dataForm),

@@ -104,7 +104,7 @@ export default function Header() {
             <div className="flex flex-col">
               {/* Nombre principal del agente inmobiliario */}
               <span
-                className="text-4xl font-ultra-thin tracking-wide text-white font-cinzel"
+                className="text-2xl font-ultra-thin tracking-wide text-white font-cinzel"
                 style={{
                   textShadow: "1px 1px 3px rgba(0,0,0,0.5)",
                   letterSpacing: "0.1em",

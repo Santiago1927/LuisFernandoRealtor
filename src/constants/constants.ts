@@ -54,10 +54,10 @@ export const PERSONAL_DATA: Record<string, Field> = {
 };
 
 export const CITY_OPTIONS = [
+  { value: City.Pasto, label: "Pasto" },
   { value: City.Medellin, label: "Medellín" },
   { value: City.Bogota, label: "Bogotá" },
   { value: City.Cali, label: "Cali" },
-  { value: City.Pasto, label: "Pasto" },
 ];
 
 export const PROJECT_TYPE_OPTIONS = [

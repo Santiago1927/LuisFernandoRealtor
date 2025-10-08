@@ -33,7 +33,17 @@ const tipos = [
   { value: "Bodega", label: "Bodega", icon: Building2 },
 ];
 
-const ciudades = ["Medellín", "Bogotá", "Cali", "Pasto"];
+const ciudades = ["Pasto", "Medellín", "Bogotá", "Cali"];
+
+const rangosPrecio = [
+  { value: "200000000-300000000", label: "$200M - $300M" },
+  { value: "300000000-500000000", label: "$300M - $500M" },
+  { value: "500000000-800000000", label: "$500M - $800M" },
+  { value: "800000000-1000000000", label: "$800M - $1,000M" },
+  { value: "1000000000-1500000000", label: "$1,000M - $1,500M" },
+  { value: "1500000000-2000000000", label: "$1,500M - $2,000M" },
+  { value: "2000000000-", label: "Más de $2,000M" },
+];
 
 /**
  * Componente de filtros para la página principal (Home)
@@ -41,21 +51,23 @@ const ciudades = ["Medellín", "Bogotá", "Cali", "Pasto"];
  */
 export default function HomeFilters() {
   const router = useRouter();
-  const [search, setSearch] = useState("");
   const [city, setCity] = useState("");
   const [type, setType] = useState("");
-  const [minPrice, setMinPrice] = useState("");
-  const [maxPrice, setMaxPrice] = useState("");
+  const [priceRange, setPriceRange] = useState("");
 
   // Función para aplicar filtros y navegar a la página de propiedades
   const handleSearch = () => {
     const params = new URLSearchParams();
 
-    if (search) params.set("search", search);
     if (city) params.set("city", city);
     if (type) params.set("type", type);
-    if (minPrice) params.set("minPrice", minPrice);
-    if (maxPrice) params.set("maxPrice", maxPrice);
+
+    // Procesar rango de precios
+    if (priceRange) {
+      const [minPrice, maxPrice] = priceRange.split("-");
+      if (minPrice) params.set("minPrice", minPrice);
+      if (maxPrice) params.set("maxPrice", maxPrice);
+    }
 
     const queryString = params.toString();
     const url = queryString ? `/propiedades?${queryString}` : "/propiedades";
@@ -65,11 +77,9 @@ export default function HomeFilters() {
 
   // Función para limpiar todos los filtros
   const handleClearFilters = () => {
-    setSearch("");
     setCity("");
     setType("");
-    setMinPrice("");
-    setMaxPrice("");
+    setPriceRange("");
   };
 
   return (
@@ -105,34 +115,8 @@ export default function HomeFilters() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 mb-6">
-            {/* Campo de búsqueda */}
-            <div className="relative lg:col-span-2">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-zinc-400" />
-              <Input
-                type="text"
-                placeholder="Buscar propiedades..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="pl-10 h-12 border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 focus:border-amber-500 dark:focus:border-amber-400 text-base"
-              />
-            </div>
-
-            {/* Selector de ciudad */}
-            <Select value={city} onValueChange={setCity}>
-              <SelectTrigger className="h-12 border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 focus:border-amber-500 dark:focus:border-amber-400">
-                <SelectValue placeholder="Ciudad" />
-              </SelectTrigger>
-              <SelectContent>
-                {ciudades.map((ciudad) => (
-                  <SelectItem key={ciudad} value={ciudad}>
-                    {ciudad}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-
-            {/* Selector de tipo de propiedad */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+            {/* Selector de tipo de propiedad - PRIMERO */}
             <Select value={type} onValueChange={setType}>
               <SelectTrigger className="h-12 border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 focus:border-amber-500 dark:focus:border-amber-400">
                 <SelectValue placeholder="Tipo" />
@@ -149,29 +133,36 @@ export default function HomeFilters() {
               </SelectContent>
             </Select>
 
-            {/* Campo precio mínimo */}
-            <div className="relative">
-              <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-zinc-400" />
-              <Input
-                type="number"
-                placeholder="Precio mínimo"
-                value={minPrice}
-                onChange={(e) => setMinPrice(e.target.value)}
-                className="pl-10 h-12 border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 focus:border-amber-500 dark:focus:border-amber-400"
-              />
-            </div>
+            {/* Selector de ciudad */}
+            <Select value={city} onValueChange={setCity}>
+              <SelectTrigger className="h-12 border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 focus:border-amber-500 dark:focus:border-amber-400">
+                <SelectValue placeholder="Ciudad" />
+              </SelectTrigger>
+              <SelectContent>
+                {ciudades.map((ciudad) => (
+                  <SelectItem key={ciudad} value={ciudad}>
+                    {ciudad}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
 
-            {/* Campo precio máximo */}
-            <div className="relative">
-              <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-zinc-400" />
-              <Input
-                type="number"
-                placeholder="Precio máximo"
-                value={maxPrice}
-                onChange={(e) => setMaxPrice(e.target.value)}
-                className="pl-10 h-12 border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 focus:border-amber-500 dark:focus:border-amber-400"
-              />
-            </div>
+            {/* Selector de rango de precio */}
+            <Select value={priceRange} onValueChange={setPriceRange}>
+              <SelectTrigger className="h-12 border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 focus:border-amber-500 dark:focus:border-amber-400">
+                <SelectValue placeholder="Rango de precio" />
+              </SelectTrigger>
+              <SelectContent>
+                {rangosPrecio.map((rango) => (
+                  <SelectItem key={rango.value} value={rango.value}>
+                    <div className="flex items-center space-x-2">
+                      <DollarSign className="w-4 h-4" />
+                      <span>{rango.label}</span>
+                    </div>
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
           {/* Botones de acción */}

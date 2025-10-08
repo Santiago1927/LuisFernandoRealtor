@@ -1,6 +1,5 @@
 "use client";
 
-import CarouselSection from "@/components/home/CarouselSection";
 import MainSection from "../components/home/MainSection";
 import HomeFilters from "@/components/home/HomeFilters";
 import BackgroundCarousel from "@/components/home/BackgroundCarousel";
@@ -29,11 +28,6 @@ export default function Home() {
       {/* Sección principal con información de la empresa */}
       <div className="bg-gradient-to-br from-zinc-50 via-white to-amber-50/30 dark:from-zinc-900 dark:via-black dark:to-amber-900/10">
         <MainSection />
-
-        {/* Sección del carrusel de imágenes */}
-        <div className="w-full mb-16">
-          <CarouselSection />
-        </div>
 
         {/* Sección de propiedades destacadas */}
         <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">

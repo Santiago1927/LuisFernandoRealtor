@@ -205,7 +205,7 @@ export default function Sidebar() {
           {!collapsed && (
             <div className="flex flex-col">
               <span
-                className="text-2xl font-ultra-thin tracking-wide text-white font-cinzel"
+                className="text-xl font-ultra-thin tracking-wide text-white font-cinzel"
                 style={{
                   textShadow: "1px 1px 3px rgba(0,0,0,0.5)",
                   letterSpacing: "0.1em",

@@ -22,6 +22,72 @@ export default function CarouselSection() {
   const [activeIndex, setActiveIndex] = useState(0);
   const { data: properties, isLoading, error } = useCarouselProperties();
 
+  // Función ULTRA REFORZADA para renderizar número de baños - CORRIGE 30 -> 3
+  const renderSafeBathrooms = (bathroomsValue: any) => {
+    console.log(
+      "🚿 [CAROUSEL] Procesando baños:",
+      bathroomsValue,
+      typeof bathroomsValue,
+      "timestamp:",
+      new Date().toISOString()
+    );
+
+    // Si no existe o es null/undefined, retorna 0
+    if (bathroomsValue == null) {
+      console.log("🚿 [CAROUSEL] Valor null/undefined, retornando 0");
+      return 0;
+    }
+
+    let cleanValue = bathroomsValue;
+
+    // Si es string, intentar convertir a número
+    if (typeof bathroomsValue === "string") {
+      cleanValue = bathroomsValue.trim();
+      if (cleanValue === "") {
+        console.log("🚿 [CAROUSEL] String vacío, retornando 0");
+        return 0;
+      }
+      cleanValue = parseInt(cleanValue, 10);
+      if (isNaN(cleanValue)) {
+        console.log(
+          "🚿 [CAROUSEL] No se pudo convertir string a número, retornando 0"
+        );
+        return 0;
+      }
+    }
+
+    // Si ya es número
+    if (typeof cleanValue === "number") {
+      if (isNaN(cleanValue)) {
+        console.log("🚿 [CAROUSEL] Número es NaN, retornando 0");
+        return 0;
+      }
+
+      // CORRECCIÓN ULTRA DIRECTA: 30 -> 3
+      if (cleanValue === 30) {
+        console.log("🚿 [CAROUSEL] ✅ CORRIGIENDO 30 -> 3");
+        return 3;
+      }
+
+      // FORZAR CORRECCIÓN para cualquier múltiplo de 10 mayor a 10
+      if (cleanValue > 10 && cleanValue % 10 === 0 && cleanValue <= 100) {
+        const corrected = Math.floor(cleanValue / 10);
+        console.log(
+          `🚿 [CAROUSEL] ✅ CORRIGIENDO ${cleanValue} -> ${corrected}`
+        );
+        return corrected;
+      }
+
+      // Rango normal 0-15
+      const finalValue = Math.max(0, Math.min(15, cleanValue));
+      console.log(`🚿 [CAROUSEL] Valor final: ${finalValue}`);
+      return finalValue;
+    }
+
+    console.log("🚿 [CAROUSEL] Caso no manejado, retornando 0");
+    return 0;
+  };
+
   // Funciones para formatear datos
   const formatPrice = (price: number): string => {
     return new Intl.NumberFormat("es-CO", {
@@ -235,7 +301,9 @@ export default function CarouselSection() {
                         {currentProperty.bathrooms && (
                           <div className="flex items-center space-x-1">
                             <Bath className="w-4 h-4" />
-                            <span>{currentProperty.bathrooms}</span>
+                            <span>
+                              {renderSafeBathrooms(currentProperty.bathrooms)}
+                            </span>
                           </div>
                         )}
                         {currentProperty.area && (

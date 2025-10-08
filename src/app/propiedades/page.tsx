@@ -37,7 +37,7 @@ const tipos = [
   { value: "Bodega", label: "Bodega", icon: Building2 },
 ];
 
-const ciudades = ["Medellín", "Bogotá", "Cali", "Pasto"];
+const ciudades = ["Pasto", "Medellín", "Bogotá", "Cali"];
 
 // Componente que usa useSearchParams
 function PropiedadesContent() {

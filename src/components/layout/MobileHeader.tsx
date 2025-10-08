@@ -166,7 +166,7 @@ export default function MobileHeader() {
               </div>
               <div className="flex flex-col">
                 <span
-                  className="text-2xl md:text-4xl font-ultra-thin tracking-wide text-white font-cinzel"
+                  className="text-xl md:text-2xl font-ultra-thin tracking-wide text-white font-cinzel"
                   style={{
                     textShadow: "1px 1px 3px rgba(0,0,0,0.5)",
                     letterSpacing: "0.1em",
@@ -259,7 +259,7 @@ export default function MobileHeader() {
                 className="h-full w-full object-contain"
               />
             </div>
-            <span className="text-xl font-bold text-white font-cinzel">
+            <span className="text-lg font-bold text-white font-cinzel">
               REALHAUS
             </span>
           </div>

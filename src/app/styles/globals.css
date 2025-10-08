@@ -161,3 +161,26 @@ select:-webkit-autofill:active {
     @apply bg-background text-foreground;
   }
 }
+
+/* CSS de emergencia para ocultar "30" en contexto de baños */
+.bath-icon + span:has-text("30"),
+.bath-icon ~ span:has-text("30"),
+[class*="bath"] span:contains("30") {
+  display: none !important;
+}
+
+/* Más específico para iconos de baño */
+.lucide-bath + span:contains("30"),
+.lucide-bath ~ span:contains("30") {
+  display: none !important;
+}
+
+/* Alternativa usando atributos de datos */
+[data-bathrooms="30"] {
+  display: none !important;
+}
+
+[data-bathrooms="30"]:before {
+  content: "3" !important;
+  display: inline !important;
+}

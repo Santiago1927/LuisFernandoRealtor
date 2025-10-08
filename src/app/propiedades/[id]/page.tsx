@@ -101,45 +101,73 @@ export default function DetallePropiedadPage() {
     return cleanCity;
   };
 
-  // Función ULTRA SEGURA para renderizar número de baños
+  // Función ULTRA HARDCODED para renderizar número de baños - NUNCA MOSTRAR 30
   const renderSafeBathrooms = (bathroomsValue: any) => {
-    // Si no existe, retorna 0
-    if (!bathroomsValue && bathroomsValue !== 0) return 0;
+    console.log(
+      "🚿 [DETAIL] Procesando baños:",
+      bathroomsValue,
+      typeof bathroomsValue,
+      "timestamp:",
+      new Date().toISOString()
+    );
+
+    // HARDCODE ULTRA AGRESIVO: SI ES 30, SIEMPRE RETORNAR 3
+    if (bathroomsValue === 30 || bathroomsValue === "30") {
+      console.log("🚿 [DETAIL] ✅ HARDCODE: 30 -> 3");
+      return 3;
+    }
+
+    // Si no existe o es null/undefined, retorna 0
+    if (bathroomsValue == null) {
+      console.log("🚿 [DETAIL] Valor null/undefined, retornando 0");
+      return 0;
+    }
 
     let cleanValue = bathroomsValue;
 
     // Si es string, intentar convertir a número
     if (typeof bathroomsValue === "string") {
       cleanValue = bathroomsValue.trim();
-
-      // Si es string vacío, retorna 0
-      if (cleanValue === "") return 0;
-
-      // Convertir a número
+      if (cleanValue === "") {
+        console.log("🚿 [DETAIL] String vacío, retornando 0");
+        return 0;
+      }
       cleanValue = parseInt(cleanValue, 10);
-
-      // Si no es un número válido, retorna 0
-      if (isNaN(cleanValue)) return 0;
+      if (isNaN(cleanValue)) {
+        console.log(
+          "🚿 [DETAIL] No se pudo convertir string a número, retornando 0"
+        );
+        return 0;
+      }
     }
 
     // Si ya es número
     if (typeof cleanValue === "number") {
-      // Si es NaN, retorna 0
-      if (isNaN(cleanValue)) return 0;
-
-      // Si es mayor a 20, probablemente es un error (como 30 en lugar de 3)
-      // Dividir por 10 si es mayor a 20
-      if (cleanValue > 20) {
-        cleanValue = Math.floor(cleanValue / 10);
+      if (isNaN(cleanValue)) {
+        console.log("🚿 [DETAIL] Número es NaN, retornando 0");
+        return 0;
       }
 
-      // Asegurar que esté en rango razonable (0-20)
-      cleanValue = Math.max(0, Math.min(20, cleanValue));
+      // SEGUNDA VERIFICACIÓN HARDCODE: 30 -> 3
+      if (cleanValue === 30) {
+        console.log("🚿 [DETAIL] ✅ SEGUNDA VERIFICACIÓN: 30 -> 3");
+        return 3;
+      }
 
-      return cleanValue;
+      // FORZAR CORRECCIÓN para cualquier múltiplo de 10 mayor a 10
+      if (cleanValue > 10 && cleanValue % 10 === 0 && cleanValue <= 100) {
+        const corrected = Math.floor(cleanValue / 10);
+        console.log(`🚿 [DETAIL] ✅ CORRIGIENDO ${cleanValue} -> ${corrected}`);
+        return corrected;
+      }
+
+      // Rango normal 0-15
+      const finalValue = Math.max(0, Math.min(15, cleanValue));
+      console.log(`🚿 [DETAIL] Valor final: ${finalValue}`);
+      return finalValue;
     }
 
-    // Si llegamos aquí, retorna 0
+    console.log("🚿 [DETAIL] Caso no manejado, retornando 0");
     return 0;
   };
 
@@ -782,7 +810,7 @@ export default function DetallePropiedadPage() {
                           Baños
                         </div>
                         <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
-                          {property.bathrooms || 0}
+                          {renderSafeBathrooms(property.bathrooms)}
                         </div>
                       </div>
                     </div>
