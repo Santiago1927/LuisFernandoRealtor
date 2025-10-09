@@ -270,10 +270,10 @@ export default function ContactoPage() {
             </Card>
 
             <div className="relative">
-              <div className="relative z-10 h-full min-h-[400px] rounded-2xl overflow-hidden bg-black">
+              <div className="relative z-10 w-full max-w-2xl mx-auto aspect-video rounded-2xl overflow-hidden bg-black">
                 {!videoError ? (
                   <video
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-contain"
                     controls
                     preload="none"
                     poster="/logo.png"
@@ -314,7 +314,6 @@ export default function ContactoPage() {
                   </div>
                 )}
               </div>
-              <div className="absolute -inset-4 bg-gradient-to-br from-custom-500/10 to-custom-600/10 rounded-2xl blur-sm"></div>
             </div>
           </div>
         </div>
