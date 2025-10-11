@@ -16,7 +16,6 @@ import {
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import {
-  Search,
   DollarSign,
   Building2,
   Home,
@@ -39,32 +38,50 @@ const tipos = [
 
 const ciudades = ["Pasto", "Medellín", "Bogotá", "Cali"];
 
+const rangosPrecio = [
+  { value: "200000000-300000000", label: "$200M - $300M" },
+  { value: "300000000-500000000", label: "$300M - $500M" },
+  { value: "500000000-800000000", label: "$500M - $800M" },
+  { value: "800000000-1200000000", label: "$800M - $1,200M" },
+  { value: "1200000000-1500000000", label: "$1,200M - $1,500M" },
+  { value: "1500000000-2000000000", label: "$1,500M - $2,000M" },
+  { value: "2000000000-", label: "Más de $2,000M" },
+];
+
 // Componente que usa useSearchParams
 function PropiedadesContent() {
   const searchParams = useSearchParams();
   const [currentPage, setCurrentPage] = useState(1);
-  const [search, setSearch] = useState("");
   const [city, setCity] = useState("");
   const [type, setType] = useState("");
-  const [minPrice, setMinPrice] = useState("");
-  const [maxPrice, setMaxPrice] = useState("");
+  const [priceRange, setPriceRange] = useState("");
 
   // Inicializar filtros desde los parámetros de la URL
   useEffect(() => {
     if (searchParams) {
-      setSearch(searchParams.get("search") || "");
       setCity(searchParams.get("city") || "");
       setType(searchParams.get("type") || "");
-      setMinPrice(searchParams.get("minPrice") || "");
-      setMaxPrice(searchParams.get("maxPrice") || "");
+
+      // Procesar rango de precios desde URL
+      const minPriceParam = searchParams.get("minPrice") || "";
+      const maxPriceParam = searchParams.get("maxPrice") || "";
+
+      if (minPriceParam || maxPriceParam) {
+        const rangeValue = maxPriceParam
+          ? `${minPriceParam}-${maxPriceParam}`
+          : `${minPriceParam}-`;
+        setPriceRange(rangeValue);
+      }
     }
   }, [searchParams]);
+
+  // Convertir priceRange a minPrice y maxPrice para el filtro
+  const [minPrice, maxPrice] = priceRange ? priceRange.split("-") : ["", ""];
 
   const { data, isLoading, error } = usePaginatedProperties({
     page: currentPage,
     pageSize: 12,
     filters: {
-      search,
       city,
       type,
       minPrice,
@@ -101,7 +118,7 @@ function PropiedadesContent() {
   }
 
   // Verificar si hay filtros aplicados desde el home
-  const hasFiltersFromHome = search || city || type || minPrice || maxPrice;
+  const hasFiltersFromHome = city || type || priceRange;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-zinc-50 via-white to-custom-50/30 dark:from-zinc-900 dark:via-black dark:to-custom-900/10">
@@ -121,14 +138,6 @@ function PropiedadesContent() {
               <span className="text-sm text-zinc-600 dark:text-zinc-400 mr-2">
                 Filtros aplicados:
               </span>
-              {search && (
-                <Badge
-                  variant="secondary"
-                  className="bg-custom-100 text-custom-800 dark:bg-custom-900/30 dark:text-custom-300"
-                >
-                  Búsqueda: {search}
-                </Badge>
-              )}
               {city && (
                 <Badge
                   variant="secondary"
@@ -145,20 +154,14 @@ function PropiedadesContent() {
                   Tipo: {type}
                 </Badge>
               )}
-              {minPrice && (
+              {priceRange && (
                 <Badge
                   variant="secondary"
                   className="bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300"
                 >
-                  Desde: ${parseInt(minPrice).toLocaleString()}
-                </Badge>
-              )}
-              {maxPrice && (
-                <Badge
-                  variant="secondary"
-                  className="bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300"
-                >
-                  Hasta: ${parseInt(maxPrice).toLocaleString()}
+                  Precio:{" "}
+                  {rangosPrecio.find((r) => r.value === priceRange)?.label ||
+                    priceRange}
                 </Badge>
               )}
             </div>
@@ -172,31 +175,7 @@ function PropiedadesContent() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-zinc-400" />
-                <Input
-                  type="text"
-                  placeholder="Buscar propiedades..."
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  className="pl-10 border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 focus:border-custom-500 dark:focus:border-custom-400"
-                />
-              </div>
-
-              <Select value={city} onValueChange={setCity}>
-                <SelectTrigger className="border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 focus:border-custom-500 dark:focus:border-custom-400">
-                  <SelectValue placeholder="Ciudad" />
-                </SelectTrigger>
-                <SelectContent>
-                  {ciudades.map((ciudad) => (
-                    <SelectItem key={ciudad} value={ciudad}>
-                      {ciudad}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               <Select value={type} onValueChange={setType}>
                 <SelectTrigger className="border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 focus:border-custom-500 dark:focus:border-custom-400">
                   <SelectValue placeholder="Tipo" />
@@ -213,36 +192,48 @@ function PropiedadesContent() {
                 </SelectContent>
               </Select>
 
-              <div className="relative">
-                <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-zinc-400" />
-                <Input
-                  type="number"
-                  placeholder="Precio mínimo"
-                  value={minPrice}
-                  onChange={(e) => setMinPrice(e.target.value)}
-                  className="pl-10 border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 focus:border-custom-500 dark:focus:border-custom-400"
-                />
-              </div>
+              <Select value={city} onValueChange={setCity}>
+                <SelectTrigger className="border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 focus:border-custom-500 dark:focus:border-custom-400">
+                  <SelectValue placeholder="Ciudad" />
+                </SelectTrigger>
+                <SelectContent>
+                  {ciudades.map((ciudad) => (
+                    <SelectItem key={ciudad} value={ciudad}>
+                      {ciudad}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
 
-              <div className="relative">
-                <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-zinc-400" />
-                <Input
-                  type="number"
-                  placeholder="Precio máximo"
-                  value={maxPrice}
-                  onChange={(e) => setMaxPrice(e.target.value)}
-                  className="pl-10 border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 focus:border-custom-500 dark:focus:border-custom-400"
-                />
-              </div>
+              {/* Selector de rango de precio */}
+              <Select
+                value={priceRange}
+                onValueChange={(value) => {
+                  setPriceRange(value);
+                  setCurrentPage(1);
+                }}
+              >
+                <SelectTrigger className="border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 focus:border-custom-500 dark:focus:border-custom-400">
+                  <SelectValue placeholder="Rango de precio" />
+                </SelectTrigger>
+                <SelectContent>
+                  {rangosPrecio.map((rango) => (
+                    <SelectItem key={rango.value} value={rango.value}>
+                      <div className="flex items-center space-x-2">
+                        <DollarSign className="w-4 h-4" />
+                        <span>{rango.label}</span>
+                      </div>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
 
               <Button
                 variant="outline"
                 onClick={() => {
-                  setSearch("");
                   setCity("");
                   setType("");
-                  setMinPrice("");
-                  setMaxPrice("");
+                  setPriceRange("");
                 }}
                 className="border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800"
               >
@@ -337,11 +328,9 @@ function PropiedadesContent() {
                   </p>
                   <Button
                     onClick={() => {
-                      setSearch("");
                       setCity("");
                       setType("");
-                      setMinPrice("");
-                      setMaxPrice("");
+                      setPriceRange("");
                     }}
                     className="bg-custom-600 hover:bg-custom-700 text-white"
                   >

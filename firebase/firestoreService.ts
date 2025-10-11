@@ -147,6 +147,15 @@ export const propertyService = {
    */
   async createProperty(propertyData: Omit<Property, "id">): Promise<Property> {
     try {
+      // Debug: Log para verificar los datos que llegan al servicio
+      console.log("🔥 FIRESTORE DEBUG - Creando propiedad con datos:", {
+        title: propertyData.title,
+        city: propertyData.city,
+        type: propertyData.type,
+        hasCity: !!propertyData.city,
+        cityType: typeof propertyData.city,
+      });
+
       // Agregar documento con timestamps automáticos
       const docRef = await addDoc(collection(db, COLLECTIONS.PROPERTIES), {
         ...propertyData,
@@ -181,6 +190,16 @@ export const propertyService = {
     propertyData: Partial<Property>
   ): Promise<void> {
     try {
+      // Debug: Log para verificar los datos que llegan al servicio para actualizar
+      console.log("🔥 FIRESTORE DEBUG - Actualizando propiedad con datos:", {
+        id,
+        title: propertyData.title,
+        city: propertyData.city,
+        type: propertyData.type,
+        hasCity: !!propertyData.city,
+        cityType: typeof propertyData.city,
+      });
+
       const docRef = doc(db, COLLECTIONS.PROPERTIES, id);
 
       // Preparar datos para actualización

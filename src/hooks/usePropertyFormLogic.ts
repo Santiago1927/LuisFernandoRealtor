@@ -50,7 +50,7 @@ export function usePropertyFormLogic({
     const baseData: PropertyFormData = {
       title: property?.title || "",
       address: property?.address || "",
-      city: property?.city || "",
+      city: property?.city || "Pasto", // Siempre asegurar que tenga un valor
       price: property?.price || 0,
       description: property?.description || "",
       bedrooms: property?.bedrooms || 0,
@@ -160,26 +160,10 @@ export function usePropertyFormLogic({
       setLng(property.lng || null);
       setMapAddress(property.address || "");
     } else {
-      // Si no hay property (modo crear), resetear todos los valores
-      setFormData({
-        title: "",
-        address: "",
-        city: "",
-        price: 0,
-        description: "",
-        bedrooms: 0,
-        bathrooms: 0,
-        area: 0,
-        type: "Casa",
-        status: "available",
-        phone: "",
-        // Nuevos campos - solo incluir los que siempre tienen valor
-        conjunto_cerrado: false,
-        valor_administracion: 0,
-        zonas_comunes: [],
-        formas_de_pago: [],
-        edad_propiedad: "",
-      });
+      // Si no hay property (modo crear), usar getInitialFormData para asegurar valores por defecto
+      const initialData = getInitialFormData();
+      console.log("🏗️ Formulario nuevo - city:", initialData.city);
+      setFormData(initialData);
       setImageUrls([]);
       setVideoUrls([]);
       setImages([]);
@@ -284,6 +268,11 @@ export function usePropertyFormLogic({
         }
       } else {
         (newData as any)[name] = value;
+
+        // Debug específico para el campo city
+        if (name === "city") {
+          console.log("🏙️ City cambiado a:", value);
+        }
       }
 
       return newData;
@@ -440,9 +429,18 @@ export function usePropertyFormLogic({
         }
       }
 
+      // CORRECCIÓN FORZADA: Si formData.city está vacío, asignar "Pasto" ANTES de la limpieza
+      let formDataCopy = { ...formData };
+      if (!formDataCopy.city || formDataCopy.city.trim() === "") {
+        console.log(
+          "⚠️ Campo city vacío en formData, asignando Pasto ANTES de limpieza"
+        );
+        formDataCopy.city = "Pasto";
+      }
+
       // Limpiar datos del formulario eliminando valores undefined, null, y strings vacíos
       let cleanFormData = Object.fromEntries(
-        Object.entries(formData).filter(([key, value]) => {
+        Object.entries(formDataCopy).filter(([key, value]) => {
           // Mantener arrays vacíos y valores booleanos false
           if (Array.isArray(value)) return true;
           if (typeof value === "boolean") return true;
@@ -451,6 +449,19 @@ export function usePropertyFormLogic({
           return value !== undefined && value !== null;
         })
       );
+
+      // Asegurar que campos críticos siempre tengan valores por defecto si están vacíos
+      if (!cleanFormData.city) {
+        cleanFormData.city = "Pasto";
+      }
+      if (!cleanFormData.type) {
+        cleanFormData.type = "Casa";
+      }
+      if (!cleanFormData.status) {
+        cleanFormData.status = "available";
+      }
+
+      console.log("✅ City final antes de enviar:", cleanFormData.city);
 
       // Verificación adicional: si no hay "Permutas" en formas_de_pago, eliminar campos de permuta
       const formasDePago = cleanFormData.formas_de_pago as string[] | undefined;
@@ -472,6 +483,18 @@ export function usePropertyFormLogic({
         lat: lat || null,
         lng: lng || null,
       } as Omit<Property, "id">;
+
+      // Debug: Log para verificar que el campo city esté en los datos finales
+      console.log("🚀 DEBUG - Datos finales a enviar:", {
+        title: propertyData.title,
+        city: propertyData.city,
+        type: propertyData.type,
+        hasAllRequiredFields: !!(
+          propertyData.title &&
+          propertyData.city &&
+          propertyData.type
+        ),
+      });
 
       if (property?.id) {
         // Si existe, actualiza la propiedad usando React Query

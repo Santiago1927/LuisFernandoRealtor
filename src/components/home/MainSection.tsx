@@ -119,18 +119,6 @@ export default function MainSection() {
                   </div>
                 </div>
               </div>
-
-              <div className="flex flex-col sm:flex-row items-center justify-center space-y-2 sm:space-y-0 sm:space-x-6 pt-4">
-                <div className="flex items-center space-x-2 text-zinc-600 dark:text-zinc-400">
-                  <Phone className="w-4 h-4" />
-                  <span className="text-sm">+57 321 422 3931</span>
-                  <span className="text-sm">+57 317 777 2601</span>
-                </div>
-                <div className="flex items-center space-x-2 text-zinc-600 dark:text-zinc-400">
-                  <MapPin className="w-4 h-4" />
-                  <span className="text-sm">Pasto, Colombia</span>
-                </div>
-              </div>
             </div>
           </div>
         </section>

@@ -55,58 +55,49 @@ export default function Footer() {
       : "lg:pl-64";
 
   return (
-    <footer
-      className={`bg-gradient-to-br from-zinc-900 via-black to-custom-900/20 text-white ${lgPaddingClass}`}
-    >
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
-        <div className="grid lg:grid-cols-4 gap-8 lg:gap-12 mb-12">
-          <div className="lg:col-span-2">
-            <div className="flex items-center mb-6">
-              <Image
-                src="/logo.png"
-                width={40}
-                height={40}
-                className="mr-3 h-10 w-10 object-contain"
-                alt="REALHAUS"
-              />
-              <div>
-                <h3
-                  className="text-2xl font-bold text-white font-cinzel tracking-wide"
-                  style={{
-                    textShadow: "1px 1px 3px rgba(0,0,0,0.5)",
-                    letterSpacing: "0.1em",
-                  }}
-                >
-                  REALHAUS
-                </h3>
-              </div>
-            </div>
-            <p className="text-zinc-300 leading-relaxed max-w-md">
-              Especialistas en bienes raíces de lujo. Ofrecemos propiedades
-              exclusivas y un servicio personalizado para clientes exigentes que
-              buscan lo mejor.
-            </p>
+    <footer className="bg-gradient-to-br from-zinc-900 via-black to-custom-900/20 text-white w-full">
+      <div className="w-full px-4 sm:px-6 lg:px-8 py-8">
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-4">
+          {/* REALHAUS - Lado izquierdo */}
+          <div className="flex items-center">
+            <Image
+              src="/logo.png"
+              width={40}
+              height={40}
+              className="mr-3 h-10 w-10 object-contain"
+              alt="REALHAUS"
+            />
+            <h3
+              className="text-2xl font-ultra-thin tracking-wide text-white font-cinzel"
+              style={{
+                textShadow: "1px 1px 3px rgba(0,0,0,0.5)",
+                letterSpacing: "0.1em",
+              }}
+            >
+              REALHAUS
+            </h3>
           </div>
 
-          <div>
-            <h4 className="text-lg font-semibold text-white mb-6 flex items-center">
+          {/* Contacto - Centro */}
+          <div className="flex flex-col items-center text-center lg:text-left">
+            <h4 className="text-lg font-semibold text-white mb-3 flex items-center">
               <span className="w-8 h-0.5 bg-custom-500 mr-3"></span>
               Contacto
             </h4>
-            <div className="space-y-4">
-              <div className="flex items-center space-x-3 text-zinc-300 hover:text-custom-400 transition-colors">
+            <div className="flex flex-col sm:flex-row gap-4 text-sm">
+              <div className="flex items-center space-x-2 text-zinc-300 hover:text-custom-400 transition-colors">
                 <Phone className="w-4 h-4 text-custom-500" />
                 <a href="tel:+573214223931" className="hover:underline">
                   +57 321 422 3931
                 </a>
               </div>
-              <div className="flex items-center space-x-3 text-zinc-300 hover:text-custom-400 transition-colors">
+              <div className="flex items-center space-x-2 text-zinc-300 hover:text-custom-400 transition-colors">
                 <Phone className="w-4 h-4 text-custom-500" />
                 <a href="tel:+573177772601" className="hover:underline">
                   +57 317 777 2601
                 </a>
               </div>
-              <div className="flex items-center space-x-3 text-zinc-300 hover:text-custom-400 transition-colors">
+              <div className="flex items-center space-x-2 text-zinc-300 hover:text-custom-400 transition-colors">
                 <Mail className="w-4 h-4 text-custom-500" />
                 <a
                   href="mailto:realtorluisfernando@gmail.com"
@@ -115,15 +106,16 @@ export default function Footer() {
                   realtorluisfernando@gmail.com
                 </a>
               </div>
-              <div className="flex items-center space-x-3 text-zinc-300">
+              <div className="flex items-center space-x-2 text-zinc-300">
                 <MapPin className="w-4 h-4 text-custom-500" />
                 <span>Pasto, Colombia</span>
               </div>
             </div>
           </div>
 
-          <div>
-            <h4 className="text-lg font-semibold text-white mb-6 flex items-center">
+          {/* Síguenos - Lado derecho */}
+          <div className="flex flex-col items-center lg:items-end">
+            <h4 className="text-lg font-semibold text-white mb-3 flex items-center">
               <span className="w-8 h-0.5 bg-custom-500 mr-3"></span>
               Síguenos
             </h4>
@@ -163,8 +155,8 @@ export default function Footer() {
           <div className="text-center">
             <p className="text-zinc-400 text-sm">
               © 2024{" "}
-              <span className="text-custom-400 font-semibold">REALHAUS</span> ™ |
-              Todos los derechos reservados
+              <span className="text-custom-400 font-semibold">REALHAUS</span> ™
+              | Todos los derechos reservados
             </p>
           </div>
         </div>

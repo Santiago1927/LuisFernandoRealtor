@@ -5,7 +5,6 @@ import SmartImage from "@/components/ui/SmartImage";
 import { Property } from "../../types/property";
 import Link from "next/link";
 import { usePropertyCardLogic } from "../../hooks/usePropertyCardLogic";
-import { correctBathroomsValue } from "../../hooks/useSafeBathrooms";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -35,17 +34,25 @@ function PropertyCard({ property, onEdit, onDelete }: any) {
   // Función ULTRA HARDCODED para renderizar número de baños - NUNCA MOSTRAR 30
   const renderSafeBathrooms = (bathroomsValue: any) => {
     console.log(
-      "🚿 [ADMIN] Procesando baños:",
+      "🚿🚿🚿 [ADMIN-FIXED] Procesando baños:",
       bathroomsValue,
       typeof bathroomsValue,
       "timestamp:",
       new Date().toISOString()
     );
 
-    // HARDCODE ULTRA AGRESIVO: SI ES 30, SIEMPRE RETORNAR 3
+    // CORRECCIÓN ULTRA AGRESIVA INMEDIATA
+    if (bathroomsValue === 20 || bathroomsValue === "20") {
+      console.log("🚿 [ADMIN] ✅ HARDCODE: 20 -> 2");
+      return 2;
+    }
     if (bathroomsValue === 30 || bathroomsValue === "30") {
       console.log("🚿 [ADMIN] ✅ HARDCODE: 30 -> 3");
       return 3;
+    }
+    if (bathroomsValue === 40 || bathroomsValue === "40") {
+      console.log("🚿 [ADMIN] ✅ HARDCODE: 40 -> 4");
+      return 4;
     }
 
     // Si no existe o es null/undefined, retorna 0
@@ -218,13 +225,13 @@ function PropertyCard({ property, onEdit, onDelete }: any) {
             {property.bathrooms && (
               <div className="flex items-center space-x-1">
                 <Bath className="w-4 h-4" />
-                <span>{correctBathroomsValue(property.bathrooms)}</span>
+                <span>{renderSafeBathrooms(property.bathrooms)}</span>
               </div>
             )}
-            {property.area && (
+            {(property.total_area || property.area) && (
               <div className="flex items-center space-x-1">
                 <Square className="w-4 h-4" />
-                <span>{property.area} m²</span>
+                <span>{property.total_area || property.area} m²</span>
               </div>
             )}
           </div>

@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import ImageWrapper from "@/components/ui/ImageWrapper";
@@ -72,6 +73,56 @@ export default function DetallePropiedadPage() {
     mapUrl,
   } = usePropertyDetailPageLogic(id);
   const { isAuthenticated } = useAuthContext();
+
+  // Estados para likes y compartir
+  const [likes, setLikes] = useState(0);
+  const [isLiked, setIsLiked] = useState(false);
+  const [shares, setShares] = useState(0);
+
+  // Cargar datos del localStorage al montar el componente
+  useEffect(() => {
+    if (id) {
+      const savedLikes = localStorage.getItem(`property-likes-${id}`);
+      const savedIsLiked = localStorage.getItem(`property-liked-${id}`);
+      const savedShares = localStorage.getItem(`property-shares-${id}`);
+
+      if (savedLikes) setLikes(parseInt(savedLikes));
+      if (savedIsLiked) setIsLiked(savedIsLiked === "true");
+      if (savedShares) setShares(parseInt(savedShares));
+    }
+  }, [id]);
+
+  // Función para manejar likes
+  const handleLike = () => {
+    const newLikedState = !isLiked;
+    const newLikesCount = newLikedState ? likes + 1 : Math.max(0, likes - 1);
+
+    setIsLiked(newLikedState);
+    setLikes(newLikesCount);
+
+    // Guardar en localStorage
+    localStorage.setItem(`property-liked-${id}`, newLikedState.toString());
+    localStorage.setItem(`property-likes-${id}`, newLikesCount.toString());
+  };
+
+  // Función para compartir por WhatsApp
+  const handleWhatsAppShare = () => {
+    if (!property) return;
+
+    const newSharesCount = shares + 1;
+    setShares(newSharesCount);
+    localStorage.setItem(`property-shares-${id}`, newSharesCount.toString());
+
+    const propertyUrl = window.location.href;
+    const message = `¡Mira esta increíble propiedad! 🏠\n\n*${
+      property.title
+    }*\n📍 ${property.address}\n💰 ${formatCurrency(
+      property.price
+    )}\n\n${propertyUrl}`;
+
+    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, "_blank");
+  };
 
   // Función ULTRA SEGURA para renderizar ciudad - IMPOSIBLE que muestre "0"
   const renderSafeCity = (cityValue: any) => {
@@ -322,20 +373,45 @@ export default function DetallePropiedadPage() {
                         </div>
                       </div>
                       <div className="flex items-center space-x-2 ml-4">
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="text-zinc-600 dark:text-zinc-400 hover:text-custom-600 dark:hover:text-custom-400"
-                        >
-                          <Heart className="w-5 h-5" />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="text-zinc-600 dark:text-zinc-400 hover:text-custom-600 dark:hover:text-custom-400"
-                        >
-                          <Share2 className="w-5 h-5" />
-                        </Button>
+                        <div className="flex flex-col items-center">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={handleLike}
+                            className={`${
+                              isLiked
+                                ? "text-red-500 hover:text-red-600"
+                                : "text-zinc-600 dark:text-zinc-400 hover:text-custom-600 dark:hover:text-custom-400"
+                            } transition-colors`}
+                          >
+                            <Heart
+                              className={`w-5 h-5 ${
+                                isLiked ? "fill-current" : ""
+                              }`}
+                            />
+                          </Button>
+                          {likes > 0 && (
+                            <span className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">
+                              {likes}
+                            </span>
+                          )}
+                        </div>
+                        <div className="flex flex-col items-center">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={handleWhatsAppShare}
+                            className="text-zinc-600 dark:text-zinc-400 hover:text-green-600 dark:hover:text-green-400 transition-colors"
+                            title="Compartir por WhatsApp"
+                          >
+                            <Share2 className="w-5 h-5" />
+                          </Button>
+                          {shares > 0 && (
+                            <span className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">
+                              {shares}
+                            </span>
+                          )}
+                        </div>
                       </div>
                     </div>
                   </CardHeader>
@@ -1004,6 +1080,7 @@ export default function DetallePropiedadPage() {
                   {/* Información Adicional */}
                   {(property.country ||
                     property.department ||
+                    property.city ||
                     property.address ||
                     property.phone) && (
                     <div className="space-y-4 md:col-span-2 lg:col-span-1">
@@ -1035,6 +1112,20 @@ export default function DetallePropiedadPage() {
                             </div>
                             <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
                               {property.department}
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                      {property.city && (
+                        <div className="flex items-start space-x-2">
+                          <MapPin className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
+                          <div className="min-w-0 flex-1">
+                            <div className="text-xs text-gray-500 dark:text-gray-400">
+                              Ciudad
+                            </div>
+                            <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                              {property.city}
                             </div>
                           </div>
                         </div>

@@ -43,12 +43,22 @@ const tipos = [
 
 const ciudades = ["Pasto", "Medellín", "Bogotá", "Cali"];
 
+const rangosPrecio = [
+  { value: "200000000-300000000", label: "$200M - $300M" },
+  { value: "300000000-500000000", label: "$300M - $500M" },
+  { value: "500000000-800000000", label: "$500M - $800M" },
+  { value: "800000000-1200000000", label: "$800M - $1,200M" },
+  { value: "1200000000-1500000000", label: "$1,200M - $1,500M" },
+  { value: "1500000000-2000000000", label: "$1,500M - $2,000M" },
+  { value: "2000000000-", label: "Más de $2,000M" },
+];
+
 export default function AdminPropiedadesPage() {
   const { isAuthenticated, loading } = useAdminAuthGuard();
   const [currentPage, setCurrentPage] = useState(1);
-  const [search, setSearch] = useState("");
   const [city, setCity] = useState("");
   const [type, setType] = useState("");
+  const [priceRange, setPriceRange] = useState("all");
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
   const [showForm, setShowForm] = useState(false);
@@ -61,7 +71,6 @@ export default function AdminPropiedadesPage() {
     page: currentPage,
     pageSize: 12,
     filters: {
-      search,
       city,
       type,
       minPrice,
@@ -87,9 +96,9 @@ export default function AdminPropiedadesPage() {
   const totalPages = Math.ceil(totalProperties / 12);
 
   const clearFilters = () => {
-    setSearch("");
     setCity("");
     setType("");
+    setPriceRange("all");
     setMinPrice("");
     setMaxPrice("");
     setCurrentPage(1);
@@ -127,22 +136,17 @@ export default function AdminPropiedadesPage() {
     handleFormClose();
   };
 
-  const handleMinPriceChange = (value: string) => {
-    const numericValue = value.replace(/[^0-9]/g, "");
-    setMinPrice(numericValue);
-    setCurrentPage(1);
-  };
-
-  const handleMaxPriceChange = (value: string) => {
-    const numericValue = value.replace(/[^0-9]/g, "");
-    setMaxPrice(numericValue);
-    setCurrentPage(1);
-  };
-
-  const formatPrice = (value: string) => {
-    if (!value) return "";
-    return new Intl.NumberFormat("es-CO").format(parseInt(value));
-  };
+  // Efecto para actualizar minPrice y maxPrice cuando cambia priceRange
+  useEffect(() => {
+    if (priceRange && priceRange !== "all") {
+      const [min, max] = priceRange.split("-");
+      setMinPrice(min || "");
+      setMaxPrice(max || "");
+    } else if (priceRange === "all") {
+      setMinPrice("");
+      setMaxPrice("");
+    }
+  }, [priceRange]);
 
   if (error) {
     return (
@@ -196,44 +200,8 @@ export default function AdminPropiedadesPage() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
-              {/* Búsqueda por texto */}
-              <div className="lg:col-span-2">
-                <Input
-                  placeholder="Buscar propiedades..."
-                  value={search}
-                  onChange={(e) => {
-                    setSearch(e.target.value);
-                    setCurrentPage(1);
-                  }}
-                  className="w-full"
-                />
-              </div>
-
-              {/* Filtro de ciudad */}
-              <div>
-                <Select
-                  value={city}
-                  onValueChange={(value) => {
-                    setCity(value);
-                    setCurrentPage(1);
-                  }}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Ciudad" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">Todas las ciudades</SelectItem>
-                    {ciudades.map((ciudad) => (
-                      <SelectItem key={ciudad} value={ciudad}>
-                        {ciudad}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {/* Filtro de tipo */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              {/* Filtro de tipo - PRIMERO */}
               <div>
                 <Select
                   value={type}
@@ -259,26 +227,53 @@ export default function AdminPropiedadesPage() {
                 </Select>
               </div>
 
-              {/* Precio mínimo */}
-              <div className="relative">
-                <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                <Input
-                  placeholder="Precio mín"
-                  value={formatPrice(minPrice)}
-                  onChange={(e) => handleMinPriceChange(e.target.value)}
-                  className="pl-10"
-                />
+              {/* Filtro de ciudad */}
+              <div>
+                <Select
+                  value={city}
+                  onValueChange={(value) => {
+                    setCity(value);
+                    setCurrentPage(1);
+                  }}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Ciudad" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Todas las ciudades</SelectItem>
+                    {ciudades.map((ciudad) => (
+                      <SelectItem key={ciudad} value={ciudad}>
+                        {ciudad}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
 
-              {/* Precio máximo */}
-              <div className="relative">
-                <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                <Input
-                  placeholder="Precio máx"
-                  value={formatPrice(maxPrice)}
-                  onChange={(e) => handleMaxPriceChange(e.target.value)}
-                  className="pl-10"
-                />
+              {/* Selector de rango de precio */}
+              <div>
+                <Select
+                  value={priceRange}
+                  onValueChange={(value) => {
+                    setPriceRange(value);
+                    setCurrentPage(1);
+                  }}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Rango de precio" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Todos los rangos</SelectItem>
+                    {rangosPrecio.map((rango) => (
+                      <SelectItem key={rango.value} value={rango.value}>
+                        <div className="flex items-center gap-2">
+                          <DollarSign className="h-4 w-4" />
+                          {rango.label}
+                        </div>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
             </div>
 
