@@ -67,6 +67,18 @@ export default function AdminPropiedadesPage() {
   const deletePropertyMutation = useDeleteProperty();
   const { showAlert, showConfirm } = useAlert();
 
+  // Efecto para actualizar minPrice y maxPrice cuando cambia priceRange
+  useEffect(() => {
+    if (priceRange && priceRange !== "all") {
+      const [min, max] = priceRange.split("-");
+      setMinPrice(min || "");
+      setMaxPrice(max || "");
+    } else if (priceRange === "all") {
+      setMinPrice("");
+      setMaxPrice("");
+    }
+  }, [priceRange]);
+
   const { data, isLoading, error } = usePaginatedProperties({
     page: currentPage,
     pageSize: 12,
@@ -135,18 +147,6 @@ export default function AdminPropiedadesPage() {
   const handlePropertySave = () => {
     handleFormClose();
   };
-
-  // Efecto para actualizar minPrice y maxPrice cuando cambia priceRange
-  useEffect(() => {
-    if (priceRange && priceRange !== "all") {
-      const [min, max] = priceRange.split("-");
-      setMinPrice(min || "");
-      setMaxPrice(max || "");
-    } else if (priceRange === "all") {
-      setMinPrice("");
-      setMaxPrice("");
-    }
-  }, [priceRange]);
 
   if (error) {
     return (

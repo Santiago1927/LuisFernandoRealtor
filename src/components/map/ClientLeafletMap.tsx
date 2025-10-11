@@ -153,7 +153,7 @@ export default function ClientLeafletMap({
         setGeocodingAttempted(true);
       }
     },
-    [onLocationChange]
+    [onLocationChange, currentAddress]
   );
 
   const reverseGeocode = useCallback(

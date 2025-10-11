@@ -87,7 +87,7 @@ export default function UltraSafeImage({
   const handleError = useCallback(() => {
     // Warning logging disabled to prevent console spam
     setHasError(true);
-  }, [src]);
+  }, []);
 
   // Si no hay src o src no es segura, mostrar placeholder
   if (!src || !isSafeUrl(src) || hasError) {
