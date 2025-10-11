@@ -273,7 +273,7 @@ export default function ContactoPage() {
               <div className="relative z-10 w-full max-w-2xl mx-auto aspect-video rounded-2xl overflow-hidden bg-black">
                 {!videoError ? (
                   <video
-                    className="w-full h-full object-contain"
+                    className="w-full h-full object-cover"
                     controls
                     preload="none"
                     poster="/logo.png"

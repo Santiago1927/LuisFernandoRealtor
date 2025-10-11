@@ -42,7 +42,7 @@ export default function Home() {
             <h2 className="text-3xl lg:text-5xl font-bold text-zinc-900 dark:text-zinc-100 mb-4">
               Propiedades
               <span className="block bg-gradient-to-r from-custom-600 to-custom-600 bg-clip-text text-transparent">
-                Destacadas
+                destacadas
               </span>
             </h2>
             <p className="text-lg text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto">
@@ -74,7 +74,7 @@ export default function Home() {
                     size="lg"
                     className="bg-gradient-to-r from-custom-600 to-custom-600 hover:from-custom-700 hover:to-custom-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
                   >
-                    Ver Todas las Propiedades
+                    Ver todas las propiedades
                   </Button>
                 </Link>
               </div>
