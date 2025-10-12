@@ -93,7 +93,7 @@ export async function POST(request: Request) {
     }
 
     const data = await resend.emails.send({
-      from: `${fromName} <onboarding@resend.dev>`,
+      from: `${fromName} <contacto@realhaus.com.co>`,
       to: ["realtorluisfernando@gmail.com"],
       subject: subject,
       text: `Nueva consulta de ${dataForm.nombre} (${dataForm.correo})`,
