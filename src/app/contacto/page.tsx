@@ -145,11 +145,11 @@ export default function ContactoPage() {
                     <Phone className="w-4 h-4 ml-2" /> 321 422 3931
                   </a>
                   <a
-                    href="tel:+573177772601"
+                    href="tel:+573207917853"
                     className="text-custom-600 dark:text-custom-400 font-medium hover:text-custom-700 dark:hover:text-custom-300 transition-colors inline-flex items-center block"
                   >
                     <Phone className="w-4 h-4 ml-2" />
-                    317 777 2601
+                    320 791 7853
                   </a>
                 </div>
               </CardContent>

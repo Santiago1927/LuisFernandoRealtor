@@ -77,7 +77,7 @@ export default function Header() {
               </span>
               <span className="flex items-center space-x-1">
                 <Phone className="w-3 h-3" />
-                <span>317 777 2601</span>
+                <span>320 791 7853</span>
               </span>
               <span className="hidden sm:inline">•</span>
               <span className="hidden sm:inline">Agente Certificado</span>

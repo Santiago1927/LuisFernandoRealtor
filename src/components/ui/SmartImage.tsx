@@ -203,7 +203,7 @@ export default function SmartImage({
   if (currentSrc.endsWith(".svg")) {
     const svgProps = {
       src: currentSrc,
-      alt,
+      alt: alt || "",
       className: imageProps.className,
       style: {
         ...style,

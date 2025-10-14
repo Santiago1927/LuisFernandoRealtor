@@ -328,6 +328,26 @@ export function usePropertyFormLogic({
     }
   };
 
+  // Elimina una imagen nueva seleccionada (antes de subir)
+  const removeNewImage = (index: number) => {
+    setImages((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  // Elimina un video nuevo seleccionado (antes de subir)
+  const removeNewVideo = (index: number) => {
+    setVideos((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  // Elimina una imagen existente (ya subida)
+  const removeExistingImage = (index: number) => {
+    setImageUrls((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  // Elimina un video existente (ya subido)
+  const removeExistingVideo = (index: number) => {
+    setVideoUrls((prev) => prev.filter((_, i) => i !== index));
+  };
+
   // Sube archivos (imágenes o videos) a Firebase Storage y retorna sus URLs
   const uploadFiles = async (
     files: File[],
@@ -625,6 +645,10 @@ export function usePropertyFormLogic({
     handleInputChange,
     handleImageChange,
     handleVideoChange,
+    removeNewImage,
+    removeNewVideo,
+    removeExistingImage,
+    removeExistingVideo,
     handleSubmit,
     handleLocationChange,
     handleSpecialFieldChange,

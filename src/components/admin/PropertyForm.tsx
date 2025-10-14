@@ -57,6 +57,7 @@ import {
   Calendar,
   HelpCircle,
 } from "lucide-react";
+import MediaPreview from "./MediaPreview";
 
 // Propiedades del componente PropertyForm
 interface PropertyFormProps {
@@ -220,6 +221,10 @@ export default function PropertyForm({
     handleInputChange, // Función para manejar cambios en inputs
     handleImageChange, // Función para manejar selección de imágenes
     handleVideoChange, // Función para manejar selección de videos
+    removeNewImage, // Función para eliminar imágenes nuevas
+    removeNewVideo, // Función para eliminar videos nuevos
+    removeExistingImage, // Función para eliminar imágenes existentes
+    removeExistingVideo, // Función para eliminar videos existentes
     handleSubmit, // Función para enviar el formulario
     handleLocationChange, // Función para manejar cambios de ubicación
     handleSpecialFieldChange, // Función para campos especiales
@@ -1715,61 +1720,74 @@ export default function PropertyForm({
               </div>
             )}
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <Label
-                  htmlFor="images"
-                  className="text-sm font-medium text-zinc-900 dark:text-zinc-100 flex items-center space-x-2"
-                >
-                  <ImageIcon className="w-4 h-4" />
-                  <span>Imágenes</span>
-                </Label>
-                <Input
-                  id="images"
-                  type="file"
-                  accept="image/*"
-                  multiple
-                  onChange={handleImageChange}
-                  className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400"
-                />
-                {imageUrls.length > 0 && (
-                  <Badge
-                    variant="secondary"
-                    className="mt-2 bg-custom-100 text-custom-800 dark:bg-custom-900/30 dark:text-custom-300"
+            {/* Sección de Medios */}
+            <div className="border-t pt-6">
+              <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100 mb-4 flex items-center">
+                <ImageIcon className="w-5 h-5 mr-2 text-blue-600" />
+                Medios
+              </h3>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <Label
+                    htmlFor="images"
+                    className="text-sm font-medium text-zinc-900 dark:text-zinc-100 flex items-center space-x-2"
                   >
-                    {imageUrls.length} imagen
-                    {imageUrls.length !== 1 ? "es" : ""} actual
-                    {imageUrls.length !== 1 ? "es" : ""}
-                  </Badge>
-                )}
+                    <ImageIcon className="w-4 h-4" />
+                    <span>Imágenes</span>
+                  </Label>
+                  <Input
+                    id="images"
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    onChange={handleImageChange}
+                    className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400"
+                  />
+                  <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">
+                    Selecciona múltiples imágenes de la propiedad
+                  </p>
+                </div>
+
+                <div>
+                  <Label
+                    htmlFor="videos"
+                    className="text-sm font-medium text-zinc-900 dark:text-zinc-100 flex items-center space-x-2"
+                  >
+                    <Video className="w-4 h-4" />
+                    <span>Videos</span>
+                  </Label>
+                  <Input
+                    id="videos"
+                    type="file"
+                    accept="video/*"
+                    multiple
+                    onChange={handleVideoChange}
+                    className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400"
+                  />
+                  <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">
+                    Selecciona videos de la propiedad (opcional)
+                  </p>
+                </div>
               </div>
 
-              <div>
-                <Label
-                  htmlFor="videos"
-                  className="text-sm font-medium text-zinc-900 dark:text-zinc-100 flex items-center space-x-2"
-                >
-                  <Video className="w-4 h-4" />
-                  <span>Videos</span>
-                </Label>
-                <Input
-                  id="videos"
-                  type="file"
-                  accept="video/*"
-                  multiple
-                  onChange={handleVideoChange}
-                  className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400"
-                />
-                {videoUrls.length > 0 && (
-                  <Badge
-                    variant="secondary"
-                    className="mt-2 bg-custom-100 text-custom-800 dark:bg-custom-900/30 dark:text-custom-300"
-                  >
-                    {videoUrls.length} video{videoUrls.length !== 1 ? "s" : ""}{" "}
-                    actual{videoUrls.length !== 1 ? "es" : ""}
-                  </Badge>
-                )}
-              </div>
+              {/* Vista previa de imágenes */}
+              <MediaPreview
+                files={images}
+                existingUrls={imageUrls}
+                type="image"
+                onRemoveFile={removeNewImage}
+                onRemoveExisting={removeExistingImage}
+              />
+
+              {/* Vista previa de videos */}
+              <MediaPreview
+                files={videos}
+                existingUrls={videoUrls}
+                type="video"
+                onRemoveFile={removeNewVideo}
+                onRemoveExisting={removeExistingVideo}
+              />
             </div>
 
             <div className="flex justify-end space-x-4 pt-6 border-t border-zinc-200 dark:border-zinc-700">
