@@ -58,6 +58,15 @@ export const CITY_OPTIONS = [
   { value: City.Medellin, label: "Medellín" },
   { value: City.Bogota, label: "Bogotá" },
   { value: City.Cali, label: "Cali" },
+  { value: City.Chachagui, label: "Chachagüí" },
+  { value: City.Consaca, label: "Consacá" },
+  { value: City.Buesaco, label: "Buesaco" },
+  { value: City.Remolino, label: "Remolino" },
+  { value: City.Sandona, label: "Sandona" },
+  { value: City.SanFernando, label: "San Fernando" },
+  { value: City.Catambuco, label: "Catambuco" },
+  { value: City.LaCocha, label: "La Cocha" },
+  { value: City.Tuquerres, label: "Túquerres" },
 ];
 
 export const PROJECT_TYPE_OPTIONS = [

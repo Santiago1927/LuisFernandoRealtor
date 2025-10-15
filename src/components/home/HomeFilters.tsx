@@ -33,7 +33,21 @@ const tipos = [
   { value: "Bodega", label: "Bodega", icon: Building2 },
 ];
 
-const ciudades = ["Pasto", "Medellín", "Bogotá", "Cali"];
+const ciudades = [
+  "Pasto",
+  "Medellín",
+  "Bogotá",
+  "Cali",
+  "Chachagüí",
+  "Consacá",
+  "Buesaco",
+  "Remolino",
+  "Sandona",
+  "San Fernando",
+  "Catambuco",
+  "La Cocha",
+  "Túquerres",
+];
 
 const rangosPrecio = [
   { value: "200000000-300000000", label: "$200M - $300M" },

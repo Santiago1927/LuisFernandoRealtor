@@ -292,21 +292,24 @@ export default function CarouselSection() {
                       </div>
 
                       <div className="flex items-center space-x-6 text-sm text-zinc-600 dark:text-zinc-400">
-                        {currentProperty.bedrooms && (
-                          <div className="flex items-center space-x-1">
-                            <Bed className="w-4 h-4" />
-                            <span>{currentProperty.bedrooms}</span>
-                          </div>
-                        )}
-                        {currentProperty.bathrooms && (
-                          <div className="flex items-center space-x-1">
-                            <Bath className="w-4 h-4" />
-                            <span>
-                              {renderSafeBathrooms(currentProperty.bathrooms)}
-                            </span>
-                          </div>
-                        )}
-                        {currentProperty.area && (
+                        {currentProperty.bedrooms &&
+                          currentProperty.bedrooms > 0 && (
+                            <div className="flex items-center space-x-1">
+                              <Bed className="w-4 h-4" />
+                              <span>{currentProperty.bedrooms}</span>
+                            </div>
+                          )}
+                        {currentProperty.bathrooms &&
+                          renderSafeBathrooms(currentProperty.bathrooms) >
+                            0 && (
+                            <div className="flex items-center space-x-1">
+                              <Bath className="w-4 h-4" />
+                              <span>
+                                {renderSafeBathrooms(currentProperty.bathrooms)}
+                              </span>
+                            </div>
+                          )}
+                        {currentProperty.area && currentProperty.area > 0 && (
                           <div className="flex items-center space-x-1">
                             <Square className="w-4 h-4" />
                             <span>{currentProperty.area} m²</span>

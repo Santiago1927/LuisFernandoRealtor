@@ -216,19 +216,21 @@ function PropertyCard({ property, onEdit, onDelete }: any) {
           </div>
 
           <div className="flex items-center space-x-4 text-sm text-zinc-600 dark:text-zinc-400">
-            {property.bedrooms && (
+            {property.bedrooms && property.bedrooms > 0 && (
               <div className="flex items-center space-x-1">
                 <Bed className="w-4 h-4" />
                 <span>{property.bedrooms}</span>
               </div>
             )}
-            {property.bathrooms && (
-              <div className="flex items-center space-x-1">
-                <Bath className="w-4 h-4" />
-                <span>{renderSafeBathrooms(property.bathrooms)}</span>
-              </div>
-            )}
-            {(property.total_area || property.area) && (
+            {property.bathrooms &&
+              renderSafeBathrooms(property.bathrooms) > 0 && (
+                <div className="flex items-center space-x-1">
+                  <Bath className="w-4 h-4" />
+                  <span>{renderSafeBathrooms(property.bathrooms)}</span>
+                </div>
+              )}
+            {((property.total_area && property.total_area > 0) ||
+              (property.area && property.area > 0)) && (
               <div className="flex items-center space-x-1">
                 <Square className="w-4 h-4" />
                 <span>{property.total_area || property.area} m²</span>

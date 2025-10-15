@@ -389,7 +389,9 @@ export default function AdminPropertyDetailPage() {
                       <div className="text-center p-4 bg-zinc-50 dark:bg-zinc-800 rounded-lg">
                         <Bed className="w-6 h-6 text-custom-600 dark:text-custom-400 mx-auto mb-2" />
                         <div className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">
-                          {property.bedrooms || 0}
+                          {property.bedrooms && property.bedrooms > 0
+                            ? property.bedrooms
+                            : "N/D"}
                         </div>
                         <div className="text-sm text-zinc-600 dark:text-zinc-400">
                           Habitaciones
@@ -398,7 +400,12 @@ export default function AdminPropertyDetailPage() {
                       <div className="text-center p-4 bg-zinc-50 dark:bg-zinc-800 rounded-lg">
                         <Bath className="w-6 h-6 text-custom-600 dark:text-custom-400 mx-auto mb-2" />
                         <div className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">
-                          {renderSafeBathrooms(property.bathrooms)}
+                          {(() => {
+                            const bathrooms = renderSafeBathrooms(
+                              property.bathrooms
+                            );
+                            return bathrooms > 0 ? bathrooms : "N/D";
+                          })()}
                         </div>
                         <div className="text-sm text-zinc-600 dark:text-zinc-400">
                           Baños
@@ -407,7 +414,10 @@ export default function AdminPropertyDetailPage() {
                       <div className="text-center p-4 bg-zinc-50 dark:bg-zinc-800 rounded-lg">
                         <Square className="w-6 h-6 text-custom-600 dark:text-custom-400 mx-auto mb-2" />
                         <div className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">
-                          {property.total_area || property.area || 0}
+                          {(() => {
+                            const area = property.total_area || property.area;
+                            return area && area > 0 ? area : "N/D";
+                          })()}
                         </div>
                         <div className="text-sm text-zinc-600 dark:text-zinc-400">
                           m²

@@ -120,6 +120,7 @@ const STRATUMS: Stratum[] = ["N/D", "1", "2", "3", "4", "5", "6"];
 
 // Números de piso disponibles
 const FLOOR_NUMBERS: FloorNumber[] = [
+  "N/A",
   "1",
   "2",
   "3",
@@ -1317,11 +1318,15 @@ export default function PropertyForm({
                         ¿Cuántos pisos?
                       </Label>
                       <Select
-                        value={formData.numero_pisos?.toString() || ""}
+                        value={
+                          formData.numero_pisos
+                            ? formData.numero_pisos.toString()
+                            : "0"
+                        }
                         onValueChange={(value) =>
                           handleSpecialFieldChange(
                             "numero_pisos",
-                            parseInt(value)
+                            value === "0" ? undefined : parseInt(value)
                           )
                         }
                       >
@@ -1329,6 +1334,7 @@ export default function PropertyForm({
                           <SelectValue placeholder="Seleccionar número de pisos" />
                         </SelectTrigger>
                         <SelectContent>
+                          <SelectItem value="0">N/A</SelectItem>
                           {[1, 2, 3, 4, 5, 6].map((num) => (
                             <SelectItem key={num} value={num.toString()}>
                               {num} piso{num > 1 ? "s" : ""}
@@ -1546,6 +1552,17 @@ export default function PropertyForm({
                           <SelectItem value="Medellín">Medellín</SelectItem>
                           <SelectItem value="Bogotá">Bogotá</SelectItem>
                           <SelectItem value="Cali">Cali</SelectItem>
+                          <SelectItem value="Chachagüí">Chachagüí</SelectItem>
+                          <SelectItem value="Consacá">Consacá</SelectItem>
+                          <SelectItem value="Buesaco">Buesaco</SelectItem>
+                          <SelectItem value="Remolino">Remolino</SelectItem>
+                          <SelectItem value="Sandona">Sandona</SelectItem>
+                          <SelectItem value="San Fernando">
+                            San Fernando
+                          </SelectItem>
+                          <SelectItem value="Catambuco">Catambuco</SelectItem>
+                          <SelectItem value="La Cocha">La Cocha</SelectItem>
+                          <SelectItem value="Túquerres">Túquerres</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>

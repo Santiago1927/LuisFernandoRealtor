@@ -437,7 +437,9 @@ export default function DetallePropiedadPage() {
                       <div className="text-center p-4 bg-zinc-50 dark:bg-zinc-800 rounded-lg">
                         <Bed className="w-6 h-6 text-custom-600 dark:text-custom-400 mx-auto mb-2" />
                         <div className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">
-                          {property.bedrooms || 0}
+                          {property.bedrooms && property.bedrooms > 0
+                            ? property.bedrooms
+                            : "N/D"}
                         </div>
                         <div className="text-sm text-zinc-600 dark:text-zinc-400">
                           Habitaciones
@@ -446,7 +448,12 @@ export default function DetallePropiedadPage() {
                       <div className="text-center p-4 bg-zinc-50 dark:bg-zinc-800 rounded-lg">
                         <Bath className="w-6 h-6 text-custom-600 dark:text-custom-400 mx-auto mb-2" />
                         <div className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">
-                          {renderSafeBathrooms(property.bathrooms)}
+                          {(() => {
+                            const bathrooms = renderSafeBathrooms(
+                              property.bathrooms
+                            );
+                            return bathrooms > 0 ? bathrooms : "N/D";
+                          })()}
                         </div>
                         <div className="text-sm text-zinc-600 dark:text-zinc-400">
                           Baños
@@ -455,7 +462,10 @@ export default function DetallePropiedadPage() {
                       <div className="text-center p-4 bg-zinc-50 dark:bg-zinc-800 rounded-lg">
                         <Square className="w-6 h-6 text-custom-600 dark:text-custom-400 mx-auto mb-2" />
                         <div className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">
-                          {property.total_area || property.area || 0}
+                          {(() => {
+                            const area = property.total_area || property.area;
+                            return area && area > 0 ? area : "N/D";
+                          })()}
                         </div>
                         <div className="text-sm text-zinc-600 dark:text-zinc-400">
                           m²
@@ -867,41 +877,51 @@ export default function DetallePropiedadPage() {
                       </div>
                     )}
 
-                    <div className="flex items-start space-x-2">
-                      <Bed className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
-                      <div className="min-w-0 flex-1">
-                        <div className="text-xs text-gray-500 dark:text-gray-400">
-                          Habitaciones
-                        </div>
-                        <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
-                          {property.bedrooms || 0}
+                    {property.bedrooms && property.bedrooms > 0 && (
+                      <div className="flex items-start space-x-2">
+                        <Bed className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
+                        <div className="min-w-0 flex-1">
+                          <div className="text-xs text-gray-500 dark:text-gray-400">
+                            Habitaciones
+                          </div>
+                          <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                            {property.bedrooms}
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    )}
 
-                    <div className="flex items-start space-x-2">
-                      <Bath className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
-                      <div className="min-w-0 flex-1">
-                        <div className="text-xs text-gray-500 dark:text-gray-400">
-                          Baños
+                    {(() => {
+                      const bathrooms = renderSafeBathrooms(property.bathrooms);
+                      return bathrooms > 0 ? (
+                        <div className="flex items-start space-x-2">
+                          <Bath className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
+                          <div className="min-w-0 flex-1">
+                            <div className="text-xs text-gray-500 dark:text-gray-400">
+                              Baños
+                            </div>
+                            <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                              {bathrooms}
+                            </div>
+                          </div>
                         </div>
-                        <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
-                          {renderSafeBathrooms(property.bathrooms)}
-                        </div>
-                      </div>
-                    </div>
+                      ) : null;
+                    })()}
 
-                    <div className="flex items-start space-x-2">
-                      <Square className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
-                      <div className="min-w-0 flex-1">
-                        <div className="text-xs text-gray-500 dark:text-gray-400">
-                          Área total
-                        </div>
-                        <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
-                          {property.total_area || property.area || 0} m²
+                    {(property.total_area && property.total_area > 0) ||
+                    (property.area && property.area > 0) ? (
+                      <div className="flex items-start space-x-2">
+                        <Square className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
+                        <div className="min-w-0 flex-1">
+                          <div className="text-xs text-gray-500 dark:text-gray-400">
+                            Área total
+                          </div>
+                          <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                            {property.total_area || property.area} m²
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    ) : null}
 
                     {property.built_area && property.built_area > 0 && (
                       <div className="flex items-start space-x-2">

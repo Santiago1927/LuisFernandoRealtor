@@ -46,6 +46,7 @@ export type ParkingType = "En línea" | "En paralelo";
 
 // Número de pisos
 export type FloorNumber =
+  | "N/A"
   | "1"
   | "2"
   | "3"

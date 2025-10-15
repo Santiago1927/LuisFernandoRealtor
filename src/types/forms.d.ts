@@ -22,6 +22,15 @@ export enum City {
   Bogota = "BOGOTA",
   Cali = "CALI",
   Pasto = "PASTO",
+  Chachagui = "CHACHAGUI",
+  Consaca = "CONSACA",
+  Buesaco = "BUESACO",
+  Remolino = "REMOLINO",
+  Sandona = "SANDONA",
+  SanFernando = "SAN_FERNANDO",
+  Catambuco = "CATAMBUCO",
+  LaCocha = "LA_COCHA",
+  Tuquerres = "TUQUERRES",
 }
 
 export enum PersonalData {
