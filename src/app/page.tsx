@@ -3,6 +3,7 @@
 import MainSection from "../components/home/MainSection";
 import HomeFilters from "@/components/home/HomeFilters";
 import BackgroundCarousel from "@/components/home/BackgroundCarousel";
+import GeneralPropertiesSection from "@/components/home/GeneralPropertiesSection";
 import PropertyList from "../components/admin/PropertyList";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -191,6 +192,9 @@ export default function Home() {
 
         {/* Sección de propiedades destacadas */}
         <FeaturedPropertiesSection />
+
+        {/* Sección de propiedades generales */}
+        <GeneralPropertiesSection />
       </div>
     </div>
   );

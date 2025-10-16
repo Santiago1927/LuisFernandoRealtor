@@ -387,6 +387,83 @@ export const propertyService = {
   },
 
   /**
+   * Obtener propiedades generales (no destacadas)
+   *
+   * Obtiene todas las propiedades que NO están destacadas, ordenadas por fecha de creación.
+   * Incluye filtros para solo mostrar propiedades disponibles.
+   *
+   * @param maxResults - Número máximo de propiedades a retornar (opcional)
+   * @returns Promise<Property[]> Array de propiedades generales
+   */
+  async getGeneralProperties(maxResults?: number): Promise<Property[]> {
+    try {
+      console.log("🔍 [SERVICE] Buscando propiedades generales...");
+
+      // Obtener todas las propiedades sin filtros complejos
+      const q = query(
+        collection(db, COLLECTIONS.PROPERTIES),
+        orderBy("createdAt", "desc")
+      );
+
+      const querySnapshot = await getDocs(q);
+      console.log(
+        `📊 [SERVICE] Documentos totales encontrados: ${querySnapshot.size}`
+      );
+
+      let properties = querySnapshot.docs.map((doc) => {
+        const data = doc.data();
+        return {
+          id: doc.id,
+          ...data,
+          createdAt: data.createdAt?.toDate
+            ? data.createdAt.toDate()
+            : data.createdAt
+            ? new Date(data.createdAt)
+            : new Date(),
+          updatedAt: data.updatedAt?.toDate
+            ? data.updatedAt.toDate()
+            : data.updatedAt
+            ? new Date(data.updatedAt)
+            : new Date(),
+        };
+      }) as Property[];
+
+      // Filtrar en memoria para propiedades disponibles y no destacadas
+      properties = properties.filter(
+        (property) =>
+          (property.status === "available" ||
+            (property as any).status === "Disponible") &&
+          property.publication_status !== "Destacado"
+      );
+
+      console.log(
+        `📝 [SERVICE] Propiedades después del filtro (disponibles y no destacadas): ${properties.length}`
+      );
+
+      properties.forEach((property, index) => {
+        console.log(
+          `${index + 1}. ${property.title} - Status: ${
+            (property as any).status
+          } - Publication: ${property.publication_status || "Sin status"}`
+        );
+      });
+
+      // Aplicar límite si se especifica
+      if (maxResults) {
+        properties = properties.slice(0, maxResults);
+      }
+
+      console.log(
+        `✅ [SERVICE] Retornando ${properties.length} propiedades generales`
+      );
+      return properties;
+    } catch (error) {
+      console.error("❌ [SERVICE] Error getting general properties:", error);
+      throw error;
+    }
+  },
+
+  /**
    * Obtener propiedades con filtros
    *
    * Realiza una consulta filtrada en la colección de propiedades
@@ -676,3 +753,10 @@ export const contactService = {
     }
   },
 };
+
+// Exportaciones específicas para APIs
+export const getFeaturedProperties = (maxResults?: number) =>
+  propertyService.getFeaturedProperties(maxResults);
+
+export const getGeneralProperties = (maxResults?: number) =>
+  propertyService.getGeneralProperties(maxResults);
