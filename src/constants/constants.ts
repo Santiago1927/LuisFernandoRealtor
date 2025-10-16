@@ -92,7 +92,10 @@ export const LEGAL_SITUATION_OPTIONS = [
 ];
 
 export const PAYMENT_METHOD_OPTIONS = [
-  { value: PaymentMethod.Credito, label: "Crédito" },
+  {
+    value: PaymentMethod.CreditoHipotecarioLeasing,
+    label: "Crédito hipotecario o leasing",
+  },
   { value: PaymentMethod.RecursosPropios, label: "Recursos Propios" },
   { value: PaymentMethod.Permutas, label: "Permutas" },
 ];
@@ -332,7 +335,10 @@ export const INPUT_INFO: Record<string, Field> = {
     id: "formaDePago",
     type: "radio",
     options: [
-      { value: PaymentMethod.Credito, label: "Crédito" },
+      {
+        value: PaymentMethod.CreditoHipotecarioLeasing,
+        label: "Crédito hipotecario o leasing",
+      },
       { value: PaymentMethod.RecursosPropios, label: "Recursos Propios" },
       { value: PaymentMethod.Permutas, label: "Permutas" },
     ],

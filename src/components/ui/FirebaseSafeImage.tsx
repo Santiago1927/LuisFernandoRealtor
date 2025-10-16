@@ -160,5 +160,8 @@ export default function FirebaseSafeImage({
     ...(fill ? { fill: true } : { width, height }),
   };
 
+  {
+    /* eslint-disable-next-line jsx-a11y/alt-text */
+  }
   return <Image {...imageProps} />;
 }

@@ -5,6 +5,8 @@ import Link from "next/link";
 import ImageWrapper from "@/components/ui/ImageWrapper";
 import { usePropertyDetailPageLogic } from "../../../../hooks/usePropertyDetailPageLogic";
 import { useAdminAuthGuard } from "../../../../hooks/useAdminAuthGuard";
+import { useToggleFeaturedProperty } from "../../../../hooks/useToggleFeaturedProperty";
+import { useAlert } from "../../../../components/layout/AlertContext";
 import dynamic from "next/dynamic";
 
 const MapView = dynamic(() => import("../../../../components/map/MapView"), {
@@ -60,6 +62,7 @@ import {
   Eye,
   Edit,
   Loader2,
+  Award,
 } from "lucide-react";
 
 export default function AdminPropertyDetailPage() {
@@ -68,6 +71,8 @@ export default function AdminPropertyDetailPage() {
   const { isAuthenticated, loading: authLoading } = useAdminAuthGuard();
   const { property, isLoading, error, activeImage, nextImage, prevImage } =
     usePropertyDetailPageLogic(params.id);
+  const toggleFeaturedMutation = useToggleFeaturedProperty();
+  const { showAlert, showConfirm } = useAlert();
 
   // Función ULTRA HARDCODED para renderizar número de baños - NUNCA MOSTRAR 30
   const renderSafeBathrooms = (bathroomsValue: any) => {
@@ -139,6 +144,38 @@ export default function AdminPropertyDetailPage() {
 
     console.log("🚿 [ADMIN-DETAIL] Caso no manejado, retornando 0");
     return 0;
+  };
+
+  // Función para manejar el toggle de propiedad destacada
+  const handleToggleFeatured = () => {
+    if (!property) return;
+
+    const isFeatured = property.publication_status === "Destacado";
+    const action = isFeatured ? "quitar el destacado" : "destacar";
+
+    showConfirm(
+      `¿Estás seguro de que quieres ${action} esta propiedad?`,
+      async () => {
+        try {
+          await toggleFeaturedMutation.mutateAsync({
+            id: property.id,
+            featured: !isFeatured,
+          });
+          showAlert(
+            isFeatured
+              ? "Propiedad quitada de destacados exitosamente"
+              : "Propiedad destacada exitosamente",
+            "success"
+          );
+        } catch (error) {
+          console.error("Error al cambiar estado destacado:", error);
+          showAlert(
+            "Error al cambiar el estado de la propiedad. Intenta de nuevo.",
+            "error"
+          );
+        }
+      }
+    );
   };
 
   // Mostrar loading del guard de autenticación
@@ -242,6 +279,32 @@ export default function AdminPropertyDetailPage() {
           </Button>
 
           <div className="flex gap-2">
+            <Button
+              onClick={handleToggleFeatured}
+              disabled={toggleFeaturedMutation.isPending}
+              className={`${
+                property.publication_status === "Destacado"
+                  ? "bg-amber-500 hover:bg-amber-600 text-white"
+                  : "bg-green-600 hover:bg-green-700 text-white"
+              }`}
+            >
+              {toggleFeaturedMutation.isPending ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Procesando...
+                </>
+              ) : property.publication_status === "Destacado" ? (
+                <>
+                  <Star className="w-4 h-4 mr-2 fill-current" />
+                  Quitar Destacado
+                </>
+              ) : (
+                <>
+                  <Award className="w-4 h-4 mr-2" />
+                  Destacar
+                </>
+              )}
+            </Button>
             <Button
               onClick={handleEdit}
               className="bg-custom-600 hover:bg-custom-700 text-white"

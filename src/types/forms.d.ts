@@ -40,7 +40,7 @@ export enum PersonalData {
 }
 
 export enum PaymentMethod {
-  Credito = "CREDITO",
+  CreditoHipotecarioLeasing = "CREDITO_HIPOTECARIO_LEASING",
   RecursosPropios = "RECURSOS",
   Permutas = "PERMUTAS",
 }

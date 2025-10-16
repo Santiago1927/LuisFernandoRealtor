@@ -28,7 +28,7 @@ const testData = {
     city: "BOGOTA",
     propertyType: "APARTAMENTO",
     budget: "300000000",
-    paymentMethod: "CREDITO",
+    paymentMethod: "CREDITO_HIPOTECARIO_LEASING",
     preferredAreas: "Zona Norte, Chapinero",
     rooms: "2",
     bathrooms: "2",

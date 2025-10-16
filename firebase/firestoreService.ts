@@ -243,6 +243,150 @@ export const propertyService = {
   },
 
   /**
+   * Destacar o quitar destacado de una propiedad
+   *
+   * Actualiza el estado de publication_status de una propiedad
+   * para destacarla o quitarle el destacado.
+   *
+   * @param id - ID de la propiedad
+   * @param featured - true para destacar, false para quitar destacado
+   */
+  async toggleFeaturedProperty(id: string, featured: boolean): Promise<void> {
+    try {
+      console.log(
+        `🔄 [FIRESTORE] Cambiando estado destacado: ${id} -> ${
+          featured ? "Destacado" : "Activo"
+        }`
+      );
+
+      const docRef = doc(db, COLLECTIONS.PROPERTIES, id);
+      await updateDoc(docRef, {
+        publication_status: featured ? "Destacado" : "Activo",
+        updatedAt: Timestamp.now(),
+      });
+
+      console.log(`✅ [FIRESTORE] Estado actualizado exitosamente`);
+    } catch (error) {
+      console.error("❌ [FIRESTORE] Error toggling featured property:", error);
+      throw error;
+    }
+  },
+
+  /**
+   * Obtener propiedades destacadas
+   *
+   * Recupera todas las propiedades que tienen publication_status = "Destacado"
+   * ordenadas por fecha de creación (más recientes primero).
+   *
+   * @param maxResults - Número máximo de propiedades a retornar (opcional)
+   * @returns Promise<Property[]> Array de propiedades destacadas
+   */
+  async getFeaturedProperties(maxResults?: number): Promise<Property[]> {
+    try {
+      console.log("🔍 [SERVICE] Buscando propiedades destacadas...");
+
+      try {
+        // Intentar con query optimizada (necesita índice compuesto)
+        let q = query(
+          collection(db, COLLECTIONS.PROPERTIES),
+          where("publication_status", "==", "Destacado"),
+          orderBy("createdAt", "desc")
+        );
+
+        if (maxResults) {
+          q = query(q, limit(maxResults));
+        }
+
+        const querySnapshot = await getDocs(q);
+        console.log(
+          `📊 [SERVICE] Documentos encontrados con query optimizada: ${querySnapshot.size}`
+        );
+
+        const properties = querySnapshot.docs.map((doc) => {
+          const data = doc.data();
+          console.log(
+            `📝 [SERVICE] Propiedad encontrada: ${data.title} - Status: ${data.publication_status}`
+          );
+          return {
+            id: doc.id,
+            ...data,
+            createdAt: data.createdAt?.toDate
+              ? data.createdAt.toDate()
+              : data.createdAt
+              ? new Date(data.createdAt)
+              : new Date(),
+            updatedAt: data.updatedAt?.toDate
+              ? data.updatedAt.toDate()
+              : data.updatedAt
+              ? new Date(data.updatedAt)
+              : new Date(),
+          };
+        }) as Property[];
+
+        console.log(
+          `✅ [SERVICE] Retornando ${properties.length} propiedades destacadas`
+        );
+        return properties;
+      } catch (indexError) {
+        console.warn(
+          "⚠️ [SERVICE] Query optimizada falló, usando fallback:",
+          indexError
+        );
+
+        // Fallback: solo filtrar por publication_status, ordenar en memoria
+        const q = query(
+          collection(db, COLLECTIONS.PROPERTIES),
+          where("publication_status", "==", "Destacado")
+        );
+
+        const querySnapshot = await getDocs(q);
+        console.log(
+          `📊 [SERVICE] Documentos encontrados con fallback: ${querySnapshot.size}`
+        );
+
+        let properties = querySnapshot.docs.map((doc) => {
+          const data = doc.data();
+          console.log(
+            `📝 [SERVICE] Propiedad encontrada: ${data.title} - Status: ${data.publication_status}`
+          );
+          return {
+            id: doc.id,
+            ...data,
+            createdAt: data.createdAt?.toDate
+              ? data.createdAt.toDate()
+              : data.createdAt
+              ? new Date(data.createdAt)
+              : new Date(),
+            updatedAt: data.updatedAt?.toDate
+              ? data.updatedAt.toDate()
+              : data.updatedAt
+              ? new Date(data.updatedAt)
+              : new Date(),
+          };
+        }) as Property[];
+
+        // Ordenar en memoria por fecha de creación
+        properties.sort(
+          (a, b) => b.createdAt.getTime() - a.createdAt.getTime()
+        );
+
+        // Aplicar límite si se especifica
+        if (maxResults) {
+          properties = properties.slice(0, maxResults);
+        }
+
+        console.log(
+          `✅ [SERVICE] Retornando ${properties.length} propiedades destacadas (fallback)`
+        );
+        return properties;
+      }
+    } catch (error) {
+      console.error("❌ [SERVICE] Error getting featured properties:", error);
+      throw error;
+    }
+  },
+
+  /**
    * Obtener propiedades con filtros
    *
    * Realiza una consulta filtrada en la colección de propiedades

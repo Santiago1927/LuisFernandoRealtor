@@ -39,7 +39,7 @@ const sampleProperties = [
     ] as Amenity[],
     numero_pisos: 2,
     formas_de_pago: [
-      "Crédito hipotecario",
+      "Crédito hipotecario o leasing",
       "Recursos propios",
     ] as PaymentMethod[],
     edad_propiedad: "5 años",
@@ -77,8 +77,7 @@ const sampleProperties = [
       "parqueadero para visitantes",
     ] as Amenity[],
     formas_de_pago: [
-      "Crédito hipotecario",
-      "Leasing",
+      "Crédito hipotecario o leasing",
       "Recursos propios",
     ] as PaymentMethod[],
     edad_propiedad: "Nueva",
@@ -129,7 +128,7 @@ const sampleProperties = [
     lote_fondo: 25,
     formas_de_pago: [
       "Recursos propios",
-      "Crédito hipotecario",
+      "Crédito hipotecario o leasing",
     ] as PaymentMethod[],
     edad_propiedad: "Terreno disponible",
   },

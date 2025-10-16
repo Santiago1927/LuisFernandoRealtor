@@ -75,8 +75,7 @@ export type FloorNumber =
 
 // Métodos de pago aceptados para las propiedades
 export type PaymentMethod =
-  | "Crédito hipotecario"
-  | "Leasing"
+  | "Crédito hipotecario o leasing"
   | "Recursos propios"
   | "Permutas";
 

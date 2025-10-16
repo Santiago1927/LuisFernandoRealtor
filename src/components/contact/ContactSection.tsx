@@ -60,9 +60,9 @@ export default function ContactSection() {
             </h2>
             <p className="text-lg text-zinc-600 dark:text-zinc-400 max-w-3xl mx-auto leading-relaxed">
               ¿Tienes alguna pregunta sobre comprar o vender inmueble?
-              ¿Necesitas ayuda para encontrar la casa perfecta o promocionar tu
-              inmueble? Permítenos que nuestros experimentados agentes
-              inmobiliarios te ayuden.
+              ¿Necesitas ayuda para encontrar o promocionar un inmueble?
+              Permítenos que nuestros experimentados agentes inmobiliarios te
+              ayuden.
             </p>
           </div>
 

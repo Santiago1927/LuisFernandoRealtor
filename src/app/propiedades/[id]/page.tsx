@@ -6,6 +6,8 @@ import Link from "next/link";
 import ImageWrapper from "@/components/ui/ImageWrapper";
 import { usePropertyDetailPageLogic } from "../../../hooks/usePropertyDetailPageLogic";
 import { useAuthContext } from "../../../components/auth/AuthContext";
+import { useToggleFeaturedProperty } from "../../../hooks/useToggleFeaturedProperty";
+import { useAlert } from "../../../components/layout/AlertContext";
 import dynamic from "next/dynamic";
 
 const MapView = dynamic(() => import("../../../components/map/MapView"), {
@@ -58,6 +60,8 @@ import {
   AlertCircle,
   PlayCircle,
   Eye,
+  Award,
+  Loader2,
 } from "lucide-react";
 
 export default function DetallePropiedadPage() {
@@ -73,6 +77,8 @@ export default function DetallePropiedadPage() {
     mapUrl,
   } = usePropertyDetailPageLogic(id);
   const { isAuthenticated } = useAuthContext();
+  const toggleFeaturedMutation = useToggleFeaturedProperty();
+  const { showAlert, showConfirm } = useAlert();
 
   // Estados para likes y compartir
   const [likes, setLikes] = useState(0);
@@ -122,6 +128,38 @@ export default function DetallePropiedadPage() {
 
     const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, "_blank");
+  };
+
+  // Función para manejar el toggle de propiedad destacada
+  const handleToggleFeatured = () => {
+    if (!property || !isAuthenticated) return;
+
+    const isFeatured = property.publication_status === "Destacado";
+    const action = isFeatured ? "quitar el destacado" : "destacar";
+
+    showConfirm(
+      `¿Estás seguro de que quieres ${action} esta propiedad?`,
+      async () => {
+        try {
+          await toggleFeaturedMutation.mutateAsync({
+            id: property.id,
+            featured: !isFeatured,
+          });
+          showAlert(
+            isFeatured
+              ? "Propiedad quitada de destacados exitosamente"
+              : "Propiedad destacada exitosamente",
+            "success"
+          );
+        } catch (error) {
+          console.error("Error al cambiar estado destacado:", error);
+          showAlert(
+            "Error al cambiar el estado de la propiedad. Intenta de nuevo.",
+            "error"
+          );
+        }
+      }
+    );
   };
 
   // Función ULTRA SEGURA para renderizar ciudad - IMPOSIBLE que muestre "0"
@@ -1517,6 +1555,50 @@ export default function DetallePropiedadPage() {
                   )}
                 </CardContent>
               </Card>
+
+              {/* Botón para destacar propiedad (solo para usuarios autenticados) */}
+              {isAuthenticated && (
+                <Card className="border-0 shadow-xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur">
+                  <CardHeader>
+                    <CardTitle className="text-zinc-900 dark:text-zinc-100">
+                      Gestión de Propiedad
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <Button
+                      onClick={handleToggleFeatured}
+                      disabled={toggleFeaturedMutation.isPending}
+                      className={`w-full ${
+                        property.publication_status === "Destacado"
+                          ? "bg-amber-500 hover:bg-amber-600 text-white"
+                          : "bg-gradient-to-r from-custom-600 to-custom-600 hover:from-custom-700 hover:to-custom-700 text-white"
+                      } font-semibold`}
+                    >
+                      {toggleFeaturedMutation.isPending ? (
+                        <>
+                          <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                          Procesando...
+                        </>
+                      ) : property.publication_status === "Destacado" ? (
+                        <>
+                          <Star className="w-4 h-4 mr-2 fill-current" />
+                          Quitar Destacado
+                        </>
+                      ) : (
+                        <>
+                          <Award className="w-4 h-4 mr-2" />
+                          Destacar Propiedad
+                        </>
+                      )}
+                    </Button>
+                    <div className="mt-2 text-xs text-center text-zinc-500 dark:text-zinc-400">
+                      {property.publication_status === "Destacado"
+                        ? "Esta propiedad aparece en la sección destacadas"
+                        : "Las propiedades destacadas aparecen en la página principal"}
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
 
               {/* Información de multimedia */}
               {(property.images?.length > 0 || property.videos?.length > 0) && (

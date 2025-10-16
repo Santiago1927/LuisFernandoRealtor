@@ -177,8 +177,7 @@ const AMENITIES: Amenity[] = [
 
 // Métodos de pago disponibles para las propiedades
 const PAYMENT_METHODS: PaymentMethod[] = [
-  "Crédito hipotecario",
-  "Leasing",
+  "Crédito hipotecario o leasing",
   "Recursos propios",
   "Permutas",
 ];
@@ -616,6 +615,7 @@ export default function PropertyForm({
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="Nuevo">Nuevo</SelectItem>
+                          <SelectItem value="Nuevo">Sobre planos</SelectItem>
                           <SelectItem value="Usado">Usado</SelectItem>
                           <SelectItem value="En construcción">
                             En construcción

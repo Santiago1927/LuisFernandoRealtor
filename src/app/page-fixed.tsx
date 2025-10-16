@@ -19,17 +19,8 @@ function FeaturedPropertiesSection() {
   const [featuredProperties, setFeaturedProperties] = useState<Property[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [mounted, setMounted] = useState(false);
-
-  // Asegurar que el componente se monte en el cliente
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   useEffect(() => {
-    if (!mounted) return;
-
-    console.log("🚀 [FEATURED] useEffect ejecutándose después de mount...");
     let isMounted = true;
 
     const loadFeaturedProperties = async () => {
@@ -38,11 +29,7 @@ function FeaturedPropertiesSection() {
         setIsLoading(true);
 
         const response = await fetch("/api/propiedades/featured", {
-          cache: "no-store",
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          cache: "no-store", // Evitar cache para desarrollo
         });
 
         if (!response.ok) {
@@ -53,10 +40,6 @@ function FeaturedPropertiesSection() {
 
         if (isMounted) {
           console.log("✅ [FEATURED] Propiedades cargadas:", properties.length);
-          console.log(
-            "📋 [FEATURED] Propiedades:",
-            properties.map((p: Property) => p.title)
-          );
           setFeaturedProperties(properties);
           setError(null);
         }
@@ -72,34 +55,18 @@ function FeaturedPropertiesSection() {
       }
     };
 
-    // Ejecutar con un pequeño delay para asegurar hidratación
-    const timeoutId = setTimeout(loadFeaturedProperties, 500);
+    loadFeaturedProperties();
 
     return () => {
-      clearTimeout(timeoutId);
       isMounted = false;
     };
-  }, [mounted]);
+  }, []);
 
   console.log("🏠 [FEATURED] Estado:", {
-    mounted,
     count: featuredProperties.length,
     isLoading,
     error,
   });
-
-  if (!mounted) {
-    return (
-      <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
-        <div className="flex items-center justify-center py-16">
-          <div className="text-center">
-            <Loader2 className="h-8 w-8 animate-spin text-custom-600 dark:text-custom-400 mx-auto mb-4" />
-            <p className="text-zinc-600 dark:text-zinc-400">Inicializando...</p>
-          </div>
-        </div>
-      </section>
-    );
-  }
 
   return (
     <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
@@ -173,7 +140,6 @@ function FeaturedPropertiesSection() {
 /**
  * Componente Home - Página principal de la aplicación
  * Muestra la sección principal, carrusel y propiedades destacadas
- * Versión corregida con componente separado para propiedades destacadas
  */
 export default function Home() {
   console.log("🏠 [HOME] Componente Home renderizándose...");
