@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Phone, Mail, MapPin, Instagram, Facebook } from "lucide-react";
+import { Phone, Mail, MapPin, Instagram, Facebook, Share } from "lucide-react";
 
 // Componente personalizado para el ícono de TikTok
 const TikTokIcon = ({ className }: { className?: string }) => (
@@ -22,6 +22,91 @@ export default function Footer() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState<boolean | null>(
     null
   );
+
+  // Función para compartir el sitio web
+  const handleShare = async () => {
+    const shareData = {
+      title: "REALHAUS - Propiedades Premium",
+      text: "Descubre propiedades exclusivas en las mejores ubicaciones con REALHAUS",
+      url: window.location.origin,
+    };
+
+    try {
+      // Verificar si el navegador soporta la Web Share API
+      if (
+        navigator.share &&
+        navigator.canShare &&
+        navigator.canShare(shareData)
+      ) {
+        await navigator.share(shareData);
+      } else {
+        // Fallback: copiar URL al portapapeles
+        await navigator.clipboard.writeText(window.location.origin);
+
+        // Mostrar notificación temporal (opcional)
+        const notification = document.createElement("div");
+        notification.textContent = "¡URL copiada al portapapeles!";
+        notification.style.cssText = `
+          position: fixed;
+          bottom: 20px;
+          right: 20px;
+          background: #059669;
+          color: white;
+          padding: 12px 24px;
+          border-radius: 8px;
+          z-index: 1000;
+          font-size: 14px;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        `;
+        document.body.appendChild(notification);
+
+        setTimeout(() => {
+          document.body.removeChild(notification);
+        }, 3000);
+      }
+    } catch (error) {
+      console.log("Error al compartir:", error);
+
+      // Fallback adicional: abrir en una nueva ventana con opciones de compartir
+      const text = encodeURIComponent(
+        "Descubre propiedades exclusivas con REALHAUS"
+      );
+      const url = encodeURIComponent(window.location.origin);
+
+      const shareMenu = document.createElement("div");
+      shareMenu.innerHTML = `
+        <div style="position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1001; display: flex; align-items: center; justify-content: center;">
+          <div style="background: white; border-radius: 12px; padding: 24px; min-width: 300px; max-width: 90vw;">
+            <h3 style="margin: 0 0 16px 0; font-size: 18px; font-weight: 600;">Compartir REALHAUS</h3>
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+              <a href="https://wa.me/?text=${text}%20${url}" target="_blank" style="display: flex; align-items: center; gap: 12px; padding: 8px; text-decoration: none; color: #075e54; border: 1px solid #e5e7eb; border-radius: 8px;">
+                <span style="font-size: 20px;">📱</span>
+                <span>WhatsApp</span>
+              </a>
+              <a href="https://www.facebook.com/sharer/sharer.php?u=${url}" target="_blank" style="display: flex; align-items: center; gap: 12px; padding: 8px; text-decoration: none; color: #1877f2; border: 1px solid #e5e7eb; border-radius: 8px;">
+                <span style="font-size: 20px;">📘</span>
+                <span>Facebook</span>
+              </a>
+              <a href="https://twitter.com/intent/tweet?text=${text}&url=${url}" target="_blank" style="display: flex; align-items: center; gap: 12px; padding: 8px; text-decoration: none; color: #1da1f2; border: 1px solid #e5e7eb; border-radius: 8px;">
+                <span style="font-size: 20px;">🐦</span>
+                <span>Twitter</span>
+              </a>
+              <button onclick="navigator.clipboard.writeText('${decodeURIComponent(
+                url
+              )}'); this.textContent='¡Copiado!'" style="display: flex; align-items: center; gap: 12px; padding: 8px; background: none; border: 1px solid #e5e7eb; border-radius: 8px; cursor: pointer; width: 100%;">
+                <span style="font-size: 20px;">📋</span>
+                <span>Copiar enlace</span>
+              </button>
+            </div>
+            <button onclick="document.body.removeChild(this.closest('div'))" style="margin-top: 16px; padding: 8px 16px; background: #f3f4f6; border: none; border-radius: 6px; cursor: pointer; width: 100%;">
+              Cerrar
+            </button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(shareMenu);
+    }
+  };
 
   useEffect(() => {
     const handler = (e: Event) => {
@@ -129,6 +214,17 @@ export default function Footer() {
               >
                 <Instagram className="h-5 w-5" />
               </a>
+
+              {/* Botón para compartir sitio web */}
+              <button
+                onClick={handleShare}
+                aria-label="Compartir sitio web"
+                title="Compartir REALHAUS"
+                className="text-zinc-300 hover:text-custom-400 transition-colors duration-200 hover:scale-110 transform"
+              >
+                <Share className="h-5 w-5" />
+              </button>
+
               <a
                 href="https://www.tiktok.com/@realhaus.luxury?_t=ZS-90CAWBa7TWu&_r=1"
                 target="_blank"
