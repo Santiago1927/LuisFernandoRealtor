@@ -285,104 +285,61 @@ export const propertyService = {
     try {
       console.log("🔍 [SERVICE] Buscando propiedades destacadas...");
 
-      try {
-        // Intentar con query optimizada (necesita índice compuesto)
-        let q = query(
-          collection(db, COLLECTIONS.PROPERTIES),
-          where("publication_status", "==", "Destacado"),
-          orderBy("createdAt", "desc")
-        );
+      // Obtener todas las propiedades sin filtros complejos para evitar errores de índices
+      const querySnapshot = await getDocs(
+        collection(db, COLLECTIONS.PROPERTIES)
+      );
+      console.log(`📊 [SERVICE] Documentos totales: ${querySnapshot.size}`);
 
-        if (maxResults) {
-          q = query(q, limit(maxResults));
-        }
+      let properties = querySnapshot.docs.map((doc) => {
+        const data = doc.data();
+        return {
+          id: doc.id,
+          ...data,
+          createdAt: data.createdAt?.toDate
+            ? data.createdAt.toDate()
+            : data.createdAt
+            ? new Date(data.createdAt)
+            : new Date(),
+          updatedAt: data.updatedAt?.toDate
+            ? data.updatedAt.toDate()
+            : data.updatedAt
+            ? new Date(data.updatedAt)
+            : new Date(),
+        };
+      }) as Property[];
 
-        const querySnapshot = await getDocs(q);
-        console.log(
-          `📊 [SERVICE] Documentos encontrados con query optimizada: ${querySnapshot.size}`
-        );
-
-        const properties = querySnapshot.docs.map((doc) => {
-          const data = doc.data();
+      // Filtrar en memoria por estado destacado
+      properties = properties.filter((property) => {
+        const isFeatured = property.publication_status === "Destacado";
+        if (isFeatured) {
           console.log(
-            `📝 [SERVICE] Propiedad encontrada: ${data.title} - Status: ${data.publication_status}`
+            `� [SERVICE] Propiedad destacada encontrada: ${property.title}`
           );
-          return {
-            id: doc.id,
-            ...data,
-            createdAt: data.createdAt?.toDate
-              ? data.createdAt.toDate()
-              : data.createdAt
-              ? new Date(data.createdAt)
-              : new Date(),
-            updatedAt: data.updatedAt?.toDate
-              ? data.updatedAt.toDate()
-              : data.updatedAt
-              ? new Date(data.updatedAt)
-              : new Date(),
-          };
-        }) as Property[];
-
-        console.log(
-          `✅ [SERVICE] Retornando ${properties.length} propiedades destacadas`
-        );
-        return properties;
-      } catch (indexError) {
-        console.warn(
-          "⚠️ [SERVICE] Query optimizada falló, usando fallback:",
-          indexError
-        );
-
-        // Fallback: solo filtrar por publication_status, ordenar en memoria
-        const q = query(
-          collection(db, COLLECTIONS.PROPERTIES),
-          where("publication_status", "==", "Destacado")
-        );
-
-        const querySnapshot = await getDocs(q);
-        console.log(
-          `📊 [SERVICE] Documentos encontrados con fallback: ${querySnapshot.size}`
-        );
-
-        let properties = querySnapshot.docs.map((doc) => {
-          const data = doc.data();
-          console.log(
-            `📝 [SERVICE] Propiedad encontrada: ${data.title} - Status: ${data.publication_status}`
-          );
-          return {
-            id: doc.id,
-            ...data,
-            createdAt: data.createdAt?.toDate
-              ? data.createdAt.toDate()
-              : data.createdAt
-              ? new Date(data.createdAt)
-              : new Date(),
-            updatedAt: data.updatedAt?.toDate
-              ? data.updatedAt.toDate()
-              : data.updatedAt
-              ? new Date(data.updatedAt)
-              : new Date(),
-          };
-        }) as Property[];
-
-        // Ordenar en memoria por fecha de creación
-        properties.sort(
-          (a, b) => b.createdAt.getTime() - a.createdAt.getTime()
-        );
-
-        // Aplicar límite si se especifica
-        if (maxResults) {
-          properties = properties.slice(0, maxResults);
         }
+        return isFeatured;
+      });
 
-        console.log(
-          `✅ [SERVICE] Retornando ${properties.length} propiedades destacadas (fallback)`
-        );
-        return properties;
+      console.log(
+        `📝 [SERVICE] Propiedades destacadas después del filtro: ${properties.length}`
+      );
+
+      // Ordenar por fecha de creación (más recientes primero)
+      properties.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+
+      // Aplicar límite si se especifica
+      if (maxResults) {
+        properties = properties.slice(0, maxResults);
       }
+
+      console.log(
+        `✅ [SERVICE] Retornando ${properties.length} propiedades destacadas`
+      );
+      return properties;
     } catch (error) {
       console.error("❌ [SERVICE] Error getting featured properties:", error);
-      throw error;
+      // Retornar array vacío en lugar de fallar completamente
+      return [];
     }
   },
 
@@ -399,13 +356,10 @@ export const propertyService = {
     try {
       console.log("🔍 [SERVICE] Buscando propiedades generales...");
 
-      // Obtener todas las propiedades sin filtros complejos
-      const q = query(
-        collection(db, COLLECTIONS.PROPERTIES),
-        orderBy("createdAt", "desc")
+      // Obtener todas las propiedades sin filtros complejos para evitar errores de índices
+      const querySnapshot = await getDocs(
+        collection(db, COLLECTIONS.PROPERTIES)
       );
-
-      const querySnapshot = await getDocs(q);
       console.log(
         `📊 [SERVICE] Documentos totales encontrados: ${querySnapshot.size}`
       );
@@ -429,24 +383,21 @@ export const propertyService = {
       }) as Property[];
 
       // Filtrar en memoria para propiedades disponibles y no destacadas
-      properties = properties.filter(
-        (property) =>
-          (property.status === "available" ||
-            (property as any).status === "Disponible") &&
-          property.publication_status !== "Destacado"
-      );
+      properties = properties.filter((property) => {
+        const isAvailable =
+          property.status === "available" ||
+          (property as any).status === "Disponible";
+        const isNotFeatured = property.publication_status !== "Destacado";
+
+        return isAvailable && isNotFeatured;
+      });
 
       console.log(
         `📝 [SERVICE] Propiedades después del filtro (disponibles y no destacadas): ${properties.length}`
       );
 
-      properties.forEach((property, index) => {
-        console.log(
-          `${index + 1}. ${property.title} - Status: ${
-            (property as any).status
-          } - Publication: ${property.publication_status || "Sin status"}`
-        );
-      });
+      // Ordenar por fecha de creación (más recientes primero)
+      properties.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
 
       // Aplicar límite si se especifica
       if (maxResults) {
@@ -459,7 +410,8 @@ export const propertyService = {
       return properties;
     } catch (error) {
       console.error("❌ [SERVICE] Error getting general properties:", error);
-      throw error;
+      // Retornar array vacío en lugar de fallar completamente
+      return [];
     }
   },
 
