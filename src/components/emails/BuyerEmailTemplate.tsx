@@ -80,7 +80,7 @@ export const BuyerEmailTemplate: React.FC<BuyerEmailTemplateProps> = ({
 
   return (
     <BaseEmailTemplate
-      preview="Nueva consulta de comprador - Luis Fernando Realtor"
+      preview="Nueva consulta de comprador - Realhaus"
       title="Nueva Consulta de Comprador"
       icon="🏠"
     >
@@ -93,7 +93,7 @@ export const BuyerEmailTemplate: React.FC<BuyerEmailTemplateProps> = ({
           margin: "0 0 16px 0",
         }}
       >
-        ¡Hola Luis Fernando! 👋
+        ¡Hola Realhaus! 👋
       </Text>
 
       <Text

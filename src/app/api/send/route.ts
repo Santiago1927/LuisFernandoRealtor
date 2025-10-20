@@ -70,7 +70,7 @@ export async function POST(request: Request) {
      * Cada tipo de formulario tiene un asunto específico y descriptivo
      */
     let subject = "Nueva consulta desde tu sitio web";
-    let fromName = "Luis Fernando Realtor";
+    let fromName = "Realhaus";
 
     switch (userType) {
       case "buyer":

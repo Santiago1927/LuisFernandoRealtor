@@ -1479,7 +1479,7 @@ export default function DetallePropiedadPage() {
                   </Button>
                   <div className="text-center text-sm text-zinc-600 dark:text-zinc-400 pt-2 border-t border-zinc-200 dark:border-zinc-700">
                     <p className="font-semibold text-zinc-900 dark:text-zinc-100">
-                      Agente: Luis Fernando
+                      Agente: Realhaus
                     </p>
                     <p className="mt-1">+57 321 422 3931</p>
                     <p className="text-xs mt-2 text-zinc-500 dark:text-zinc-500">

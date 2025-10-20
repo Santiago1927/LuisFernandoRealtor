@@ -22,7 +22,7 @@ const cinzel = Cinzel({
 // Metadatos SEO de la aplicación
 export const metadata: Metadata = {
   title:
-    "Luis Fernando Realtor | Agente de Bienes Raíces de Lujo | Pasto, Medellín, Cali | Vende tu propiedad en tiempo record",
+    "Realhaus | Agente de Bienes Raíces de Lujo | Pasto, Medellín, Cali | Vende tu propiedad en tiempo record",
   description:
     "Agente de Bienes Raíces de Lujo | Pasto, Medellín, Cali | Vende tu propiedad en tiempo record",
 };

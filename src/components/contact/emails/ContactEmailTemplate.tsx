@@ -95,7 +95,7 @@ export const ContactEmail: React.FC<ContactEmailProps> = ({
               <Row className="py-6">
                 <Column>
                   <Text className="text-center font-bold text-3xl mb-3 text-zinc-900">
-                    Hola Luis Fernando,
+                    Hola Realhaus,
                   </Text>
 
                   <Text className="text-center font-semibold text-xl text-zinc-700 mb-6">

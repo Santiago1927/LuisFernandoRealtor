@@ -47,7 +47,7 @@ export const ContactEmailTemplate: React.FC<ContactEmailTemplateProps> = ({
 
   return (
     <BaseEmailTemplate
-      preview="Nuevo mensaje de contacto - Luis Fernando Realtor"
+      preview="Nuevo mensaje de contacto - Realhaus"
       title="Nuevo Mensaje de Contacto"
       icon="💌"
     >
@@ -60,7 +60,7 @@ export const ContactEmailTemplate: React.FC<ContactEmailTemplateProps> = ({
           margin: "0 0 16px 0",
         }}
       >
-        ¡Hola Luis Fernando! 💌
+        ¡Hola Realhaus! 💌
       </Text>
 
       <Text

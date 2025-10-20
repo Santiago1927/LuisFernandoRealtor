@@ -95,7 +95,7 @@ export const OwnerEmailTemplate: React.FC<OwnerEmailTemplateProps> = ({
 
   return (
     <BaseEmailTemplate
-      preview="Nueva propiedad en venta - Luis Fernando Realtor"
+      preview="Nueva propiedad en venta - Realhaus"
       title="Nueva Propiedad para Vender"
       icon="🏘️"
     >
@@ -108,7 +108,7 @@ export const OwnerEmailTemplate: React.FC<OwnerEmailTemplateProps> = ({
           margin: "0 0 16px 0",
         }}
       >
-        ¡Hola Luis Fernando! 🏠
+        ¡Hola Realhaus! 🏠
       </Text>
 
       <Text

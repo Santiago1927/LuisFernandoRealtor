@@ -33,9 +33,9 @@ export default function EmailTemplatesIndex() {
             📧 Plantillas de Email
           </h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Previsualiza las plantillas optimizadas para Gmail de Luis Fernando
-            Realtor. Cada plantilla está diseñada para verse perfecta en todos
-            los clientes de email.
+            Previsualiza las plantillas optimizadas para Gmail de Realhaus. Cada
+            plantilla está diseñada para verse perfecta en todos los clientes de
+            email.
           </p>
         </div>
 

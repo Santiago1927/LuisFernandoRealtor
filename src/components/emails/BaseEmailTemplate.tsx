@@ -49,7 +49,7 @@ export const BaseEmailTemplate: React.FC<BaseEmailTemplateProps> = ({
   children,
   preview,
   logoUrl = "https://luisfernandorealtor.com/logo.png", // Logo por defecto
-  title = "Luis Fernando - Asesor Inmobiliario", // Título por defecto
+  title = "Realhaus - Asesor Inmobiliario", // Título por defecto
   icon,
 }) => {
   return (
@@ -275,7 +275,7 @@ export const BaseEmailTemplate: React.FC<BaseEmailTemplateProps> = ({
                 textAlign: "center",
               }}
             >
-              Luis Fernando - Asesor Inmobiliario Profesional
+              Realhaus - Asesor Inmobiliario Profesional
             </Text>
             <Text
               style={{
