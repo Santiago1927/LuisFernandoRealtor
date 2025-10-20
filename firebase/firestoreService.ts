@@ -283,13 +283,18 @@ export const propertyService = {
    */
   async getFeaturedProperties(maxResults?: number): Promise<Property[]> {
     try {
-      console.log("🔍 [SERVICE] Buscando propiedades destacadas...");
+      if (process.env.NODE_ENV === "development") {
+        console.log("🔍 [SERVICE] Buscando propiedades destacadas...");
+      }
 
       // Obtener todas las propiedades sin filtros complejos para evitar errores de índices
       const querySnapshot = await getDocs(
         collection(db, COLLECTIONS.PROPERTIES)
       );
-      console.log(`📊 [SERVICE] Documentos totales: ${querySnapshot.size}`);
+
+      if (process.env.NODE_ENV === "development") {
+        console.log(`📊 [SERVICE] Documentos totales: ${querySnapshot.size}`);
+      }
 
       let properties = querySnapshot.docs.map((doc) => {
         const data = doc.data();
@@ -312,7 +317,7 @@ export const propertyService = {
       // Filtrar en memoria por estado destacado
       properties = properties.filter((property) => {
         const isFeatured = property.publication_status === "Destacado";
-        if (isFeatured) {
+        if (isFeatured && process.env.NODE_ENV === "development") {
           console.log(
             `� [SERVICE] Propiedad destacada encontrada: ${property.title}`
           );
@@ -320,9 +325,11 @@ export const propertyService = {
         return isFeatured;
       });
 
-      console.log(
-        `📝 [SERVICE] Propiedades destacadas después del filtro: ${properties.length}`
-      );
+      if (process.env.NODE_ENV === "development") {
+        console.log(
+          `📝 [SERVICE] Propiedades destacadas después del filtro: ${properties.length}`
+        );
+      }
 
       // Ordenar por fecha de creación (más recientes primero)
       properties.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
@@ -332,9 +339,11 @@ export const propertyService = {
         properties = properties.slice(0, maxResults);
       }
 
-      console.log(
-        `✅ [SERVICE] Retornando ${properties.length} propiedades destacadas`
-      );
+      if (process.env.NODE_ENV === "development") {
+        console.log(
+          `✅ [SERVICE] Retornando ${properties.length} propiedades destacadas`
+        );
+      }
       return properties;
     } catch (error) {
       console.error("❌ [SERVICE] Error getting featured properties:", error);
@@ -354,15 +363,20 @@ export const propertyService = {
    */
   async getGeneralProperties(maxResults?: number): Promise<Property[]> {
     try {
-      console.log("🔍 [SERVICE] Buscando propiedades generales...");
+      if (process.env.NODE_ENV === "development") {
+        console.log("🔍 [SERVICE] Buscando propiedades generales...");
+      }
 
       // Obtener todas las propiedades sin filtros complejos para evitar errores de índices
       const querySnapshot = await getDocs(
         collection(db, COLLECTIONS.PROPERTIES)
       );
-      console.log(
-        `📊 [SERVICE] Documentos totales encontrados: ${querySnapshot.size}`
-      );
+
+      if (process.env.NODE_ENV === "development") {
+        console.log(
+          `📊 [SERVICE] Documentos totales encontrados: ${querySnapshot.size}`
+        );
+      }
 
       let properties = querySnapshot.docs.map((doc) => {
         const data = doc.data();
@@ -392,9 +406,11 @@ export const propertyService = {
         return isAvailable && isNotFeatured;
       });
 
-      console.log(
-        `📝 [SERVICE] Propiedades después del filtro (disponibles y no destacadas): ${properties.length}`
-      );
+      if (process.env.NODE_ENV === "development") {
+        console.log(
+          `📝 [SERVICE] Propiedades después del filtro (disponibles y no destacadas): ${properties.length}`
+        );
+      }
 
       // Ordenar por fecha de creación (más recientes primero)
       properties.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
@@ -404,9 +420,11 @@ export const propertyService = {
         properties = properties.slice(0, maxResults);
       }
 
-      console.log(
-        `✅ [SERVICE] Retornando ${properties.length} propiedades generales`
-      );
+      if (process.env.NODE_ENV === "development") {
+        console.log(
+          `✅ [SERVICE] Retornando ${properties.length} propiedades generales`
+        );
+      }
       return properties;
     } catch (error) {
       console.error("❌ [SERVICE] Error getting general properties:", error);

@@ -82,12 +82,14 @@ function FeaturedPropertiesSection() {
     };
   }, [mounted]);
 
-  console.log("🏠 [FEATURED] Estado:", {
-    mounted,
-    count: featuredProperties.length,
-    isLoading,
-    error,
-  });
+  if (process.env.NODE_ENV === "development") {
+    console.log("🏠 [FEATURED] Estado:", {
+      mounted,
+      count: featuredProperties.length,
+      isLoading,
+      error,
+    });
+  }
 
   if (!mounted) {
     return (
@@ -177,7 +179,9 @@ function FeaturedPropertiesSection() {
  * Versión corregida con componente separado para propiedades destacadas
  */
 export default function Home() {
-  console.log("🏠 [HOME] Componente Home renderizándose...");
+  if (process.env.NODE_ENV === "development") {
+    console.log("🏠 [HOME] Componente Home renderizándose...");
+  }
 
   return (
     <div className="min-h-screen">

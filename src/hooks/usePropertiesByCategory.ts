@@ -40,7 +40,9 @@ export function usePropertiesByCategory(enabled: boolean = true) {
   return useQuery<PropertyCategory[]>({
     queryKey: ["properties-by-category"],
     queryFn: async () => {
-      console.log("🔍 [API] Solicitando propiedades por categorías...");
+      if (process.env.NODE_ENV === "development") {
+        console.log("🔍 [API] Solicitando propiedades por categorías...");
+      }
 
       // Obtener todas las propiedades disponibles
       const response = await fetch("/api/propiedades/general");
@@ -50,10 +52,13 @@ export function usePropertiesByCategory(enabled: boolean = true) {
       }
 
       const allProperties: Property[] = await response.json();
-      console.log(
-        "✅ [API] Propiedades obtenidas:",
-        allProperties?.length || 0
-      );
+
+      if (process.env.NODE_ENV === "development") {
+        console.log(
+          "✅ [API] Propiedades obtenidas:",
+          allProperties?.length || 0
+        );
+      }
 
       // Agrupar propiedades por categorías
       const categories: PropertyCategory[] = [];
@@ -77,13 +82,15 @@ export function usePropertiesByCategory(enabled: boolean = true) {
       // Ordenar categorías por número de propiedades (mayor a menor)
       categories.sort((a, b) => b.count - a.count);
 
-      console.log(
-        "📊 [API] Categorías creadas:",
-        categories.map((cat) => ({
-          name: cat.name,
-          count: cat.count,
-        }))
-      );
+      if (process.env.NODE_ENV === "development") {
+        console.log(
+          "📊 [API] Categorías creadas:",
+          categories.map((cat) => ({
+            name: cat.name,
+            count: cat.count,
+          }))
+        );
+      }
 
       return categories;
     },
@@ -128,10 +135,12 @@ export function usePropertiesBySpecificCategory(
         categoryTypes.includes(property.type)
       );
 
-      console.log(
-        `✅ [API] Propiedades de ${categoryName}:`,
-        filteredProperties.length
-      );
+      if (process.env.NODE_ENV === "development") {
+        console.log(
+          `✅ [API] Propiedades de ${categoryName}:`,
+          filteredProperties.length
+        );
+      }
 
       return filteredProperties;
     },
@@ -151,7 +160,11 @@ export function usePropertiesByType(
   return useQuery<Property[]>({
     queryKey: ["properties-type", propertyType],
     queryFn: async () => {
-      console.log(`🔍 [API] Solicitando propiedades de tipo: ${propertyType}`);
+      if (process.env.NODE_ENV === "development") {
+        console.log(
+          `🔍 [API] Solicitando propiedades de tipo: ${propertyType}`
+        );
+      }
 
       const response = await fetch("/api/propiedades/general");
 
@@ -166,10 +179,12 @@ export function usePropertiesByType(
         (property) => property.type === propertyType
       );
 
-      console.log(
-        `✅ [API] Propiedades de tipo ${propertyType}:`,
-        filteredProperties.length
-      );
+      if (process.env.NODE_ENV === "development") {
+        console.log(
+          `✅ [API] Propiedades de tipo ${propertyType}:`,
+          filteredProperties.length
+        );
+      }
 
       return filteredProperties;
     },

@@ -29,12 +29,14 @@ export default function GeneralPropertiesSection() {
     setMounted(true);
   }, []);
 
-  console.log("🏠 [GENERAL] Estado:", {
-    mounted,
-    count: generalProperties.length,
-    isLoading,
-    error,
-  });
+  if (process.env.NODE_ENV === "development") {
+    console.log("🏠 [GENERAL] Estado:", {
+      mounted,
+      count: generalProperties.length,
+      isLoading,
+      error,
+    });
+  }
 
   if (!mounted) {
     return (

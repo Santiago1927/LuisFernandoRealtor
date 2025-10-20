@@ -13,7 +13,9 @@ export function useGeneralProperties(enabled: boolean = true) {
   return useQuery<Property[]>({
     queryKey: ["general-properties"],
     queryFn: async () => {
-      console.log("🔍 [API] Solicitando propiedades generales...");
+      if (process.env.NODE_ENV === "development") {
+        console.log("🔍 [API] Solicitando propiedades generales...");
+      }
 
       const response = await fetch("/api/propiedades/general");
 
@@ -22,10 +24,13 @@ export function useGeneralProperties(enabled: boolean = true) {
       }
 
       const data = await response.json();
-      console.log(
-        "✅ [API] Propiedades generales encontradas:",
-        data?.length || 0
-      );
+
+      if (process.env.NODE_ENV === "development") {
+        console.log(
+          "✅ [API] Propiedades generales encontradas:",
+          data?.length || 0
+        );
+      }
 
       return data || [];
     },

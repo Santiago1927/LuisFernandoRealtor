@@ -91,14 +91,16 @@ export default function PropertiesByCategorySection() {
     }
   }, [categories, selectedCategory, selectedType]);
 
-  console.log("🏠 [CATEGORIES] Estado:", {
-    mounted,
-    categoriesCount: categories.length,
-    selectedCategory,
-    selectedType,
-    isLoading,
-    error,
-  });
+  if (process.env.NODE_ENV === "development") {
+    console.log("🏠 [CATEGORIES] Estado:", {
+      mounted,
+      categoriesCount: categories.length,
+      selectedCategory,
+      selectedType,
+      isLoading,
+      error,
+    });
+  }
 
   // Mostrar loading mientras se inicializa
   if (!mounted) {

@@ -16,7 +16,9 @@ import { getGeneralProperties } from "../../../../../firebase/firestoreService";
 
 export async function GET(request: NextRequest) {
   try {
-    console.log("🔍 [API] GET /api/propiedades/general - Iniciando...");
+    if (process.env.NODE_ENV === "development") {
+      console.log("🔍 [API] GET /api/propiedades/general - Iniciando...");
+    }
 
     // Para optimización del build, usar un límite fijo en lugar de parámetros dinámicos
     const defaultLimit = 50; // Límite razonable para propiedades generales
@@ -24,9 +26,11 @@ export async function GET(request: NextRequest) {
     // Obtener propiedades generales desde Firestore
     const properties = await getGeneralProperties(defaultLimit);
 
-    console.log(
-      `✅ [API] Propiedades generales obtenidas: ${properties.length}`
-    );
+    if (process.env.NODE_ENV === "development") {
+      console.log(
+        `✅ [API] Propiedades generales obtenidas: ${properties.length}`
+      );
+    }
 
     return NextResponse.json(properties);
   } catch (error) {

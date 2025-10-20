@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import ImageWrapper from "@/components/ui/ImageWrapper";
+import PropertyMediaGallery from "@/components/property/PropertyMediaGallery";
 import { usePropertyDetailPageLogic } from "../../../hooks/usePropertyDetailPageLogic";
 import { useAuthContext } from "../../../components/auth/AuthContext";
 import { useToggleFeaturedProperty } from "../../../hooks/useToggleFeaturedProperty";
@@ -62,6 +63,7 @@ import {
   Eye,
   Award,
   Loader2,
+  Video,
 } from "lucide-react";
 
 export default function DetallePropiedadPage() {
@@ -72,6 +74,7 @@ export default function DetallePropiedadPage() {
     error,
     activeImage,
     images,
+    videos,
     nextImage,
     prevImage,
     mapUrl,
@@ -342,57 +345,13 @@ export default function DetallePropiedadPage() {
               <div className="lg:col-span-2">
                 <Card className="border-0 shadow-2xl overflow-hidden">
                   <CardContent className="p-0">
-                    <div className="relative aspect-[21/9] bg-zinc-100 dark:bg-zinc-800">
-                      {images.length > 0 ? (
-                        <>
-                          <ImageWrapper
-                            src={
-                              images[activeImage] ||
-                              images[0] ||
-                              "/placeholder-property.svg"
-                            }
-                            alt={property.title}
-                            fill
-                            className="object-cover"
-                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 66vw, 50vw"
-                            priority
-                          />
-
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent"></div>
-
-                          {images.length > 1 && (
-                            <>
-                              <Button
-                                variant="ghost"
-                                size="icon"
-                                onClick={prevImage}
-                                className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/90 dark:bg-zinc-900/90 backdrop-blur border border-zinc-200/50 dark:border-zinc-700/50 shadow-lg hover:bg-white dark:hover:bg-zinc-800"
-                              >
-                                <ChevronLeft className="w-6 h-6 text-zinc-700 dark:text-zinc-300" />
-                              </Button>
-
-                              <Button
-                                variant="ghost"
-                                size="icon"
-                                onClick={nextImage}
-                                className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/90 dark:bg-zinc-900/90 backdrop-blur border border-zinc-200/50 dark:border-zinc-700/50 shadow-lg hover:bg-white dark:hover:bg-zinc-800"
-                              >
-                                <ChevronRight className="w-6 h-6 text-zinc-700 dark:text-zinc-300" />
-                              </Button>
-                            </>
-                          )}
-                        </>
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center">
-                          <div className="text-center text-zinc-400 dark:text-zinc-500">
-                            <ImageIcon className="h-16 w-16 mx-auto mb-4" />
-                            <span className="text-lg">
-                              Sin imágenes disponibles
-                            </span>
-                          </div>
-                        </div>
-                      )}
-                    </div>
+                    <PropertyMediaGallery
+                      images={images}
+                      videos={videos}
+                      videoUrl={property.video_url}
+                      virtualTour={property.virtual_tour}
+                      propertyTitle={property.title}
+                    />
                   </CardContent>
                 </Card>
               </div>
@@ -1363,40 +1322,87 @@ export default function DetallePropiedadPage() {
                           </div>
                         )}
 
-                      {property.video_url && (
-                        <div className="flex items-start space-x-2">
-                          <PlayCircle className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
-                          <div className="min-w-0 flex-1">
-                            <div className="text-xs text-gray-500 dark:text-gray-400">
-                              Video
-                            </div>
-                            <a
-                              href={property.video_url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-sm font-medium text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 underline"
-                            >
-                              Ver video
-                            </a>
+                      {/* Información de medios disponibles */}
+                      {((images && images.length > 0) ||
+                        (videos && videos.length > 0) ||
+                        property.video_url ||
+                        property.virtual_tour) && (
+                        <div className="space-y-3">
+                          <div className="flex items-center space-x-2 mb-3">
+                            <Camera className="w-4 h-4 text-purple-600" />
+                            <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+                              Medios Disponibles
+                            </span>
                           </div>
-                        </div>
-                      )}
 
-                      {property.virtual_tour && (
-                        <div className="flex items-start space-x-2">
-                          <Eye className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
-                          <div className="min-w-0 flex-1">
-                            <div className="text-xs text-gray-500 dark:text-gray-400">
-                              Tour virtual
-                            </div>
-                            <a
-                              href={property.virtual_tour}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-sm font-medium text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 underline"
-                            >
-                              Ver tour virtual
-                            </a>
+                          <div className="grid grid-cols-2 gap-3">
+                            {images && images.length > 0 && (
+                              <div className="flex items-center space-x-2 p-2 bg-blue-50 dark:bg-blue-900/20 rounded-md">
+                                <ImageIcon className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                                <div>
+                                  <div className="text-xs text-blue-600 dark:text-blue-400 font-medium">
+                                    {images.length}{" "}
+                                    {images.length === 1
+                                      ? "Imagen"
+                                      : "Imágenes"}
+                                  </div>
+                                  <div className="text-xs text-zinc-500 dark:text-zinc-400">
+                                    En la galería superior
+                                  </div>
+                                </div>
+                              </div>
+                            )}
+
+                            {videos && videos.length > 0 && (
+                              <div className="flex items-center space-x-2 p-2 bg-red-50 dark:bg-red-900/20 rounded-md">
+                                <Video className="w-4 h-4 text-red-600 dark:text-red-400" />
+                                <div>
+                                  <div className="text-xs text-red-600 dark:text-red-400 font-medium">
+                                    {videos.length}{" "}
+                                    {videos.length === 1 ? "Video" : "Videos"}
+                                  </div>
+                                  <div className="text-xs text-zinc-500 dark:text-zinc-400">
+                                    En la galería superior
+                                  </div>
+                                </div>
+                              </div>
+                            )}
+
+                            {property.video_url && (
+                              <div className="flex items-center space-x-2 p-2 bg-green-50 dark:bg-green-900/20 rounded-md">
+                                <PlayCircle className="w-4 h-4 text-green-600 dark:text-green-400" />
+                                <div>
+                                  <div className="text-xs text-green-600 dark:text-green-400 font-medium">
+                                    Video Principal
+                                  </div>
+                                  <div className="text-xs text-zinc-500 dark:text-zinc-400">
+                                    Incluido en galería
+                                  </div>
+                                </div>
+                              </div>
+                            )}
+
+                            {property.virtual_tour && (
+                              <div className="flex items-center space-x-2 p-2 bg-purple-50 dark:bg-purple-900/20 rounded-md">
+                                <Eye className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+                                <div>
+                                  <div className="text-xs text-purple-600 dark:text-purple-400 font-medium">
+                                    Tour Virtual
+                                  </div>
+                                  <div className="text-xs text-zinc-500 dark:text-zinc-400">
+                                    Incluido en galería
+                                  </div>
+                                </div>
+                              </div>
+                            )}
+                          </div>
+
+                          <div className="mt-3 p-3 bg-custom-50 dark:bg-custom-900/20 rounded-md border border-custom-200 dark:border-custom-800">
+                            <p className="text-xs text-custom-700 dark:text-custom-300 text-center">
+                              <Eye className="w-3 h-3 inline mr-1" />
+                              Todos los medios están disponibles en la galería
+                              interactiva superior
+                            </p>
                           </div>
                         </div>
                       )}

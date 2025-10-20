@@ -50,6 +50,9 @@ export function usePropertyDetailPageLogic(id: string | string[]) {
   // Obtiene el arreglo de imágenes de la propiedad, o un arreglo vacío si no existe
   const images = Array.isArray(property?.images) ? property.images : [];
 
+  // Obtiene el arreglo de videos de la propiedad, o un arreglo vacío si no existe
+  const videos = Array.isArray(property?.videos) ? property.videos : [];
+
   // Función para mostrar la siguiente imagen en el carrusel
   const nextImage = () => setActiveImage((prev) => (prev + 1) % images.length);
 
@@ -70,6 +73,7 @@ export function usePropertyDetailPageLogic(id: string | string[]) {
     error,
     activeImage,
     images,
+    videos,
     nextImage,
     prevImage,
     mapUrl,
