@@ -1487,6 +1487,7 @@ export default function DetallePropiedadPage() {
                     <p className="font-semibold text-zinc-900 dark:text-zinc-100">
                       Agente: Realhaus
                     </p>
+                    <p className="mt-1">+57 317 777 2601</p>
                     <p className="mt-1">+57 321 422 3931</p>
                     <p className="text-xs mt-2 text-zinc-500 dark:text-zinc-500">
                       Agente Certificado

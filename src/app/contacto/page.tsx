@@ -139,6 +139,12 @@ export default function ContactoPage() {
                 </p>
                 <div className="space-y-3">
                   <a
+                    href="tel:+573177772601"
+                    className="text-custom-600 dark:text-custom-400 font-medium hover:text-custom-700 dark:hover:text-custom-300 transition-colors inline-flex items-center block"
+                  >
+                    <Phone className="w-4 h-4 ml-2" /> 317 777 2601
+                  </a>
+                  <a
                     href="tel:+573214223931"
                     className="text-custom-600 dark:text-custom-400 font-medium hover:text-custom-700 dark:hover:text-custom-300 transition-colors inline-flex items-center block"
                   >

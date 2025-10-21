@@ -73,6 +73,10 @@ export default function Header() {
             <div className="flex items-center space-x-6">
               <span className="flex items-center space-x-1">
                 <Phone className="w-3 h-3" />
+                <span>317 777 2601</span>
+              </span>
+              <span className="flex items-center space-x-1">
+                <Phone className="w-3 h-3" />
                 <span>321 422 3931</span>
               </span>
               <span className="flex items-center space-x-1">
