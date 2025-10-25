@@ -112,6 +112,7 @@ export const PROPERTY_TYPE_OPTIONS = [
   { value: PropertyType.Local, label: "Local" },
   { value: PropertyType.Bodega, label: "Bodega" },
   { value: PropertyType.ProyectoInmobiliario, label: "Proyecto Inmobiliario" },
+  { value: PropertyType.ProyectoEnConstruccion, label: "Proyecto en construcción" },
 ];
 
 const livingInfoOwner = [
@@ -215,6 +216,12 @@ export const PROPERTY_INFO_OWNER: Record<PropertyType | "default", string[]> = {
     "situacionJuridica",
   ],
   [PropertyType.ProyectoInmobiliario]: ["tipoProyecto"],
+  [PropertyType.ProyectoEnConstruccion]: [
+    "direccion",
+    "area",
+    "valorAproximado",
+    "tipoProyecto",
+  ],
 };
 
 const livingInfoBuyer = [

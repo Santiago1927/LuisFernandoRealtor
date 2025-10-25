@@ -15,6 +15,7 @@ export enum PropertyType {
   Local = "LOCAL",
   Bodega = "BODEGA",
   ProyectoInmobiliario = "PROYECTO_INMOBILIARIO",
+  ProyectoEnConstruccion = "PROYECTO_EN_CONSTRUCCION",
 }
 
 export enum City {

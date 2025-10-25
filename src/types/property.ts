@@ -24,6 +24,7 @@ export type PropertyType =
   | "Lote"
   | "Oficina"
   | "Penthouse"
+  | "Proyecto en construcción"
   | "Tríplex";
 
 // Estados de publicación de las propiedades

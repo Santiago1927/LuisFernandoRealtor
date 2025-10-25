@@ -41,16 +41,16 @@ type Props = {
  * Gestiona el estado del tema y la persistencia en localStorage
  */
 export const ThemeProvider = ({ children }: Props) => {
-  // Estado del tema actual, inicializado en "light"
-  const [theme, setTheme] = useState<Theme>("light");
+  // Estado del tema actual, inicializado en "dark"
+  const [theme, setTheme] = useState<Theme>("dark");
 
   // Effect que se ejecuta al montar el componente para cargar el tema guardado
   useEffect(() => {
-    // Obtener el tema guardado del localStorage, o usar "light" como predeterminado
+    // Obtener el tema guardado del localStorage, o usar "dark" como predeterminado
     const storedTheme =
       typeof window !== "undefined"
-        ? (localStorage.getItem("theme") as Theme) || "light"
-        : "light";
+        ? (localStorage.getItem("theme") as Theme) || "dark"
+        : "dark";
 
     setTheme(storedTheme);
 

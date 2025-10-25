@@ -27,40 +27,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Loader2,
-  Building2,
-  Home,
-  Store,
-  Briefcase,
-  TreePine,
-  ChevronDown,
-} from "lucide-react";
+import { Loader2, Building2 } from "lucide-react";
 import Link from "next/link";
-
-// Iconos para cada categoría
-const CATEGORY_ICONS = {
-  Residencial: Home,
-  Locales: Store,
-  Oficinas: Briefcase,
-  Terrenos: TreePine,
-};
-
-// Colores para cada categoría
-const CATEGORY_COLORS = {
-  Residencial:
-    "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300 border-blue-200 dark:border-blue-800",
-  Locales:
-    "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300 border-green-200 dark:border-green-800",
-  Oficinas:
-    "bg-indigo-100 text-indigo-800 dark:bg-indigo-900/30 dark:text-indigo-300 border-indigo-200 dark:border-indigo-800",
-  Terrenos:
-    "bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800",
-};
 
 export default function PropertiesByCategorySection() {
   const [mounted, setMounted] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [selectedType, setSelectedType] = useState<PropertyType | "">("");
 
   // Hook para obtener propiedades agrupadas por categorías
@@ -84,18 +55,10 @@ export default function PropertiesByCategorySection() {
     setMounted(true);
   }, []);
 
-  // Establecer la primera categoría como seleccionada por defecto
-  useEffect(() => {
-    if (categories.length > 0 && !selectedCategory && !selectedType) {
-      setSelectedCategory(categories[0].name);
-    }
-  }, [categories, selectedCategory, selectedType]);
-
   if (process.env.NODE_ENV === "development") {
     console.log("🏠 [CATEGORIES] Estado:", {
       mounted,
       categoriesCount: categories.length,
-      selectedCategory,
       selectedType,
       isLoading,
       error,
@@ -175,10 +138,8 @@ export default function PropertiesByCategorySection() {
                       onValueChange={(value) => {
                         if (value === "all") {
                           setSelectedType("");
-                          setSelectedCategory(categories[0]?.name || "");
                         } else {
                           setSelectedType(value as PropertyType);
-                          setSelectedCategory(""); // Limpiar categoría seleccionada
                         }
                       }}
                     >
@@ -202,7 +163,6 @@ export default function PropertiesByCategorySection() {
                       variant="outline"
                       onClick={() => {
                         setSelectedType("");
-                        setSelectedCategory(categories[0]?.name || "");
                       }}
                       className="border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800"
                     >
@@ -214,8 +174,8 @@ export default function PropertiesByCategorySection() {
             </Card>
           </div>
 
+          {/* Mostrar propiedades del tipo específico seleccionado */}
           {selectedType ? (
-            // Mostrar propiedades del tipo específico seleccionado
             <div className="mt-0">
               <div className="mb-6">
                 <div className="flex items-center justify-between mb-4">
@@ -269,114 +229,17 @@ export default function PropertiesByCategorySection() {
               )}
             </div>
           ) : (
-            // Mostrar vista de categorías normales
-            <>
-              {/* Resumen de categorías */}
-              <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
-                {categories.map((category) => {
-                  const IconComponent =
-                    CATEGORY_ICONS[
-                      category.name as keyof typeof CATEGORY_ICONS
-                    ] || Building2;
-                  const colorClass =
-                    CATEGORY_COLORS[
-                      category.name as keyof typeof CATEGORY_COLORS
-                    ] || CATEGORY_COLORS["Residencial"];
-
-                  return (
-                    <Card
-                      key={category.name}
-                      className={`cursor-pointer transition-all duration-300 hover:shadow-lg ${
-                        selectedCategory === category.name
-                          ? "ring-2 ring-custom-500 shadow-lg"
-                          : "hover:shadow-md"
-                      }`}
-                      onClick={() => setSelectedCategory(category.name)}
-                    >
-                      <CardContent className="p-6 text-center">
-                        <div className="flex justify-center mb-3">
-                          <IconComponent className="w-8 h-8 text-custom-600 dark:text-custom-400" />
-                        </div>
-                        <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100 mb-2">
-                          {category.name}
-                        </h3>
-                        <Badge className={colorClass}>
-                          {category.count}{" "}
-                          {category.count === 1 ? "propiedad" : "propiedades"}
-                        </Badge>
-                      </CardContent>
-                    </Card>
-                  );
-                })}
-              </div>
-
-              {/* Navegación de categorías */}
-              <div className="flex flex-wrap justify-center gap-2 mb-8">
-                {categories.map((category) => {
-                  const IconComponent =
-                    CATEGORY_ICONS[
-                      category.name as keyof typeof CATEGORY_ICONS
-                    ] || Building2;
-                  const isActive = selectedCategory === category.name;
-
-                  return (
-                    <Button
-                      key={category.name}
-                      variant={isActive ? "default" : "outline"}
-                      onClick={() => setSelectedCategory(category.name)}
-                      className={`flex items-center space-x-2 ${
-                        isActive
-                          ? "bg-custom-600 hover:bg-custom-700 text-white"
-                          : "border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800"
-                      }`}
-                    >
-                      <IconComponent className="w-4 h-4" />
-                      <span className="hidden sm:inline">{category.name}</span>
-                      <span className="sm:hidden">
-                        {category.name.charAt(0)}
-                      </span>
-                    </Button>
-                  );
-                })}
-              </div>
-
-              {/* Contenido de la categoría seleccionada */}
-              {categories.map((category) => {
-                if (category.name !== selectedCategory) return null;
-
-                return (
-                  <div key={category.name} className="mt-0">
-                    <div className="mb-6">
-                      <div className="flex items-center justify-between mb-4">
-                        <div>
-                          <h3 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">
-                            {category.name}
-                          </h3>
-                          <p className="text-zinc-600 dark:text-zinc-400">
-                            {category.count}{" "}
-                            {category.count === 1
-                              ? "propiedad disponible"
-                              : "propiedades disponibles"}
-                          </p>
-                        </div>
-                        <Badge
-                          className={
-                            CATEGORY_COLORS[
-                              category.name as keyof typeof CATEGORY_COLORS
-                            ] || CATEGORY_COLORS["Residencial"]
-                          }
-                        >
-                          {category.types.join(", ")}
-                        </Badge>
-                      </div>
-                    </div>
-
-                    {/* Lista de propiedades de la categoría */}
-                    <PropertyList properties={category.properties} />
-                  </div>
-                );
-              })}
-            </>
+            // Mensaje inicial cuando no se ha seleccionado ningún tipo
+            <div className="text-center py-16">
+              <Building2 className="h-16 w-16 text-zinc-400 dark:text-zinc-600 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold text-zinc-900 dark:text-zinc-100 mb-2">
+                Selecciona un tipo de propiedad
+              </h3>
+              <p className="text-lg text-zinc-600 dark:text-zinc-400 max-w-md mx-auto">
+                Utiliza el selector arriba para filtrar y ver propiedades
+                específicas
+              </p>
+            </div>
           )}
 
           {/* Botón para ver todas las propiedades */}

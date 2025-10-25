@@ -196,7 +196,38 @@ export function usePropertiesByType(
 
 /**
  * Función para obtener todos los tipos de propiedades disponibles
+ * Retorna TODOS los tipos definidos en PropertyType
  */
 export function getAllPropertyTypes(): PropertyType[] {
-  return Object.values(PROPERTY_CATEGORIES).flat();
+  const allTypes: PropertyType[] = [
+    "Apartaestudio",
+    "Apartamento",
+    "Bodega",
+    "Bungalow",
+    "Cabaña",
+    "Campestre",
+    "Campos, Chacras y Quintas",
+    "Casa",
+    "Casa de Playa",
+    "Chalet",
+    "Condominio",
+    "Consultorio",
+    "Cortijo",
+    "Dúplex",
+    "Edificio",
+    "Finca",
+    "Finca - Hoteles",
+    "Galpon Industrial",
+    "Hostal",
+    "Local",
+    "Lote",
+    "Oficina",
+    "Parqueadero",
+    "Penthouse",
+    "Proyecto en construcción",
+    "Tríplex",
+  ];
+
+  // Ordenar alfabéticamente
+  return allTypes.sort((a, b) => a.localeCompare(b));
 }

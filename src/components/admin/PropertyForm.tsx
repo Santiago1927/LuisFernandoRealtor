@@ -92,6 +92,7 @@ const PROPERTY_TYPES: PropertyType[] = [
   "Lote",
   "Oficina",
   "Penthouse",
+  "Proyecto en construcción",
   "Tríplex",
 ];
 
