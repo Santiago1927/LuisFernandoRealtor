@@ -25,6 +25,45 @@ export const metadata: Metadata = {
     "Realhaus | Agente de Bienes Raíces de Lujo | Pasto, Medellín, Cali | Vende tu propiedad en tiempo record",
   description:
     "Agente de Bienes Raíces de Lujo | Pasto, Medellín, Cali | Vende tu propiedad en tiempo record",
+  icons: {
+    icon: [
+      {
+        url: "/logo.png",
+        type: "image/png",
+      },
+    ],
+    apple: [
+      {
+        url: "/logo.png",
+        type: "image/png",
+      },
+    ],
+    other: [
+      {
+        rel: "icon",
+        url: "/logo.png",
+      },
+    ],
+  },
+  openGraph: {
+    title: "Realhaus | Agente de Bienes Raíces de Lujo",
+    description: "Vende tu propiedad en tiempo record | Pasto, Medellín, Cali",
+    images: [
+      {
+        url: "/logo.png",
+        width: 1200,
+        height: 630,
+        alt: "Realhaus Logo",
+      },
+    ],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Realhaus | Agente de Bienes Raíces de Lujo",
+    description: "Vende tu propiedad en tiempo record | Pasto, Medellín, Cali",
+    images: ["/logo.png"],
+  },
 };
 
 /**

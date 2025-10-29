@@ -849,6 +849,32 @@ export default function PropertyForm({
                               Área de bodega
                             </label>
                           </div>
+                          {/* Área del lote - Solo para casas y fincas */}
+                          {(formData.type === "Casa" ||
+                            formData.type === "Finca" ||
+                            formData.type === "Casa de Playa" ||
+                            formData.type === "Cabaña" ||
+                            formData.type === "Campestre" ||
+                            formData.type === "Chalet" ||
+                            formData.type === "Cortijo" ||
+                            formData.type === "Campos, Chacras y Quintas") && (
+                            <div className="flex items-center space-x-2">
+                              <input
+                                type="checkbox"
+                                id="has_lot_area"
+                                name="has_lot_area"
+                                checked={formData.has_lot_area || false}
+                                onChange={handleInputChange}
+                                className="w-4 h-4 text-custom-600 bg-white dark:bg-zinc-900 border-zinc-300 dark:border-zinc-600 rounded focus:ring-custom-500 dark:focus:ring-custom-400"
+                              />
+                              <label
+                                htmlFor="has_lot_area"
+                                className="text-sm text-zinc-700 dark:text-zinc-300"
+                              >
+                                Área del lote
+                              </label>
+                            </div>
+                          )}
                         </div>
                       </div>
                       <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-2">
@@ -1276,6 +1302,46 @@ export default function PropertyForm({
                         </Select>
                       </div>
                     </div>
+
+                    {/* Área del lote - Solo para casas y fincas */}
+                    {(formData.type === "Casa" ||
+                      formData.type === "Finca" ||
+                      formData.type === "Casa de Playa" ||
+                      formData.type === "Cabaña" ||
+                      formData.type === "Campestre" ||
+                      formData.type === "Chalet" ||
+                      formData.type === "Cortijo" ||
+                      formData.type === "Campos, Chacras y Quintas") && (
+                      <div>
+                        <Label
+                          htmlFor="lot_area"
+                          className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
+                        >
+                          Área del lote
+                        </Label>
+                        <div className="flex">
+                          <Input
+                            id="lot_area"
+                            type="number"
+                            name="lot_area"
+                            value={formData.lot_area || ""}
+                            onChange={handleInputChange}
+                            min="0"
+                            step="0.1"
+                            className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400 rounded-r-none"
+                          />
+                          <Select defaultValue="m²">
+                            <SelectTrigger className="mt-1 w-20 rounded-l-none border-l-0">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="m²">m²</SelectItem>
+                              <SelectItem value="ft²">ft²</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
 

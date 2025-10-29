@@ -948,6 +948,30 @@ export default function DetallePropiedadPage() {
                       </div>
                     )}
 
+                    {/* Área del lote - Solo para casas y fincas */}
+                    {(property.type === "Casa" ||
+                      property.type === "Finca" ||
+                      property.type === "Casa de Playa" ||
+                      property.type === "Cabaña" ||
+                      property.type === "Campestre" ||
+                      property.type === "Chalet" ||
+                      property.type === "Cortijo" ||
+                      property.type === "Campos, Chacras y Quintas") &&
+                      property.lot_area &&
+                      property.lot_area > 0 && (
+                        <div className="flex items-start space-x-2">
+                          <Square className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
+                          <div className="min-w-0 flex-1">
+                            <div className="text-xs text-gray-500 dark:text-gray-400">
+                              Área del lote
+                            </div>
+                            <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                              {property.lot_area} m²
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
                     {property.stratum && property.stratum !== "N/D" && (
                       <div className="flex items-start space-x-2">
                         <Star className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />

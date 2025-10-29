@@ -229,12 +229,43 @@ function PropertyCard({ property, onEdit, onDelete }: any) {
                   <span>{renderSafeBathrooms(property.bathrooms)}</span>
                 </div>
               )}
-            {((property.total_area && property.total_area > 0) ||
-              (property.area && property.area > 0)) && (
-              <div className="flex items-center space-x-1">
-                <Square className="w-4 h-4" />
-                <span>{property.total_area || property.area} m²</span>
-              </div>
+            {/* Mostrar área del lote para casas y fincas */}
+            {(property.type === "Casa" ||
+              property.type === "Finca" ||
+              property.type === "Casa de Playa" ||
+              property.type === "Cabaña" ||
+              property.type === "Campestre" ||
+              property.type === "Chalet" ||
+              property.type === "Cortijo" ||
+              property.type === "Campos, Chacras y Quintas") &&
+            ((property.total_area && property.total_area > 0) ||
+              (property.area && property.area > 0)) ? (
+              <>
+                <div className="flex items-center space-x-1">
+                  <Square className="w-4 h-4" />
+                  <span className="text-xs font-semibold text-custom-600 dark:text-custom-400">
+                    T
+                  </span>
+                  <span>{property.total_area || property.area} m²</span>
+                </div>
+                {property.lot_area && property.lot_area > 0 && (
+                  <div className="flex items-center space-x-1">
+                    <Square className="w-4 h-4" />
+                    <span className="text-xs font-semibold text-green-600 dark:text-green-400">
+                      L
+                    </span>
+                    <span>{property.lot_area} m²</span>
+                  </div>
+                )}
+              </>
+            ) : (
+              ((property.total_area && property.total_area > 0) ||
+                (property.area && property.area > 0)) && (
+                <div className="flex items-center space-x-1">
+                  <Square className="w-4 h-4" />
+                  <span>{property.total_area || property.area} m²</span>
+                </div>
+              )
             )}
           </div>
 

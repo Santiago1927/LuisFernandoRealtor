@@ -309,11 +309,45 @@ export default function CarouselSection() {
                               </span>
                             </div>
                           )}
-                        {currentProperty.area && currentProperty.area > 0 && (
-                          <div className="flex items-center space-x-1">
-                            <Square className="w-4 h-4" />
-                            <span>{currentProperty.area} m²</span>
-                          </div>
+                        {/* Mostrar área del lote para casas y fincas */}
+                        {(currentProperty.type === "Casa" ||
+                          currentProperty.type === "Finca" ||
+                          currentProperty.type === "Casa de Playa" ||
+                          currentProperty.type === "Cabaña" ||
+                          currentProperty.type === "Campestre" ||
+                          currentProperty.type === "Chalet" ||
+                          currentProperty.type === "Cortijo" ||
+                          currentProperty.type ===
+                            "Campos, Chacras y Quintas") &&
+                        currentProperty.area &&
+                        currentProperty.area > 0 ? (
+                          <>
+                            <div className="flex items-center space-x-1">
+                              <Square className="w-4 h-4" />
+                              <span className="text-xs font-semibold text-custom-600 dark:text-custom-400">
+                                T
+                              </span>
+                              <span>{currentProperty.area} m²</span>
+                            </div>
+                            {currentProperty.lot_area &&
+                              currentProperty.lot_area > 0 && (
+                                <div className="flex items-center space-x-1">
+                                  <Square className="w-4 h-4" />
+                                  <span className="text-xs font-semibold text-green-600 dark:text-green-400">
+                                    L
+                                  </span>
+                                  <span>{currentProperty.lot_area} m²</span>
+                                </div>
+                              )}
+                          </>
+                        ) : (
+                          currentProperty.area &&
+                          currentProperty.area > 0 && (
+                            <div className="flex items-center space-x-1">
+                              <Square className="w-4 h-4" />
+                              <span>{currentProperty.area} m²</span>
+                            </div>
+                          )
                         )}
                       </div>
                     </div>

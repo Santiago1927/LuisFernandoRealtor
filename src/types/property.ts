@@ -162,6 +162,7 @@ export interface Property {
   balcony_area?: number; // Área de balcones
   terrace_area?: number; // Área de terraza
   storage_area?: number; // Área de bodega
+  lot_area?: number; // Área del lote (solo para casas y fincas)
 
   // Checkboxes para indicar qué áreas tiene la propiedad
   has_private_area?: boolean; // Tiene área privada
@@ -170,6 +171,7 @@ export interface Property {
   has_balcony_area?: boolean; // Tiene área de balcones
   has_terrace_area?: boolean; // Tiene área de terraza
   has_storage_area?: boolean; // Tiene área de bodega
+  has_lot_area?: boolean; // Tiene área del lote
 
   video_url?: string; // Enlace de video
   virtual_tour?: string; // Tour virtual
@@ -230,6 +232,7 @@ export interface PropertyFormData {
   balcony_area?: number; // Área de balcones
   terrace_area?: number; // Área de terraza
   storage_area?: number; // Área de bodega
+  lot_area?: number; // Área del lote (solo para casas y fincas)
 
   // Checkboxes para indicar qué áreas tiene la propiedad
   has_private_area?: boolean; // Tiene área privada
@@ -238,6 +241,7 @@ export interface PropertyFormData {
   has_balcony_area?: boolean; // Tiene área de balcones
   has_terrace_area?: boolean; // Tiene área de terraza
   has_storage_area?: boolean; // Tiene área de bodega
+  has_lot_area?: boolean; // Tiene área del lote
 
   video_url?: string; // Enlace de video
   virtual_tour?: string; // Tour virtual

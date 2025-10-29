@@ -85,6 +85,7 @@ export function usePropertyFormLogic({
       balcony_area: property?.balcony_area || 0,
       terrace_area: property?.terrace_area || 0,
       storage_area: property?.storage_area || 0,
+      lot_area: property?.lot_area || 0,
 
       // Checkboxes para indicar qué áreas tiene la propiedad
       has_private_area: property?.has_private_area || false,
@@ -93,6 +94,7 @@ export function usePropertyFormLogic({
       has_balcony_area: property?.has_balcony_area || false,
       has_terrace_area: property?.has_terrace_area || false,
       has_storage_area: property?.has_storage_area || false,
+      has_lot_area: property?.has_lot_area || false,
 
       video_url: property?.video_url || "",
       virtual_tour: property?.virtual_tour || "",
@@ -231,6 +233,7 @@ export function usePropertyFormLogic({
       "balcony_area",
       "terrace_area",
       "storage_area",
+      "lot_area",
     ];
     const optionalNumericFields = [
       "lote_frente",
@@ -244,6 +247,7 @@ export function usePropertyFormLogic({
       "balcony_area",
       "terrace_area",
       "storage_area",
+      "lot_area",
     ];
 
     setFormData((prev) => {
