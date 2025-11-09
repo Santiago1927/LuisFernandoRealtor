@@ -319,16 +319,22 @@ export default function CarouselSection() {
                           currentProperty.type === "Cortijo" ||
                           currentProperty.type ===
                             "Campos, Chacras y Quintas") &&
-                        currentProperty.area &&
-                        currentProperty.area > 0 ? (
+                        ((currentProperty.built_area &&
+                          currentProperty.built_area > 0) ||
+                          (currentProperty.area && currentProperty.area > 0)) ? (
                           <>
-                            <div className="flex items-center space-x-1">
-                              <Square className="w-4 h-4" />
-                              <span className="text-xs font-semibold text-custom-600 dark:text-custom-400">
-                                T
-                              </span>
-                              <span>{currentProperty.area} m²</span>
-                            </div>
+                            {/* Área construida */}
+                            {(currentProperty.built_area &&
+                              currentProperty.built_area > 0) && (
+                              <div className="flex items-center space-x-1">
+                                <Square className="w-4 h-4" />
+                                <span className="text-xs font-semibold text-blue-600 dark:text-blue-400">
+                                  C
+                                </span>
+                                <span>{currentProperty.built_area} m²</span>
+                              </div>
+                            )}
+                            {/* Área del lote */}
                             {currentProperty.lot_area &&
                               currentProperty.lot_area > 0 && (
                                 <div className="flex items-center space-x-1">

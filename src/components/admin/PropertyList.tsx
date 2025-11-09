@@ -238,16 +238,21 @@ function PropertyCard({ property, onEdit, onDelete }: any) {
               property.type === "Chalet" ||
               property.type === "Cortijo" ||
               property.type === "Campos, Chacras y Quintas") &&
-            ((property.total_area && property.total_area > 0) ||
+            ((property.built_area && property.built_area > 0) ||
+              (property.total_area && property.total_area > 0) ||
               (property.area && property.area > 0)) ? (
               <>
-                <div className="flex items-center space-x-1">
-                  <Square className="w-4 h-4" />
-                  <span className="text-xs font-semibold text-custom-600 dark:text-custom-400">
-                    T
-                  </span>
-                  <span>{property.total_area || property.area} m²</span>
-                </div>
+                {/* Área construida */}
+                {(property.built_area && property.built_area > 0) && (
+                  <div className="flex items-center space-x-1">
+                    <Square className="w-4 h-4" />
+                    <span className="text-xs font-semibold text-blue-600 dark:text-blue-400">
+                      C
+                    </span>
+                    <span>{property.built_area} m²</span>
+                  </div>
+                )}
+                {/* Área del lote */}
                 {property.lot_area && property.lot_area > 0 && (
                   <div className="flex items-center space-x-1">
                     <Square className="w-4 h-4" />
