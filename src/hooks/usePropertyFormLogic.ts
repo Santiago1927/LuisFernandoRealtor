@@ -64,7 +64,7 @@ export function usePropertyFormLogic({
       encargado_inmueble: property?.encargado_inmueble || "",
       matricula_inmobiliaria: property?.matricula_inmobiliaria || "",
       publication_status: property?.publication_status || "Activo",
-      business_type: property?.business_type || "Vender",
+      business_type: property?.business_type || "Venta",
       rental_price: property?.rental_price || 0,
       rental_time: property?.rental_time || "Mensual",
       currency_type: property?.currency_type || "Pesos colombianos",
@@ -147,6 +147,17 @@ export function usePropertyFormLogic({
     null
   );
 
+  // Estado para controlar si hay cambios sin guardar
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+
+  // Ref para almacenar los datos iniciales del formulario
+  const initialFormDataRef = useRef<PropertyFormData>(getInitialFormData());
+  const initialImagesRef = useRef<string[]>(property?.images || []);
+  const initialVideosRef = useRef<string[]>(property?.videos || []);
+
+  // Ref para saber si es el primer render
+  const isFirstRender = useRef(true);
+
   // Mutaciones de React Query
   const createPropertyMutation = useCreateProperty();
   const updatePropertyMutation = useUpdateProperty();
@@ -161,6 +172,12 @@ export function usePropertyFormLogic({
       setLat(property.lat || null);
       setLng(property.lng || null);
       setMapAddress(property.address || "");
+
+      // Actualizar las refs de datos iniciales
+      initialFormDataRef.current = newFormData;
+      initialImagesRef.current = property.images || [];
+      initialVideosRef.current = property.videos || [];
+      setHasUnsavedChanges(false);
     } else {
       // Si no hay property (modo crear), usar getInitialFormData para asegurar valores por defecto
       const initialData = getInitialFormData();
@@ -173,7 +190,16 @@ export function usePropertyFormLogic({
       setLat(null);
       setLng(null);
       setMapAddress("");
+
+      // Actualizar las refs de datos iniciales
+      initialFormDataRef.current = initialData;
+      initialImagesRef.current = [];
+      initialVideosRef.current = [];
+      setHasUnsavedChanges(false);
     }
+
+    // Marcar que ya pasó el primer render
+    isFirstRender.current = false;
   }, [property, getInitialFormData]);
 
   // Efecto para limpiar campos de permuta cuando se desmarca "Permutas"
@@ -208,6 +234,57 @@ export function usePropertyFormLogic({
       }
     };
   }, []);
+
+  // Efecto para detectar cambios en el formulario
+  useEffect(() => {
+    // Ignorar el primer render
+    if (isFirstRender.current) {
+      return;
+    }
+
+    // Función auxiliar para comparar objetos de forma profunda
+    const hasChanges = () => {
+      // Comparar datos del formulario
+      const formDataChanged =
+        JSON.stringify(formData) !== JSON.stringify(initialFormDataRef.current);
+
+      // Comparar imágenes nuevas
+      const newImagesAdded = images.length > 0;
+
+      // Comparar videos nuevos
+      const newVideosAdded = videos.length > 0;
+
+      // Comparar URLs de imágenes existentes
+      const imageUrlsChanged =
+        JSON.stringify(imageUrls) !== JSON.stringify(initialImagesRef.current);
+
+      // Comparar URLs de videos existentes
+      const videoUrlsChanged =
+        JSON.stringify(videoUrls) !== JSON.stringify(initialVideosRef.current);
+
+      const changes = {
+        formDataChanged,
+        newImagesAdded,
+        newVideosAdded,
+        imageUrlsChanged,
+        videoUrlsChanged,
+      };
+
+      console.log("🔍 Detectando cambios:", changes);
+
+      return (
+        formDataChanged ||
+        newImagesAdded ||
+        newVideosAdded ||
+        imageUrlsChanged ||
+        videoUrlsChanged
+      );
+    };
+
+    const hasUnsaved = hasChanges();
+    console.log("📝 hasUnsavedChanges:", hasUnsaved);
+    setHasUnsavedChanges(hasUnsaved);
+  }, [formData, images, videos, imageUrls, videoUrls]);
 
   // Maneja los cambios en los campos del formulario (inputs, selects, textareas)
   const handleInputChange = (
@@ -532,6 +609,12 @@ export function usePropertyFormLogic({
           ...propertyData,
         };
 
+        // Resetear el estado de cambios sin guardar
+        initialFormDataRef.current = formData;
+        initialImagesRef.current = newImageUrls;
+        initialVideosRef.current = newVideoUrls;
+        setHasUnsavedChanges(false);
+
         onSave(updatedProperty); // Llama a la función de guardado
 
         // Alerta de éxito para actualización
@@ -541,6 +624,10 @@ export function usePropertyFormLogic({
         const savedProperty = await createPropertyMutation.mutateAsync(
           propertyData
         );
+
+        // Resetear el estado de cambios sin guardar
+        setHasUnsavedChanges(false);
+
         onSave(savedProperty); // Llama a la función de guardado
 
         // Alerta de éxito para creación
@@ -657,6 +744,7 @@ export function usePropertyFormLogic({
     handleLocationChange,
     handleSpecialFieldChange,
     onClose,
+    hasUnsavedChanges, // Nuevo: indica si hay cambios sin guardar
     // Estados adicionales para el formulario
     isLoading: isProcessing,
     isError: createPropertyMutation.isError || updatePropertyMutation.isError,

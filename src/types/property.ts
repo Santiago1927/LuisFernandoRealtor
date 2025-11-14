@@ -31,7 +31,7 @@ export type PropertyType =
 export type PublicationStatus = "Destacado" | "Activo" | "Inactivo";
 
 // Tipos de negocio inmobiliario
-export type BusinessType = "Vender" | "Alquilar" | "Permutar";
+export type BusinessType = "Venta" | "Alquilar" | "Permuta";
 
 // Tipos de moneda
 export type CurrencyType = "Pesos colombianos" | "Dólares americanos" | "Euros";

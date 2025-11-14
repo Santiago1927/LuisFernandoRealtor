@@ -751,7 +751,8 @@ export default function DetallePropiedadPage() {
                       Datos Generales
                     </h4>
 
-                    {property.encargado_inmueble && (
+                    {/* Encargado - Solo para administradores */}
+                    {isAuthenticated && property.encargado_inmueble && (
                       <div className="flex items-start space-x-2">
                         <User className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
                         <div className="min-w-0 flex-1">
@@ -1088,20 +1089,6 @@ export default function DetallePropiedadPage() {
                       </div>
                     )}
 
-                    {property.rental_time && (
-                      <div className="flex items-start space-x-2">
-                        <Clock className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
-                        <div className="min-w-0 flex-1">
-                          <div className="text-xs text-gray-500 dark:text-gray-400">
-                            Tiempo de alquiler
-                          </div>
-                          <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
-                            {property.rental_time}
-                          </div>
-                        </div>
-                      </div>
-                    )}
-
                     {property.rental_price &&
                       Number(property.rental_price) > 0 && (
                         <div className="flex items-start space-x-2">
@@ -1203,8 +1190,7 @@ export default function DetallePropiedadPage() {
                   )}
 
                   {/* Información adicional */}
-                  {(property.encargado_inmueble ||
-                    property.matricula_inmobiliaria ||
+                  {(property.matricula_inmobiliaria ||
                     property.publication_status ||
                     property.business_type) && (
                     <div className="space-y-4">
@@ -1212,20 +1198,6 @@ export default function DetallePropiedadPage() {
                         <FileText className="w-4 h-4 mr-2 text-blue-600" />
                         Información del Inmueble
                       </h4>
-
-                      {property.encargado_inmueble && (
-                        <div className="flex items-start space-x-2">
-                          <User className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
-                          <div className="min-w-0 flex-1">
-                            <div className="text-xs text-gray-500 dark:text-gray-400">
-                              Encargado del inmueble
-                            </div>
-                            <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
-                              {property.encargado_inmueble}
-                            </div>
-                          </div>
-                        </div>
-                      )}
 
                       {property.matricula_inmobiliaria && (
                         <div className="flex items-start space-x-2">
@@ -1258,20 +1230,6 @@ export default function DetallePropiedadPage() {
                             >
                               {property.publication_status}
                             </Badge>
-                          </div>
-                        </div>
-                      )}
-
-                      {property.business_type && (
-                        <div className="flex items-start space-x-2">
-                          <DollarSign className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
-                          <div className="min-w-0 flex-1">
-                            <div className="text-xs text-gray-500 dark:text-gray-400">
-                              Tipo de negocio
-                            </div>
-                            <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
-                              {property.business_type}
-                            </div>
                           </div>
                         </div>
                       )}

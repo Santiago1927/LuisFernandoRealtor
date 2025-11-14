@@ -243,7 +243,7 @@ function PropertyCard({ property, onEdit, onDelete }: any) {
               (property.area && property.area > 0)) ? (
               <>
                 {/* Área construida */}
-                {(property.built_area && property.built_area > 0) && (
+                {property.built_area && property.built_area > 0 && (
                   <div className="flex items-center space-x-1">
                     <Square className="w-4 h-4" />
                     <span className="text-xs font-semibold text-blue-600 dark:text-blue-400">

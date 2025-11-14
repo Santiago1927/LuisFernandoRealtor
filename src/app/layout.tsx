@@ -21,6 +21,9 @@ const cinzel = Cinzel({
 
 // Metadatos SEO de la aplicación
 export const metadata: Metadata = {
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
+  ),
   title:
     "Realhaus | Agente de Bienes Raíces de Lujo | Pasto, Medellín, Cali | Vende tu propiedad en tiempo record",
   description:

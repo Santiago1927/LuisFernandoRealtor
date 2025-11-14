@@ -81,7 +81,18 @@ function DraggableMarker({
 function MapController({ center }: { center: [number, number] }) {
   const map = useMap();
   useEffect(() => {
-    map.setView(center, 16);
+    if (map && center) {
+      try {
+        // Pequeño delay para asegurar que el mapa esté completamente montado
+        setTimeout(() => {
+          if (map) {
+            map.setView(center, 16);
+          }
+        }, 100);
+      } catch (error) {
+        console.warn("Error al centrar el mapa:", error);
+      }
+    }
   }, [map, center]);
   return null;
 }
@@ -100,6 +111,15 @@ export default function ClientLeafletMap({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [geocodingAttempted, setGeocodingAttempted] = useState(false);
+  const [mapReady, setMapReady] = useState(false);
+
+  // Asegurar que el mapa esté listo después del montaje
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setMapReady(true);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, []);
 
   const geocodeAddress = useCallback(
     async (addressToGeocode: string) => {
@@ -288,7 +308,7 @@ export default function ClientLeafletMap({
         className={`map-container ${!draggable ? "readonly" : ""}`}
         style={{ height }}
       >
-        {position ? (
+        {position && mapReady ? (
           <MapContainer
             center={mapCenter}
             zoom={16}
@@ -299,6 +319,10 @@ export default function ClientLeafletMap({
             doubleClickZoom={draggable}
             boxZoom={draggable}
             keyboard={draggable}
+            whenReady={() => {
+              // Mapa completamente cargado
+              console.log("Mapa de Leaflet listo");
+            }}
           >
             <TileLayer
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

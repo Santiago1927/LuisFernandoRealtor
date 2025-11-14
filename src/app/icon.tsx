@@ -7,6 +7,8 @@ export const size = {
 };
 export const contentType = "image/png";
 
+export const runtime = "edge";
+
 // Generador de ícono
 export default function Icon() {
   return new ImageResponse(
@@ -26,8 +28,10 @@ export default function Icon() {
           style={{
             fontSize: 20,
             fontWeight: "bold",
+            fontFamily: "system-ui, sans-serif",
             background: "linear-gradient(90deg, #D4AF37 0%, #FFD700 100%)",
             backgroundClip: "text",
+            WebkitBackgroundClip: "text",
             color: "transparent",
           }}
         >

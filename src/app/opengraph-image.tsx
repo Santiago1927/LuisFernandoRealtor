@@ -9,6 +9,8 @@ export const size = {
 
 export const contentType = "image/png";
 
+export const runtime = "edge";
+
 // Generador de imagen
 export default async function Image() {
   return new ImageResponse(
@@ -37,8 +39,10 @@ export default async function Image() {
             style={{
               fontSize: 120,
               fontWeight: "bold",
+              fontFamily: "system-ui, sans-serif",
               background: "linear-gradient(90deg, #D4AF37 0%, #FFD700 100%)",
               backgroundClip: "text",
+              WebkitBackgroundClip: "text",
               color: "transparent",
               letterSpacing: "-0.02em",
             }}
@@ -49,6 +53,7 @@ export default async function Image() {
         <div
           style={{
             fontSize: 32,
+            fontFamily: "system-ui, sans-serif",
             color: "#FFFFFF",
             textAlign: "center",
             maxWidth: "900px",
@@ -59,6 +64,7 @@ export default async function Image() {
         <div
           style={{
             fontSize: 24,
+            fontFamily: "system-ui, sans-serif",
             color: "#D4AF37",
             textAlign: "center",
           }}
