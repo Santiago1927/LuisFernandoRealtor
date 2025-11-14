@@ -223,10 +223,10 @@ export default function SmartImage({
       onClick,
     };
 
-    {
-      /* eslint-disable-next-line jsx-a11y/alt-text, @next/next/no-img-element */
-    }
-    return <img {...svgProps} />;
+    return (
+      // eslint-disable-next-line jsx-a11y/alt-text, @next/next/no-img-element
+      <img {...svgProps} />
+    );
   }
 
   return <NextImage {...imageProps} />;

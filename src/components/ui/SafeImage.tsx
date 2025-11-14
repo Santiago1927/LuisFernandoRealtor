@@ -77,10 +77,10 @@ export default function SafeImage({
       ...(fill ? { fill: true } : { width, height }),
     };
 
-    {
-      /* eslint-disable-next-line jsx-a11y/alt-text */
-    }
-    return <Image {...imageProps} />;
+    return (
+      // eslint-disable-next-line jsx-a11y/alt-text
+      <Image {...imageProps} />
+    );
   }
 
   // Imagen principal
@@ -94,8 +94,8 @@ export default function SafeImage({
     ...(fill ? { fill: true } : { width, height }),
   };
 
-  {
-    /* eslint-disable-next-line jsx-a11y/alt-text */
-  }
-  return <Image {...imageProps} />;
+  return (
+    // eslint-disable-next-line jsx-a11y/alt-text
+    <Image {...imageProps} />
+  );
 }

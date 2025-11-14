@@ -146,8 +146,8 @@ export default function UpdateBusinessTypePage() {
               Este script actualizará todas las propiedades que tengan:
             </p>
             <ul className="list-disc list-inside text-sm text-zinc-600 dark:text-zinc-400 mt-2 space-y-1">
-              <li>"Vender" → "Venta"</li>
-              <li>"Permutar" → "Permuta"</li>
+              <li>&quot;Vender&quot; → &quot;Venta&quot;</li>
+              <li>&quot;Permutar&quot; → &quot;Permuta&quot;</li>
             </ul>
           </CardHeader>
           <CardContent className="space-y-4">
