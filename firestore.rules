@@ -76,6 +76,22 @@ service cloud.firestore {
       allow create: if true; // ✅ Cualquiera puede crear (enviar formulario)
       allow update, delete: if request.auth != null; // ✅ Solo usuarios autenticados pueden modificar/eliminar
     }
+
+    // ========================================
+    // COLECCIÓN: property_comments (Comentarios de Propiedades)
+    // ========================================
+    // Propósito: Almacena comentarios y opiniones sobre propiedades
+    // Acceso: Lectura pública, escritura solo autenticados
+    match /property_comments/{commentId} {
+      allow read: if true; // ✅ Cualquiera puede leer comentarios
+      allow create: if request.auth != null; // ✅ Solo usuarios autenticados pueden comentar
+      allow update: if request.auth != null && 
+                       (request.auth.uid == resource.data.userId || 
+                        request.auth.token.email == 'admin@realhaus.com'); // ✅ Solo el autor o admin pueden editar
+      allow delete: if request.auth != null && 
+                       (request.auth.uid == resource.data.userId || 
+                        request.auth.token.email == 'admin@realhaus.com'); // ✅ Solo el autor o admin pueden eliminar
+    }
   }
 }
 

@@ -122,9 +122,8 @@ export function usePropertyFormLogic({
   }, [property]);
 
   // Estado para los datos del formulario
-  const [formData, setFormData] = useState<PropertyFormData>(
-    getInitialFormData()
-  );
+  const [formData, setFormData] =
+    useState<PropertyFormData>(getInitialFormData());
   // Estado para las imágenes seleccionadas por el usuario
   const [images, setImages] = useState<File[]>([]);
   // Estado para los videos seleccionados por el usuario
@@ -144,7 +143,7 @@ export function usePropertyFormLogic({
 
   // Ref para el timer de debounce de sincronización de dirección
   const addressSyncTimerRef = useRef<ReturnType<typeof setTimeout> | null>(
-    null
+    null,
   );
 
   // Estado para controlar si hay cambios sin guardar
@@ -290,7 +289,7 @@ export function usePropertyFormLogic({
   const handleInputChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
+    >,
   ) => {
     const { name, value, type, checked } = e.target as HTMLInputElement;
     const numericFields = [
@@ -432,7 +431,7 @@ export function usePropertyFormLogic({
   // Sube archivos (imágenes o videos) a Firebase Storage y retorna sus URLs
   const uploadFiles = async (
     files: File[],
-    folder: string
+    folder: string,
   ): Promise<string[]> => {
     const uploadPromises = files.map(async (file) => {
       const storageRef = ref(storage, `${folder}/${Date.now()}_${file.name}`); // Crea referencia única
@@ -459,7 +458,7 @@ export function usePropertyFormLogic({
     if (!isAuthenticated || !user) {
       showAlert(
         "⚠️ Sesión expirada o no autenticado. Por favor, cierra sesión e inicia sesión nuevamente.",
-        "error"
+        "error",
       );
       return;
     }
@@ -468,7 +467,7 @@ export function usePropertyFormLogic({
     if (!formData.title || !formData.address || !formData.price) {
       showAlert(
         "📝 Por favor completa los campos obligatorios: título, dirección y precio.",
-        "error"
+        "error",
       );
       return;
     }
@@ -477,7 +476,7 @@ export function usePropertyFormLogic({
     if (!formData.zone_neighborhood) {
       showAlert(
         "📍 Por favor selecciona una zona o barrio para la propiedad.",
-        "error"
+        "error",
       );
       return;
     }
@@ -493,17 +492,17 @@ export function usePropertyFormLogic({
         try {
           const uploadedImageUrls = await uploadFiles(
             images,
-            "properties/images"
+            "properties/images",
           ); // Sube imágenes
           newImageUrls = [...newImageUrls, ...uploadedImageUrls]; // Agrega nuevas URLs
         } catch (storageError) {
           console.warn(
             "Error subiendo imágenes, continuando sin ellas:",
-            storageError
+            storageError,
           );
           showAlert(
             "⚠️ No se pudieron subir las imágenes debido a permisos de Storage. La propiedad se creará sin imágenes. Contacta al administrador para configurar los permisos de Firebase Storage.",
-            "info"
+            "info",
           );
           // Continuar sin imágenes
         }
@@ -514,17 +513,17 @@ export function usePropertyFormLogic({
         try {
           const uploadedVideoUrls = await uploadFiles(
             videos,
-            "properties/videos"
+            "properties/videos",
           ); // Sube videos
           newVideoUrls = [...newVideoUrls, ...uploadedVideoUrls]; // Agrega nuevas URLs
         } catch (storageError) {
           console.warn(
             "Error subiendo videos, continuando sin ellos:",
-            storageError
+            storageError,
           );
           showAlert(
             "⚠️ No se pudieron subir los videos debido a permisos de Storage. La propiedad se creará sin videos.",
-            "info"
+            "info",
           );
           // Continuar sin videos
         }
@@ -534,7 +533,7 @@ export function usePropertyFormLogic({
       let formDataCopy = { ...formData };
       if (!formDataCopy.city || formDataCopy.city.trim() === "") {
         console.log(
-          "⚠️ Campo city vacío en formData, asignando Pasto ANTES de limpieza"
+          "⚠️ Campo city vacío en formData, asignando Pasto ANTES de limpieza",
         );
         formDataCopy.city = "Pasto";
       }
@@ -545,10 +544,15 @@ export function usePropertyFormLogic({
           // Mantener arrays vacíos y valores booleanos false
           if (Array.isArray(value)) return true;
           if (typeof value === "boolean") return true;
-          if (typeof value === "number") return value >= 0; // Permitir 0 para campos como bedrooms, bathrooms
+          if (typeof value === "number") {
+            // Permitir -1 para valor_administracion (indica "No aplica")
+            if (key === "valor_administracion" && value === -1) return true;
+            // Para otros campos numéricos, permitir valores >= 0
+            return value >= 0;
+          }
           if (typeof value === "string") return value.trim() !== "";
           return value !== undefined && value !== null;
-        })
+        }),
       );
 
       // Asegurar que campos críticos siempre tengan valores por defecto si están vacíos
@@ -573,6 +577,14 @@ export function usePropertyFormLogic({
       }
 
       // Los datos han sido limpiados y están listos para enviar
+
+      // Asegurar que bedrooms y bathrooms siempre se incluyan, incluso si son 0
+      if (cleanFormData.bedrooms === undefined) {
+        cleanFormData.bedrooms = 0;
+      }
+      if (cleanFormData.bathrooms === undefined) {
+        cleanFormData.bathrooms = 0;
+      }
 
       // Construye el objeto de datos de la propiedad
       const propertyData: Omit<Property, "id"> = {
@@ -621,9 +633,8 @@ export function usePropertyFormLogic({
         showAlert("Propiedad actualizada exitosamente", "success");
       } else {
         // Si no existe, crea una nueva propiedad usando React Query
-        const savedProperty = await createPropertyMutation.mutateAsync(
-          propertyData
-        );
+        const savedProperty =
+          await createPropertyMutation.mutateAsync(propertyData);
 
         // Resetear el estado de cambios sin guardar
         setHasUnsavedChanges(false);
@@ -681,12 +692,12 @@ export function usePropertyFormLogic({
       if (isAuthError) {
         showAlert(
           `${errorMessage}\n\n💡 Pasos para solucionarlo:\n1. Cerrar sesión completamente\n2. Iniciar sesión nuevamente\n3. Completar todos los campos obligatorios\n4. Intentar guardar de nuevo`,
-          "error"
+          "error",
         );
       } else {
         showAlert(
           `❌ Error al procesar la propiedad: ${errorMessage}`,
-          "error"
+          "error",
         );
       }
     } finally {
@@ -698,7 +709,7 @@ export function usePropertyFormLogic({
   const handleLocationChange = (
     newLat: number,
     newLng: number,
-    newAddress: string
+    newAddress: string,
   ) => {
     setLat(newLat);
     setLng(newLng);

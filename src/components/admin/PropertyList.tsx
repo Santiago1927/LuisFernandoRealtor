@@ -33,31 +33,19 @@ function PropertyCard({ property, onEdit, onDelete }: any) {
 
   // Función ULTRA HARDCODED para renderizar número de baños - NUNCA MOSTRAR 30
   const renderSafeBathrooms = (bathroomsValue: any) => {
-    console.log(
-      "🚿🚿🚿 [ADMIN-FIXED] Procesando baños:",
-      bathroomsValue,
-      typeof bathroomsValue,
-      "timestamp:",
-      new Date().toISOString()
-    );
-
     // CORRECCIÓN ULTRA AGRESIVA INMEDIATA
     if (bathroomsValue === 20 || bathroomsValue === "20") {
-      console.log("🚿 [ADMIN] ✅ HARDCODE: 20 -> 2");
       return 2;
     }
     if (bathroomsValue === 30 || bathroomsValue === "30") {
-      console.log("🚿 [ADMIN] ✅ HARDCODE: 30 -> 3");
       return 3;
     }
     if (bathroomsValue === 40 || bathroomsValue === "40") {
-      console.log("🚿 [ADMIN] ✅ HARDCODE: 40 -> 4");
       return 4;
     }
 
     // Si no existe o es null/undefined, retorna 0
     if (bathroomsValue == null) {
-      console.log("🚿 [ADMIN] Valor null/undefined, retornando 0");
       return 0;
     }
 
@@ -67,14 +55,10 @@ function PropertyCard({ property, onEdit, onDelete }: any) {
     if (typeof bathroomsValue === "string") {
       cleanValue = bathroomsValue.trim();
       if (cleanValue === "") {
-        console.log("🚿 [ADMIN] String vacío, retornando 0");
         return 0;
       }
       cleanValue = parseInt(cleanValue, 10);
       if (isNaN(cleanValue)) {
-        console.log(
-          "🚿 [ADMIN] No se pudo convertir string a número, retornando 0"
-        );
         return 0;
       }
     }
@@ -82,30 +66,25 @@ function PropertyCard({ property, onEdit, onDelete }: any) {
     // Si ya es número
     if (typeof cleanValue === "number") {
       if (isNaN(cleanValue)) {
-        console.log("🚿 [ADMIN] Número es NaN, retornando 0");
         return 0;
       }
 
       // SEGUNDA VERIFICACIÓN HARDCODE: 30 -> 3
       if (cleanValue === 30) {
-        console.log("🚿 [ADMIN] ✅ SEGUNDA VERIFICACIÓN: 30 -> 3");
         return 3;
       }
 
       // FORZAR CORRECCIÓN para cualquier múltiplo de 10 mayor a 10
       if (cleanValue > 10 && cleanValue % 10 === 0 && cleanValue <= 100) {
         const corrected = Math.floor(cleanValue / 10);
-        console.log(`🚿 [ADMIN] ✅ CORRIGIENDO ${cleanValue} -> ${corrected}`);
         return corrected;
       }
 
       // Rango normal 0-15
       const finalValue = Math.max(0, Math.min(15, cleanValue));
-      console.log(`🚿 [ADMIN] Valor final: ${finalValue}`);
       return finalValue;
     }
 
-    console.log("🚿 [ADMIN] Caso no manejado, retornando 0");
     return 0;
   };
 
@@ -195,89 +174,95 @@ function PropertyCard({ property, onEdit, onDelete }: any) {
             </div>
           </div>
         </CardHeader>
-      </Link>
 
-      <CardContent className="p-6">
-        <div className="space-y-4">
-          <div>
-            <h3 className="text-xl font-bold text-zinc-900 dark:text-zinc-100 mb-2 line-clamp-1">
-              {property.title}
-            </h3>
-            <div className="flex items-center space-x-1 text-zinc-600 dark:text-zinc-400 mb-3">
-              <MapPin className="w-4 h-4" />
-              <span className="text-sm line-clamp-1">{property.address}</span>
-            </div>
-          </div>
-
-          <div className="flex items-center justify-between">
-            <div className="text-2xl font-bold text-custom-600 dark:text-custom-400">
-              ${property.price.toLocaleString()}
-            </div>
-          </div>
-
-          <div className="flex items-center space-x-4 text-sm text-zinc-600 dark:text-zinc-400">
-            {property.bedrooms && property.bedrooms > 0 && (
-              <div className="flex items-center space-x-1">
-                <Bed className="w-4 h-4" />
-                <span>{property.bedrooms}</span>
+        <CardContent className="p-6">
+          <div className="space-y-4">
+            <div>
+              <h3 className="text-xl font-bold text-zinc-900 dark:text-zinc-100 mb-2 line-clamp-1">
+                {property.title}
+              </h3>
+              <div className="flex items-center space-x-1 text-zinc-600 dark:text-zinc-400 mb-3">
+                <MapPin className="w-4 h-4" />
+                <span className="text-sm line-clamp-1">{property.address}</span>
               </div>
-            )}
-            {property.bathrooms &&
-              renderSafeBathrooms(property.bathrooms) > 0 && (
+            </div>
+
+            <div className="flex items-center justify-between">
+              <div className="text-2xl font-bold text-custom-600 dark:text-custom-400">
+                ${property.price.toLocaleString()}
+              </div>
+            </div>
+
+            <div className="flex items-center space-x-4 text-sm text-zinc-600 dark:text-zinc-400">
+              {property.bedrooms && Number(property.bedrooms) > 0 && (
                 <div className="flex items-center space-x-1">
-                  <Bath className="w-4 h-4" />
-                  <span>{renderSafeBathrooms(property.bathrooms)}</span>
+                  <Bed className="w-4 h-4" />
+                  <span>{property.bedrooms}</span>
                 </div>
               )}
-            {/* Mostrar área del lote para casas y fincas */}
-            {(property.type === "Casa" ||
-              property.type === "Finca" ||
-              property.type === "Casa de Playa" ||
-              property.type === "Cabaña" ||
-              property.type === "Campestre" ||
-              property.type === "Chalet" ||
-              property.type === "Cortijo" ||
-              property.type === "Campos, Chacras y Quintas") &&
-            ((property.built_area && property.built_area > 0) ||
-              (property.total_area && property.total_area > 0) ||
-              (property.area && property.area > 0)) ? (
-              <>
-                {/* Área construida */}
-                {property.built_area && property.built_area > 0 && (
+              {(() => {
+                const bathrooms = renderSafeBathrooms(property.bathrooms);
+                return bathrooms > 0 ? (
+                  <div className="flex items-center space-x-1">
+                    <Bath className="w-4 h-4" />
+                    <span>{bathrooms}</span>
+                  </div>
+                ) : null;
+              })()}
+              {/* Mostrar área del lote para casas y fincas */}
+              {(property.type === "Casa" ||
+                property.type === "Finca" ||
+                property.type === "Casa de Playa" ||
+                property.type === "Cabaña" ||
+                property.type === "Campestre" ||
+                property.type === "Chalet" ||
+                property.type === "Cortijo" ||
+                property.type === "Campos, Chacras y Quintas") &&
+              ((property.built_area && property.built_area > 0) ||
+                (property.total_area && property.total_area > 0) ||
+                (property.area && property.area > 0)) ? (
+                <>
+                  {/* Área construida */}
+                  {property.built_area && property.built_area > 0 && (
+                    <div className="flex items-center space-x-1">
+                      <Square className="w-4 h-4" />
+                      <span className="text-xs font-semibold text-blue-600 dark:text-blue-400">
+                        C
+                      </span>
+                      <span>{property.built_area} m²</span>
+                    </div>
+                  )}
+                  {/* Área del lote */}
+                  {property.lot_area && property.lot_area > 0 && (
+                    <div className="flex items-center space-x-1">
+                      <Square className="w-4 h-4" />
+                      <span className="text-xs font-semibold text-green-600 dark:text-green-400">
+                        L
+                      </span>
+                      <span>{property.lot_area} m²</span>
+                    </div>
+                  )}
+                </>
+              ) : (
+                ((property.total_area && property.total_area > 0) ||
+                  (property.area && property.area > 0)) && (
                   <div className="flex items-center space-x-1">
                     <Square className="w-4 h-4" />
-                    <span className="text-xs font-semibold text-blue-600 dark:text-blue-400">
-                      C
-                    </span>
-                    <span>{property.built_area} m²</span>
+                    <span>{property.total_area || property.area} m²</span>
                   </div>
-                )}
-                {/* Área del lote */}
-                {property.lot_area && property.lot_area > 0 && (
-                  <div className="flex items-center space-x-1">
-                    <Square className="w-4 h-4" />
-                    <span className="text-xs font-semibold text-green-600 dark:text-green-400">
-                      L
-                    </span>
-                    <span>{property.lot_area} m²</span>
-                  </div>
-                )}
-              </>
-            ) : (
-              ((property.total_area && property.total_area > 0) ||
-                (property.area && property.area > 0)) && (
-                <div className="flex items-center space-x-1">
-                  <Square className="w-4 h-4" />
-                  <span>{property.total_area || property.area} m²</span>
-                </div>
-              )
-            )}
+                )
+              )}
+            </div>
+
+            <p className="text-sm text-zinc-600 dark:text-zinc-400 line-clamp-2">
+              {property.description}
+            </p>
           </div>
+        </CardContent>
+      </Link>
 
-          <p className="text-sm text-zinc-600 dark:text-zinc-400 line-clamp-2">
-            {property.description}
-          </p>
-
+      <CardContent className="p-6 pt-0">
+        <div>
           {(onEdit || onDelete) && (
             <div className="flex space-x-2 pt-2">
               {onEdit && (
@@ -286,6 +271,7 @@ function PropertyCard({ property, onEdit, onDelete }: any) {
                   size="sm"
                   onClick={(e) => {
                     e.preventDefault();
+                    e.stopPropagation();
                     onEdit(property);
                   }}
                   className="flex-1 border-custom-300 text-custom-700 hover:bg-custom-50 dark:border-custom-600 dark:text-custom-300 dark:hover:bg-custom-900/30"
@@ -300,6 +286,7 @@ function PropertyCard({ property, onEdit, onDelete }: any) {
                   size="sm"
                   onClick={(e) => {
                     e.preventDefault();
+                    e.stopPropagation();
                     onDelete(property.id);
                   }}
                   className="border-red-300 text-red-700 hover:bg-red-50 dark:border-red-600 dark:text-red-300 dark:hover:bg-red-900/30"

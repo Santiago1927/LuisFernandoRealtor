@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 import ImageWrapper from "@/components/ui/ImageWrapper";
 import PropertyMediaGallery from "@/components/property/PropertyMediaGallery";
+import PropertyComments from "@/components/comments/PropertyComments";
 import { usePropertyDetailPageLogic } from "../../../hooks/usePropertyDetailPageLogic";
 import { useAuthContext } from "../../../components/auth/AuthContext";
 import { useToggleFeaturedProperty } from "../../../hooks/useToggleFeaturedProperty";
@@ -111,7 +112,7 @@ export default function DetallePropiedadPage() {
     const message = `¡Mira esta increíble propiedad! 🏠\n\n*${
       property.title
     }*\n📍 ${property.address}\n💰 ${formatCurrency(
-      property.price
+      property.price,
     )}\n\n${propertyUrl}`;
     const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, "_blank");
@@ -134,16 +135,16 @@ export default function DetallePropiedadPage() {
             isFeatured
               ? "Propiedad quitada de destacados exitosamente"
               : "Propiedad destacada exitosamente",
-            "success"
+            "success",
           );
         } catch (error) {
           console.error("Error al cambiar estado destacado:", error);
           showAlert(
             "Error al cambiar el estado de la propiedad. Intenta de nuevo.",
-            "error"
+            "error",
           );
         }
-      }
+      },
     );
   };
 
@@ -195,6 +196,60 @@ export default function DetallePropiedadPage() {
       return Math.max(0, Math.min(15, value));
     }
     return 0;
+  };
+
+  /**
+   * Helper: Valida si un valor debe ser renderizado
+   * Retorna true solo si el valor es válido y no es un placeholder
+   *
+   * @param value - El valor a validar
+   * @param allowZero - Si se permite el valor 0 (por defecto false)
+   * @returns boolean - true si el valor debe ser mostrado
+   */
+  const shouldRenderValue = (
+    value: any,
+    allowZero: boolean = false,
+  ): boolean => {
+    // Valores nulos o undefined
+    if (value === null || value === undefined) return false;
+
+    // Strings vacíos o solo espacios
+    if (typeof value === "string") {
+      const trimmed = value.trim();
+      if (trimmed === "") return false;
+      if (trimmed === "0" && !allowZero) return false;
+      if (trimmed.toLowerCase() === "null") return false;
+      if (trimmed.toLowerCase() === "undefined") return false;
+      if (trimmed === "N/D") return false;
+      // Verifica si es solo ceros
+      if (/^0+$/.test(trimmed) && !allowZero) return false;
+      return true;
+    }
+
+    // Números
+    if (typeof value === "number") {
+      if (isNaN(value)) return false;
+      if (value === 0 && !allowZero) return false;
+      return true;
+    }
+
+    return false;
+  };
+
+  /**
+   * Helper: Obtiene un valor limpio y seguro para renderizar
+   *
+   * @param value - El valor a limpiar
+   * @returns string | number | null - El valor limpio o null si no es válido
+   */
+  const getSafeValue = (value: any): string | number | null => {
+    if (!shouldRenderValue(value)) return null;
+
+    if (typeof value === "string") {
+      return value.trim();
+    }
+
+    return value;
   };
 
   if (isLoading) {
@@ -313,11 +368,11 @@ export default function DetallePropiedadPage() {
                               setLikes(isLiked ? likes - 1 : likes + 1);
                               localStorage.setItem(
                                 `property-liked-${id}`,
-                                (!isLiked).toString()
+                                (!isLiked).toString(),
                               );
                               localStorage.setItem(
                                 `property-likes-${id}`,
-                                (isLiked ? likes - 1 : likes + 1).toString()
+                                (isLiked ? likes - 1 : likes + 1).toString(),
                               );
                             }}
                             className={`${
@@ -381,14 +436,14 @@ export default function DetallePropiedadPage() {
                         <div className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">
                           {(() => {
                             const bedroomsStr = String(
-                              property.bedrooms || ""
+                              property.bedrooms || "",
                             ).trim();
                             const isOnlyZeros = /^0+$/.test(bedroomsStr);
                             return property.bedrooms &&
                               Number(property.bedrooms) > 0 &&
                               !isOnlyZeros
                               ? property.bedrooms
-                              : "N/D";
+                              : "No aplica";
                           })()}
                         </div>
                         <div className="text-sm text-zinc-600 dark:text-zinc-400">
@@ -400,9 +455,9 @@ export default function DetallePropiedadPage() {
                         <div className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">
                           {(() => {
                             const bathrooms = renderSafeBathrooms(
-                              property.bathrooms
+                              property.bathrooms,
                             );
-                            return bathrooms > 0 ? bathrooms : "N/D";
+                            return bathrooms > 0 ? bathrooms : "No aplica";
                           })()}
                         </div>
                         <div className="text-sm text-zinc-600 dark:text-zinc-400">
@@ -441,22 +496,10 @@ export default function DetallePropiedadPage() {
 
                     {/* Información adicional de la propiedad */}
                     <div className="space-y-4 pt-4 border-t border-zinc-200 dark:border-zinc-700">
-                      {/* Ciudad - VERSIÓN ULTRA SEGURA */}
+                      {/* Ciudad */}
                       {(() => {
-                        const safeCity = renderSafeCity(property?.city);
-                        const cityStr = String(safeCity ?? "").trim();
-                        const isOnlyZeros = /^0+$/.test(
-                          cityStr.replace(/\D/g, "")
-                        );
-                        const isInvalid =
-                          !cityStr ||
-                          isOnlyZeros ||
-                          cityStr === "" ||
-                          cityStr.toLowerCase() === "null" ||
-                          cityStr.toLowerCase() === "undefined" ||
-                          cityStr === "N/D" ||
-                          cityStr === "0";
-                        if (isInvalid) return null;
+                        const value = getSafeValue(property.city);
+                        if (!value) return null;
                         return (
                           <div className="flex items-center space-x-3">
                             <MapPin className="w-5 h-5 text-custom-600 dark:text-custom-400" />
@@ -465,7 +508,7 @@ export default function DetallePropiedadPage() {
                                 Ciudad
                               </div>
                               <div className="text-sm text-zinc-600 dark:text-zinc-400">
-                                {cityStr}
+                                {value}
                               </div>
                             </div>
                           </div>
@@ -507,10 +550,10 @@ export default function DetallePropiedadPage() {
                       {/* Número de pisos - Solo para casas */}
                       {(() => {
                         const pisosStr = String(
-                          property.numero_pisos ?? ""
+                          property.numero_pisos ?? "",
                         ).trim();
                         const isOnlyZeros = /^0+$/.test(
-                          pisosStr.replace(/\D/g, "")
+                          pisosStr.replace(/\D/g, ""),
                         );
                         const isInvalid =
                           !pisosStr ||
@@ -556,14 +599,22 @@ export default function DetallePropiedadPage() {
                       })()}
 
                       {/* Piso - Solo para apartamentos */}
-                      {property.floor &&
-                        property.floor !== "N/A" &&
-                        (property.type === "Apartamento" ||
-                          property.type === "Dúplex" ||
-                          property.type === "Tríplex" ||
-                          property.type === "Apartaestudio" ||
-                          property.type === "Penthouse" ||
-                          property.type === "Edificio") && (
+                      {(() => {
+                        const value = getSafeValue(property.floor);
+                        if (
+                          !value ||
+                          value === "N/A" ||
+                          !(
+                            property.type === "Apartamento" ||
+                            property.type === "Dúplex" ||
+                            property.type === "Tríplex" ||
+                            property.type === "Apartaestudio" ||
+                            property.type === "Penthouse" ||
+                            property.type === "Edificio"
+                          )
+                        )
+                          return null;
+                        return (
                           <div className="flex items-center space-x-3">
                             <Building2 className="w-5 h-5 text-custom-600 dark:text-custom-400" />
                             <div>
@@ -571,29 +622,17 @@ export default function DetallePropiedadPage() {
                                 Piso
                               </div>
                               <div className="text-sm text-zinc-600 dark:text-zinc-400">
-                                Piso {property.floor}
+                                Piso {value}
                               </div>
                             </div>
                           </div>
-                        )}
-
-                      {/* Edad de la propiedad - NO mostrar si es "0", solo ceros, vacío, null, undefined, "N/D" */}
-                      {(() => {
-                        const edadStr = String(
-                          property.edad_propiedad ?? ""
-                        ).trim();
-                        const isOnlyZeros = /^0+$/.test(
-                          edadStr.replace(/\D/g, "")
                         );
-                        const isInvalid =
-                          !edadStr ||
-                          isOnlyZeros ||
-                          edadStr === "" ||
-                          edadStr.toLowerCase() === "null" ||
-                          edadStr.toLowerCase() === "undefined" ||
-                          edadStr === "N/D" ||
-                          edadStr === "0";
-                        if (isInvalid) return null;
+                      })()}
+
+                      {/* Edad de la propiedad */}
+                      {(() => {
+                        const value = getSafeValue(property.edad_propiedad);
+                        if (!value) return null;
                         return (
                           <div className="flex items-center space-x-3">
                             <Calendar className="w-5 h-5 text-custom-600 dark:text-custom-400" />
@@ -602,7 +641,7 @@ export default function DetallePropiedadPage() {
                                 Edad de la Propiedad
                               </div>
                               <div className="text-sm text-zinc-600 dark:text-zinc-400">
-                                {property.edad_propiedad}
+                                {value}
                               </div>
                             </div>
                           </div>
@@ -617,8 +656,12 @@ export default function DetallePropiedadPage() {
             {/* Secciones adicionales */}
             <div className="grid lg:grid-cols-2 gap-6">
               {/* Dimensiones del lote (solo para lotes) */}
-              {property.type === "Lote" &&
-                (property.lote_frente || property.lote_fondo) && (
+              {(() => {
+                if (property.type !== "Lote") return null;
+                if (!property.lote_frente && !property.lote_fondo) return null;
+                if (property.lote_frente === 0 && property.lote_fondo === 0)
+                  return null;
+                return (
                   <Card className="border-0 shadow-xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur">
                     <CardHeader>
                       <CardTitle className="flex items-center space-x-2 text-zinc-900 dark:text-zinc-100">
@@ -651,81 +694,84 @@ export default function DetallePropiedadPage() {
                       </div>
                     </CardContent>
                   </Card>
-                )}
+                );
+              })()}
 
               {/* Zonas comunes */}
-              {property.zonas_comunes && property.zonas_comunes.length > 0 && (
-                <Card className="border-0 shadow-xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur">
-                  <CardHeader>
-                    <CardTitle className="flex items-center space-x-2 text-zinc-900 dark:text-zinc-100">
-                      <Building2 className="w-5 h-5 text-custom-600" />
-                      <span>
-                        Zonas Comunes ({property.zonas_comunes.length})
-                      </span>
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="flex flex-wrap gap-2">
-                      {property.zonas_comunes.map((zona, index) => (
-                        <Badge
-                          key={`zona-${index}-${zona}`}
-                          variant="secondary"
-                          className="bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300 border-green-200 dark:border-green-800"
-                        >
-                          {zona}
-                        </Badge>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              )}
-
-              {/* Área construida */}
-              {property.area_construida &&
-                property.area_construida.filter((area) => {
-                  const areaStr = String(area || "").trim();
-                  return areaStr !== "" && !/^0+$/.test(areaStr);
-                }).length > 0 && (
+              {(() => {
+                if (
+                  !property.zonas_comunes ||
+                  property.zonas_comunes.length === 0
+                )
+                  return null;
+                return (
                   <Card className="border-0 shadow-xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur">
                     <CardHeader>
                       <CardTitle className="flex items-center space-x-2 text-zinc-900 dark:text-zinc-100">
-                        <Hammer className="w-5 h-5 text-custom-600" />
+                        <Building2 className="w-5 h-5 text-custom-600" />
                         <span>
-                          Área Construida (
-                          {
-                            property.area_construida.filter((area) => {
-                              const areaStr = String(area || "").trim();
-                              return areaStr !== "" && !/^0+$/.test(areaStr);
-                            }).length
-                          }
-                          )
+                          Zonas Comunes ({property.zonas_comunes.length})
                         </span>
                       </CardTitle>
                     </CardHeader>
                     <CardContent>
                       <div className="flex flex-wrap gap-2">
-                        {property.area_construida
-                          .filter((area) => {
-                            const areaStr = String(area || "").trim();
-                            return areaStr !== "" && !/^0+$/.test(areaStr);
-                          })
-                          .map((area, index) => (
-                            <Badge
-                              key={`area-${index}-${area}`}
-                              variant="secondary"
-                              className="bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300 border-blue-200 dark:border-blue-800"
-                            >
-                              {area}
-                            </Badge>
-                          ))}
+                        {property.zonas_comunes.map((zona, index) => (
+                          <Badge
+                            key={`zona-${index}-${zona}`}
+                            variant="secondary"
+                            className="bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300 border-green-200 dark:border-green-800"
+                          >
+                            {zona}
+                          </Badge>
+                        ))}
                       </div>
                     </CardContent>
                   </Card>
-                )}
+                );
+              })()}
+
+              {/* Área construida */}
+              {(() => {
+                if (!property.area_construida) return null;
+                const validAreas = property.area_construida.filter((area) => {
+                  const areaStr = String(area || "").trim();
+                  return areaStr !== "" && !/^0+$/.test(areaStr);
+                });
+                if (validAreas.length === 0) return null;
+                return (
+                  <Card className="border-0 shadow-xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur">
+                    <CardHeader>
+                      <CardTitle className="flex items-center space-x-2 text-zinc-900 dark:text-zinc-100">
+                        <Hammer className="w-5 h-5 text-custom-600" />
+                        <span>Área Construida ({validAreas.length})</span>
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="flex flex-wrap gap-2">
+                        {validAreas.map((area, index) => (
+                          <Badge
+                            key={`area-${index}-${area}`}
+                            variant="secondary"
+                            className="bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300 border-blue-200 dark:border-blue-800"
+                          >
+                            {area}
+                          </Badge>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                );
+              })()}
 
               {/* Formas de pago */}
-              {property.formas_de_pago &&
-                property.formas_de_pago.length > 0 && (
+              {(() => {
+                if (
+                  !property.formas_de_pago ||
+                  property.formas_de_pago.length === 0
+                )
+                  return null;
+                return (
                   <Card className="border-0 shadow-xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur">
                     <CardHeader>
                       <CardTitle className="flex items-center space-x-2 text-zinc-900 dark:text-zinc-100">
@@ -747,51 +793,57 @@ export default function DetallePropiedadPage() {
                       </div>
                     </CardContent>
                   </Card>
-                )}
+                );
+              })()}
 
               {/* Información de permutas */}
-              {property.tipo_permuta && (
-                <Card className="border-0 shadow-xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur">
-                  <CardHeader>
-                    <CardTitle className="flex items-center space-x-2 text-zinc-900 dark:text-zinc-100">
-                      <ArrowRightLeft className="w-5 h-5 text-custom-600" />
-                      <span>Acepta Permutas</span>
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-3">
-                      <div className="flex justify-between">
-                        <span className="text-zinc-600 dark:text-zinc-400">
-                          Tipo:
-                        </span>
-                        <span className="font-medium text-zinc-900 dark:text-zinc-100">
-                          {property.tipo_permuta}
-                        </span>
+              {(() => {
+                if (!property.tipo_permuta) return null;
+                return (
+                  <Card className="border-0 shadow-xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur">
+                    <CardHeader>
+                      <CardTitle className="flex items-center space-x-2 text-zinc-900 dark:text-zinc-100">
+                        <ArrowRightLeft className="w-5 h-5 text-custom-600" />
+                        <span>Acepta Permutas</span>
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-3">
+                        <div className="flex justify-between">
+                          <span className="text-zinc-600 dark:text-zinc-400">
+                            Tipo:
+                          </span>
+                          <span className="font-medium text-zinc-900 dark:text-zinc-100">
+                            {property.tipo_permuta}
+                          </span>
+                        </div>
+                        {property.permuta_porcentaje &&
+                          property.permuta_porcentaje > 0 && (
+                            <div className="flex justify-between">
+                              <span className="text-zinc-600 dark:text-zinc-400">
+                                Porcentaje que cubre:
+                              </span>
+                              <span className="font-medium text-zinc-900 dark:text-zinc-100">
+                                {property.permuta_porcentaje}%
+                              </span>
+                            </div>
+                          )}
+                        {property.permuta_monto_max &&
+                          property.permuta_monto_max > 0 && (
+                            <div className="flex justify-between">
+                              <span className="text-zinc-600 dark:text-zinc-400">
+                                Monto máximo:
+                              </span>
+                              <span className="font-medium text-zinc-900 dark:text-zinc-100">
+                                {formatCurrency(property.permuta_monto_max)}
+                              </span>
+                            </div>
+                          )}
                       </div>
-                      {property.permuta_porcentaje && (
-                        <div className="flex justify-between">
-                          <span className="text-zinc-600 dark:text-zinc-400">
-                            Porcentaje que cubre:
-                          </span>
-                          <span className="font-medium text-zinc-900 dark:text-zinc-100">
-                            {property.permuta_porcentaje}%
-                          </span>
-                        </div>
-                      )}
-                      {property.permuta_monto_max && (
-                        <div className="flex justify-between">
-                          <span className="text-zinc-600 dark:text-zinc-400">
-                            Monto máximo:
-                          </span>
-                          <span className="font-medium text-zinc-900 dark:text-zinc-100">
-                            {formatCurrency(property.permuta_monto_max)}
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                  </CardContent>
-                </Card>
-              )}
+                    </CardContent>
+                  </Card>
+                );
+              })()}
             </div>
 
             {/* Detalles Completos de la Propiedad */}
@@ -826,7 +878,7 @@ export default function DetallePropiedadPage() {
                     )}
                     {(() => {
                       const value = String(
-                        property.matricula_inmobiliaria || ""
+                        property.matricula_inmobiliaria || "",
                       ).trim();
                       if (
                         !value ||
@@ -989,33 +1041,42 @@ export default function DetallePropiedadPage() {
                       Información Técnica
                     </h4>
 
-                    {property.construction_year && (
-                      <div className="flex items-start space-x-2">
-                        <Calendar className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
-                        <div className="min-w-0 flex-1">
-                          <div className="text-xs text-gray-500 dark:text-gray-400">
-                            Año construcción
-                          </div>
-                          <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
-                            {property.construction_year}
+                    {(() => {
+                      const value = getSafeValue(property.construction_year);
+                      if (!value) return null;
+                      return (
+                        <div className="flex items-start space-x-2">
+                          <Calendar className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
+                          <div className="min-w-0 flex-1">
+                            <div className="text-xs text-gray-500 dark:text-gray-400">
+                              Año construcción
+                            </div>
+                            <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                              {value}
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    )}
+                      );
+                    })()}
 
-                    {property.bedrooms && property.bedrooms > 0 && (
-                      <div className="flex items-start space-x-2">
-                        <Bed className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
-                        <div className="min-w-0 flex-1">
-                          <div className="text-xs text-gray-500 dark:text-gray-400">
-                            Habitaciones
-                          </div>
-                          <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
-                            {property.bedrooms}
+                    {(() => {
+                      const value = property.bedrooms;
+                      if (!shouldRenderValue(value) || Number(value) <= 0)
+                        return null;
+                      return (
+                        <div className="flex items-start space-x-2">
+                          <Bed className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
+                          <div className="min-w-0 flex-1">
+                            <div className="text-xs text-gray-500 dark:text-gray-400">
+                              Habitaciones
+                            </div>
+                            <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                              {value}
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    )}
+                      );
+                    })()}
 
                     {(() => {
                       const bathrooms = renderSafeBathrooms(property.bathrooms);
@@ -1064,7 +1125,7 @@ export default function DetallePropiedadPage() {
 
                     {(() => {
                       const builtAreaStr = String(
-                        property.built_area || ""
+                        property.built_area || "",
                       ).trim();
                       const isOnlyZeros = /^0+$/.test(builtAreaStr);
                       const isInvalid =
@@ -1093,7 +1154,7 @@ export default function DetallePropiedadPage() {
 
                     {(() => {
                       const privateAreaStr = String(
-                        property.private_area || ""
+                        property.private_area || "",
                       ).trim();
                       const isOnlyZeros = /^0+$/.test(privateAreaStr);
                       const isInvalid =
@@ -1161,19 +1222,23 @@ export default function DetallePropiedadPage() {
                       ) : null;
                     })()}
 
-                    {property.stratum && property.stratum !== "N/D" && (
-                      <div className="flex items-start space-x-2">
-                        <Star className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
-                        <div className="min-w-0 flex-1">
-                          <div className="text-xs text-gray-500 dark:text-gray-400">
-                            Estrato
-                          </div>
-                          <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
-                            {property.stratum}
+                    {(() => {
+                      const value = getSafeValue(property.stratum);
+                      if (!value || value === "N/D") return null;
+                      return (
+                        <div className="flex items-start space-x-2">
+                          <Star className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
+                          <div className="min-w-0 flex-1">
+                            <div className="text-xs text-gray-500 dark:text-gray-400">
+                              Estrato
+                            </div>
+                            <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                              {value}
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    )}
+                      );
+                    })()}
                   </div>
 
                   {/* Servicios y Amenidades */}
@@ -1185,10 +1250,10 @@ export default function DetallePropiedadPage() {
 
                     {(() => {
                       const parkingStr = String(
-                        property.parking_spaces ?? ""
+                        property.parking_spaces ?? "",
                       ).trim();
                       const isOnlyZeros = /^0+$/.test(
-                        parkingStr.replace(/\D/g, "")
+                        parkingStr.replace(/\D/g, ""),
                       );
                       const isInvalid =
                         !parkingStr ||
@@ -1218,10 +1283,10 @@ export default function DetallePropiedadPage() {
                     {/* Tipo parqueadero - NO mostrar si es "0", solo ceros, vacío, null, undefined, "N/D" */}
                     {(() => {
                       const tipoStr = String(
-                        property.parking_type ?? ""
+                        property.parking_type ?? "",
                       ).trim();
                       const isOnlyZeros = /^0+$/.test(
-                        tipoStr.replace(/\D/g, "")
+                        tipoStr.replace(/\D/g, ""),
                       );
                       const isInvalid =
                         !tipoStr ||
@@ -1273,7 +1338,7 @@ export default function DetallePropiedadPage() {
                               {property.zonas_comunes
                                 .filter((amenidad) => {
                                   const amenidadStr = String(
-                                    amenidad || ""
+                                    amenidad || "",
                                   ).trim();
                                   return (
                                     amenidadStr !== "" &&
@@ -1295,19 +1360,9 @@ export default function DetallePropiedadPage() {
                       )}
 
                     {(() => {
-                      const estadoStr = String(
-                        property.edad_propiedad || ""
-                      ).trim();
-                      const isOnlyZeros = /^0+$/.test(estadoStr);
-                      const isInvalid =
-                        !estadoStr ||
-                        isOnlyZeros ||
-                        estadoStr === "" ||
-                        estadoStr.toLowerCase() === "null" ||
-                        estadoStr.toLowerCase() === "undefined" ||
-                        estadoStr === "N/D" ||
-                        estadoStr === "0";
-                      return !isInvalid ? (
+                      const value = getSafeValue(property.edad_propiedad);
+                      if (!value) return null;
+                      return (
                         <div className="flex items-start space-x-2">
                           <CheckCircle className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
                           <div className="min-w-0 flex-1">
@@ -1315,11 +1370,11 @@ export default function DetallePropiedadPage() {
                               Estado de la propiedad
                             </div>
                             <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
-                              {estadoStr}
+                              {value}
                             </div>
                           </div>
                         </div>
-                      ) : null;
+                      );
                     })()}
 
                     {property.rental_price &&
@@ -1339,298 +1394,357 @@ export default function DetallePropiedadPage() {
                   </div>
 
                   {/* Información Adicional */}
-                  {(property.country ||
-                    property.department ||
-                    property.city ||
-                    property.address ||
-                    property.phone) && (
-                    <div className="space-y-4 md:col-span-2 lg:col-span-1">
-                      <h4 className="font-semibold text-zinc-900 dark:text-zinc-100 flex items-center mb-3">
-                        <MapPin className="w-4 h-4 mr-2 text-red-600" />
-                        Ubicación y Contacto
-                      </h4>
+                  {(() => {
+                    const hasLocation =
+                      getSafeValue(property.country) ||
+                      getSafeValue(property.department) ||
+                      getSafeValue(property.city) ||
+                      getSafeValue(property.address) ||
+                      getSafeValue(property.phone);
+                    if (!hasLocation) return null;
+                    return (
+                      <div className="space-y-4 md:col-span-2 lg:col-span-1">
+                        <h4 className="font-semibold text-zinc-900 dark:text-zinc-100 flex items-center mb-3">
+                          <MapPin className="w-4 h-4 mr-2 text-red-600" />
+                          Ubicación y Contacto
+                        </h4>
 
-                      {property.country && (
-                        <div className="flex items-start space-x-2">
-                          <MapPin className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
-                          <div className="min-w-0 flex-1">
-                            <div className="text-xs text-gray-500 dark:text-gray-400">
-                              País
-                            </div>
-                            <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
-                              {property.country}
-                            </div>
-                          </div>
-                        </div>
-                      )}
-
-                      {property.department && (
-                        <div className="flex items-start space-x-2">
-                          <MapPin className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
-                          <div className="min-w-0 flex-1">
-                            <div className="text-xs text-gray-500 dark:text-gray-400">
-                              Departamento
-                            </div>
-                            <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
-                              {property.department}
-                            </div>
-                          </div>
-                        </div>
-                      )}
-
-                      {(() => {
-                        const cityValue = property.city;
-                        // Filtros ultra estrictos
-                        if (!cityValue) return null;
-                        const cityStr = String(cityValue).trim();
-                        if (cityStr === "" || cityStr === "0") return null;
-
-                        return (
-                          <div className="flex items-start space-x-2">
-                            <MapPin className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
-                            <div className="min-w-0 flex-1">
-                              <div className="text-xs text-gray-500 dark:text-gray-400">
-                                Ciudad
-                              </div>
-                              <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
-                                {cityStr}
+                        {(() => {
+                          const value = getSafeValue(property.country);
+                          if (!value) return null;
+                          return (
+                            <div className="flex items-start space-x-2">
+                              <MapPin className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
+                              <div className="min-w-0 flex-1">
+                                <div className="text-xs text-gray-500 dark:text-gray-400">
+                                  País
+                                </div>
+                                <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                                  {value}
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        );
-                      })()}
+                          );
+                        })()}
 
-                      {property.address && (
-                        <div className="flex items-start space-x-2">
-                          <MapPin className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
-                          <div className="min-w-0 flex-1">
-                            <div className="text-xs text-gray-500 dark:text-gray-400">
-                              Dirección
+                        {(() => {
+                          const value = getSafeValue(property.department);
+                          if (!value) return null;
+                          return (
+                            <div className="flex items-start space-x-2">
+                              <MapPin className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
+                              <div className="min-w-0 flex-1">
+                                <div className="text-xs text-gray-500 dark:text-gray-400">
+                                  Departamento
+                                </div>
+                                <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                                  {value}
+                                </div>
+                              </div>
                             </div>
-                            <div className="text-sm font-medium text-gray-900 dark:text-gray-100 break-words">
-                              {property.address}
-                            </div>
-                          </div>
-                        </div>
-                      )}
+                          );
+                        })()}
 
-                      {property.phone && (
-                        <div className="flex items-start space-x-2">
-                          <Phone className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
-                          <div className="min-w-0 flex-1">
-                            <div className="text-xs text-gray-500 dark:text-gray-400">
-                              Teléfono
+                        {(() => {
+                          const value = getSafeValue(property.city);
+                          if (!value) return null;
+                          return (
+                            <div className="flex items-start space-x-2">
+                              <MapPin className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
+                              <div className="min-w-0 flex-1">
+                                <div className="text-xs text-gray-500 dark:text-gray-400">
+                                  Ciudad
+                                </div>
+                                <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                                  {value}
+                                </div>
+                              </div>
                             </div>
-                            <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
-                              {property.phone}
+                          );
+                        })()}
+
+                        {(() => {
+                          const value = getSafeValue(property.address);
+                          if (!value) return null;
+                          return (
+                            <div className="flex items-start space-x-2">
+                              <MapPin className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
+                              <div className="min-w-0 flex-1">
+                                <div className="text-xs text-gray-500 dark:text-gray-400">
+                                  Dirección
+                                </div>
+                                <div className="text-sm font-medium text-gray-900 dark:text-gray-100 break-words">
+                                  {value}
+                                </div>
+                              </div>
                             </div>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  )}
+                          );
+                        })()}
+
+                        {(() => {
+                          const value = getSafeValue(property.phone);
+                          if (!value) return null;
+                          return (
+                            <div className="flex items-start space-x-2">
+                              <Phone className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
+                              <div className="min-w-0 flex-1">
+                                <div className="text-xs text-gray-500 dark:text-gray-400">
+                                  Teléfono
+                                </div>
+                                <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                                  {value}
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        })()}
+                      </div>
+                    );
+                  })()}
 
                   {/* Información adicional */}
-                  {(property.matricula_inmobiliaria ||
-                    property.publication_status ||
-                    property.business_type) && (
-                    <div className="space-y-4">
-                      <h4 className="font-semibold text-zinc-900 dark:text-zinc-100 flex items-center mb-3">
-                        <FileText className="w-4 h-4 mr-2 text-blue-600" />
-                        Información del Inmueble
-                      </h4>
+                  {(() => {
+                    const hasInfo =
+                      getSafeValue(property.matricula_inmobiliaria) ||
+                      getSafeValue(property.publication_status) ||
+                      getSafeValue(property.business_type);
+                    if (!hasInfo) return null;
+                    return (
+                      <div className="space-y-4">
+                        <h4 className="font-semibold text-zinc-900 dark:text-zinc-100 flex items-center mb-3">
+                          <FileText className="w-4 h-4 mr-2 text-blue-600" />
+                          Información del Inmueble
+                        </h4>
 
-                      {property.matricula_inmobiliaria && (
-                        <div className="flex items-start space-x-2">
-                          <FileText className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
-                          <div className="min-w-0 flex-1">
-                            <div className="text-xs text-gray-500 dark:text-gray-400">
-                              Matrícula inmobiliaria
+                        {(() => {
+                          const value = getSafeValue(
+                            property.matricula_inmobiliaria,
+                          );
+                          if (!value) return null;
+                          return (
+                            <div className="flex items-start space-x-2">
+                              <FileText className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
+                              <div className="min-w-0 flex-1">
+                                <div className="text-xs text-gray-500 dark:text-gray-400">
+                                  Matrícula inmobiliaria
+                                </div>
+                                <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                                  {value}
+                                </div>
+                              </div>
                             </div>
-                            <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
-                              {property.matricula_inmobiliaria}
-                            </div>
-                          </div>
-                        </div>
-                      )}
+                          );
+                        })()}
 
-                      {property.publication_status && (
-                        <div className="flex items-start space-x-2">
-                          <Star className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
-                          <div className="min-w-0 flex-1">
-                            <div className="text-xs text-gray-500 dark:text-gray-400">
-                              Estado de publicación
+                        {(() => {
+                          const value = getSafeValue(
+                            property.publication_status,
+                          );
+                          if (!value) return null;
+                          return (
+                            <div className="flex items-start space-x-2">
+                              <Star className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
+                              <div className="min-w-0 flex-1">
+                                <div className="text-xs text-gray-500 dark:text-gray-400">
+                                  Estado de publicación
+                                </div>
+                                <Badge
+                                  variant={
+                                    property.publication_status === "Destacado"
+                                      ? "default"
+                                      : "secondary"
+                                  }
+                                  className="text-xs"
+                                >
+                                  {property.publication_status}
+                                </Badge>
+                              </div>
                             </div>
-                            <Badge
-                              variant={
-                                property.publication_status === "Destacado"
-                                  ? "default"
-                                  : "secondary"
-                              }
-                              className="text-xs"
-                            >
-                              {property.publication_status}
-                            </Badge>
-                          </div>
-                        </div>
-                      )}
+                          );
+                        })()}
 
-                      {property.zone_neighborhood && (
-                        <div className="flex items-start space-x-2">
-                          <MapPin className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
-                          <div className="min-w-0 flex-1">
-                            <div className="text-xs text-gray-500 dark:text-gray-400">
-                              Zona/Barrio
+                        {(() => {
+                          const value = getSafeValue(
+                            property.zone_neighborhood,
+                          );
+                          if (!value) return null;
+                          return (
+                            <div className="flex items-start space-x-2">
+                              <MapPin className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
+                              <div className="min-w-0 flex-1">
+                                <div className="text-xs text-gray-500 dark:text-gray-400">
+                                  Zona/Barrio
+                                </div>
+                                <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                                  {property.zone_neighborhood}
+                                </div>
+                              </div>
                             </div>
-                            <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
-                              {property.zone_neighborhood}
-                            </div>
-                          </div>
-                        </div>
-                      )}
+                          );
+                        })()}
 
-                      {property.postal_code && (
-                        <div className="flex items-start space-x-2">
-                          <MapPin className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
-                          <div className="min-w-0 flex-1">
-                            <div className="text-xs text-gray-500 dark:text-gray-400">
-                              Código postal
+                        {(() => {
+                          const value = getSafeValue(property.postal_code);
+                          if (!value) return null;
+                          return (
+                            <div className="flex items-start space-x-2">
+                              <MapPin className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
+                              <div className="min-w-0 flex-1">
+                                <div className="text-xs text-gray-500 dark:text-gray-400">
+                                  Código postal
+                                </div>
+                                <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                                  {property.postal_code}
+                                </div>
+                              </div>
                             </div>
-                            <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
-                              {property.postal_code}
-                            </div>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  )}
+                          );
+                        })()}
+                      </div>
+                    );
+                  })()}
 
                   {/* Otros campos adicionales */}
-                  {(property.conjunto_cerrado ||
-                    property.valor_administracion ||
-                    property.video_url ||
-                    property.virtual_tour) && (
-                    <div className="space-y-4">
-                      <h4 className="font-semibold text-zinc-900 dark:text-zinc-100 flex items-center mb-3">
-                        <Building2 className="w-4 h-4 mr-2 text-green-600" />
-                        Características Adicionales
-                      </h4>
+                  {(() => {
+                    const hasOthers =
+                      getSafeValue(property.conjunto_cerrado) ||
+                      (property.valor_administracion &&
+                        Number(property.valor_administracion) > 0) ||
+                      getSafeValue(property.video_url) ||
+                      getSafeValue(property.virtual_tour);
+                    if (!hasOthers) return null;
+                    return (
+                      <div className="space-y-4">
+                        <h4 className="font-semibold text-zinc-900 dark:text-zinc-100 flex items-center mb-3">
+                          <Building2 className="w-4 h-4 mr-2 text-green-600" />
+                          Características Adicionales
+                        </h4>
 
-                      {property.conjunto_cerrado && (
-                        <div className="flex items-start space-x-2">
-                          <Shield className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
-                          <div className="min-w-0 flex-1">
-                            <div className="text-xs text-gray-500 dark:text-gray-400">
-                              Conjunto cerrado
+                        {(() => {
+                          const value = getSafeValue(property.conjunto_cerrado);
+                          if (!value) return null;
+                          return (
+                            <div className="flex items-start space-x-2">
+                              <Shield className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
+                              <div className="min-w-0 flex-1">
+                                <div className="text-xs text-gray-500 dark:text-gray-400">
+                                  Conjunto cerrado
+                                </div>
+                                <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                                  Sí
+                                </div>
+                              </div>
                             </div>
-                            <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
-                              Sí
-                            </div>
-                          </div>
-                        </div>
-                      )}
+                          );
+                        })()}
 
-                      {property.valor_administracion &&
-                        property.valor_administracion > 0 && (
-                          <div className="flex items-start space-x-2">
-                            <DollarSign className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
-                            <div className="min-w-0 flex-1">
-                              <div className="text-xs text-gray-500 dark:text-gray-400">
-                                Valor administración
+                        {(() => {
+                          const value = property.valor_administracion;
+                          if (!value || Number(value) <= 0) return null;
+                          return (
+                            <div className="flex items-start space-x-2">
+                              <DollarSign className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
+                              <div className="min-w-0 flex-1">
+                                <div className="text-xs text-gray-500 dark:text-gray-400">
+                                  Valor administración
+                                </div>
+                                <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                                  {formatCurrency(
+                                    property.valor_administracion!,
+                                  )}
+                                </div>
                               </div>
-                              <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
-                                {formatCurrency(property.valor_administracion)}
-                              </div>
+                            </div>
+                          );
+                        })()}
+
+                        {/* Información de medios disponibles */}
+                        {((images && images.length > 0) ||
+                          (videos && videos.length > 0) ||
+                          property.video_url ||
+                          property.virtual_tour) && (
+                          <div className="space-y-3">
+                            <div className="flex items-center space-x-2 mb-3">
+                              <Camera className="w-4 h-4 text-purple-600" />
+                              <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+                                Medios Disponibles
+                              </span>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-3">
+                              {images && images.length > 0 && (
+                                <div className="flex items-center space-x-2 p-2 bg-blue-50 dark:bg-blue-900/20 rounded-md">
+                                  <ImageIcon className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                                  <div>
+                                    <div className="text-xs text-blue-600 dark:text-blue-400 font-medium">
+                                      {images.length}{" "}
+                                      {images.length === 1
+                                        ? "Imagen"
+                                        : "Imágenes"}
+                                    </div>
+                                    <div className="text-xs text-zinc-500 dark:text-zinc-400">
+                                      En la galería superior
+                                    </div>
+                                  </div>
+                                </div>
+                              )}
+
+                              {videos && videos.length > 0 && (
+                                <div className="flex items-center space-x-2 p-2 bg-red-50 dark:bg-red-900/20 rounded-md">
+                                  <Video className="w-4 h-4 text-red-600 dark:text-red-400" />
+                                  <div>
+                                    <div className="text-xs text-red-600 dark:text-red-400 font-medium">
+                                      {videos.length}{" "}
+                                      {videos.length === 1 ? "Video" : "Videos"}
+                                    </div>
+                                    <div className="text-xs text-zinc-500 dark:text-zinc-400">
+                                      En la galería superior
+                                    </div>
+                                  </div>
+                                </div>
+                              )}
+
+                              {property.video_url && (
+                                <div className="flex items-center space-x-2 p-2 bg-green-50 dark:bg-green-900/20 rounded-md">
+                                  <PlayCircle className="w-4 h-4 text-green-600 dark:text-green-400" />
+                                  <div>
+                                    <div className="text-xs text-green-600 dark:text-green-400 font-medium">
+                                      Video Principal
+                                    </div>
+                                    <div className="text-xs text-zinc-500 dark:text-zinc-400">
+                                      Incluido en galería
+                                    </div>
+                                  </div>
+                                </div>
+                              )}
+
+                              {property.virtual_tour && (
+                                <div className="flex items-center space-x-2 p-2 bg-purple-50 dark:bg-purple-900/20 rounded-md">
+                                  <Eye className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+                                  <div>
+                                    <div className="text-xs text-purple-600 dark:text-purple-400 font-medium">
+                                      Tour Virtual
+                                    </div>
+                                    <div className="text-xs text-zinc-500 dark:text-zinc-400">
+                                      Incluido en galería
+                                    </div>
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+
+                            <div className="mt-3 p-3 bg-custom-50 dark:bg-custom-900/20 rounded-md border border-custom-200 dark:border-custom-800">
+                              <p className="text-xs text-custom-700 dark:text-custom-300 text-center">
+                                <Eye className="w-3 h-3 inline mr-1" />
+                                Todos los medios están disponibles en la galería
+                                interactiva superior
+                              </p>
                             </div>
                           </div>
                         )}
-
-                      {/* Información de medios disponibles */}
-                      {((images && images.length > 0) ||
-                        (videos && videos.length > 0) ||
-                        property.video_url ||
-                        property.virtual_tour) && (
-                        <div className="space-y-3">
-                          <div className="flex items-center space-x-2 mb-3">
-                            <Camera className="w-4 h-4 text-purple-600" />
-                            <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
-                              Medios Disponibles
-                            </span>
-                          </div>
-
-                          <div className="grid grid-cols-2 gap-3">
-                            {images && images.length > 0 && (
-                              <div className="flex items-center space-x-2 p-2 bg-blue-50 dark:bg-blue-900/20 rounded-md">
-                                <ImageIcon className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-                                <div>
-                                  <div className="text-xs text-blue-600 dark:text-blue-400 font-medium">
-                                    {images.length}{" "}
-                                    {images.length === 1
-                                      ? "Imagen"
-                                      : "Imágenes"}
-                                  </div>
-                                  <div className="text-xs text-zinc-500 dark:text-zinc-400">
-                                    En la galería superior
-                                  </div>
-                                </div>
-                              </div>
-                            )}
-
-                            {videos && videos.length > 0 && (
-                              <div className="flex items-center space-x-2 p-2 bg-red-50 dark:bg-red-900/20 rounded-md">
-                                <Video className="w-4 h-4 text-red-600 dark:text-red-400" />
-                                <div>
-                                  <div className="text-xs text-red-600 dark:text-red-400 font-medium">
-                                    {videos.length}{" "}
-                                    {videos.length === 1 ? "Video" : "Videos"}
-                                  </div>
-                                  <div className="text-xs text-zinc-500 dark:text-zinc-400">
-                                    En la galería superior
-                                  </div>
-                                </div>
-                              </div>
-                            )}
-
-                            {property.video_url && (
-                              <div className="flex items-center space-x-2 p-2 bg-green-50 dark:bg-green-900/20 rounded-md">
-                                <PlayCircle className="w-4 h-4 text-green-600 dark:text-green-400" />
-                                <div>
-                                  <div className="text-xs text-green-600 dark:text-green-400 font-medium">
-                                    Video Principal
-                                  </div>
-                                  <div className="text-xs text-zinc-500 dark:text-zinc-400">
-                                    Incluido en galería
-                                  </div>
-                                </div>
-                              </div>
-                            )}
-
-                            {property.virtual_tour && (
-                              <div className="flex items-center space-x-2 p-2 bg-purple-50 dark:bg-purple-900/20 rounded-md">
-                                <Eye className="w-4 h-4 text-purple-600 dark:text-purple-400" />
-                                <div>
-                                  <div className="text-xs text-purple-600 dark:text-purple-400 font-medium">
-                                    Tour Virtual
-                                  </div>
-                                  <div className="text-xs text-zinc-500 dark:text-zinc-400">
-                                    Incluido en galería
-                                  </div>
-                                </div>
-                              </div>
-                            )}
-                          </div>
-
-                          <div className="mt-3 p-3 bg-custom-50 dark:bg-custom-900/20 rounded-md border border-custom-200 dark:border-custom-800">
-                            <p className="text-xs text-custom-700 dark:text-custom-300 text-center">
-                              <Eye className="w-3 h-3 inline mr-1" />
-                              Todos los medios están disponibles en la galería
-                              interactiva superior
-                            </p>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  )}
+                      </div>
+                    );
+                  })()}
                 </div>
               </CardContent>
             </Card>
@@ -1685,7 +1799,7 @@ export default function DetallePropiedadPage() {
                       href={
                         property.phone
                           ? `https://api.whatsapp.com/send?phone=${encodeURIComponent(
-                              property.phone.replace(/\s+/g, "")
+                              property.phone.replace(/\s+/g, ""),
                             )}`
                           : "#"
                       }
@@ -1743,7 +1857,7 @@ export default function DetallePropiedadPage() {
                     {(() => {
                       const tipoStr = String(property.type ?? "").trim();
                       const isOnlyZeros = /^0+$/.test(
-                        tipoStr.replace(/\D/g, "")
+                        tipoStr.replace(/\D/g, ""),
                       );
                       const isInvalid =
                         !tipoStr ||
@@ -1768,7 +1882,7 @@ export default function DetallePropiedadPage() {
                     {(() => {
                       const statusStr = String(property.status || "").trim();
                       const isOnlyZeros = /^0+$/.test(
-                        statusStr.replace(/\D/g, "")
+                        statusStr.replace(/\D/g, ""),
                       );
                       const isInvalid =
                         !statusStr ||
@@ -1790,25 +1904,15 @@ export default function DetallePropiedadPage() {
                     })()}
                   </div>
                   {(() => {
-                    const safeCity = renderSafeCity(property?.city);
-                    const cityStr = String(safeCity ?? "").trim();
-                    const isOnlyZeros = /^0+$/.test(cityStr.replace(/\D/g, ""));
-                    const isInvalid =
-                      !cityStr ||
-                      isOnlyZeros ||
-                      cityStr === "" ||
-                      cityStr.toLowerCase() === "null" ||
-                      cityStr.toLowerCase() === "undefined" ||
-                      cityStr === "N/D" ||
-                      cityStr === "0";
-                    if (isInvalid) return null;
+                    const value = getSafeValue(property.city);
+                    if (!value) return null;
                     return (
                       <div className="flex justify-between items-center">
                         <span className="text-zinc-600 dark:text-zinc-400">
                           Ciudad
                         </span>
                         <span className="font-semibold text-zinc-900 dark:text-zinc-100">
-                          {cityStr}
+                          {value}
                         </span>
                       </div>
                     );
@@ -1907,6 +2011,11 @@ export default function DetallePropiedadPage() {
               )}
             </div>
           </div>
+        </div>
+
+        {/* Sección de Comentarios */}
+        <div className="mt-8">
+          <PropertyComments propertyId={id as string} />
         </div>
       </div>
     </div>

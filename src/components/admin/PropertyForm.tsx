@@ -397,7 +397,7 @@ export default function PropertyForm({
                         coordinates: { lat, lng },
                       },
                       null,
-                      2
+                      2,
                     )}
                   </pre>
 
@@ -516,7 +516,7 @@ export default function PropertyForm({
                           onValueChange={(value) =>
                             handleSpecialFieldChange(
                               "publication_status",
-                              value as PublicationStatus
+                              value as PublicationStatus,
                             )
                           }
                         >
@@ -547,7 +547,7 @@ export default function PropertyForm({
                           onValueChange={(value) =>
                             handleSpecialFieldChange(
                               "type",
-                              value as PropertyType
+                              value as PropertyType,
                             )
                           }
                         >
@@ -607,31 +607,72 @@ export default function PropertyForm({
                         >
                           Administración
                         </Label>
-                        <Input
-                          id="valor_administracion"
-                          type="text"
-                          name="valor_administracion"
+                        <Select
+                          name="valor_administracion_type"
                           value={
-                            formData.valor_administracion
-                              ? formatCurrencyInput(
-                                  formData.valor_administracion.toString()
-                                )
-                              : ""
+                            formData.valor_administracion === -1
+                              ? "no_aplica"
+                              : "con_valor"
                           }
-                          onChange={(e) => {
-                            const numericValue = parseCurrency(e.target.value);
-                            handleInputChange({
-                              target: {
-                                name: "valor_administracion",
-                                value: numericValue
-                                  ? parseInt(numericValue)
-                                  : 0,
-                              },
-                            } as any);
+                          onValueChange={(value) => {
+                            if (value === "no_aplica") {
+                              handleInputChange({
+                                target: {
+                                  name: "valor_administracion",
+                                  value: -1,
+                                },
+                              } as any);
+                            } else {
+                              handleInputChange({
+                                target: {
+                                  name: "valor_administracion",
+                                  value: 0,
+                                },
+                              } as any);
+                            }
                           }}
-                          className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400"
-                          placeholder="Ingresa el valor de administración"
-                        />
+                        >
+                          <SelectTrigger className="mt-1 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400">
+                            <SelectValue placeholder="Seleccionar opción" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="con_valor">
+                              Tiene valor de administración
+                            </SelectItem>
+                            <SelectItem value="no_aplica">No aplica</SelectItem>
+                          </SelectContent>
+                        </Select>
+
+                        {formData.valor_administracion !== -1 && (
+                          <Input
+                            id="valor_administracion"
+                            type="text"
+                            name="valor_administracion"
+                            value={
+                              formData.valor_administracion &&
+                              formData.valor_administracion > 0
+                                ? formatCurrencyInput(
+                                    formData.valor_administracion.toString(),
+                                  )
+                                : ""
+                            }
+                            onChange={(e) => {
+                              const numericValue = parseCurrency(
+                                e.target.value,
+                              );
+                              handleInputChange({
+                                target: {
+                                  name: "valor_administracion",
+                                  value: numericValue
+                                    ? parseInt(numericValue)
+                                    : 0,
+                                },
+                              } as any);
+                            }}
+                            className="mt-2 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 focus:border-custom-500 dark:focus:border-custom-400"
+                            placeholder="Ingresa el valor de administración"
+                          />
+                        )}
                       </div>
 
                       {/* Estado físico de la propiedad */}
@@ -678,7 +719,11 @@ export default function PropertyForm({
                         </Label>
                         <Select
                           name="bathrooms"
-                          value={formData.bathrooms?.toString() || ""}
+                          value={
+                            formData.bathrooms !== undefined
+                              ? formData.bathrooms.toString()
+                              : "0"
+                          }
                           onValueChange={(value) =>
                             handleInputChange({
                               target: {
@@ -957,7 +1002,7 @@ export default function PropertyForm({
                           onValueChange={(value) =>
                             handleSpecialFieldChange(
                               "business_type",
-                              value as BusinessType
+                              value as BusinessType,
                             )
                           }
                         >
@@ -988,7 +1033,7 @@ export default function PropertyForm({
                           onValueChange={(value) =>
                             handleSpecialFieldChange(
                               "currency_type",
-                              value as CurrencyType
+                              value as CurrencyType,
                             )
                           }
                         >
@@ -1033,7 +1078,11 @@ export default function PropertyForm({
                         </Label>
                         <Select
                           name="bedrooms"
-                          value={formData.bedrooms?.toString() || ""}
+                          value={
+                            formData.bedrooms !== undefined
+                              ? formData.bedrooms.toString()
+                              : "0"
+                          }
                           onValueChange={(value) =>
                             handleInputChange({
                               target: {
@@ -1116,7 +1165,7 @@ export default function PropertyForm({
                           onValueChange={(value) =>
                             handleSpecialFieldChange(
                               "parking_type",
-                              value as ParkingType
+                              value as ParkingType,
                             )
                           }
                         >
@@ -1146,7 +1195,7 @@ export default function PropertyForm({
                           onValueChange={(value) =>
                             handleSpecialFieldChange(
                               "stratum",
-                              value as Stratum
+                              value as Stratum,
                             )
                           }
                         >
@@ -1177,7 +1226,7 @@ export default function PropertyForm({
                           onValueChange={(value) =>
                             handleSpecialFieldChange(
                               "floor",
-                              value as FloorNumber
+                              value as FloorNumber,
                             )
                           }
                         >
@@ -1405,7 +1454,7 @@ export default function PropertyForm({
                       onChange={(selected) =>
                         handleSpecialFieldChange(
                           "zonas_comunes",
-                          selected as Amenity[]
+                          selected as Amenity[],
                         )
                       }
                       placeholder="Selecciona las zonas comunes disponibles (opcional)..."
@@ -1439,7 +1488,7 @@ export default function PropertyForm({
                           onValueChange={(value) =>
                             handleSpecialFieldChange(
                               "numero_pisos",
-                              value === "0" ? undefined : parseInt(value)
+                              value === "0" ? undefined : parseInt(value),
                             )
                           }
                         >
@@ -1474,7 +1523,7 @@ export default function PropertyForm({
                       onChange={(selected) =>
                         handleSpecialFieldChange(
                           "formas_de_pago",
-                          selected as PaymentMethod[]
+                          selected as PaymentMethod[],
                         )
                       }
                       placeholder="Selecciona las formas de pago disponibles..."
@@ -1500,7 +1549,7 @@ export default function PropertyForm({
                               onValueChange={(value) =>
                                 handleSpecialFieldChange(
                                   "tipo_permuta",
-                                  value as ExchangeType
+                                  value as ExchangeType,
                                 )
                               }
                             >
